@@ -1,0 +1,51 @@
+{
+   "name": "rovota/framework",
+   "description": "A modern PHP framework designed for lightning-fast applications.",
+   "homepage": "https://github.com/Rovota/Framework",
+   "keywords": ["framework", "rovota", "php"],
+   "authors": [
+      {
+         "name": "Rovota"
+      }
+   ],
+
+   "type": "library",
+   "version": "1.0.0",
+   "license": "MIT",
+
+   "require": {
+      "php-64bit": "^8.2.0"
+   },
+
+   "require-dev": {
+   },
+
+   "suggest": {
+   },
+
+   "autoload": {
+      "files": [
+
+      ],
+      "psr-4": {
+         "Rovota\\Framework\\": "src/"
+      }
+   },
+
+   "conflict": {
+      "phpmailer/phpmailer": "<6.0",
+      "league/flysystem": "<3.0"
+   },
+
+   "config": {
+      "sort-packages": true,
+      "optimize-autoloader": true
+   },
+
+   "replace": {
+      "symfony/polyfill-php80": "*",
+      "symfony/polyfill-mbstring": "*",
+      "ralouphie/getallheaders": "*",
+      "paragonie/random_compat": "*"
+   }
+}

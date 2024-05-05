@@ -1,0 +1,10 @@
+# Logging
+*.log
+*.txt
+
+# IDE
+*.idea
+
+# Dependencies
+*.lock
+vendor

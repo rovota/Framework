@@ -1,0 +1,12 @@
+# Languages
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Ignore in exports
+/.github export-ignore
+/.idea export-ignore
+/.gitattributes export-ignore
+/.gitbook.yaml export-ignore
+/.gitignore export-ignore
