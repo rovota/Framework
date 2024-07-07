@@ -9,11 +9,9 @@
 
 A modern framework written in PHP designed to be reliable, fast and accessible. Thanks to the use of modern language features and elegant architecture, you can build lightning-fast applications with ease.
 
-We are so confident, that the framework is the critical foundation of everything we build, including our own website and services. This also helps us to better test its usability and reliability, allowing us to provide updates accordingly.
-
 ## System Requirements
 
-* PHP 8.2 or newer.
+* PHP 8.3 or newer.
 * MySQL 8+ with InnoDB, MariaDB 10.6+ or PostgreSQL 14+.
 
 # Dependencies
