@@ -77,6 +77,7 @@ final class ExceptionHandler
 	// -----------------
 
 	// rendering
+	#[NoReturn]
 	public static function renderThrowableDebugView(Throwable $throwable, bool $fatal = true): void
 	{
 		ob_clean();
