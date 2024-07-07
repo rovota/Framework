@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Throwable;
 
@@ -43,7 +44,7 @@ final class ExceptionHandler
 			self::renderThrowableDebugView($throwable);
 		} else {
 			ob_end_clean();
-			http_response_code(500);
+			Application::quit(StatusCode::InternalServerError);
 		}
 	}
 
@@ -54,9 +55,8 @@ final class ExceptionHandler
 		if (self::$debug_enabled) {
 			self::renderErrorDebugView($number, $message, $file, $line);
 		} else if ($number === E_ERROR) {
-			// Only respond with HTTP 500 if the error is fatal, causing end of execution.
 			ob_end_clean();
-			http_response_code(500);
+			Application::quit(StatusCode::InternalServerError);
 		}
 	}
 
