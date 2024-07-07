@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright   Copyright (c), Léandro Tijink
+ * @copyright   Léandro Tijink
  * @license     MIT
  */
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright   Copyright (c), Léandro Tijink
+ * @copyright   Léandro Tijink
  * @license     MIT
  */
 
@@ -113,9 +113,9 @@ final class Application
 			throw new SystemRequirementException(sprintf('PHP %s or newer has to be installed.', self::PHP_MINIMUM_VERSION));
 		}
 
-		foreach (self::REQUIRED_EXTENSIONS as $required_extension) {
-			if (!extension_loaded($required_extension)) {
-				throw new SystemRequirementException(sprintf("The '%s' extension has to be installed and enabled.", $required_extension));
+		foreach (self::REQUIRED_EXTENSIONS as $extension) {
+			if (!extension_loaded($extension)) {
+				throw new SystemRequirementException(sprintf("The '%s' extension has to be installed and enabled.", $extension));
 			}
 		}
 	}
