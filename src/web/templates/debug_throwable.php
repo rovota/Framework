@@ -12,6 +12,7 @@
 /** @var $snippet array **/
 
 use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Support\Interfaces\Solution;
 
 ?>
 <!DOCTYPE html>
@@ -50,6 +51,20 @@ use Rovota\Framework\Kernel\Application;
 				<span>Core <?= Application::getRawVersion() ?></span>
 			</p>
 		</card>
+
+		<?php
+		if (isset($solution) && $solution instanceof Solution) { ?>
+			<card class="solution">
+				<p><b><?= str_replace('\\', '\\<wbr>', htmlentities($solution->getTitle())) ?></b></p>
+				<p><?= $solution->getDescription() ?></p>
+				<?php
+				foreach ($solution->getDocumentationLinks() as $link_title => $link_url) {
+					echo sprintf('<p><a href="%s" class="accent-neutral">%s</a></p>', $link_url, $link_title);
+				}
+				?>
+			</card>
+		<?php
+		} ?>
 
 	</header>
 

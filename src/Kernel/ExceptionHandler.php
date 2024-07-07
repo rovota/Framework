@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Kernel;
 
 use JetBrains\PhpStorm\NoReturn;
+use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Throwable;
 
 final class ExceptionHandler
@@ -35,7 +36,7 @@ final class ExceptionHandler
 
 	// -----------------
 
-	public static function handleThrowable(Throwable $throwable, bool $fatal = true): void
+	public static function handleThrowable(Throwable $throwable): void
 	{
 		self::logThrowable($throwable);
 
@@ -74,12 +75,12 @@ final class ExceptionHandler
 
 	// -----------------
 
-	// rendering
 	#[NoReturn]
 	public static function renderThrowableDebugView(Throwable $throwable): void
 	{
 		ob_clean();
 		$request = self::getRequestInfo();
+		$solution = $throwable instanceof ProvidesSolution ? $throwable->getSolution() : null;
 		$snippet = self::getSnippet($throwable->getFile());
 		$traces = self::getFilteredTrace($throwable);
 
