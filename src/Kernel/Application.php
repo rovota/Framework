@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Support\Version;
@@ -96,17 +97,11 @@ final class Application
 
 	// -----------------
 
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
+	public static function quit(StatusCode $code): never
+	{
+		http_response_code($code->value);
+		exit;
+	}
 
 	// -----------------
 
