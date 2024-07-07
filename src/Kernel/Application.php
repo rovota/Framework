@@ -52,12 +52,19 @@ final class Application
 
 	public static function shutdown(): void
 	{
-		// Check for fatal errors and handle them
 		$error = error_get_last();
 		if ($error !== null && $error['type'] === E_ERROR) {
 			array_shift($error);
 			ExceptionHandler::handleError(E_ERROR, ...$error);
 		}
+	}
+
+	// -----------------
+
+	public static function quit(StatusCode $code): never
+	{
+		http_response_code($code->value);
+		exit;
 	}
 
 	// -----------------
@@ -93,14 +100,6 @@ final class Application
 	public static function hasLoggingEnabled(): bool
 	{
 		return getenv('ENABLE_LOGGING') === 'true';
-	}
-
-	// -----------------
-
-	public static function quit(StatusCode $code): never
-	{
-		http_response_code($code->value);
-		exit;
 	}
 
 	// -----------------
