@@ -40,11 +40,7 @@ use Rovota\Framework\Kernel\Application;
 
 		<card class="details">
 			<div class="name">
-				<?php
-				if ($fatal === true) { ?>
-					<span class="unhandled">Unhandled</span>
-				<?php
-				} ?>
+				<span class="unhandled">Unhandled</span>
 				<span><?= $throwable::class ?></span>
 			</div>
 			<h1><?= $throwable->getMessage() ?? 'There is no message available' ?></h1>

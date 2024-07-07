@@ -27,8 +27,6 @@ final class ExceptionHandler
 
 	public static function initialize(): void
 	{
-//		error_reporting(getenv('ENABLE_DEBUG') === 'true' ? E_ALL : 0);
-
 		self::$debug_enabled = getenv('ENABLE_DEBUG') === 'true';
 		self::$log_enabled = getenv('ENABLE_LOGGING') === 'true';
 
@@ -39,10 +37,10 @@ final class ExceptionHandler
 
 	public static function handleThrowable(Throwable $throwable, bool $fatal = true): void
 	{
-		self::logThrowable($throwable, $fatal);
+		self::logThrowable($throwable);
 
 		if (self::$debug_enabled) {
-			self::renderThrowableDebugView($throwable, $fatal);
+			self::renderThrowableDebugView($throwable);
 		} else {
 			ob_end_clean();
 			http_response_code(500);
@@ -64,7 +62,7 @@ final class ExceptionHandler
 
 	// -----------------
 
-	public static function logThrowable(Throwable $throwable, bool $fatal = true): void
+	public static function logThrowable(Throwable $throwable): void
 	{
 		// TODO: Implement logging of a throwable.
 	}
@@ -78,7 +76,7 @@ final class ExceptionHandler
 
 	// rendering
 	#[NoReturn]
-	public static function renderThrowableDebugView(Throwable $throwable, bool $fatal = true): void
+	public static function renderThrowableDebugView(Throwable $throwable): void
 	{
 		ob_clean();
 		$request = self::getRequestInfo();
