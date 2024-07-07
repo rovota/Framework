@@ -14,7 +14,7 @@ A modern framework written in PHP designed to be reliable, fast and accessible. 
 * PHP 8.3 or newer.
 * MySQL 8+ with InnoDB, MariaDB 10.6+ or PostgreSQL 14+.
 
-# Dependencies
+## Dependencies
 
 While we try to keep the footprint to a minimum, various dependencies are used to improve functionality and speed up development when reasonably necessary.
 
