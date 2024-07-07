@@ -10,7 +10,7 @@ use Rovota\Framework\Kernel\ExceptionHandler;
 
 // -----------------
 
-// Open a buffer for all output
+// Start buffering output
 ob_start();
 
 // -----------------
@@ -22,6 +22,16 @@ date_default_timezone_set('UTC');
 
 ExceptionHandler::initialize();
 
+set_exception_handler(function(Throwable $throwable) {
+	ExceptionHandler::handleThrowable($throwable);
+});
+
+set_error_handler(function(int $number, string $message, string $file, int $line) {
+	ExceptionHandler::handleError($number, $message, $file, $line);
+});
+
+register_shutdown_function(fn () => Application::shutdown());
+
 // -----------------
 
 // Bind global helper functions
@@ -30,6 +40,3 @@ require 'functions.php';
 // -----------------
 
 Application::start();
-
-
-echo Application::$version->jsonSerialize();

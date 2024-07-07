@@ -28,7 +28,7 @@ final class Version implements JsonSerializable
 
 	// -----------------
 
-	public function jsonSerisalize(): string
+	public function jsonSerialize(): string
 	{
 		return '---';
 	}

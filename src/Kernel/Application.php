@@ -41,6 +41,23 @@ final class Application
 		echo PHP_VERSION;
 	}
 
+	public static function shutdown(): void
+	{
+		// Check for fatal errors and handle them
+		$error = error_get_last();
+		if ($error !== null && $error['type'] === E_ERROR) {
+			array_shift($error);
+			ExceptionHandler::handleError(E_ERROR, ...$error);
+		}
+	}
+
+	// -----------------
+
+	public static function getRawVersion(): string
+	{
+		return self::APP_VERSION;
+	}
+
 	// -----------------
 
 	// -----------------
