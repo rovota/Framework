@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @author      Software Department <developers@rovota.com>
- * @copyright   Copyright (c), Rovota
+ * @copyright   Copyright (c), Léandro Tijink
  * @license     MIT
  */
 

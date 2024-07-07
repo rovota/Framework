@@ -7,6 +7,8 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Kernel\Enums\Environment;
+use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Support\Version;
 
 final class Application
@@ -22,7 +24,7 @@ final class Application
 
 	// -----------------
 
-	public static string $environment = 'development';
+	public static Environment $environment;
 
 	public static Version $version;
 
@@ -34,9 +36,15 @@ final class Application
 
 	// -----------------
 
+	/**
+	 * @throws SystemRequirementException
+	 */
 	public static function start(): void
 	{
 		self::$version = new Version(self::APP_VERSION);
+
+		self::serverCompatCheck();
+		self::environmentCheck();
 
 		echo PHP_VERSION;
 	}
@@ -60,6 +68,38 @@ final class Application
 
 	// -----------------
 
+	public static function getEnvironment(): Environment
+	{
+		return self::$environment;
+	}
+
+	public static function hasEnvironment(array|string $name): bool
+	{
+		foreach (is_array($name) ? $name : [$name] as $name) {
+			if (Environment::tryFrom($name) === self::$environment) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static function hasDebugEnabled(): bool
+	{
+		return getenv('ENABLE_DEBUG') === 'true';
+	}
+
+	public static function hasLoggingEnabled(): bool
+	{
+		return getenv('ENABLE_LOGGING') === 'true';
+	}
+
+	// -----------------
+
+	// -----------------
+
+	// -----------------
+
 	// -----------------
 
 	// -----------------
@@ -69,5 +109,31 @@ final class Application
 	// -----------------
 
 	// -----------------
+
+	/**
+	 * @throws SystemRequirementException
+	 */
+	protected static function serverCompatCheck(): void
+	{
+		if (version_compare(PHP_VERSION, self::PHP_MINIMUM_VERSION, '<')) {
+			throw new SystemRequirementException(sprintf('PHP %s or newer has to be installed.', self::PHP_MINIMUM_VERSION));
+		}
+
+		foreach (self::REQUIRED_EXTENSIONS as $required_extension) {
+			if (!extension_loaded($required_extension)) {
+				throw new SystemRequirementException(sprintf("The '%s' extension has to be installed and enabled.", $required_extension));
+			}
+		}
+	}
+
+	protected static function environmentCheck(): void
+	{
+		if (is_string(getenv('ENVIRONMENT'))) {
+			self::$environment = Environment::tryFrom(getenv('ENVIRONMENT')) ?? Environment::Production;
+			return;
+		}
+
+		self::$environment = Environment::Production;
+	}
 
 }
