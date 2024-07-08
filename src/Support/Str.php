@@ -342,20 +342,20 @@ final class Str
 		return true;
 	}
 
-	public static function containsAny(string $string, array $values): bool
+	public static function containsAny(string $string, array $needles): bool
 	{
-		foreach ($values as $value) {
-			if (str_contains($string, $value)) {
+		foreach ($needles as $needle) {
+			if (str_contains($string, $needle)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static function containsNone(string $string, array $values): bool
+	public static function containsNone(string $string, array $needles): bool
 	{
-		foreach ($values as $value) {
-			if (str_contains($string, $value)) {
+		foreach ($needles as $needle) {
+			if (str_contains($string, $needle)) {
 				return false;
 			}
 		}
@@ -502,7 +502,7 @@ final class Str
 		}
 		return $string;
 	}
-	
+
 	// -----------------
 
 	public static function scan(string $string, string $format): array
