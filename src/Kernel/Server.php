@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Kernel;
 
 use PHLAK\SemVer\Exceptions\InvalidVersionException;
+use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Support\Version;
 
 final class Server
@@ -109,24 +110,15 @@ final class Server
 
 	// -----------------
 
-	// -----------------
+	public function maxFilesize(): int
+	{
+		$post_max = TextConverter::toBytes(ini_get('post_max_size'));
+		$upload_max = TextConverter::toBytes(ini_get('upload_max_filesize'));
+
+		return min($post_max ?: PHP_INT_MAX, $upload_max ?: PHP_INT_MAX);
+	}
 
 	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
 
 
 }
