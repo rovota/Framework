@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
@@ -49,6 +50,14 @@ final class Application
 
 		self::serverCompatCheck();
 		self::environmentCheck();
+
+		// Foundation
+
+		// Additional
+		MarkupConverter::initialize();
+
+		// Finish
+		// TODO: Execute routes
 	}
 
 	public static function shutdown(): void
