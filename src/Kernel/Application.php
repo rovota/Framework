@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
+use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Version;
 
 final class Application
@@ -28,6 +29,7 @@ final class Application
 	public static Environment $environment;
 
 	public static Version $version;
+	public static Server $server;
 
 	// -----------------
 
@@ -43,11 +45,10 @@ final class Application
 	public static function start(): void
 	{
 		self::$version = new Version(self::APP_VERSION);
+		self::$server = new Server();
 
 		self::serverCompatCheck();
 		self::environmentCheck();
-
-		echo PHP_VERSION;
 	}
 
 	public static function shutdown(): void
@@ -124,6 +125,31 @@ final class Application
 	{
 		if (is_string(getenv('ENVIRONMENT'))) {
 			self::$environment = Environment::tryFrom(getenv('ENVIRONMENT')) ?? Environment::Production;
+			return;
+		}
+
+		$server_name = self::$server->get('server_name');
+		$server_address = self::$server->get('server_addr');
+
+		// Check for development
+		if (Str::startsWithAny($server_name, ['dev.', 'local.', 'sandbox.']) || Str::endsWithAny($server_name, ['.localhost', '.local'])) {
+			self::$environment = Environment::Development;
+			return;
+		}
+		if ($server_address === '127.0.0.1' || $server_address === '::1' || $server_name === 'localhost') {
+			self::$environment = Environment::Development;
+			return;
+		}
+
+		// Check for testing
+		if (Str::startsWithAny($server_name, ['test.', 'qa.', 'uat.', 'acceptance.', 'integration.']) || Str::endsWithAny($server_name, ['.test', '.example'])) {
+			self::$environment = Environment::Testing;
+			return;
+		}
+
+		// Check for staging
+		if (Str::startsWithAny($server_name, ['stage.', 'staging.', 'prepod.'])) {
+			self::$environment = Environment::Staging;
 			return;
 		}
 
