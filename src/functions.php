@@ -5,9 +5,26 @@
  * @license     MIT
  */
 
-
+use Rovota\Framework\Support\Interfaces\Arrayable;
+use Rovota\Framework\Support\Str;
+use Rovota\Framework\Support\Text;
 
 // -----------------
+// Strings
+
+if (!function_exists('text')) {
+	function text(string $string): Text
+	{
+		return new Text($string);
+	}
+}
+
+if (!function_exists('e')) {
+	function e(string|null $string): string|null
+	{
+		return Str::escape($string);
+	}
+}
 
 // -----------------
 
@@ -43,8 +60,6 @@
 
 // -----------------
 // Internal
-
-use Rovota\Framework\Support\Interfaces\Arrayable;
 
 if (!function_exists('source')) {
 	function source(string $path = ''): string
