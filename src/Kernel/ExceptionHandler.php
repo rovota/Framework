@@ -9,6 +9,7 @@ namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
+use Rovota\Framework\Support\Internal;
 use Throwable;
 
 final class ExceptionHandler
@@ -82,7 +83,7 @@ final class ExceptionHandler
 		$snippet = self::getSnippet($throwable->getFile());
 		$traces = self::getFilteredTrace($throwable);
 
-		include source('web/templates/debug_throwable.php');
+		include Internal::sourceFile('web/templates/debug_throwable.php');
 		exit;
 	}
 
@@ -92,7 +93,7 @@ final class ExceptionHandler
 		$request = self::getRequestInfo();
 		$snippet = self::getSnippet($file);
 
-		include source('web/templates/debug_error.php');
+		include Internal::sourceFile('web/templates/debug_error.php');
 		exit;
 	}
 
