@@ -27,6 +27,9 @@ final class ExceptionHandler
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public static function initialize(): void
 	{
 		self::$debug_enabled = getenv('ENABLE_DEBUG') === 'true';

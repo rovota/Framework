@@ -25,6 +25,9 @@ final class MarkupConverter
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public static function initialize(): void
 	{
 		self::addLanguage('md_cm', 'Markdown (CommonMark)');
