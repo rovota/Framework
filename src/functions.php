@@ -84,19 +84,6 @@ if (!function_exists('convert_to_array')) {
 }
 
 // -----------------
-// Data Comparisons
-
-if (!function_exists('float_equals')) {
-	/**
-	 * Determines whether two floating values are equal, accounting for rounding precision.
-	 */
-	function float_equals(float $first, float $second, int $precision = Application::DEFAULT_FLOAT_PRECISION): bool
-	{
-		return Math::floatEquals($first, $second, $precision);
-	}
-}
-
-// -----------------
 // Data Structures
 
 if (!function_exists('as_map')) {
