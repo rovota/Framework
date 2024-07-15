@@ -100,7 +100,7 @@ if (!function_exists('as_sequence')) {
 }
 
 if (!function_exists('as_bucket')) {
-	function as_sequence(mixed $items = []): Bucket
+	function as_bucket(mixed $items = []): Bucket
 	{
 		return new Bucket($items);
 	}
