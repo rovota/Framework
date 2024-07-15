@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support;
 
 use Closure;
+use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
 final class Arr
@@ -40,7 +41,7 @@ final class Arr
 	/**
 	 * Returns the average of a given array. When the array is empty or contains non-numeric values, `0` will be returned.
 	 */
-	public static function average(array $array, bool $round = false, int $precision = 0): float|int
+	public static function average(array $array, int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
 	{
 		$count = count($array);
 
@@ -49,7 +50,7 @@ final class Arr
 		}
 
 		$average = array_sum($array) / $count;
-		return $round ? round($average, $precision) : $average;
+		return round($average, $precision);
 	}
 
 	/**
@@ -76,12 +77,13 @@ final class Arr
 	}
 
 	/**
-	 * Returns the sum of all items in the array, the specified key or using a closure:
+	 * Returns the sum of all items in the array. Optionally, the values to sum can be filtered.
 	 */
-	public static function sum(array $array, callable|string|null $callback = null): int|float
+	public static function sum(array $array, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|string|null $callback = null): int|float
 	{
-		$callback = $callback === null ? self::valueCallable() : value_retriever($callback);
-		return self::reduce($array, function ($result, $item) use ($callback) {
+		$callback = $callback === null ? self::valueCallable() : Internal::valueRetriever($callback);
+
+		$result =  self::reduce($array, function ($result, $item) use ($callback) {
 			$callbackResult = $callback($item);
 			if (is_bool($callbackResult)) {
 				return $result + ($callbackResult === true ? $item : 0);
@@ -89,6 +91,8 @@ final class Arr
 				return $result + $callbackResult;
 			}
 		}, 0);
+
+		return round($result, $precision);
 	}
 
 	// -----------------
@@ -262,11 +266,11 @@ final class Arr
 		$key = is_string($key) ? explode('.', $key) : $key;
 
 		foreach ($array as $item) {
-			$item_value = data_get($item, $fields);
+			$item_value = Internal::getData($item, $fields);
 			if ($key === null) {
 				$results[] = $item_value;
 			} else {
-				$item_key = data_get($item, $key);
+				$item_key = Internal::getData($item, $key);
 				if (is_object($item_key) && method_exists($item_key, '__toString')) {
 					$item_key = (string)$item_key;
 				}
@@ -381,7 +385,7 @@ final class Arr
 	public static function sortBy(array $array, mixed $callback, bool $descending = false): array
 	{
 		$results = [];
-		$callback = value_retriever($callback);
+		$callback = Internal::valueRetriever($callback);
 
 		foreach ($array as $key => $value) {
 			$results[$key] = $callback($value, $key);
