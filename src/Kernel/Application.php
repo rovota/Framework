@@ -18,6 +18,8 @@ final class Application
 
 	public const int DEFAULT_FLOAT_PRECISION = 14;
 
+	public const int DEFAULT_BCRYPT_COST = 12;
+
 	// -----------------
 
 	protected const string APP_VERSION = '1.0.0';
