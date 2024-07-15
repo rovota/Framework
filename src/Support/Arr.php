@@ -21,83 +21,6 @@ final class Arr
 	// -----------------
 
 	/**
-	 * Returns the lowest value present in the array.
-	 */
-	public static function min(array $array, float|int|null $limit = null): float|int
-	{
-		$minimum = min($array);
-		return ($limit !== null && $minimum <= $limit) ? $limit : $minimum;
-	}
-
-	/**
-	 * Returns the highest value present in the array.
-	 */
-	public static function max(array $array, float|int|null $limit = null): float|int
-	{
-		$maximum = max($array);
-		return ($limit !== null && $maximum >= $limit) ? $limit : $maximum;
-	}
-
-	/**
-	 * Returns the average of a given array. When the array is empty or contains non-numeric values, `0` will be returned.
-	 */
-	public static function average(array $array, int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
-	{
-		$count = count($array);
-
-		if ($count < 2) {
-			return array_pop($array) ?? 0;
-		}
-
-		$average = array_sum($array) / $count;
-		return round($average, $precision);
-	}
-
-	/**
-	 * Returns the median of a given array. When the array is empty or contains non-numeric values, `0` will be returned.
-	 */
-	public static function median(array $array): float|int|null
-	{
-		$count = count($array);
-		sort($array);
-
-		$values = array_values($array);
-
-		if ($count === 0) {
-			return null;
-		}
-
-		$middle = (int) ($count / 2);
-
-		if ($count % 2) {
-			return $values[$middle];
-		}
-
-		return Arr::average([$values[$middle - 1], $values[$middle]]);
-	}
-
-	/**
-	 * Returns the sum of all items in the array. Optionally, the values to sum can be filtered.
-	 */
-	public static function sum(array $array, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|string|null $callback = null): int|float
-	{
-		$callback = $callback === null ? self::valueCallable() : Internal::valueRetriever($callback);
-
-		$result =  self::reduce($array, function ($result, $item) use ($callback) {
-			$callbackResult = $callback($item);
-			if (is_bool($callbackResult)) {
-				return $result + ($callbackResult === true ? $item : 0);
-			} else {
-				return $result + $callbackResult;
-			}
-		}, 0);
-
-		return round($result, $precision);
-	}
-
-	// -----------------
-
-	/**
 	 * Returns the items from the array that pass a given truth test.
 	 */
 	public static function filter(array $array, callable $callback): array
@@ -428,15 +351,6 @@ final class Arr
 				return $carry;
 			},[]
 		);
-	}
-
-	// -----------------
-
-	protected static function valueCallable(): callable
-	{
-		return function ($value) {
-			return $value;
-		};
 	}
 
 }

@@ -16,6 +16,7 @@ use JsonSerializable;
 use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
+use Rovota\Framework\Support\Math;
 use Traversable;
 
 abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, Arrayable, JsonSerializable
@@ -74,22 +75,22 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	public function min(float|int|null $limit = null): float|int
 	{
-		return Arr::min($this->values, $limit);
+		return Math::min($this->values, $limit);
 	}
 
 	public function max(float|int|null $limit = null): float|int
 	{
-		return Arr::max($this->values, $limit);
+		return Math::max($this->values, $limit);
 	}
 
 	public function average(int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
 	{
-		return Arr::average($this->values, $precision);
+		return Math::average($this->values, $precision);
 	}
 
 	public function sum(int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
 	{
-		return Arr::sum($this->values, $precision);
+		return Math::sum($this->values, $precision);
 	}
 
 	// -----------------
