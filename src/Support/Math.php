@@ -26,4 +26,16 @@ final class Math
 		return round($first, $precision) === round($second, $precision);
 	}
 
+	// -----------------
+
+	public static function isEven(float|int $value): bool
+	{
+		return (int) $value % 2 === 0;
+	}
+
+	public static function isOdd(float|int $value): bool
+	{
+		return (int) $value & 1;
+	}
+
 }
