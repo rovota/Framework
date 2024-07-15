@@ -11,11 +11,12 @@ use Closure;
 use JsonSerializable;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Traits\Conditionable;
+use Rovota\Framework\Support\Traits\Macroable;
 use Stringable;
 
 final class Text implements Stringable, JsonSerializable
 {
-	use Conditionable;
+	use Conditionable, Macroable;
 
 	protected string $string;
 
