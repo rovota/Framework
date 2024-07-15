@@ -127,6 +127,18 @@ final class Str
 
 	// -----------------
 
+	public static function plural(string $string, mixed $count): string
+	{
+		return TextConverter::toPlural($string, $count);
+	}
+
+	public static function singular(string $string): string
+	{
+		return TextConverter::toSingular($string);
+	}
+
+	// -----------------
+
 	public static function prepend(string $string, string $addition): string
 	{
 		return $addition.$string;

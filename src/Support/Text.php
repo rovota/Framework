@@ -173,6 +173,20 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
+	public function plural(string $string, mixed $count): string
+	{
+		$this->string = Str::plural($string, $count);
+		return $this;
+	}
+
+	public function singular(string $string): string
+	{
+		$this->string = Str::singular($string);
+		return $this;
+	}
+
+	// -----------------
+
 	public function prepend(string $addition): string
 	{
 		$this->string = Str::prepend($this->string, $addition);

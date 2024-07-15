@@ -24,6 +24,9 @@ final class TextConverter
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public static function initialize(): void
 	{
 		self::$inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
@@ -31,9 +34,38 @@ final class TextConverter
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public static function inflector(): Inflector
 	{
 		return self::$inflector;
+	}
+
+	// -----------------
+
+	/**
+	 * @internal
+	 */
+	public static function toPlural(string $word, mixed $count = 2): string
+	{
+		if (is_countable($count) && !is_int($count)) {
+			$count = count($count);
+		}
+
+		if ((int) abs($count) === 1) {
+			return $word;
+		}
+
+		return self::matchCase(self::inflector()->pluralize($word), $word);
+	}
+
+	/**
+	 * @internal
+	 */
+	public static function toSingular(string $word): string
+	{
+		return self::matchCase(self::inflector()->singularize($word), $word);
 	}
 
 	// -----------------
@@ -68,6 +100,24 @@ final class TextConverter
 		}
 
 		return $max;
+	}
+
+	// -----------------
+
+	/**
+	 * @noinspection SpellCheckingInspection
+	 */
+	protected static function matchCase(string $value, string $comparison): string
+	{
+		$functions = ['mb_strtolower', 'mb_strtoupper', 'ucfirst', 'ucwords'];
+
+		foreach ($functions as $function) {
+			if ($function($comparison) === $comparison) {
+				return $function($value);
+			}
+		}
+
+		return $value;
 	}
 
 }
