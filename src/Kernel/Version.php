@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support;
+namespace Rovota\Framework\Kernel;
 
 use JsonSerializable;
 use PHLAK\SemVer\Exceptions\InvalidVersionException;

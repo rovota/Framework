@@ -12,7 +12,6 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Support\Str;
-use Rovota\Framework\Support\Version;
 
 final class Application
 {

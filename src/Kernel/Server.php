@@ -9,7 +9,6 @@ namespace Rovota\Framework\Kernel;
 
 use PHLAK\SemVer\Exceptions\InvalidVersionException;
 use Rovota\Framework\Conversion\TextConverter;
-use Rovota\Framework\Support\Version;
 
 final class Server
 {
