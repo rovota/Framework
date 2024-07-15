@@ -274,7 +274,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function limit(int $length, int $start = 0, string $marker = ''): string
 	{
-		$this->string = Str::limit($this->string, 0, $length, $marker);
+		$this->string = Str::limit($this->string, $length, $start, $marker);
 		return $this;
 	}
 
