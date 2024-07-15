@@ -36,7 +36,7 @@ final class Internal
 	 */
 	public static function projectFile(string $path = '', string|null $base = null): string
 	{
-		$base = $base ?? (defined('BASE_PATH') ? BASE_PATH : self::getFrameworkRootPath());
+		$base = $base ?? self::getProjectRootPath();
 		return strlen($path) > 0 ? $base.'/'.ltrim($path, '/') : $base;
 	}
 
@@ -120,6 +120,11 @@ final class Internal
 	protected static function getFrameworkRootPath(): string
 	{
 		return str_replace('\Support', '', dirname(__FILE__));
+	}
+
+	protected static function getProjectRootPath(): string
+	{
+		return defined('BASE_PATH') ? BASE_PATH : self::getFrameworkRootPath();
 	}
 
 }
