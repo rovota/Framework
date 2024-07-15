@@ -189,14 +189,17 @@ final class Arr
 
 		foreach ($array as $item) {
 			$item_value = Internal::getData($item, $fields);
-			if ($key === null) {
-				$results[] = $item_value;
-			} else {
-				$item_key = Internal::getData($item, $key);
-				if (is_object($item_key) && method_exists($item_key, '__toString')) {
-					$item_key = (string)$item_key;
+
+			if ($item_value !== null) {
+				if ($key === null) {
+					$results[] = $item_value;
+				} else {
+					$item_key = Internal::getData($item, $key);
+					if (is_object($item_key) && method_exists($item_key, '__toString')) {
+						$item_key = (string)$item_key;
+					}
+					$results[$item_key] = $item_value;
 				}
-				$results[$item_key] = $item_value;
 			}
 		}
 
