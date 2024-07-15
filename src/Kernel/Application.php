@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Conversion\MarkupConverter;
+use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
@@ -59,6 +60,7 @@ final class Application
 		// Foundation
 
 		// Additional
+		TextConverter::initialize();
 		MarkupConverter::initialize();
 
 		// Finish

@@ -7,10 +7,14 @@
 
 namespace Rovota\Framework\Conversion;
 
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
+use Doctrine\Inflector\Language;
+
 final class TextConverter
 {
 
-	protected static array $accent_map = [];
+	protected static Inflector $inflector;
 
 	// -----------------
 
@@ -20,13 +24,16 @@ final class TextConverter
 
 	// -----------------
 
-	public static function toAscii(string $string): string
+	public static function initialize(): void
 	{
-		if (empty(self::$accent_map)) {
-			self::loadAccentMap();
-		}
-		$string = strtr($string, self::$accent_map);
-		return trim($string);
+		self::$inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
+	}
+
+	// -----------------
+
+	public static function inflector(): Inflector
+	{
+		return self::$inflector;
 	}
 
 	// -----------------
@@ -61,13 +68,6 @@ final class TextConverter
 		}
 
 		return $max;
-	}
-
-	// -----------------
-
-	protected static function loadAccentMap(): void
-	{
-		self::$accent_map = include 'accent_map.php';
 	}
 
 }

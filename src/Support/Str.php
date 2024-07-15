@@ -31,9 +31,9 @@ final class Str
 	/**
 	 * Determines whether a string is formatted as a slug.
 	 */
-	public static function isSlug(string $string, string|null $replacement = null): bool
+	public static function isSlug(string $string, string|null $separator = null): bool
 	{
-		return $string === self::slug($string, $replacement);
+		return $string === self::slug($string, $separator);
 	}
 
 	/**
@@ -41,7 +41,7 @@ final class Str
 	 */
 	public static function isAscii(string $string): bool
 	{
-		return $string === TextConverter::toAscii($string);
+		return $string === TextConverter::inflector()->unaccent($string);
 	}
 
 	// -----------------
@@ -77,7 +77,7 @@ final class Str
 	 */
 	public static function simplify(string $string): string
 	{
-		return TextConverter::toAscii($string);
+		return TextConverter::inflector()->unaccent($string);
 	}
 
 	/**
@@ -122,13 +122,7 @@ final class Str
 	 */
 	public static function slug(string $string, string $separator = '-'): string
 	{
-		$string = self::lower(self::simplify($string));
-		$string = str_replace(' ', '-', $string);
-		$string = preg_replace('/[^a-z\d\-]/', '', $string);
-		$string = preg_replace('/-+/', '-', $string);
-		$string = rtrim(ltrim($string, '-'), '-');
-
-		return str_replace('-', $separator, $string);
+		return str_replace('-', $separator, TextConverter::inflector()->urlize($string));
 	}
 
 	// -----------------
@@ -566,5 +560,9 @@ final class Str
 
 		return $acronym;
 	}
+
+	// -----------------
+
+	// TODO: toMoment() method, with optional format indication and timezone.
 
 }
