@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support;
 
 use ArrayAccess;
+use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
 final class Internal
@@ -77,7 +78,9 @@ final class Internal
 
 		$key = is_array($key) ? $key : explode('.', $key);
 
+
 		foreach ($key as $i => $segment) {
+
 			unset($key[$i]);
 
 			if ($segment === null) {
@@ -100,6 +103,7 @@ final class Internal
 			}
 
 			$target = match (true) {
+				$target instanceof Sequence => is_int($segment) ? $target->offsetGet($segment) : 1,
 				$target instanceof ArrayAccess => $target->offsetGet($segment),
 				is_object($target) && isset($target->{$segment}) => $target->{$segment},
 				is_object($target) && method_exists($target, $segment) => $target->{$segment}(),
