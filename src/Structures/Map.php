@@ -71,14 +71,14 @@ class Map extends Collection
 		return new static(array_slice($this->values, $key, $length, true));
 	}
 
+	// -----------------
+
 	public function reverse(): static
 	{
 		$this->values = array_reverse($this->values);
 		$this->keys = array_reverse($this->keys);
 		return $this;
 	}
-
-	// -----------------
 
 	public function sort(callable|null $comparator = null, bool $descending = false): static
 	{

@@ -98,13 +98,13 @@ class Sequence extends Collection
 		return new Sequence(array_slice($this->values, $index, $length));
 	}
 
+	// -----------------
+
 	public function reverse(): static
 	{
 		$this->values = array_reverse($this->values);
 		return $this;
 	}
-
-	// -----------------
 
 	public function sort(callable|null $comparator = null, bool $descending = false): Sequence
 	{
