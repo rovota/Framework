@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Support;
 
 use Closure;
-use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
 final class Arr
