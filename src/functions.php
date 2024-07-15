@@ -6,6 +6,7 @@
  */
 
 use Dflydev\DotAccessData\Data;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Interfaces\Arrayable;
@@ -95,5 +96,12 @@ if (!function_exists('as_sequence')) {
 	function as_sequence(mixed $items = []): Sequence
 	{
 		return new Sequence($items);
+	}
+}
+
+if (!function_exists('as_bucket')) {
+	function as_sequence(mixed $items = []): Bucket
+	{
+		return new Bucket($items);
 	}
 }
