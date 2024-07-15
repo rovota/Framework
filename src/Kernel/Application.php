@@ -17,6 +17,10 @@ use Rovota\Framework\Support\Version;
 final class Application
 {
 
+	public const int DEFAULT_FLOAT_PRECISION = 14;
+
+	// -----------------
+
 	protected const string APP_VERSION = '1.0.0';
 
 	protected const string PHP_MINIMUM_VERSION = '8.3.0';
