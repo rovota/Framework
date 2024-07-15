@@ -94,7 +94,8 @@ final class Math
 			return array_pop($values) ?? 0;
 		}
 
-		return round(array_sum($values) / $count, $precision);
+		$result = array_sum($values) / $count;
+		return $precision === 0 ? $result : round($result, $precision);
 	}
 
 	/**
@@ -103,7 +104,17 @@ final class Math
 	public static function sum(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): int|float
 	{
 		$result = array_sum($filter === null ? $values : Arr::filter($values, $filter));
-		return round($result, $precision);
+		return $precision === 0 ? $result : round($result, $precision);
+	}
+
+	/**
+	 * Returns the range of all items in the list. Optionally, the values to sum can be filtered.
+	 */
+	public static function range(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): int|float
+	{
+		$result = $filter === null ? $values : Arr::filter($values, $filter);
+		$result = max($result) - min($result);
+		return $precision === 0 ? $result : round($result, $precision);
 	}
 
 }
