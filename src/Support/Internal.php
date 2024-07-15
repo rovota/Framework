@@ -26,7 +26,7 @@ final class Internal
 	 */
 	public static function sourceFile(string $path = ''): string
 	{
-		return self::projectFile($path, dirname(__FILE__));
+		return self::projectFile($path, self::getFrameworkRootPath());
 	}
 
 	/**
@@ -36,7 +36,7 @@ final class Internal
 	 */
 	public static function projectFile(string $path = '', string|null $base = null): string
 	{
-		$base = $base ?? (defined('BASE_PATH') ? BASE_PATH : dirname(__FILE__));
+		$base = $base ?? (defined('BASE_PATH') ? BASE_PATH : self::getFrameworkRootPath());
 		return strlen($path) > 0 ? $base.'/'.ltrim($path, '/') : $base;
 	}
 
@@ -113,6 +113,13 @@ final class Internal
 		}
 
 		return $target;
+	}
+
+	// -----------------
+	
+	protected static function getFrameworkRootPath(): string
+	{
+		return str_replace('\Support', '', dirname(__FILE__));
 	}
 
 }
