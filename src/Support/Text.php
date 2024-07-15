@@ -9,9 +9,9 @@ namespace Rovota\Framework\Support;
 
 use Closure;
 use JsonSerializable;
+use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Traits\Conditionable;
 use Stringable;
-use Throwable;
 
 final class Text implements Stringable, JsonSerializable
 {
@@ -57,6 +57,8 @@ final class Text implements Stringable, JsonSerializable
 	{
 		return filter_var($this->string, FILTER_VALIDATE_BOOLEAN);
 	}
+
+	// TODO: toMoment() method, with optional format indication and timezone.
 
 	// -----------------
 
@@ -501,6 +503,33 @@ final class Text implements Stringable, JsonSerializable
 	{
 		$this->string = $callback($this);
 		return $this;
+	}
+
+	// -----------------
+
+	public function follows(string $pattern): bool
+	{
+		$pattern = Str::startAndFinish($pattern, '/');
+		return preg_match($pattern, $this->string) === 1;
+	}
+
+	public function matches(string $pattern): Sequence
+	{
+		$pattern = Str::startAndFinish($pattern, '/');
+		preg_match_all($pattern, $this->string, $matches);
+		return new Sequence($matches[0]);
+	}
+
+	// -----------------
+
+	public function whenEmpty(callable $callback, callable|null $alternative = null): Text
+	{
+		return $this->when($this->isEmpty() === true, $callback, $alternative);
+	}
+
+	public function whenNotEmpty(callable $callback, callable|null $alternative = null): Text
+	{
+		return $this->when($this->isEmpty() === false, $callback, $alternative);
 	}
 
 }
