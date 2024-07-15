@@ -19,6 +19,16 @@ class Sequence extends Collection
 
 	// -----------------
 
+	public function has(mixed $index): bool
+	{
+		foreach (is_array($index) ? $index : [$index] as $index) {
+			if ($this->offsetExists($index) === false) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public function get(int $index): mixed
 	{
 		return $this->offsetGet($index);
@@ -41,27 +51,10 @@ class Sequence extends Collection
 
 	// -----------------
 
-	public function has(mixed $index): bool
-	{
-		foreach (is_array($index) ? $index : [$index] as $index) {
-			if ($this->offsetExists($index) === false) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	// -----------------
-
 	public function insert(int $index, array $values): void
 	{
 		array_splice( $this->values, $index, 0, $values);
 		$this->keys = array_keys($this->values);
-	}
-
-	public function prepend(array $values): void
-	{
-		$this->insert(0, $values);
 	}
 
 	public function append(array $values): void
@@ -69,6 +62,11 @@ class Sequence extends Collection
 		foreach ($values as $value) {
 			$this->offsetSet(null, $value);
 		}
+	}
+
+	public function prepend(array $values): void
+	{
+		$this->insert(0, $values);
 	}
 
 	// -----------------

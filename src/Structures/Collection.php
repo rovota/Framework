@@ -36,22 +36,6 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	// -----------------
 
-	public function toArray(): array
-	{
-		if ($this->key_object_count === 0) {
-			return array_combine($this->keys, $this->values);
-		} else {
-			return $this->values;
-		}
-	}
-
-	public function toJson(): string
-	{
-		return json_encode_clean($this->toArray());
-	}
-
-	// -----------------
-
 	public function clear(): static
 	{
 		$this->values = [];
@@ -137,17 +121,6 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	// -----------------
 
-	public function filter(callable $callback): static
-	{
-		$filtered = [];
-		foreach ($this->values as $key => $value) {
-			if ($callback($value, $this->keys[$key]) === true) {
-				$filtered[$key] = $value;
-			}
-		}
-		return new static($filtered);
-	}
-
 	public function contains(mixed $values): bool
 	{
 		if (is_array($values)) {
@@ -172,6 +145,19 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	// -----------------
 
+	public function filter(callable $callback): static
+	{
+		$filtered = [];
+		foreach ($this->values as $key => $value) {
+			if ($callback($value, $this->keys[$key]) === true) {
+				$filtered[$key] = $value;
+			}
+		}
+		return new static($filtered);
+	}
+
+	// -----------------
+
 	public function join(string $glue, string|null $final_glue = null): string
 	{
 		if ($final_glue === null) {
@@ -189,6 +175,20 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 	}
 
 	// -----------------
+
+	public function toArray(): array
+	{
+		if ($this->key_object_count === 0) {
+			return array_combine($this->keys, $this->values);
+		} else {
+			return $this->values;
+		}
+	}
+
+	public function toJson(): string
+	{
+		return json_encode_clean($this->toArray());
+	}
 
 	public function toMap(): Map
 	{
