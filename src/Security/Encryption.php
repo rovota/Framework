@@ -15,7 +15,6 @@ use Rovota\Framework\Support\Internal;
 
 final class Encryption
 {
-
 	protected static EncryptionAgent $agent;
 
 	// -----------------

@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Security;
 
-use Random\RandomException;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Security\Exceptions\EncryptionException;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
@@ -17,7 +16,6 @@ use Throwable;
 
 final class EncryptionAgent
 {
-
 	protected string $key;
 
 	protected string $cipher;
