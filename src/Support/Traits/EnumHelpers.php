@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Support\Traits;
 
-//use Rovota\Core\Support\Arr;
+use Rovota\Framework\Support\Arr;
 
 trait EnumHelpers
 {
@@ -16,14 +16,12 @@ trait EnumHelpers
 
 	public function isAny(array $items): bool
 	{
-		return false;
-//		return Arr::containsAny($items, [$this]);
+		return Arr::containsAny($items, [$this]);
 	}
 
 	public function isNone(array $items): bool
 	{
-		return false;
-//		return Arr::containsAny($items, [$this]) === false;
+		return Arr::containsAny($items, [$this]) === false;
 	}
 
 }
