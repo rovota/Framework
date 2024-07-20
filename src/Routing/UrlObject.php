@@ -49,6 +49,11 @@ final class UrlObject implements Stringable
 		return $this->build();
 	}
 
+	public function copy(): UrlObject
+	{
+		return clone $this;
+	}
+
 	// -----------------
 
 	public static function fromString(string $url): UrlObject
