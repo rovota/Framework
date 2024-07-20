@@ -106,6 +106,7 @@ trait UrlModifiers
 	{
 		if (empty($parameters)) {
 			$this->parameters = [];
+			return $this;
 		}
 
 		foreach ($parameters as $name => $value) {
