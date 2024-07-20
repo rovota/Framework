@@ -200,9 +200,9 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		return new Sequence($this->toArray());
 	}
 
-	public function toBucket(): Bucket
+	public function toBucket(): Basket
 	{
-		return new Bucket($this->toArray());
+		return new Basket($this->toArray());
 	}
 
 	// -----------------
