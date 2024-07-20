@@ -79,6 +79,11 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 
 	// -----------------
 
+	public function all(): array
+	{
+		return $this->toArray();
+	}
+
 	public function has(mixed $key): bool
 	{
 		foreach (is_array($key) ? $key : [$key] as $item) {
@@ -108,10 +113,7 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 
 	public function get(mixed $key, mixed $default = null): mixed
 	{
-		if (is_object($key)) {
-			$key = spl_object_hash($key);
-		}
-		return $this->items->get($key, ($default instanceof Closure ? $default() : $default));
+		return $this->offsetGet($key) ?? ($default instanceof Closure ? $default() : $default);
 	}
 
 	public function remove(mixed $key): static
