@@ -14,10 +14,12 @@ use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Math;
+use Rovota\Framework\Support\Traits\Conditionable;
 use Stringable;
 
 class Bucket extends SimpleBucket
 {
+	use Conditionable;
 
 	public function countBy(callable|null $callback = null): static
 	{

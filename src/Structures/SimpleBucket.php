@@ -17,14 +17,13 @@ use IteratorAggregate;
 use JsonSerializable;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
-use Rovota\Framework\Support\Traits\Conditionable;
 use Rovota\Framework\Support\Traits\Macroable;
 use Rovota\Framework\Support\Traits\TypeAccessors;
 use Traversable;
 
 class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, JsonSerializable
 {
-	use TypeAccessors, Conditionable, Macroable;
+	use TypeAccessors, Macroable;
 
 	protected Data $items;
 
