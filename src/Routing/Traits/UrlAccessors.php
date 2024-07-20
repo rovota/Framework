@@ -40,7 +40,7 @@ trait UrlAccessors
 
 	public function getPath(): string|null
 	{
-		return $this->port;
+		return $this->path;
 	}
 
 	public function getParameters(): array
