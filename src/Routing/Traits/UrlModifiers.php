@@ -74,14 +74,7 @@ trait UrlModifiers
 
 	public function setPort(int $port): UrlObject
 	{
-		// Set to null when redundant value is given.
-		if ($port === 80 || $port === 443) {
-			$this->port = null;
-			return $this;
-		}
-
 		$this->port = $port;
-
 		return $this;
 	}
 
