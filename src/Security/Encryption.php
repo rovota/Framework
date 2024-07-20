@@ -26,6 +26,7 @@ final class Encryption
 	// -----------------
 
 	/**
+	 * @internal
 	 * @throws IncorrectKeyException
 	 */
 	public static function initialize(): void
