@@ -9,6 +9,7 @@
 
 namespace Rovota\Framework\Routing\Traits;
 
+use Rovota\Framework\Http\Request;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Str;
@@ -31,9 +32,8 @@ trait UrlModifiers
 
 	public function setSubdomain(string $subdomain): UrlObject
 	{
-		// TODO: Apply a default domain value when it's not already set.
 		if ($this->domain === null) {
-//			$this->domain(RequestManager::getRequest()->targetHost());
+			$this->setDomain(Request::current()->targetHost());
 		}
 
 		$subdomain = trim($subdomain);
@@ -45,7 +45,7 @@ trait UrlModifiers
 		}
 
 		// Set to null when useless value is given.
-		if ($subdomain === 'www' || $subdomain === '.') {
+		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
 			$this->subdomain = null;
 			return $this;
 		}
@@ -59,9 +59,8 @@ trait UrlModifiers
 	{
 		$domain = trim($domain);
 
-		// TODO: Apply a default domain value when unusable value is given.
-		if (mb_strlen($domain) === 0) {
-//			$this->domain(RequestManager::getRequest()->targetHost());
+		if (mb_strlen($domain) === 0 || $domain === '-') {
+			$this->setDomain(Request::current()->targetHost());
 		}
 
 		if (Str::occurrences($domain, '.') > 1) {
@@ -105,6 +104,10 @@ trait UrlModifiers
 
 	public function setParameters(array $parameters): UrlObject
 	{
+		if (empty($parameters)) {
+			$this->parameters = [];
+		}
+
 		foreach ($parameters as $name => $value) {
 			$this->setParameter($name, $value);
 		}
