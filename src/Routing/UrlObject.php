@@ -99,7 +99,7 @@ final class UrlObject implements Stringable
 		$fragment = $this->getFragmentString();
 		$result = $this->path.$parameters.$fragment;
 
-		if (Str::startsWith($result, '?') === false) {
+		if (Str::startsWith($result, '?') === false && $this->path !== null) {
 			$result = Str::start($result, '/');
 		}
 
