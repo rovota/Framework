@@ -5,25 +5,23 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Structures;
+namespace Rovota\Framework\Http;
 
 use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use Countable;
 use Dflydev\DotAccessData\Data;
-use Dflydev\DotAccessData\DataInterface;
 use IteratorAggregate;
 use JsonSerializable;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
-use Rovota\Framework\Support\Traits\Macroable;
 use Rovota\Framework\Support\Traits\TypeAccessors;
 use Traversable;
 
-class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, JsonSerializable
+class RequestData implements ArrayAccess, IteratorAggregate, Countable, Arrayable, JsonSerializable
 {
-	use TypeAccessors, Macroable;
+	use TypeAccessors;
 
 	protected Data $items;
 
@@ -34,26 +32,12 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 		$this->items = new Data(convert_to_array($items));
 	}
 
-	public function import(mixed $data, bool $preserve = false): static
-	{
-		$mode = $preserve ? DataInterface::PRESERVE : DataInterface::MERGE;
-		$this->items->import(convert_to_array($data), $mode);
-		return $this;
-	}
-
 	// -----------------
 
-	public function keys(): Sequence
+	public function all(): array
 	{
-		return new Sequence(array_keys($this->toArray()));
+		return $this->toArray();
 	}
-
-	public function values(): Sequence
-	{
-		return new Sequence(array_values($this->toArray()));
-	}
-
-	// -----------------
 
 	public function flush(): static
 	{
@@ -123,12 +107,7 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 		return $this;
 	}
 
-	public function find(mixed $value): string|int|null
-	{
-		return Arr::search($this->toArray(), $value);
-	}
-
-	public function set(mixed $key, mixed $value = null): void
+	public function set(mixed $key, mixed $value = null): static
 	{
 		if (is_array($key)) {
 			foreach ($key as $offset => $item) {
@@ -137,36 +116,7 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 		} else {
 			$this->offsetSet($key, $value);
 		}
-	}
-
-	// -----------------
-
-	public function append(mixed $value): static
-	{
-		foreach (is_array($value) ? $value : [$value] as $item) {
-			$this->offsetSet(null, $item);
-		}
 		return $this;
-	}
-
-	public function prepend(mixed $value): static
-	{
-		$original = $this->toArray();
-		array_unshift($original, $value);
-		$this->items = new Data($original);
-		return $this;
-	}
-
-	// -----------------
-
-	public function first(callable|null $callback = null, mixed $default = null): mixed
-	{
-		return Arr::first($this->toArray(), $callback, $default);
-	}
-
-	public function last(callable|null $callback = null, mixed $default = null): mixed
-	{
-		return Arr::last($this->toArray(), $callback, $default);
 	}
 
 	// -----------------
@@ -201,20 +151,6 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 
 	// -----------------
 
-	public function increment(mixed $key, int $step = 1): static
-	{
-		$this->set($key, (int) $this->get($key, 0) + abs($step));
-		return $this;
-	}
-
-	public function decrement(mixed $key, int $step = 1): static
-	{
-		$this->set($key, (int) $this->get($key, 0) - abs($step));
-		return $this;
-	}
-
-	// -----------------
-
 	public function toArray(): array
 	{
 		return $this->items->export();
@@ -223,16 +159,6 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 	public function toJson(): string
 	{
 		return json_encode_clean($this->items->export());
-	}
-
-	public function toMap(): Map
-	{
-		return new Map($this->items->export());
-	}
-
-	public function toSequence(): Sequence
-	{
-		return new Sequence($this->items->export());
 	}
 
 	// -----------------
@@ -258,9 +184,6 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		if (is_object($offset)) {
-			$offset = spl_object_hash($offset);
-		}
 		return $this->items->has($offset);
 	}
 
@@ -269,9 +192,6 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 	 */
 	public function offsetGet(mixed $offset): mixed
 	{
-		if (is_object($offset)) {
-			$offset = spl_object_hash($offset);
-		}
 		return $this->items->get($offset);
 	}
 
@@ -280,16 +200,7 @@ class SimpleBucket implements ArrayAccess, IteratorAggregate, Countable, Arrayab
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if ($offset === null) {
-			$items = $this->toArray();
-			$items[] = $value;
-			$this->items = new Data($items);
-		} else {
-			if (is_object($offset)) {
-				$offset = spl_object_hash($offset);
-			}
-			$this->items->set($offset, $value);
-		}
+		$this->items->set($offset, $value);
 	}
 
 	/**
