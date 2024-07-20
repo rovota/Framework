@@ -12,6 +12,8 @@ use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
+use Rovota\Framework\Security\Encryption;
+use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 use Rovota\Framework\Support\Str;
 
 final class Application
@@ -48,6 +50,7 @@ final class Application
 
 	/**
 	 * @throws SystemRequirementException
+	 * @throws IncorrectKeyException
 	 */
 	public static function start(): void
 	{
@@ -58,6 +61,7 @@ final class Application
 		self::environmentCheck();
 
 		// Foundation
+		Encryption::initialize();
 
 		// Additional
 		TextConverter::initialize();
