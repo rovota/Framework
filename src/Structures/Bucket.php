@@ -196,7 +196,7 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 	{
 		$bucket = new static();
 		foreach ($keys as $key) {
-			$bucket->set($key, $this->items->get($key));
+			$bucket->set($key, $this->offsetGet($key));
 		}
 		return $bucket;
 	}
