@@ -6,6 +6,7 @@
  */
 
 use Dflydev\DotAccessData\Data;
+use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Structures\Sequence;
@@ -96,6 +97,13 @@ if (!function_exists('as_sequence')) {
 	function as_sequence(mixed $items = []): Sequence
 	{
 		return new Sequence($items);
+	}
+}
+
+if (!function_exists('as_basket')) {
+	function as_basket(mixed $items = []): Basket
+	{
+		return new Basket($items);
 	}
 }
 
