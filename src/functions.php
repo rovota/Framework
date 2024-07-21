@@ -82,34 +82,3 @@ if (!function_exists('convert_to_array')) {
 		};
 	}
 }
-
-// -----------------
-// Data Structures
-
-if (!function_exists('as_map')) {
-	function as_map(mixed $items = []): Map
-	{
-		return new Map($items);
-	}
-}
-
-if (!function_exists('as_sequence')) {
-	function as_sequence(mixed $items = []): Sequence
-	{
-		return new Sequence($items);
-	}
-}
-
-if (!function_exists('as_basket')) {
-	function as_basket(mixed $items = []): Basket
-	{
-		return new Basket($items);
-	}
-}
-
-if (!function_exists('as_bucket')) {
-	function as_bucket(mixed $items = []): Bucket
-	{
-		return new Bucket($items);
-	}
-}
