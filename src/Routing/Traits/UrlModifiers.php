@@ -65,9 +65,10 @@ trait UrlModifiers
 
 		if (Str::occurrences($domain, '.') > 1) {
 			$this->subdomain = Str::before($domain, '.');
+			$domain = Str::after($domain, '.');
 		}
 
-		$this->domain = Str::after($domain, '.');
+		$this->domain = trim($domain);
 
 		return $this;
 	}
