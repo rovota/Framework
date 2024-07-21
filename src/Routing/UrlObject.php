@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Http\Request;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\Traits\UrlAccessors;
 use Rovota\Framework\Routing\Traits\UrlModifiers;
@@ -132,7 +133,7 @@ final class UrlObject implements Stringable
 		$scheme = $this->scheme->value.'://';
 
 		$subdomain = $this->subdomain !== null ? $this->subdomain.'.' : '';
-		$domain = $this->domain !== null ? $this->domain : ''; // TODO: Grab current host from Request object.
+		$domain = $this->domain !== null ? $this->domain : Request::current()->domain();
 
 		if ($this->port !== 80 && $this->port !== 443) {
 			$port = $this->port !== null ? ':'.$this->port : $this->port;

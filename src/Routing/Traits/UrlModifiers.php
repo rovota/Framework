@@ -11,13 +11,12 @@ namespace Rovota\Framework\Routing\Traits;
 
 use Rovota\Framework\Http\Request;
 use Rovota\Framework\Routing\Enums\Scheme;
-use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Str;
 
 trait UrlModifiers
 {
 
-	public function setScheme(Scheme|string $scheme): UrlObject
+	public function setScheme(Scheme|string $scheme): static
 	{
 		if (is_string($scheme)) {
 			$scheme = Scheme::tryFrom($scheme) ?? Scheme::Https;
@@ -30,7 +29,7 @@ trait UrlModifiers
 	
 	// -----------------
 
-	public function setSubdomain(string $subdomain): UrlObject
+	public function setSubdomain(string $subdomain): static
 	{
 		if ($this->domain === null) {
 			$this->setDomain(Request::current()->targetHost());
@@ -55,7 +54,7 @@ trait UrlModifiers
 		return $this;
 	}
 
-	public function setDomain(string $domain): UrlObject
+	public function setDomain(string $domain): static
 	{
 		$domain = trim($domain);
 
@@ -73,7 +72,7 @@ trait UrlModifiers
 		return $this;
 	}
 
-	public function setPort(int $port): UrlObject
+	public function setPort(int $port): static
 	{
 		$this->port = $port;
 		return $this;
@@ -81,7 +80,7 @@ trait UrlModifiers
 
 	// -----------------
 
-	public function setPath(string $path): UrlObject
+	public function setPath(string $path): static
 	{
 		$path = trim($path, ' /');
 
@@ -96,7 +95,7 @@ trait UrlModifiers
 		return $this;
 	}
 
-	public function setParameters(array $parameters): UrlObject
+	public function setParameters(array $parameters): static
 	{
 		if (empty($parameters)) {
 			$this->parameters = [];
@@ -110,7 +109,7 @@ trait UrlModifiers
 		return $this;
 	}
 
-	public function setParameter(string $name, mixed $value): UrlObject
+	public function setParameter(string $name, mixed $value): static
 	{
 		$name = strtolower(trim($name));
 
@@ -124,7 +123,7 @@ trait UrlModifiers
 		return $this;
 	}
 
-	public function setFragment(string $fragment): UrlObject
+	public function setFragment(string $fragment): static
 	{
 		$fragment = trim($fragment);
 
