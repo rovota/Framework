@@ -36,6 +36,13 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	// -----------------
 
+	public static function from(mixed $items = []): static
+	{
+		return new static($items);
+	}
+
+	// -----------------
+
 	public function clear(): static
 	{
 		$this->values = [];
