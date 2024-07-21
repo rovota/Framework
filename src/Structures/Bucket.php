@@ -274,7 +274,12 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 		if (is_object($offset)) {
 			$offset = spl_object_hash($offset);
 		}
-		return $this->items->get($offset);
+
+		if ($this->offsetExists($offset)) {
+			return $this->items->get($offset);
+		}
+
+		return null;
 	}
 
 	/**
