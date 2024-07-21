@@ -6,10 +6,6 @@
  */
 
 use Dflydev\DotAccessData\Data;
-use Rovota\Framework\Structures\Basket;
-use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
