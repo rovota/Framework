@@ -44,12 +44,12 @@ final class Text implements Stringable, JsonSerializable
 		return $this->string;
 	}
 
-	public function toInteger(): string
+	public function toInteger(): int
 	{
 		return intval($this->string);
 	}
 
-	public function toFloat(): string
+	public function toFloat(): float
 	{
 		return floatval($this->string);
 	}
@@ -92,7 +92,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Transforms the given string into uppercase.
 	 */
-	public function upper(): string
+	public function upper(): Text
 	{
 		$this->string = Str::upper($this->string);
 		return $this;
@@ -101,7 +101,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Transforms the given string into lowercase.
 	 */
-	public function lower(): string
+	public function lower(): Text
 	{
 		$this->string = Str::lower($this->string);
 		return $this;
@@ -110,7 +110,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Transforms the given string into title case.
 	 */
-	public function title(): string
+	public function title(): Text
 	{
 		$this->string = Str::title($this->string);
 		return $this;
@@ -121,7 +121,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Replaces non-ASCII characters with their ASCII equivalent.
 	 */
-	public function simplify(): string
+	public function simplify(): Text
 	{
 		$this->string = Str::simplify($this->string);
 		return $this;
@@ -130,7 +130,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Adds a separator (underscore by default), while transforming the string into lowercase.
 	 */
-	public function snake(string $separator = '_'): string
+	public function snake(string $separator = '_'): Text
 	{
 		$this->string = Str::snake($this->string, $separator);
 		return $this;
@@ -139,7 +139,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Adds a dash as separator, while transforming the string into lowercase.
 	 */
-	public function kebab(): string
+	public function kebab(): Text
 	{
 		$this->string = Str::kebab($this->string);
 		return $this;
@@ -148,7 +148,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Removes spaces, underscores and dashes, while transforming the first letter of each word into uppercase.
 	 */
-	public function pascal(): string
+	public function pascal(): Text
 	{
 		$this->string = Str::pascal($this->string);
 		return $this;
@@ -157,7 +157,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Transforms the given string into camel case.
 	 */
-	public function camel(): string
+	public function camel(): Text
 	{
 		$this->string = Str::camel($this->string);
 		return $this;
@@ -166,7 +166,7 @@ final class Text implements Stringable, JsonSerializable
 	/**
 	 * Simplifies the given string and removes special characters, making the string suitable for URL usage.
 	 */
-	public function slug(string $separator = '-'): string
+	public function slug(string $separator = '-'): Text
 	{
 		$this->string = Str::slug($this->string, $separator);
 		return $this;
@@ -174,13 +174,13 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function plural(string $string, mixed $count): string
+	public function plural(string $string, mixed $count): Text
 	{
 		$this->string = Str::plural($string, $count);
 		return $this;
 	}
 
-	public function singular(string $string): string
+	public function singular(string $string): Text
 	{
 		$this->string = Str::singular($string);
 		return $this;
@@ -188,55 +188,55 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function prepend(string $addition): string
+	public function prepend(string $addition): Text
 	{
 		$this->string = Str::prepend($this->string, $addition);
 		return $this;
 	}
 
-	public function append(string $addition): string
+	public function append(string $addition): Text
 	{
 		$this->string = Str::append($this->string, $addition);
 		return $this;
 	}
 
-	public function wrap(string $start, string|null $end = null): string
+	public function wrap(string $start, string|null $end = null): Text
 	{
 		$this->string = Str::wrap($this->string, $start, $end);
 		return $this;
 	}
 
-	public function start(string $value): string
+	public function start(string $value): Text
 	{
 		$this->string = Str::start($this->string, $value);
 		return $this;
 	}
 
-	public function finish(string $value): string
+	public function finish(string $value): Text
 	{
 		$this->string = Str::finish($this->string, $value);
 		return $this;
 	}
 
-	public function startAndFinish(string $value): string
+	public function startAndFinish(string $value): Text
 	{
 		$this->string = Str::startAndFinish($this->string, $value);
 		return $this;
 	}
 
-	public function padLeft(int $length, string $pad_with = ' '): string
+	public function padLeft(int $length, string $pad_with = ' '): Text
 	{
 		$this->string = Str::padLeft($this->string, $length, $pad_with);
 		return $this;
 	}
 
-	public function padRight(int $length, string $pad_with = ' '): string
+	public function padRight(int $length, string $pad_with = ' '): Text
 	{
 		$this->string = Str::padRight($this->string, $length, $pad_with);
 		return $this;
 	}
 
-	public function padBoth(int $length, string $pad_with = ' '): string
+	public function padBoth(int $length, string $pad_with = ' '): Text
 	{
 		$this->string = Str::padBoth($this->string, $length, $pad_with);
 		return $this;
@@ -244,31 +244,31 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function shuffle(): string
+	public function shuffle(): Text
 	{
 		$this->string = Str::shuffle($this->string);
 		return $this;
 	}
 
-	public function reverse(): string
+	public function reverse(): Text
 	{
 		$this->string = Str::reverse($this->string);
 		return $this;
 	}
 
-	public function scramble(): string
+	public function scramble(): Text
 	{
 		$this->string = Str::scramble($this->string);
 		return $this;
 	}
 
-	public function mask(string $replacement, int|null $length = null, int $start = 0): string
+	public function mask(string $replacement, int|null $length = null, int $start = 0): Text
 	{
 		$this->string = Str::mask($this->string, $replacement, $length, $start);
 		return $this;
 	}
 
-	public function maskEmail(string $replacement, int $preserve = 3): string
+	public function maskEmail(string $replacement, int $preserve = 3): Text
 	{
 		$this->string = Str::maskEmail($this->string, $replacement, $preserve);
 		return $this;
@@ -287,31 +287,31 @@ final class Text implements Stringable, JsonSerializable
 		return Str::length($this->string);
 	}
 
-	public function limit(int $length, int $start = 0, string $marker = ''): string
+	public function limit(int $length, int $start = 0, string $marker = ''): Text
 	{
 		$this->string = Str::limit($this->string, $length, $start, $marker);
 		return $this;
 	}
 
-	public function trim(string|null $characters = null): string
+	public function trim(string|null $characters = null): Text
 	{
 		$this->string = Str::trim($this->string, $characters);
 		return $this;
 	}
 
-	public function trimEnd(string|null $characters = null): string
+	public function trimEnd(string|null $characters = null): Text
 	{
 		$this->string = Str::trimEnd($this->string, $characters);
 		return $this;
 	}
 
-	public function trimStart(string|null $characters = null): string
+	public function trimStart(string|null $characters = null): Text
 	{
 		$this->string = Str::trimStart($this->string, $characters);
 		return $this;
 	}
 
-	public function remove(string|array $values, bool $ignore_case = false): string
+	public function remove(string|array $values, bool $ignore_case = false): Text
 	{
 		$this->string = Str::remove($this->string, $values, $ignore_case);
 		return $this;
@@ -319,31 +319,31 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function before(string $target): string
+	public function before(string $target): Text
 	{
 		$this->string = Str::before($this->string, $target);
 		return $this;
 	}
 
-	public function beforeLast(string $target): string
+	public function beforeLast(string $target): Text
 	{
 		$this->string = Str::beforeLast($this->string, $target);
 		return $this;
 	}
 
-	public function after(string $target): string
+	public function after(string $target): Text
 	{
 		$this->string = Str::after($this->string, $target);
 		return $this;
 	}
 
-	public function afterLast(string $target): string
+	public function afterLast(string $target): Text
 	{
 		$this->string = Str::afterLast($this->string, $target);
 		return $this;
 	}
 
-	public function between(string $start, string $end): string
+	public function between(string $start, string $end): Text
 	{
 		$this->string = Str::between($this->string, $start, $end);
 		return $this;
@@ -398,13 +398,13 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function increment(string $separator = '-', int $step = 1): string
+	public function increment(string $separator = '-', int $step = 1): Text
 	{
 		$this->string = Str::increment($this->string, $separator, $step);
 		return $this;
 	}
 
-	public function decrement(string $separator = '-', int $step = 1): string
+	public function decrement(string $separator = '-', int $step = 1): Text
 	{
 		$this->string = Str::decrement($this->string, $separator, $step);
 		return $this;
@@ -412,19 +412,19 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function insert(int $interval, string $character): string
+	public function insert(int $interval, string $character): Text
 	{
 		$this->string = Str::insert($this->string, $interval, $character);
 		return $this;
 	}
 
-	public function merge(string|array $values): string
+	public function merge(string|array $values): Text
 	{
 		$this->string = Str::merge($this->string, $values);
 		return $this;
 	}
 
-	public function swap(array $map): string
+	public function swap(array $map): Text
 	{
 		$this->string = Str::swap($this->string, $map);
 		return $this;
@@ -432,13 +432,13 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function take(int $amount): string
+	public function take(int $amount): Text
 	{
 		$this->string = Str::take($this->string, $amount);
 		return $this;
 	}
 
-	public function takeLast(int $amount): string
+	public function takeLast(int $amount): Text
 	{
 		$this->string = Str::takeLast($this->string, $amount);
 		return $this;
@@ -446,25 +446,25 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function replace(string|array $targets, string|array $values): string
+	public function replace(string|array $targets, string|array $values): Text
 	{
 		$this->string = Str::replace($this->string, $targets, $values);
 		return $this;
 	}
 
-	public function replaceSequential(string $target, array $values): string
+	public function replaceSequential(string $target, array $values): Text
 	{
 		$this->string = Str::replaceSequential($this->string, $target, $values);
 		return $this;
 	}
 
-	public function replaceFirst(string $target, string $value): string
+	public function replaceFirst(string $target, string $value): Text
 	{
 		$this->string = Str::replaceFirst($this->string, $target, $value);
 		return $this;
 	}
 
-	public function replaceLast(string $target, string $value): string
+	public function replaceLast(string $target, string $value): Text
 	{
 		$this->string = Str::replaceLast($this->string, $target, $value);
 		return $this;
@@ -500,7 +500,7 @@ final class Text implements Stringable, JsonSerializable
 		return $this;
 	}
 
-	public function acronym(string $delimiter = '.'): string
+	public function acronym(string $delimiter = '.'): Text
 	{
 		$this->string = Str::acronym($this->string, $delimiter);
 		return $this;
