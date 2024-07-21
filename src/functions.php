@@ -6,6 +6,8 @@
  */
 
 use Dflydev\DotAccessData\Data;
+use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
@@ -76,5 +78,32 @@ if (!function_exists('convert_to_array')) {
 			$value instanceof Data => $value->export(),
 			default => [$value],
 		};
+	}
+}
+
+// -----------------
+// Misc
+
+if (!function_exists('quit')) {
+	function quit(StatusCode $code = StatusCode::InternalServerError): never
+	{
+		Application::quit($code);
+	}
+}
+
+if (!function_exists('dump')) {
+	function dump(mixed $data, bool $exit = false): void
+	{
+		print_r($data);
+		if ($exit) {
+			quit();
+		};
+	}
+}
+
+if (!function_exists('deprecated')) {
+	function deprecated(string $message): void
+	{
+		trigger_error($message, E_USER_DEPRECATED);
 	}
 }
