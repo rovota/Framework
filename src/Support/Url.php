@@ -18,23 +18,28 @@ final class Url
 
 	// -----------------
 
-	public static function local(string $location, array $parameters = []): UrlObject
+	public static function local(string $path, array $parameters = []): UrlObject
 	{
 		return new UrlObject([
-			'path' => $location,
+			'path' => $path,
 			'parameters' => $parameters,
 		]);
 	}
 
-	// -----------------
+	public static function foreign(string $location, array $parameters = []): UrlObject
+	{
+		return UrlObject::fromString($location)->setParameters($parameters);
+	}
 
 	// -----------------
 
-	// -----------------
+	// TODO: route()
 
-	// -----------------
+	// TODO: previous()
 
-	// -----------------
+	// TODO: next()
+
+	// TODO: intended()
 
 	// -----------------
 
