@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Request;
 use Rovota\Framework\Kernel\Enums\Environment;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Security\Encryption;
@@ -62,6 +63,7 @@ final class Application
 
 		// Foundation
 		Encryption::initialize();
+		Request::initialize();
 
 		// Additional
 		TextConverter::initialize();

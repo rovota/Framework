@@ -7,6 +7,8 @@
 
 use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestObject;
 use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Str;
@@ -30,6 +32,14 @@ if (!function_exists('e')) {
 }
 
 // -----------------
+// Components
+
+if (!function_exists('request')) {
+	function request(): RequestObject
+	{
+		return Request::current();
+	}
+}
 
 // -----------------
 
