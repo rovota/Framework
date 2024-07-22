@@ -9,7 +9,6 @@ namespace Rovota\Framework\Support;
 
 use JsonSerializable;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Support\Config\QrCodeConfig;
 use Stringable;
 
 final class QrCode implements Stringable, JsonSerializable

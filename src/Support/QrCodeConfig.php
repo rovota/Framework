@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support\Config;
+namespace Rovota\Framework\Support;
 
 use Rovota\Framework\Structures\Config;
 
