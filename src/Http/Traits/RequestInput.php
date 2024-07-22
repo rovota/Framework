@@ -11,6 +11,7 @@ use BackedEnum;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Http\RequestData;
+use Rovota\Framework\Support\Text;
 
 trait RequestInput
 {
@@ -95,6 +96,13 @@ trait RequestInput
 	public function string(string $key, string $default = ''): string
 	{
 		return $this->query->string($key, $this->post->string($key, $default));
+	}
+
+	// -----------------
+
+	public function text(string $key, Text|string $default = new Text()): Text
+	{
+		return $this->query->text($key, $this->post->text($key, $default));
 	}
 
 	// -----------------
