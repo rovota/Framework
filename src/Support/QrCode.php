@@ -9,28 +9,21 @@ namespace Rovota\Framework\Support;
 
 use JsonSerializable;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Support\Config\QrCodeConfig;
 use Stringable;
 
 final class QrCode implements Stringable, JsonSerializable
 {
 
-	protected string $data;
-
-	protected int $height = 200;
-	protected int $width = 200;
-	protected int $padding = 4;
-
-	protected array $colors = [
-		'background' => 'FFFFFF',
-		'foreground' => '000000',
-	];
-	protected string $format = 'svg';
+	protected QrCodeConfig $config;
 
 	// -----------------
 
 	public function __construct(string $data)
 	{
-		$this->data = trim($data);
+		$this->config = new QrCodeConfig([
+			'data' => trim($data),
+		]);
 	}
 
 	public function __toString(): string
@@ -40,7 +33,7 @@ final class QrCode implements Stringable, JsonSerializable
 
 	public function jsonSerialize(): string
 	{
-		return $this->url();
+		return $this->__toString();
 	}
 
 	// -----------------
@@ -52,25 +45,32 @@ final class QrCode implements Stringable, JsonSerializable
 
 	// -----------------
 
+	public function config(): QrCodeConfig
+	{
+		return $this->config;
+	}
+
+	// -----------------
+
 	public function size(int $height, int $width): QrCode
 	{
-		$this->height = $height;
-		$this->width = $width;
+		$this->config->height = $height;
+		$this->config->width = $width;
 		return $this;
 	}
 
-	public function padding(int $padding): QrCode
+	public function margin(int $margin): QrCode
 	{
-		$this->padding = limit(abs($padding), 0, 100);
+		$this->config->margin = limit(abs($margin), 0, 100);
 		return $this;
 	}
 
 	public function colors(string $foreground, string|null $background = null): QrCode
 	{
 		if ($background !== null) {
-			$this->colors['background'] = trim($background, '#');
+			$this->config->background = trim($background, '#');
 		}
-		$this->colors['foreground'] = trim($foreground, '#');
+		$this->config->foreground = trim($foreground, '#');
 		return $this;
 	}
 
@@ -79,12 +79,12 @@ final class QrCode implements Stringable, JsonSerializable
 	public function url(): UrlObject
 	{
 		return Url::foreign('api.qrserver.com/v1/create-qr-code')->setParameters([
-			'size' => $this->height.'x'.$this->width,
-			'bgcolor' => $this->colors['background'],
-			'color' => $this->colors['foreground'],
-			'qzone' => $this->padding,
-			'format' => $this->format,
-			'data' => $this->data,
+			'size' => $this->config->size,
+			'bgcolor' => $this->config->background,
+			'color' => $this->config->foreground,
+			'qzone' => $this->config->margin,
+			'format' => $this->config->format,
+			'data' => $this->config->data,
 		]);
 	}
 
