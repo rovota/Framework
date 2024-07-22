@@ -35,7 +35,7 @@ final class Version implements JsonSerializable
 
 	public function jsonSerialize(): string
 	{
-		return $this->full();
+		return $this->__toString();
 	}
 
 	// -----------------
