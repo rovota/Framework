@@ -117,3 +117,10 @@ if (!function_exists('deprecated')) {
 		trigger_error($message, E_USER_DEPRECATED);
 	}
 }
+
+if (!function_exists('limit')) {
+	function limit(int|float $value, int|float $minimum, int|float $maximum): int|float
+	{
+		return min(max($minimum, $value), $maximum);
+	}
+}
