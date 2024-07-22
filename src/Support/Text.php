@@ -22,7 +22,7 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function __construct(Stringable|string $string)
+	public function __construct(Stringable|string $string = '')
 	{
 		$this->string = $string;
 	}

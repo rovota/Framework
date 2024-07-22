@@ -38,7 +38,7 @@ final class UrlObject implements Stringable
 		$data = convert_to_array($data);
 
 		foreach ($data as $key => $value) {
-			$method = 'set'.ucfirst($key);
+			$method = 'set'.Str::pascal($key);
 			if (method_exists($this, $method)) {
 				$this->$method($value);
 			}

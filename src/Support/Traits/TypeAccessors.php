@@ -63,7 +63,7 @@ trait TypeAccessors
 
 	// -----------------
 
-	public function text(string $key, Text|string $default = ''): Text
+	public function text(string $key, Text $default = new Text()): Text
 	{
 		return new Text($this->get($key, $default));
 	}
