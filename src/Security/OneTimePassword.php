@@ -9,7 +9,11 @@ namespace Rovota\Framework\Security;
 
 use OTPHP\TOTP;
 use OTPHP\TOTPInterface;
+use ParagonIE\ConstantTime\Base32;
+use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Clock;
+use Rovota\Framework\Support\QrCode;
+use Rovota\Framework\Support\Url;
 
 final class OneTimePassword
 {
@@ -92,14 +96,14 @@ final class OneTimePassword
 
 	// -----------------
 
-	public function getLabel(): string|null
+	public function getLabel(): string
 	{
-		return $this->agent->getLabel();
+		return $this->agent->getLabel() ?? 'Account';
 	}
 
-	public function getIssuer(): string|null
+	public function getIssuer(): string
 	{
-		return $this->agent->getIssuer();
+		return $this->agent->getIssuer() ?? 'Unknown Issuer'; // TODO: Use site name as default.
 	}
 
 	public function getSecret(): string
@@ -117,14 +121,11 @@ final class OneTimePassword
 		return $this->agent->getPeriod();
 	}
 
-	public function getImageUrl(): string
-	{
-		return $this->agent->getPeriod();
-	}
+	// -----------------
 
-	public function getAuthUrl(): string
+	public function getQrCode(): QrCode
 	{
-		return $this->agent->getPeriod();
+		return QrCode::from($this->agent()->getProvisioningUri());
 	}
 
 }
