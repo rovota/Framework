@@ -30,6 +30,8 @@ final class QrCode implements Stringable, JsonSerializable
 		return $this->url();
 	}
 
+	// -----------------
+
 	public function jsonSerialize(): string
 	{
 		return $this->__toString();
@@ -51,6 +53,14 @@ final class QrCode implements Stringable, JsonSerializable
 
 	// -----------------
 
+	public function margin(int $margin): QrCode
+	{
+		$this->config->margin = limit(abs($margin), 0, 100);
+		return $this;
+	}
+
+	// -----------------
+
 	public function size(int $height, int $width): QrCode
 	{
 		$this->config->height = $height;
@@ -58,18 +68,17 @@ final class QrCode implements Stringable, JsonSerializable
 		return $this;
 	}
 
-	public function margin(int $margin): QrCode
+	// -----------------
+
+	public function background(string $color): QrCode
 	{
-		$this->config->margin = limit(abs($margin), 0, 100);
+		$this->config->background = trim($color, '#');
 		return $this;
 	}
 
-	public function colors(string $foreground, string|null $background = null): QrCode
+	public function foreground(string $color): QrCode
 	{
-		if ($background !== null) {
-			$this->config->background = trim($background, '#');
-		}
-		$this->config->foreground = trim($foreground, '#');
+		$this->config->foreground = trim($color, '#');
 		return $this;
 	}
 

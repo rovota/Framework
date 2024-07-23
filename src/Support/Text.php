@@ -32,6 +32,8 @@ final class Text implements Stringable, JsonSerializable
 		return $this->string;
 	}
 
+	// -----------------
+
 	public function jsonSerialize(): string
 	{
 		return $this->__toString();
