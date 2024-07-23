@@ -61,12 +61,12 @@ class QrCodeConfig extends Config
 
 	protected function getBackground(): string
 	{
-		return $this->text('background', 'FFFFFF')->remove('#');
+		return $this->text('background', new Text('FFFFFF'))->remove('#');
 	}
 
 	protected function getForeground(): string
 	{
-		return $this->text('foreground', '000000')->remove('#');
+		return $this->text('foreground', new Text('000000'))->remove('#');
 	}
 
 }
