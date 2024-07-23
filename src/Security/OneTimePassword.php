@@ -51,7 +51,7 @@ final class OneTimePassword
 
 	public function verify(string $input, int|null $timestamp = null, int|null $leeway = null): bool
 	{
-		$leeway = $leeway ?? round($this->getPeriod() / 4);
+		$leeway = $leeway ?? round($this->agent->getPeriod() / 4);
 		$result = $this->agent->verify($input, $timestamp, $leeway);
 
 		// TODO: Cache the result, so that successfully validated OTPs cannot be used again.
@@ -73,19 +73,19 @@ final class OneTimePassword
 
 	// -----------------
 
-	public function setLabel(string $label): self
+	public function label(string $label): self
 	{
 		$this->agent->setLabel(trim($label));
 		return $this;
 	}
 
-	public function setIssuer(string $issuer): self
+	public function issuer(string $issuer): self
 	{
 		$this->agent->setIssuer(trim($issuer));
 		return $this;
 	}
 
-	public function setParameter(string $name, string $value): self
+	public function parameter(string $name, string $value): self
 	{
 		$this->agent->setParameter(trim($name), trim($value));
 		return $this;
@@ -93,34 +93,14 @@ final class OneTimePassword
 
 	// -----------------
 
-	public function getLabel(): string
-	{
-		return $this->agent->getLabel() ?? 'Account';
-	}
-
-	public function getIssuer(): string
-	{
-		return $this->agent->getIssuer() ?? 'Unknown Issuer'; // TODO: Use site name as default.
-	}
-
-	public function getSecret(): string
+	public function secret(): string
 	{
 		return $this->agent->getSecret();
 	}
 
-	public function getDigits(): int
-	{
-		return $this->agent->getDigits();
-	}
-
-	public function getPeriod(): int
-	{
-		return $this->agent->getPeriod();
-	}
-
 	// -----------------
 
-	public function getQrCode(): QrCode
+	public function image(): QrCode
 	{
 		return QrCode::from($this->agent()->getProvisioningUri());
 	}
