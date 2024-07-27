@@ -43,7 +43,12 @@ trait TypeAccessors
 	public function enum(string $key, BackedEnum|string $class, BackedEnum|null $default = null): BackedEnum|null
 	{
 		$value = $this->get($key);
-		return ($value !== null) ? $class::TryFrom($value) : $default;
+
+		if ($value !== null) {
+			return ($value instanceof BackedEnum === false) ? $class::TryFrom($value) : $value;
+		}
+
+		return $default;
 	}
 
 	public function float(string $key, float $default = 0.00): float|false
