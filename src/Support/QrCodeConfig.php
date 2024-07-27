@@ -24,13 +24,13 @@ class QrCodeConfig extends Config
 
 	protected function getData(): string
 	{
-		return $this->get('data', '-');
+		return $this->string('data', '-');
 	}
 
 	protected function getFormat(): string
 	{
 		// PNG, GIF, JPEG, SVG, EPS
-		return $this->get('format', 'svg');
+		return $this->string('format', 'svg');
 	}
 
 	// -----------------

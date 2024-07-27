@@ -7,38 +7,28 @@
 
 namespace Rovota\Framework\Routing;
 
-use Rovota\Framework\Http\Request;
-use Rovota\Framework\Routing\Enums\Scheme;
-use Rovota\Framework\Routing\Traits\UrlAccessors;
+use JsonSerializable;
 use Rovota\Framework\Routing\Traits\UrlModifiers;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
 use Stringable;
 
-final class UrlObject implements Stringable
+final class UrlObject implements Stringable, JsonSerializable
 {
-	use UrlAccessors, UrlModifiers;
+	use UrlModifiers;
 
 	// -----------------
 
-	protected Scheme $scheme = Scheme::Https;
-
-	protected string|null $subdomain = null;
-	protected string|null $domain = null;
-	protected int|null $port = null;
-
-	protected string|null $path = null;
-	protected array $parameters = [];
-	protected string|null $fragment = null;
+	protected UrlObjectConfig $config;
 
 	// -----------------
 
 	public function __construct(mixed $data = [])
 	{
-		$data = convert_to_array($data);
+		$this->config = new UrlObjectConfig();
 
-		foreach ($data as $key => $value) {
-			$method = 'set'.Str::pascal($key);
+		foreach (convert_to_array($data) as $key => $value) {
+			$method = Str::camel($key);
 			if (method_exists($this, $method)) {
 				$this->$method($value);
 			}
@@ -49,6 +39,22 @@ final class UrlObject implements Stringable
 	{
 		return $this->build();
 	}
+
+	// -----------------
+
+	public function jsonSerialize(): string
+	{
+		return $this->__toString();
+	}
+
+	// -----------------
+
+	public function config(): UrlObjectConfig
+	{
+		return $this->config;
+	}
+
+	// -----------------
 
 	public function copy(): UrlObject
 	{
@@ -63,36 +69,36 @@ final class UrlObject implements Stringable
 
 		// Extract scheme
 		if (Str::contains($url, '://')) {
-			$object->setScheme(Str::before($url, '://'));
+			$object->scheme(Str::before($url, '://'));
 			$url = Str::after($url, '://');
 		}
 
 		// Extract fragment
 		if (Str::contains($url, '#')) {
-			$object->setFragment(Str::afterLast($url, '#'));
+			$object->fragment(Str::afterLast($url, '#'));
 			$url = Str::beforeLast($url, '#');
 		}
 
 		// Extract query parameters
 		if (Str::contains($url, '?')) {
 			$parameters = Str::after($url, '?');
-			$object->setParameters(Url::queryToArray($parameters));
+			$object->parameters(Url::queryToArray($parameters));
 			$url = Str::beforeLast($url, '?');
 		}
 
 		// Extract path
 		if (Str::contains($url, '/')) {
-			$object->setPath(Str::after($url, '/'));
+			$object->path(Str::after($url, '/'));
 			$url = Str::before($url, '/');
 		}
 
 		// Extract port number
 		if (Str::contains($url, ':')) {
-			$object->setPort((int)Str::after($url, ':'));
+			$object->port((int) Str::after($url, ':'));
 			$url = Str::before($url, ':');
 		}
 
-		$object->setDomain($url);
+		$object->domain($url);
 
 		return $object;
 	}
@@ -101,47 +107,56 @@ final class UrlObject implements Stringable
 
 	public function build(bool $relative = false): string
 	{
+		$path = $this->config->path;
 		$parameters = $this->getParameterString();
 		$fragment = $this->getFragmentString();
-		$result = $this->path.$parameters.$fragment;
-
-		if (Str::startsWith($result, '?') === false && $this->path !== null) {
-			$result = Str::start($result, '/');
-		}
 
 		if ($relative === true) {
-			return $result;
+			return $path.$parameters.$fragment;
 		}
 
-		return $this->getHostString().$result;
+		if (Str::endsWith($path, '/')) {
+			$path = Str::trimEnd($path, '/');
+		}
+
+		return $this->getHostString().$path.$parameters.$fragment;
 	}
 
 	// -----------------
 
-	protected function getParameterString(): string
+	protected function getParameterString(): string|null
 	{
-		return empty($this->parameters) ? '' : '?'.Url::arrayToQuery($this->parameters);
+		if (count($this->config->parameters) === 0) {
+			return null;
+		}
+		return '?'.Url::arrayToQuery($this->config->parameters);
 	}
 
-	protected function getFragmentString(): string
+	protected function getFragmentString(): string|null
 	{
-		return $this->fragment === null ? '' : '#'.$this->fragment;
+		if ($this->config->fragment === null) {
+			return null;
+		}
+		return '#'.$this->config->fragment;
 	}
 
 	protected function getHostString(): string
 	{
-		$scheme = $this->scheme->value.'://';
+		$scheme = $this->config->scheme->value;
 
-		$subdomain = $this->subdomain !== null ? $this->subdomain.'.' : '';
-		$domain = $this->domain !== null ? $this->domain : Request::current()->domain();
-
-		if ($this->port !== 80 && $this->port !== 443) {
-			$port = $this->port !== null ? ':'.$this->port : $this->port;
+		if ($this->config->has('subdomain')) {
+			$domain = $this->config->subdomain.'.'.$this->config->domain;
 		} else {
-			$port = null;
+			$domain = $this->config->domain;
 		}
 
-		return $scheme.$subdomain.$domain.$port;
+		$result = sprintf('%s://%s', $scheme, $domain);
+
+		if ($this->config->port !== 80 && $this->config->port !== 443) {
+			$result .= ':'.$this->config->port;
+		}
+
+		return $result;
 	}
 
 }

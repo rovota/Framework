@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Support;
 
+use Rovota\Framework\Http\Request;
 use Rovota\Framework\Routing\UrlObject;
 
 final class Url
@@ -14,6 +15,13 @@ final class Url
 
 	protected function __construct()
 	{
+	}
+
+	// -----------------
+
+	public function current(): UrlObject
+	{
+		return Request::current()->url();
 	}
 
 	// -----------------
@@ -28,7 +36,7 @@ final class Url
 
 	public static function foreign(string $location, array $parameters = []): UrlObject
 	{
-		return UrlObject::fromString($location)->setParameters($parameters);
+		return UrlObject::fromString($location)->parameters($parameters);
 	}
 
 	// -----------------

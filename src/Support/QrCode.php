@@ -27,7 +27,7 @@ final class QrCode implements Stringable, JsonSerializable
 
 	public function __toString(): string
 	{
-		return $this->url();
+		return (string) $this->url();
 	}
 
 	// -----------------
@@ -86,7 +86,7 @@ final class QrCode implements Stringable, JsonSerializable
 
 	public function url(): UrlObject
 	{
-		return Url::foreign('api.qrserver.com/v1/create-qr-code')->setParameters([
+		return Url::foreign('api.qrserver.com/v1/create-qr-code')->parameters([
 			'size' => $this->config->size,
 			'bgcolor' => $this->config->background,
 			'color' => $this->config->foreground,

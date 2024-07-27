@@ -82,7 +82,7 @@ final class TextConverter
 		$max = match (true) {
 			str_starts_with($max, '0x') => intval($max, 16),
 			str_starts_with($max, '0') => intval($max, 8),
-			default => (int)$max
+			default => (int) $max
 		};
 
 		switch (substr($size, -1)) {

@@ -16,124 +16,124 @@ use Rovota\Framework\Support\Str;
 trait UrlModifiers
 {
 
-	public function setScheme(Scheme|string $scheme): static
+	public function scheme(Scheme|string $scheme): static
 	{
 		if (is_string($scheme)) {
 			$scheme = Scheme::tryFrom($scheme) ?? Scheme::Https;
 		}
 
-		$this->scheme = $scheme;
+		$this->config->scheme = $scheme;
 
 		return $this;
 	}
 	
 	// -----------------
 
-	public function setSubdomain(string $subdomain): static
+	public function subdomain(string $subdomain): static
 	{
-		if ($this->domain === null) {
-			$this->setDomain(Request::current()->targetHost());
+		if ($this->config->domain === null) {
+			$this->domain(Request::current()->targetHost());
 		}
 
 		$subdomain = trim($subdomain);
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($subdomain) === 0) {
-			$this->subdomain = null;
+			$this->config->subdomain = null;
 			return $this;
 		}
 
 		// Set to null when useless value is given.
 		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
-			$this->subdomain = null;
+			$this->config->subdomain = null;
 			return $this;
 		}
 
-		$this->subdomain = trim($subdomain);
+		$this->config->subdomain = trim($subdomain);
 
 		return $this;
 	}
 
-	public function setDomain(string $domain): static
+	public function domain(string $domain): static
 	{
 		$domain = trim($domain);
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->setDomain(Request::current()->targetHost());
+			$this->domain(Request::current()->targetHost());
 		}
 
 		if (Str::occurrences($domain, '.') > 1) {
-			$this->subdomain = Str::before($domain, '.');
+			$this->config->subdomain = Str::before($domain, '.');
 			$domain = Str::after($domain, '.');
 		}
 
-		$this->domain = trim($domain);
+		$this->config->domain = trim($domain);
 
 		return $this;
 	}
 
-	public function setPort(int $port): static
+	public function port(int $port): static
 	{
-		$this->port = $port;
+		$this->config->port = $port;
 		return $this;
 	}
 
 	// -----------------
 
-	public function setPath(string $path): static
+	public function path(string $path): static
 	{
 		$path = trim($path, ' /');
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($path) === 0) {
-			$this->path = null;
+			$this->config->path = null;
 			return $this;
 		}
 
-		$this->path = $path;
+		$this->config->path = $path;
 
 		return $this;
 	}
 
-	public function setParameters(array $parameters): static
+	public function parameters(array $parameters): static
 	{
 		if (empty($parameters)) {
-			$this->parameters = [];
+			$this->config->remove('parameters');
 			return $this;
 		}
 
 		foreach ($parameters as $name => $value) {
-			$this->setParameter($name, $value);
+			$this->parameter($name, $value);
 		}
 
 		return $this;
 	}
 
-	public function setParameter(string $name, mixed $value): static
+	public function parameter(string $name, mixed $value): static
 	{
-		$name = strtolower(trim($name));
+		$name = 'parameters.'.strtolower(trim($name));
 
 		if ($value === null) {
-			unset($this->parameters[$name]);
+			$this->config->remove($name);
 			return $this;
 		}
 
-		$this->parameters[$name] = $value;
+		$this->config->set($name, $value);
 
 		return $this;
 	}
 
-	public function setFragment(string $fragment): static
+	public function fragment(string $fragment): static
 	{
 		$fragment = trim($fragment);
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($fragment) === 0) {
-			$this->fragment = null;
+			$this->config->fragment = null;
 			return $this;
 		}
 
-		$this->fragment = trim($fragment);
+		$this->config->fragment = trim($fragment);
 
 		return $this;
 	}

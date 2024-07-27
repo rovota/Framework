@@ -12,6 +12,7 @@ use Rovota\Framework\Http\Traits\RequestInput;
 use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Routing\UrlObjectConfig;
 use Rovota\Framework\Support\Str;
 
 final class RequestObject
@@ -91,27 +92,22 @@ final class RequestObject
 
 	public function urlWithoutParameters(): UrlObject
 	{
-		return $this->url->copy()->setParameters([]);
+		return $this->url->copy()->parameters([]);
 	}
 
 	public function scheme(): Scheme
 	{
-		return $this->url->getScheme();
-	}
-
-	public function domain(): string
-	{
-		return $this->url->getDomain();
+		return Scheme::tryFrom(Application::$server->get('REQUEST_SCHEME', 'https')) ?? Scheme::Https;
 	}
 
 	public function port(): int
 	{
-		return $this->url->getPort();
+		return (int) Application::$server->get('SERVER_PORT');
 	}
 
 	public function path(): string
 	{
-		return $this->url->getPath() ?? '/';
+		return Str::before(Application::$server->get('REQUEST_URI'), '?');
 	}
 
 	public function pathMatchesPattern(string $pattern): bool

@@ -426,7 +426,7 @@ final class Str
 		preg_match('/(.+)' . preg_quote($separator, '/') . '(\d+)$/', $string, $matches);
 
 		if (isset($matches[2])) {
-			$new_value = (int)$matches[2] + max($step, 0);
+			$new_value = (int) $matches[2] + max($step, 0);
 			return $matches[1].$separator.$new_value;
 		}
 
@@ -439,7 +439,7 @@ final class Str
 		preg_match('/(.+)' . preg_quote($separator, '/') . '(\d+)$/', $string, $matches);
 
 		if (isset($matches[2])) {
-			$new_value = max((int)$matches[2] - max($step, 0), 0);
+			$new_value = max((int) $matches[2] - max($step, 0), 0);
 			return $new_value === 0 ? $matches[1] : $matches[1].$separator.$new_value;
 		}
 
