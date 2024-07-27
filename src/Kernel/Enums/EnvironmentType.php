@@ -9,7 +9,7 @@ namespace Rovota\Framework\Kernel\Enums;
 
 use Rovota\Framework\Support\Traits\EnumHelpers;
 
-enum Environment: string
+enum EnvironmentType: string
 {
 	use EnumHelpers;
 
@@ -23,10 +23,10 @@ enum Environment: string
 	public function label(): string
 	{
 		return match ($this) {
-			Environment::Development => 'Development',
-			Environment::Testing => 'Testing',
-			Environment::Staging => 'Staging',
-			Environment::Production => 'Production',
+			EnvironmentType::Development => 'Development',
+			EnvironmentType::Testing => 'Testing',
+			EnvironmentType::Staging => 'Staging',
+			EnvironmentType::Production => 'Production',
 		};
 	}
 

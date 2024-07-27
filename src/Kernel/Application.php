@@ -11,7 +11,7 @@ use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
-use Rovota\Framework\Kernel\Enums\Environment;
+use Rovota\Framework\Kernel\Enums\EnvironmentType;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Security\Encryption;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
@@ -36,7 +36,7 @@ final class Application
 
 	// -----------------
 
-	public static Environment $environment;
+	public static EnvironmentType $environment;
 
 	public static Version $version;
 	public static Server $server;
@@ -71,6 +71,10 @@ final class Application
 
 		// Finish
 		// TODO: Execute routes
+
+		// TODO: From services like Auth, call App\Environment class methods to load configs.
+		// For example, App\Environment::authProviders() returns an array with auth provider classes/config.
+		// And App\Environment::libraries() returns an array of library classes to call a load() method on.
 	}
 
 	public static function shutdown(): void
@@ -99,7 +103,7 @@ final class Application
 
 	// -----------------
 
-	public static function getEnvironment(): Environment
+	public static function getEnvironment(): EnvironmentType
 	{
 		return self::$environment;
 	}
@@ -107,7 +111,7 @@ final class Application
 	public static function hasEnvironment(array|string $name): bool
 	{
 		foreach (is_array($name) ? $name : [$name] as $name) {
-			if (Environment::tryFrom($name) === self::$environment) {
+			if (EnvironmentType::tryFrom($name) === self::$environment) {
 				return true;
 			}
 		}
@@ -146,7 +150,7 @@ final class Application
 	protected static function environmentCheck(): void
 	{
 		if (is_string(getenv('ENVIRONMENT'))) {
-			self::$environment = Environment::tryFrom(getenv('ENVIRONMENT')) ?? Environment::Production;
+			self::$environment = EnvironmentType::tryFrom(getenv('ENVIRONMENT')) ?? EnvironmentType::Production;
 			return;
 		}
 
@@ -155,27 +159,27 @@ final class Application
 
 		// Check for development
 		if (Str::startsWithAny($server_name, ['dev.', 'local.', 'sandbox.']) || Str::endsWithAny($server_name, ['.localhost', '.local'])) {
-			self::$environment = Environment::Development;
+			self::$environment = EnvironmentType::Development;
 			return;
 		}
 		if ($server_address === '127.0.0.1' || $server_address === '::1' || $server_name === 'localhost') {
-			self::$environment = Environment::Development;
+			self::$environment = EnvironmentType::Development;
 			return;
 		}
 
 		// Check for testing
 		if (Str::startsWithAny($server_name, ['test.', 'qa.', 'uat.', 'acceptance.', 'integration.']) || Str::endsWithAny($server_name, ['.test', '.example'])) {
-			self::$environment = Environment::Testing;
+			self::$environment = EnvironmentType::Testing;
 			return;
 		}
 
 		// Check for staging
 		if (Str::startsWithAny($server_name, ['stage.', 'staging.', 'prepod.'])) {
-			self::$environment = Environment::Staging;
+			self::$environment = EnvironmentType::Staging;
 			return;
 		}
 
-		self::$environment = Environment::Production;
+		self::$environment = EnvironmentType::Production;
 	}
 
 }
