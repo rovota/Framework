@@ -73,12 +73,12 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		return Math::max($this->values, $limit);
 	}
 
-	public function average(int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
+	public function average(int $precision = 14): float|int
 	{
 		return Math::average($this->values, $precision);
 	}
 
-	public function sum(int $precision = Application::DEFAULT_FLOAT_PRECISION): float|int
+	public function sum(int $precision = 14): float|int
 	{
 		return Math::sum($this->values, $precision);
 	}

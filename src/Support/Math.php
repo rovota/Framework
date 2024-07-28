@@ -21,7 +21,7 @@ final class Math
 	/**
 	 * Determines whether two floating values are equal, accounting for rounding precision.
 	 */
-	public static function floatEquals(float $first, float $second, int $precision = Application::DEFAULT_FLOAT_PRECISION): bool
+	public static function floatEquals(float $first, float $second, int $precision = 14): bool
 	{
 		return round($first, $precision) === round($second, $precision);
 	}
@@ -61,7 +61,7 @@ final class Math
 	/**
 	 * Returns the median of a given array. When the list is empty or contains non-numeric values, `0` will be returned. Optionally, the values to sum can be filtered.
 	 */
-	public static function median(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): float|int
+	public static function median(array $values, int $precision = 14, callable|null $filter = null): float|int
 	{
 		$values = $filter === null ? $values : Arr::filter($values, $filter);
 		$count = count($values);
@@ -85,7 +85,7 @@ final class Math
 	/**
 	 * Returns the average of the given values. When the list is empty or contains non-numeric values, `0` will be returned. Optionally, the values to sum can be filtered.
 	 */
-	public static function average(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): float|int
+	public static function average(array $values, int $precision = 14, callable|null $filter = null): float|int
 	{
 		$values = $filter === null ? $values : Arr::filter($values, $filter);
 		$count = count($values);
@@ -101,7 +101,7 @@ final class Math
 	/**
 	 * Returns the sum of all items in the list. Optionally, the values to sum can be filtered.
 	 */
-	public static function sum(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): int|float
+	public static function sum(array $values, int $precision = 14, callable|null $filter = null): int|float
 	{
 		$result = array_sum($filter === null ? $values : Arr::filter($values, $filter));
 		return $precision === 0 ? $result : round($result, $precision);
@@ -110,7 +110,7 @@ final class Math
 	/**
 	 * Returns the range of all items in the list. Optionally, the values to sum can be filtered.
 	 */
-	public static function range(array $values, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): int|float
+	public static function range(array $values, int $precision = 14, callable|null $filter = null): int|float
 	{
 		$result = $filter === null ? $values : Arr::filter($values, $filter);
 		$result = max($result) - min($result);

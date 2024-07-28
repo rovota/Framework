@@ -51,19 +51,19 @@ class Basket extends Bucket
 		return Math::max($data, $limit);
 	}
 
-	public function average(string|null $field = null, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): float|int
+	public function average(string|null $field = null, int $precision = 14, callable|null $filter = null): float|int
 	{
 		$data = $field !== null ? $this->pluck($field)->toArray() : $this->toArray();
 		return Math::average($data, $precision, $filter);
 	}
 
-	public function sum(string|null $field = null, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): float|int
+	public function sum(string|null $field = null, int $precision = 14, callable|null $filter = null): float|int
 	{
 		$data = $field !== null ? $this->pluck($field)->toArray() : $this->toArray();
 		return Math::sum($data, $precision, $filter);
 	}
 
-	public function range(string|null $field = null, int $precision = Application::DEFAULT_FLOAT_PRECISION, callable|null $filter = null): int|float
+	public function range(string|null $field = null, int $precision = 14, callable|null $filter = null): int|float
 	{
 		$values = $field !== null ? $this->pluck($field)->toArray() : $this->toArray();
 		return Math::range($values, $precision, $filter);
