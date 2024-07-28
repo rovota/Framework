@@ -35,7 +35,7 @@ trait TypeAccessors
 		try {
 			return $this->has($key) ? new DateTime($this->string($key), $timezone) : null;
 		} catch (Throwable $throwable) {
-			ExceptionHandler::logThrowable($throwable);
+			ExceptionHandler::handleThrowable($throwable);
 		}
 		return null;
 	}

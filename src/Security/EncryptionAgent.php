@@ -149,7 +149,7 @@ final class EncryptionAgent
 			try {
 				$bytes = random_bytes($this->supported_ciphers[strtoupper($cipher)]['size'] ?? 32);
 			} catch (Throwable $throwable) {
-				ExceptionHandler::logThrowable($throwable);
+				ExceptionHandler::handleThrowable($throwable);
 			}
 			$iteration++;
 		}
