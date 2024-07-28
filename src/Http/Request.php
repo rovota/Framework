@@ -70,7 +70,7 @@ final class Request
 
 	protected static function getRequestQueryData(): array
 	{
-		$url = Application::$server->get('REQUEST_URI');
+		$url = Application::environment()->server->get('REQUEST_URI');
 
 		if (Str::contains($url, '?')) {
 			parse_str(Str::after($url, '?'), $parameters);

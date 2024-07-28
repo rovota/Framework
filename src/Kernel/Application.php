@@ -15,7 +15,6 @@ use Rovota\Framework\Kernel\Enums\EnvironmentType;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Security\Encryption;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
-use Rovota\Framework\Support\Str;
 
 final class Application
 {
@@ -30,16 +29,16 @@ final class Application
 
 	protected const string PHP_MINIMUM_VERSION = '8.3.0';
 
+	// -----------------
+
 	protected const array REQUIRED_EXTENSIONS = [
 		'curl', 'exif', 'fileinfo', 'intl', 'mbstring', 'openssl', 'pdo', 'sodium', 'zip'
 	];
 
 	// -----------------
 
-	public static EnvironmentType $environment;
-
-	public static Version $version;
-	public static Server $server;
+	protected static Version $version;
+	protected static DefaultEnvironment $environment;
 
 	// -----------------
 
@@ -56,10 +55,9 @@ final class Application
 	public static function start(): void
 	{
 		self::$version = new Version(self::APP_VERSION);
-		self::$server = new Server();
 
+		self::createEnvironment();
 		self::serverCompatCheck();
-		self::environmentCheck();
 
 		// Foundation
 		Encryption::initialize();
@@ -80,6 +78,7 @@ final class Application
 	public static function shutdown(): void
 	{
 		$error = error_get_last();
+
 		if ($error !== null && $error['type'] === E_ERROR) {
 			array_shift($error);
 			ExceptionHandler::handleError(E_ERROR, ...$error);
@@ -96,22 +95,27 @@ final class Application
 
 	// -----------------
 
-	public static function getRawVersion(): string
+	public static function version(): Version
+	{
+		return self::$version;
+	}
+
+	public static function rawVersion(): string
 	{
 		return self::APP_VERSION;
 	}
 
 	// -----------------
 
-	public static function getEnvironment(): EnvironmentType
+	public static function environment(): DefaultEnvironment
 	{
 		return self::$environment;
 	}
 
-	public static function hasEnvironment(array|string $name): bool
+	public static function hasEnvironmentType(array|string $name): bool
 	{
 		foreach (is_array($name) ? $name : [$name] as $name) {
-			if (EnvironmentType::tryFrom($name) === self::$environment) {
+			if (EnvironmentType::tryFrom($name) === self::$environment->type) {
 				return true;
 			}
 		}
@@ -119,14 +123,15 @@ final class Application
 		return false;
 	}
 
-	public static function hasDebugEnabled(): bool
-	{
-		return getenv('ENABLE_DEBUG') === 'true';
-	}
+	// -----------------
 
-	public static function hasLoggingEnabled(): bool
+	public static function createEnvironment(): void
 	{
-		return getenv('ENABLE_LOGGING') === 'true';
+		if (class_exists('\App\Setup\Environment')) {
+			self::$environment = new \App\Setup\Environment();
+		}
+
+		self::$environment = new DefaultEnvironment();
 	}
 
 	// -----------------
@@ -145,41 +150,6 @@ final class Application
 				throw new SystemRequirementException(sprintf("The '%s' extension has to be installed and enabled.", $extension));
 			}
 		}
-	}
-
-	protected static function environmentCheck(): void
-	{
-		if (is_string(getenv('ENVIRONMENT'))) {
-			self::$environment = EnvironmentType::tryFrom(getenv('ENVIRONMENT')) ?? EnvironmentType::Production;
-			return;
-		}
-
-		$server_name = self::$server->get('server_name');
-		$server_address = self::$server->get('server_addr');
-
-		// Check for development
-		if (Str::startsWithAny($server_name, ['dev.', 'local.', 'sandbox.']) || Str::endsWithAny($server_name, ['.localhost', '.local'])) {
-			self::$environment = EnvironmentType::Development;
-			return;
-		}
-		if ($server_address === '127.0.0.1' || $server_address === '::1' || $server_name === 'localhost') {
-			self::$environment = EnvironmentType::Development;
-			return;
-		}
-
-		// Check for testing
-		if (Str::startsWithAny($server_name, ['test.', 'qa.', 'uat.', 'acceptance.', 'integration.']) || Str::endsWithAny($server_name, ['.test', '.example'])) {
-			self::$environment = EnvironmentType::Testing;
-			return;
-		}
-
-		// Check for staging
-		if (Str::startsWithAny($server_name, ['stage.', 'staging.', 'prepod.'])) {
-			self::$environment = EnvironmentType::Staging;
-			return;
-		}
-
-		self::$environment = EnvironmentType::Production;
 	}
 
 }

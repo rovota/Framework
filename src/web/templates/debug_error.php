@@ -48,7 +48,7 @@ use Rovota\Framework\Support\Enums\PHPErrorLevels;
 			<hr>
 			<p>
 				<span>PHP <?= PHP_VERSION ?></span>
-				<span>Core <?= Application::getRawVersion() ?></span>
+				<span>Core <?= Application::rawVersion() ?></span>
 			</p>
 		</card>
 

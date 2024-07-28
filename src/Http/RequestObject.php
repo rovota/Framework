@@ -12,7 +12,6 @@ use Rovota\Framework\Http\Traits\RequestInput;
 use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Routing\UrlObjectConfig;
 use Rovota\Framework\Support\Str;
 
 final class RequestObject
@@ -97,17 +96,17 @@ final class RequestObject
 
 	public function scheme(): Scheme
 	{
-		return Scheme::tryFrom(Application::$server->get('REQUEST_SCHEME', 'https')) ?? Scheme::Https;
+		return Scheme::tryFrom(Application::environment()->server->get('REQUEST_SCHEME', 'https')) ?? Scheme::Https;
 	}
 
 	public function port(): int
 	{
-		return (int) Application::$server->get('SERVER_PORT');
+		return (int) Application::environment()->server->get('SERVER_PORT');
 	}
 
 	public function path(): string
 	{
-		return Str::before(Application::$server->get('REQUEST_URI'), '?');
+		return Str::before(Application::environment()->server->get('REQUEST_URI'), '?');
 	}
 
 	public function pathMatchesPattern(string $pattern): bool
@@ -121,19 +120,19 @@ final class RequestObject
 
 	public function targetHost(): string
 	{
-		return Application::$server->get('HTTP_HOST');
+		return Application::environment()->server->get('HTTP_HOST');
 	}
 
 	public function remoteHost(): string
 	{
-		return Application::$server->get('REMOTE_HOST');
+		return Application::environment()->server->get('REMOTE_HOST');
 	}
 
 	// -----------------
 
 	public function realMethod(): RequestMethod
 	{
-		$method = Application::$server->get('REQUEST_METHOD');
+		$method = Application::environment()->server->get('REQUEST_METHOD');
 		return RequestMethod::tryFrom($method) ?? RequestMethod::Get;
 	}
 
@@ -169,7 +168,7 @@ final class RequestObject
 
 	public function isSecure(): bool
 	{
-		return $this->scheme() === Scheme::Https || Application::$server->get('HTTPS') === 'on';
+		return $this->scheme() === Scheme::Https || Application::environment()->server->get('HTTPS') === 'on';
 	}
 
 	public function isProxy(): bool
@@ -206,7 +205,7 @@ final class RequestObject
 
 	public function protocol(): string
 	{
-		return Application::$server->get('SERVER_PROTOCOL');
+		return Application::environment()->server->get('SERVER_PROTOCOL');
 	}
 
 	public function format(): string|null
@@ -231,7 +230,7 @@ final class RequestObject
 		return match(true) {
 			$this->headers->has('CF-Connecting-IP') => $this->headers->get('CF-Connecting-IP'),
 			$this->headers->has('X-Forwarded-For') => $this->headers->get('X-Forwarded-For'),
-			default => Application::$server->get('REMOTE_ADDR'),
+			default => Application::environment()->server->get('REMOTE_ADDR'),
 		};
 	}
 
@@ -276,13 +275,13 @@ final class RequestObject
 
 	public function username(): string|null
 	{
-		$username = Application::$server->get('PHP_AUTH_USER');
+		$username = Application::environment()->server->get('PHP_AUTH_USER');
 		return Str::length($username) > 0 ? $username : null;
 	}
 
 	public function password(): string|null
 	{
-		$password = Application::$server->get('PHP_AUTH_PW');
+		$password = Application::environment()->server->get('PHP_AUTH_PW');
 		return Str::length($password) > 0 ? $password : null;
 	}
 
@@ -316,11 +315,11 @@ final class RequestObject
 
 	protected function getFullUrlString(): string
 	{
-		$scheme = Application::$server->get('REQUEST_SCHEME', 'https');
-		$host = Application::$server->get('HTTP_HOST', 'localhost');
-		$port = Application::$server->get('SERVER_PORT', '80');
-		$path = Str::before(Application::$server->get('REQUEST_URI'), '?');
-		$query = Application::$server->get('QUERY_STRING');
+		$scheme = Application::environment()->server->get('REQUEST_SCHEME', 'https');
+		$host = Application::environment()->server->get('HTTP_HOST', 'localhost');
+		$port = Application::environment()->server->get('SERVER_PORT', '80');
+		$path = Str::before(Application::environment()->server->get('REQUEST_URI'), '?');
+		$query = Application::environment()->server->get('QUERY_STRING');
 
 		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path. (strlen($query) > 0 ? '?' : '') .$query);
 	}
