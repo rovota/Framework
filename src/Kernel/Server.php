@@ -13,14 +13,23 @@ use Rovota\Framework\Conversion\TextConverter;
 final class Server
 {
 
-	private array $variables;
+	protected array $variables;
+
+	protected float $disk_space_total;
+	protected float $disk_space_free;
+	protected float $disk_space_used;
 
 	// -----------------
 
 	public function __construct()
 	{
-		// Process server headers
 		$this->variables = array_change_key_case($_SERVER);
+
+		$path = ($this->platform() === 'Windows') ? substr(getcwd(), 0, 3) : '/';
+
+		$this->disk_space_total = disk_total_space($path);
+		$this->disk_space_free = disk_free_space($path);
+		$this->disk_space_used = $this->disk_space_total - $this->disk_space_free;
 	}
 
 	// -----------------
