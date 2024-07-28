@@ -22,8 +22,6 @@ final class Internal
 
 	/**
 	 * Returns a complete path to a given file in the framework folder, where `bootloader.php` is located.
-	 *
-	 * @internal
 	 */
 	public static function sourceFile(string $path = ''): string
 	{
@@ -32,8 +30,6 @@ final class Internal
 
 	/**
 	 * Returns a complete path to a given file in the project folder, where `app.php` is located.
-	 *
-	 * @internal
 	 */
 	public static function projectFile(string $path = '', string|null $base = null): string
 	{
@@ -47,8 +43,6 @@ final class Internal
 	 * Makes it easier to retrieve values from objects and other data. Given value is passed to the returned value.
 	 *
 	 * Inspired by the Laravel `value_retriever()` function.
-	 *
-	 * @internal
 	 */
 	public static function valueRetriever(mixed $value): callable
 	{
@@ -67,8 +61,6 @@ final class Internal
 	 * Attempts to retrieve data for a given key on a provided target. Optionally, a default value can be provided if no data can be found.
 	 *
 	 * Inspired by the Laravel `data_get()` function.
-	 *
-	 * @internal
 	 */
 	public static function getData(mixed $target, string|array|null $key, mixed $default = null): mixed
 	{
