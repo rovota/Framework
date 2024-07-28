@@ -20,8 +20,6 @@ use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 final class Application
 {
 
-	public const int DEFAULT_FLOAT_PRECISION = 14;
-
 	public const int DEFAULT_BCRYPT_COST = 12;
 
 	// -----------------
@@ -29,12 +27,6 @@ final class Application
 	protected const string APP_VERSION = '1.0.0';
 
 	protected const string PHP_MINIMUM_VERSION = '8.3.0';
-
-	// -----------------
-
-	protected const array REQUIRED_EXTENSIONS = [
-		'curl', 'exif', 'fileinfo', 'intl', 'mbstring', 'openssl', 'pdo', 'sodium', 'zip'
-	];
 
 	// -----------------
 
@@ -102,11 +94,6 @@ final class Application
 		return self::$version;
 	}
 
-	public static function rawVersion(): string
-	{
-		return self::APP_VERSION;
-	}
-
 	// -----------------
 
 	public static function environment(): DefaultEnvironment
@@ -127,7 +114,7 @@ final class Application
 
 	// -----------------
 
-	public static function createEnvironment(): void
+	protected static function createEnvironment(): void
 	{
 		if (class_exists('\App\Setup\Environment')) {
 			self::$environment = new \App\Setup\Environment();
@@ -147,7 +134,7 @@ final class Application
 			throw new SystemRequirementException(sprintf('PHP %s or newer has to be installed.', self::PHP_MINIMUM_VERSION));
 		}
 
-		foreach (self::REQUIRED_EXTENSIONS as $extension) {
+		foreach (['curl', 'exif', 'fileinfo', 'intl', 'mbstring', 'openssl', 'pdo', 'sodium', 'zip'] as $extension) {
 			if (!extension_loaded($extension)) {
 				throw new SystemRequirementException(sprintf("The '%s' extension has to be installed and enabled.", $extension));
 			}
