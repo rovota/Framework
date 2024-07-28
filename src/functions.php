@@ -31,6 +31,13 @@ if (!function_exists('e')) {
 	}
 }
 
+if (!function_exists('__')) {
+	function __(string|null $string, array|object $data = []): string
+	{
+		return Str::translate($string, $data);
+	}
+}
+
 // -----------------
 // Components
 
