@@ -49,8 +49,6 @@ final class Localization
 
 		self::setActiveLanguage($config['default']['locale']);
 		self::setActiveTimezone($config['default']['timezone']);
-
-		dump(self::$languages);
 	}
 
 	// -----------------
