@@ -91,6 +91,14 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
+	public function translate(array|object $data = []): Text
+	{
+		$this->string = Str::translate($this->string, $data);
+		return $this;
+	}
+
+	// -----------------
+
 	/**
 	 * Transforms the given string into uppercase.
 	 */
