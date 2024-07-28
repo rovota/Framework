@@ -13,6 +13,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
 use Rovota\Framework\Kernel\Enums\EnvironmentType;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
+use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Security\Encryption;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
@@ -66,6 +67,7 @@ final class Application
 		// Additional
 		TextConverter::initialize();
 		MarkupConverter::initialize();
+		LocalizationManager::initialize();
 
 		// Finish
 		// TODO: Execute routes
