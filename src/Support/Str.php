@@ -9,6 +9,8 @@ namespace Rovota\Framework\Support;
 
 use Closure;
 use Rovota\Framework\Conversion\TextConverter;
+use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Structures\Basket;
 use Throwable;
 
 final class Str
@@ -16,6 +18,39 @@ final class Str
 
 	protected function __construct()
 	{
+	}
+
+	// -----------------
+
+	public static function translate(string|null $string, array|object $data = []): string
+	{
+		$string = Localization::getTranslatedString($string ?? '');
+
+		if (empty($data) === false && Str::length($string) > 0) {
+			if (is_object($data)) {
+				$matches = [];
+				if (preg_match_all('#:([a-z\d_]*)#m', $string, $matches) > 0) {
+					foreach ($matches[1] as $name) {
+						if ($data->{$name} !== null) {
+							$string = str_replace(':'.$name, Str::translate($data->{$name}), $string);
+						}
+					}
+				}
+			} else {
+				if (array_is_list($data)) {
+					return sprintf($string, ...$data);
+				}
+				$data = Basket::from($data)->sortBy(fn ($variable, $key) => mb_strlen($key), descending: true);
+				foreach ($data as $name => $replacement) {
+					if (is_array($replacement)) {
+						continue;
+					}
+					$string = str_replace(':'.$name, Str::translate($replacement), $string);
+				}
+			}
+		}
+
+		return $string;
 	}
 
 	// -----------------
