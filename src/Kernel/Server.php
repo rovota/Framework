@@ -15,9 +15,8 @@ final class Server
 
 	protected array $variables;
 
-	protected float $disk_space_total;
-	protected float $disk_space_free;
-	protected float $disk_space_used;
+	protected float $disk_capacity;
+	protected float $disk_usage;
 
 	// -----------------
 
@@ -25,11 +24,20 @@ final class Server
 	{
 		$this->variables = array_change_key_case($_SERVER);
 
-		$path = ($this->platform() === 'Windows') ? substr(getcwd(), 0, 3) : '/';
+		$this->loadDiskUsageData();
+	}
 
-		$this->disk_space_total = disk_total_space($path);
-		$this->disk_space_free = disk_free_space($path);
-		$this->disk_space_used = $this->disk_space_total - $this->disk_space_free;
+	// -----------------
+
+	public function has(string $name): bool
+	{
+		return isset($this->variables[$name]);
+	}
+
+	public function get(string $name, string|null $default = null): string|null
+	{
+		$name = mb_strtolower($name, 'UTF-8');
+		return $this->variables[$name] ?? $default;
 	}
 
 	// -----------------
@@ -105,19 +113,6 @@ final class Server
 
 	// -----------------
 
-	public function has(string $name): bool
-	{
-		return isset($this->variables[$name]);
-	}
-
-	public function get(string $name, string|null $default = null): string|null
-	{
-		$name = mb_strtolower($name, 'UTF-8');
-		return $this->variables[$name] ?? $default;
-	}
-
-	// -----------------
-
 	public function maxFilesize(): int
 	{
 		$post_max = TextConverter::toBytes(ini_get('post_max_size'));
@@ -128,5 +123,41 @@ final class Server
 
 	// -----------------
 
+	public function diskCapacity(): float
+	{
+		return $this->disk_capacity;
+	}
+
+	public function diskUsage(): float
+	{
+		return $this->disk_usage;
+	}
+
+	// -----------------
+
+	public function memoryAllocated(): float
+	{
+		return (float) memory_get_usage(true);
+	}
+
+	public function memoryUsage(): float
+	{
+		return (float) memory_get_usage();
+	}
+
+	public function memoryPeakUsage(): float
+	{
+		return (float) memory_get_peak_usage(true);
+	}
+
+	// -----------------
+
+	protected function loadDiskUsageData(): void
+	{
+		$path = ($this->platform() === 'Windows') ? substr(getcwd(), 0, 3) : '/';
+
+		$this->disk_capacity = disk_total_space($path);
+		$this->disk_usage = $this->disk_capacity - disk_free_space($path);
+	}
 
 }
