@@ -48,7 +48,7 @@ use Rovota\Framework\Support\Interfaces\Solution;
 			<hr>
 			<p>
 				<span>PHP <?= PHP_VERSION ?></span>
-				<span>Core <?= Application::rawVersion() ?></span>
+				<span>Core <?= Application::version()->basic() ?></span>
 			</p>
 		</card>
 
