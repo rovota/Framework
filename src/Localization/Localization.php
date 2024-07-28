@@ -14,7 +14,7 @@ use Rovota\Framework\Support\Internal;
 /**
  * @internal
  */
-final class LocalizationManager
+final class Localization
 {
 
 	/**
