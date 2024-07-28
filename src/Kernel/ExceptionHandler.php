@@ -48,7 +48,7 @@ final class ExceptionHandler
 			self::renderThrowableDebugView($throwable);
 		} else {
 			ob_end_clean();
-			Application::quit(StatusCode::InternalServerError);
+			Framework::quit(StatusCode::InternalServerError);
 		}
 	}
 
@@ -60,7 +60,7 @@ final class ExceptionHandler
 			self::renderErrorDebugView($number, $message, $file, $line);
 		} else if ($number === E_ERROR) {
 			ob_end_clean();
-			Application::quit(StatusCode::InternalServerError);
+			Framework::quit(StatusCode::InternalServerError);
 		}
 	}
 
@@ -82,7 +82,7 @@ final class ExceptionHandler
 	{
 		ob_clean();
 		$request = self::getRequestInfo();
-		$solution = $throwable instanceof ProvidesSolution ? $throwable->getSolution() : null;
+		$solution = $throwable instanceof ProvidesSolution ? $throwable->solution() : null;
 		$snippet = self::getSnippet($throwable->getFile());
 		$traces = self::getFilteredTrace($throwable);
 

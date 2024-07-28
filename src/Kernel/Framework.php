@@ -11,13 +11,12 @@ use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
-use Rovota\Framework\Kernel\Enums\EnvironmentType;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Security\Encryption;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
-final class Application
+final class Framework
 {
 
 	public const int DEFAULT_BCRYPT_COST = 12;
@@ -63,10 +62,6 @@ final class Application
 
 		// Finish
 		// TODO: Execute routes
-
-		// TODO: From services like Auth, call App\Environment class methods to load configs.
-		// For example, App\Environment::authProviders() returns an array with auth provider classes/config.
-		// And App\Environment::libraries() returns an array of library classes to call a load() method on.
 	}
 
 	public static function shutdown(): void
@@ -94,22 +89,9 @@ final class Application
 		return self::$version;
 	}
 
-	// -----------------
-
 	public static function environment(): DefaultEnvironment
 	{
 		return self::$environment;
-	}
-
-	public static function hasEnvironmentType(array|string $name): bool
-	{
-		foreach (is_array($name) ? $name : [$name] as $name) {
-			if (EnvironmentType::tryFrom($name) === self::$environment->type) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	// -----------------
@@ -122,8 +104,6 @@ final class Application
 
 		self::$environment = new DefaultEnvironment();
 	}
-
-	// -----------------
 
 	/**
 	 * @throws SystemRequirementException

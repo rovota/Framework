@@ -17,9 +17,9 @@ use Throwable;
 final class EncryptionAgent
 {
 
-	public readonly string $key;
+	protected string $key;
 
-	public readonly string $cipher;
+	protected string $cipher;
 
 	protected array $supported_ciphers = [
 		'AES-128-CBC' => ['size' => 16, 'AEAD' => false],
@@ -41,6 +41,18 @@ final class EncryptionAgent
 
 		$this->key = $key;
 		$this->cipher = $cipher;
+	}
+
+	// -----------------
+
+	public function key(): string
+	{
+		return $this->key;
+	}
+
+	public function cipher(): string
+	{
+		return $this->cipher;
 	}
 
 	// -----------------

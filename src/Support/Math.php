@@ -7,8 +7,6 @@
 
 namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Kernel\Application;
-
 final class Math
 {
 

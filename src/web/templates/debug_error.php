@@ -12,7 +12,7 @@
 /** @var $line int **/
 /** @var $snippet array **/
 
-use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Enums\PHPErrorLevels;
 
 ?>
@@ -48,7 +48,7 @@ use Rovota\Framework\Support\Enums\PHPErrorLevels;
 			<hr>
 			<p>
 				<span>PHP <?= PHP_VERSION ?></span>
-				<span>Core <?= Application::version()->basic() ?></span>
+				<span>Core <?= Framework::version()->basic() ?></span>
 			</p>
 		</card>
 

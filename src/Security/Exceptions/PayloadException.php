@@ -15,7 +15,7 @@ use Rovota\Framework\Support\Solutions\DefaultSolution;
 class PayloadException extends Exception implements ProvidesSolution
 {
 
-	public function getSolution(): Solution
+	public function solution(): Solution
 	{
 		return new DefaultSolution();
 	}

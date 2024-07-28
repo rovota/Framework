@@ -11,7 +11,6 @@ return [
 		'label' => [
 			'default' => 'Unknown',
 			'native' => 'Unknown',
-			'local' => __('Unknown'),
 		],
 
 		'direction' => 'ltr',

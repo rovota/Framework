@@ -15,7 +15,7 @@ use Rovota\Framework\Support\Interfaces\Solution;
 class SystemRequirementException extends Exception implements ProvidesSolution
 {
 
-	public function getSolution(): Solution
+	public function solution(): Solution
 	{
 		return new SystemRequirementSolution();
 	}

@@ -12,17 +12,17 @@ use Rovota\Framework\Support\Interfaces\Solution;
 class DefaultSolution implements Solution
 {
 
-	public function getTitle(): string
+	public function title(): string
 	{
 		return 'Solution';
 	}
 
-	public function getDescription(): string
+	public function description(): string
 	{
 		return 'Check whether the spelling is correct, and make sure that all classes can be found.';
 	}
 
-	public function getDocumentationLinks(): array
+	public function references(): array
 	{
 		return [];
 	}

@@ -10,6 +10,6 @@ namespace Rovota\Framework\Support\Interfaces;
 interface ProvidesSolution
 {
 
-	public function getSolution(): Solution;
+	public function solution(): Solution;
 
 }

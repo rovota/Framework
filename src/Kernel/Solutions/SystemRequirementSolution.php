@@ -12,17 +12,17 @@ use Rovota\Framework\Support\Interfaces\Solution;
 class SystemRequirementSolution implements Solution
 {
 
-	public function getTitle(): string
+	public function title(): string
 	{
 		return 'Incompatibility';
 	}
 
-	public function getDescription(): string
+	public function description(): string
 	{
 		return 'You need to make sure your PHP version and extensions are compatible.';
 	}
 
-	public function getDocumentationLinks(): array
+	public function references(): array
 	{
 		return ['System Requirements' => 'https://docs.rovota.com'];
 	}

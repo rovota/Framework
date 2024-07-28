@@ -10,10 +10,10 @@ namespace Rovota\Framework\Support\Interfaces;
 interface Solution
 {
 
-	public function getTitle(): string;
+	public function title(): string;
 
-	public function getDescription(): string;
+	public function description(): string;
 
-	public function getDocumentationLinks(): array;
+	public function references(): array;
 
 }

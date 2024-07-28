@@ -91,11 +91,6 @@ enum StatusCode: int
 		return $this->getInfo()['label'];
 	}
 
-	public function code(): int
-	{
-		return $this->value;
-	}
-
 	public function message(string $usage = 'web'): string|null
 	{
 		return $this->getInfo($usage)['message'];

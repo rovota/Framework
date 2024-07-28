@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http;
 
-use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 
@@ -70,7 +70,7 @@ final class Request
 
 	protected static function getRequestQueryData(): array
 	{
-		$url = Application::environment()->server->get('REQUEST_URI');
+		$url = Framework::environment()->server()->get('REQUEST_URI');
 
 		if (Str::contains($url, '?')) {
 			parse_str(Str::after($url, '?'), $parameters);

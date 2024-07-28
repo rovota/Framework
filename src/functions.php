@@ -9,7 +9,7 @@ use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
 use Rovota\Framework\Http\RequestObject;
-use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
@@ -104,7 +104,7 @@ if (!function_exists('convert_to_array')) {
 if (!function_exists('quit')) {
 	function quit(StatusCode $code = StatusCode::InternalServerError): never
 	{
-		Application::quit($code);
+		Framework::quit($code);
 	}
 }
 
@@ -114,7 +114,7 @@ if (!function_exists('dump')) {
 		print_r($data);
 		if ($exit) {
 			quit();
-		};
+		}
 	}
 }
 

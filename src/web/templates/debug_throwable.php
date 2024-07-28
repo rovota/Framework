@@ -11,7 +11,7 @@
 /** @var $traces array **/
 /** @var $snippet array **/
 
-use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Interfaces\Solution;
 
 ?>
@@ -48,17 +48,17 @@ use Rovota\Framework\Support\Interfaces\Solution;
 			<hr>
 			<p>
 				<span>PHP <?= PHP_VERSION ?></span>
-				<span>Core <?= Application::version()->basic() ?></span>
+				<span>Core <?= Framework::version()->basic() ?></span>
 			</p>
 		</card>
 
 		<?php
 		if (isset($solution) && $solution instanceof Solution) { ?>
 			<card class="solution">
-				<p><b><?= str_replace('\\', '\\<wbr>', htmlentities($solution->getTitle())) ?></b></p>
-				<p><?= $solution->getDescription() ?></p>
+				<p><b><?= str_replace('\\', '\\<wbr>', htmlentities($solution->title())) ?></b></p>
+				<p><?= $solution->description() ?></p>
 				<?php
-				foreach ($solution->getDocumentationLinks() as $link_title => $link_url) {
+				foreach ($solution->references() as $link_title => $link_url) {
 					echo sprintf('<p><a href="%s" class="accent-neutral">%s</a></p>', $link_url, $link_title);
 				}
 				?>

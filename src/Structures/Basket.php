@@ -9,7 +9,6 @@ namespace Rovota\Framework\Structures;
 
 use Closure;
 use Dflydev\DotAccessData\Data;
-use Rovota\Framework\Kernel\Application;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Internal;

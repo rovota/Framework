@@ -13,17 +13,50 @@ use Rovota\Framework\Support\Str;
 class DefaultEnvironment
 {
 
-	public Server $server;
+	protected Server $server;
 
-	public EnvironmentType $type;
+	protected EnvironmentType $type;
 
 	// -----------------
 
 	public function __construct()
 	{
 		$this->server = new Server();
-
 		$this->type = $this->getEnvironmentType();
+	}
+
+	// -----------------
+
+	public function server(): Server
+	{
+		return $this->server;
+	}
+
+	public function type(): EnvironmentType
+	{
+		return $this->type;
+	}
+
+	// -----------------
+
+	public function isLocal(): bool
+	{
+		return $this->type === EnvironmentType::Development;
+	}
+
+	public function isTestable(): bool
+	{
+		return $this->type === EnvironmentType::Testing;
+	}
+
+	public function isStaged(): bool
+	{
+		return $this->type === EnvironmentType::Staging;
+	}
+
+	public function isProduction(): bool
+	{
+		return $this->type === EnvironmentType::Production;
 	}
 
 	// -----------------
@@ -40,15 +73,9 @@ class DefaultEnvironment
 
 	// -----------------
 
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
+	// TODO: methods like authProviders() and libraries()
+	// For example, Environment::authProviders() returns an array with auth provider classes/config.
+	// And Environment::libraries() returns an array of library classes to call a load() method on.
 
 	// -----------------
 
@@ -61,15 +88,15 @@ class DefaultEnvironment
 		$server_name = $this->server->get('server_name');
 		$server_address = $this->server->get('server_addr');
 
-		if ($this->isDevelopmentEnvironment($server_name, $server_address)) {
+		if ($this->detectsDevelopmentEnvironment($server_name, $server_address)) {
 			return EnvironmentType::Development;
 		}
 
-		if ($this->isTestEnvironment($server_name)) {
+		if ($this->detectsTestEnvironment($server_name)) {
 			return EnvironmentType::Testing;
 		}
 
-		if ($this->isStagingEnvironment($server_name)) {
+		if ($this->detectsStagingEnvironment($server_name)) {
 			return EnvironmentType::Staging;
 		}
 
@@ -78,7 +105,7 @@ class DefaultEnvironment
 
 	// -----------------
 
-	private function isDevelopmentEnvironment(string $name, string $address): bool
+	protected function detectsDevelopmentEnvironment(string $name, string $address): bool
 	{
 		if (Str::containsAny($name, ['dev.', 'local.', 'sandbox.'])) {
 			return true;
@@ -95,7 +122,7 @@ class DefaultEnvironment
 		return false;
 	}
 
-	private function isTestEnvironment(string $name): bool
+	protected function detectsTestEnvironment(string $name): bool
 	{
 		if (Str::containsAny($name, ['test.', 'qa.', 'uat.', 'acceptance.', 'integration.'])) {
 			return true;
@@ -108,7 +135,7 @@ class DefaultEnvironment
 		return false;
 	}
 
-	private function isStagingEnvironment(string $name): bool
+	protected function detectsStagingEnvironment(string $name): bool
 	{
 		if (Str::containsAny($name, ['stage.', 'staging.', 'prepod.'])) {
 			return true;

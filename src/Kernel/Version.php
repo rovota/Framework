@@ -155,45 +155,40 @@ final class Version implements JsonSerializable
 	public function isGreater(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->gt($version->semVer());
+		return !($version === null) && $this->version->gt($this->version);
 	}
 
 	public function isLower(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->lt($version->semVer());
+		return !($version === null) && $this->version->lt($this->version);
 	}
 
 	public function isEqual(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->eq($version->semVer());
+		return !($version === null) && $this->version->eq($this->version);
 	}
 
 	public function isNotEqual(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->neq($version->semVer());
+		return !($version === null) && $this->version->neq($this->version);
 	}
 
 	public function isEqualOrGreater(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->gte($version->semVer());
+		return !($version === null) && $this->version->gte($this->version);
 	}
 
 	public function isEqualOrLower(Version|string $version): bool
 	{
 		$version = $this->getInstance($version);
-		return !($version === null) && $this->version->lte($version->semVer());
+		return !($version === null) && $this->version->lte($this->version);
 	}
 
 	// -----------------
-
-	public function semVer(): SemVer
-	{
-		return $this->version;
-	}
 
 	protected function getInstance(Version|string $version): Version|null
 	{

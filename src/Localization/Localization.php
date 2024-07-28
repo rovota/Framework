@@ -98,7 +98,7 @@ final class Localization
 	public static function getLanguagesWithPrefix(string $prefix): array
 	{
 		return Bucket::from(self::$languages)->filter(function (Language $language) use ($prefix) {
-			return str_starts_with($language->locale, $prefix);
+			return str_starts_with($language->locale(), $prefix);
 		})->toArray();
 	}
 
