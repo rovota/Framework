@@ -34,6 +34,13 @@ final class Text implements Stringable, JsonSerializable
 
 	// -----------------
 
+	public static function from(Stringable|string $string = ''): Text
+	{
+		return new Text($string);
+	}
+
+	// -----------------
+
 	public function jsonSerialize(): string
 	{
 		return $this->__toString();
