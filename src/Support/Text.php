@@ -68,8 +68,6 @@ final class Text implements Stringable, JsonSerializable
 		return filter_var($this->string, FILTER_VALIDATE_BOOLEAN);
 	}
 
-	// TODO: toMoment() method, with optional format indication and timezone.
-
 	// -----------------
 
 	/**

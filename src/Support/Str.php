@@ -608,8 +608,4 @@ final class Str
 		return $acronym;
 	}
 
-	// -----------------
-
-	// TODO: toMoment() method, with optional format indication and timezone.
-
 }
