@@ -46,6 +46,10 @@ trait MomentValidation
 		$start = $this->copy()->setTimeFrom($start);
 		$end = $this->copy()->setTimeFrom($end);
 
+		if ($start > $end) {
+			$end->addDay();
+		}
+
 		return $this->between($start, $end);
 	}
 
