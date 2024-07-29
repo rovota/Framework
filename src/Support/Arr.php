@@ -337,22 +337,4 @@ final class Arr
 		return $array;
 	}
 
-	// -----------------
-
-	public static function fromAcceptHeader(string|null $header): array
-	{
-		$header = trim($header ?? '');
-		if (mb_strlen($header) === 0) {
-			return [];
-		}
-		return array_reduce(explode(',', $header),
-			function ($carry, $element) {
-				$type = Str::before($element, ';');
-				$quality = str_contains($element, ';q=') ? Str::afterLast($element, ';q=') : 1.00;
-				$carry[trim($type)] = (float) $quality;
-				return $carry;
-			},[]
-		);
-	}
-
 }
