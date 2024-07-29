@@ -74,9 +74,9 @@ trait TypeAccessors
 		return new Text($this->get($key, $default));
 	}
 
-	public function moment(string $key, DateTimeZone|int|string|null $timezone = null): Moment|null
+	public function moment(string $key, mixed $default = null, DateTimeZone|int|string|null $timezone = null): Moment|null
 	{
-		return $this->has($key) ? new Moment($this->get($key), $timezone) : null;
+		return new Moment($this->get($key, $default), $timezone);
 	}
 
 }
