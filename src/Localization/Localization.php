@@ -22,9 +22,11 @@ final class Localization
 	 */
 	protected static array $languages = [];
 	protected static string $active_language;
+	protected static string $default_locale;
 
 	protected static array $timezones = [];
 	protected static string $active_timezone;
+	protected static string $default_timezone;
 
 	// -----------------
 
@@ -47,12 +49,20 @@ final class Localization
 
 		self::$timezones = timezone_identifiers_list();
 
+		self::$default_locale =$config['default']['locale'];
+		self::$default_timezone =$config['default']['timezone'];
+
 		self::setActiveLanguage($config['default']['locale']);
 		self::setActiveTimezone($config['default']['timezone']);
 	}
 
 	// -----------------
 	// Languages
+
+	public static function getDefaultLocale(): string
+	{
+		return self::$default_locale;
+	}
 
 	public static function isActiveLanguage(string $locale): bool
 	{
@@ -113,6 +123,11 @@ final class Localization
 	public static function getActiveTimezone(): DateTimeZone
 	{
 		return timezone_open(self::$active_timezone);
+	}
+
+	public static function getDefaultTimezone(): DateTimeZone
+	{
+		return timezone_open(self::$default_timezone);
 	}
 
 	public static function hasTimezone(string $identifier): bool
