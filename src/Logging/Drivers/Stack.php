@@ -80,7 +80,12 @@ final class Stack implements ChannelInterface
 
 	public function log(mixed $level, string|Stringable $message, array $context = []): void
 	{
-		$this->dispatch('log', $message, $context);
+		foreach ($this->config->channels as $channel) {
+			if ($channel instanceof ChannelInterface) {
+				$channel->log($level, $message, $context); continue;
+			}
+			Logging::get($channel)->log($level, $message, $context);
+		}
 	}
 
 	public function debug(string|Stringable $message, array $context = []): void
