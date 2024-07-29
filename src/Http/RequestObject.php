@@ -10,9 +10,13 @@ namespace Rovota\Framework\Http;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
+use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Support\Http;
+use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
+use Rovota\Framework\Support\Url;
 
 final class RequestObject
 {
@@ -21,6 +25,11 @@ final class RequestObject
 	protected RequestHeaders $headers;
 
 	protected UrlObject $url;
+
+
+	protected array|null $acceptable_content_types = null;
+	protected array|null $acceptable_encodings = null;
+	protected array|null $acceptable_locales = null;
 
 	// -----------------
 
@@ -32,6 +41,11 @@ final class RequestObject
 		$this->body = $data['body'];
 		$this->post = new RequestData($data['post']);
 		$this->query = new RequestData($data['query']);
+	}
+
+	public function __get(string $name): mixed
+	{
+		return $this->has($name) ? $this->get($name) : null;
 	}
 
 	// -----------------
@@ -107,6 +121,11 @@ final class RequestObject
 		$pattern = preg_replace('/\*/', '(.+)', $pattern);
 		$pattern = preg_replace('/{(.*?)}/', '(.+)', $pattern);
 		return preg_match_all('#^' . $pattern . '$#', $this->path()) === 1;
+	}
+
+	public function queryString(): string
+	{
+		return Url::arrayToQuery($this->url()->config()->parameters);
 	}
 
 	// -----------------
@@ -196,6 +215,11 @@ final class RequestObject
 
 	// -----------------
 
+	public function time(): Moment
+	{
+		return new Moment(Framework::environment()->server()->get('REQUEST_TIME_FLOAT'));
+	}
+
 	public function protocol(): string
 	{
 		return Framework::environment()->server()->get('SERVER_PROTOCOL');
@@ -256,7 +280,13 @@ final class RequestObject
 			return $this->headers->get('Sec-CH-UA-Model');
 		}
 
-		return $this->getApproximateDeviceFromUserAgent();
+		return Http::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+	}
+
+	public function locale(): string
+	{
+		$accepts = $this->getAcceptableLocales();
+		return array_key_first($accepts);
 	}
 
 	// -----------------
@@ -278,7 +308,22 @@ final class RequestObject
 		return Str::length($password) > 0 ? $password : null;
 	}
 
-	// -----------------
+	public function authType(): string|null
+	{
+		$value = Str::before($this->headers->string('Authorization'), ' ');
+		return mb_strlen($value) > 0 ? $value : null;
+	}
+
+	public function authToken(): string|null
+	{
+		$value = Str::after($this->headers->string('Authorization'), ' ');
+		return mb_strlen($value) > 0 ? $value : null;
+	}
+
+	public function bearerToken(): string|null
+	{
+		return $this->authType() === 'Bearer' ? $this->authToken() : null;
+	}
 
 	// -----------------
 
@@ -303,6 +348,51 @@ final class RequestObject
 	// -----------------
 
 	// -----------------
+
+	// -----------------
+
+	public function getAcceptableLocales(): array
+	{
+		if ($this->acceptable_locales !== null) {
+			return $this->acceptable_locales;
+		}
+
+		$locales = Http::acceptHeaderToArray($this->headers->get('Accept-Language'));
+		if (empty($locales)) {
+			return [Localization::getDefaultLocale() => 1.0];
+		}
+
+		$normalized = [];
+		foreach ($locales as $locale => $quality) {
+			$locale = mb_strlen($locale) === 2 ? $locale.'_'.strtoupper($locale) : $locale;
+			$locale = str_replace('-', '_', $locale);
+			if (!isset($locales[$locale])) {
+				$normalized[$locale] = $quality;
+			}
+		}
+
+		return $this->acceptable_locales = $normalized;
+	}
+
+	public function getAcceptableEncodings(): array
+	{
+		if ($this->acceptable_encodings !== null) {
+			return $this->acceptable_encodings;
+		}
+
+		$encodings = Http::acceptHeaderToArray($this->headers->get('Accept-Encoding'));
+		return $this->acceptable_encodings = $encodings;
+	}
+
+	public function getAcceptableContentTypes(): array
+	{
+		if ($this->acceptable_content_types !== null) {
+			return $this->acceptable_content_types;
+		}
+
+		$types = Http::acceptHeaderToArray($this->headers->get('Accept'));
+		return $this->acceptable_content_types = $types;
+	}
 
 	// -----------------
 
@@ -315,58 +405,6 @@ final class RequestObject
 		$query = Framework::environment()->server()->get('QUERY_STRING');
 
 		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path. (strlen($query) > 0 ? '?' : '') .$query);
-	}
-
-	protected function getApproximateDeviceFromUserAgent(): string
-	{
-		$useragent = $this->headers->text('User-Agent')->remove([
-			'; x64', '; Win64', '; WOW64', '; K', ' like Mac OS X', 'X11; '
-		])->after('(')->before(')')->before('; rv');
-
-		if ($useragent->contains('CrOS')) {
-			return $useragent
-				->after('CrOS ')
-				->beforeLast(' ')
-				->replace(['x86_64', 'armv7l', 'aarch64'], ['x86 64-bit', 'ARM 32-bit', 'ARM 64-bit'])
-				->wrap('(', ')')
-				->prepend('Chromebook ');
-		}
-
-		if ($useragent->contains('iPhone')) {
-			return $useragent
-				->after('iPhone OS ')
-				->replace('_', '.')
-				->wrap('(iOS ', ')')
-				->prepend('iPhone ');
-		}
-
-		if ($useragent->contains('iPad')) {
-			return $useragent
-				->after('CPU OS ')
-				->replace('_', '.')
-				->wrap('(iPadOS ', ')')
-				->prepend('iPad ');
-		}
-
-		if ($useragent->contains('Macintosh')) {
-			return $useragent
-				->after('OS X ')
-				->replace('_', '.')
-				->wrap('(MacOS ', ')')
-				->prepend('Mac ');
-		}
-
-		if ($useragent->contains('Android')) {
-			return $useragent->afterLast('; ');
-		}
-
-		if ($useragent->contains('Windows')) {
-			return $useragent
-				->replace(['NT 10.0', 'NT 6.3', 'NT 6.2'], ['10/11', '8.1', '8.0'])
-				->before(';');
-		}
-
-		return 'Unknown';
 	}
 
 }
