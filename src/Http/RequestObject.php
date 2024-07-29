@@ -13,6 +13,7 @@ use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Http;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
@@ -230,6 +231,11 @@ final class RequestObject
 		return $this->headers->get('Content-Type');
 	}
 
+	public function cacheControl(): string|null
+	{
+		return $this->headers->get('Cache-Control');
+	}
+
 	// -----------------
 
 	public function referrer(): string|null
@@ -327,27 +333,115 @@ final class RequestObject
 
 	// -----------------
 
-	// -----------------
+	// TODO: Cookies
 
 	// -----------------
 
-	// -----------------
+	public function encoding(): string|null
+	{
+		$accepts = $this->getAcceptableEncodings();
+		return !empty($accepts) ? array_key_first($accepts) : null;
+	}
+
+	public function expects(): string|null
+	{
+		$accepts = $this->getAcceptableContentTypes();
+		return !empty($accepts) ? array_key_first($accepts) : null;
+	}
 
 	// -----------------
 
-	// -----------------
+	public function prefers(string|array $content_types): string|null
+	{
+		$accepts = $this->getAcceptableContentTypes();
+		if (empty($accepts)) {
+			return null;
+		}
+
+		$types = is_array($content_types) ? $content_types : [$content_types];
+		foreach ($accepts as $accept => $value) {
+			if (Arr::contains(['*/*', '*'], $accept)) {
+				return $types[0];
+			}
+
+			foreach ($types as $type) {
+				if ($this->matchesType($type, $accept) || $accept === strtok($type, '/').'/*') {
+					return $type;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public function prefersEncoding(string|array $encodings): string|null
+	{
+		$accepts = $this->getAcceptableEncodings();
+		if (empty($accepts)) {
+			return null;
+		}
+
+		$encodings = is_array($encodings) ? $encodings : [$encodings];
+		foreach ($accepts as $accept => $value) {
+			if (Arr::contains($encodings, $accept)) {
+				return $accept;
+			}
+		}
+		return null;
+	}
+
+	public function prefersLocale(string|array $locales, string|null $default = null): string|null
+	{
+		$accepts = $this->getAcceptableLocales();
+		if (empty($accepts)) {
+			return $default;
+		}
+
+		$locales = is_array($locales) ? $locales : [$locales];
+		foreach ($accepts as $accept => $value) {
+			if (Arr::contains($locales, $accept)) {
+				return $accept;
+			}
+		}
+		return $default;
+	}
+
+	public function prefersFresh(): bool
+	{
+		return $this->cacheControl() === 'no-cache';
+	}
+
+	public function prefersSafeContent(): bool
+	{
+		return $this->headers->text('Prefer')->containsAny(['Safe', 'safe']);
+	}
 
 	// -----------------
 
-	// -----------------
+	public function accepts(string|array $content_types): bool
+	{
+		return $this->prefers($content_types) !== null;
+	}
 
-	// -----------------
+	public function acceptsAnyContentType(): bool
+	{
+		return $this->accepts('*/*');
+	}
 
-	// -----------------
+	public function acceptsHtml(): bool
+	{
+		return $this->accepts('text/html');
+	}
 
-	// -----------------
+	public function acceptsJson(): bool
+	{
+		return $this->accepts('application/json');
+	}
 
-	// -----------------
+	public function acceptsWebP(): bool
+	{
+		return $this->accepts('image/webp');
+	}
 
 	// -----------------
 
@@ -405,6 +499,20 @@ final class RequestObject
 		$query = Framework::environment()->server()->get('QUERY_STRING');
 
 		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path. (strlen($query) > 0 ? '?' : '') .$query);
+	}
+
+	protected function matchesType(string $actual, string $type): bool
+	{
+		if ($actual === $type) {
+			return true;
+		} else {
+			$actual = explode('/', $actual);
+			$type = explode('/', $type);
+			if ($actual[0] !== $type[0]) {
+				return false;
+			}
+			return $actual[1] === '*';
+		}
 	}
 
 }
