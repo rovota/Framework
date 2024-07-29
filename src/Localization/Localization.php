@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Localization;
 
 use DateTimeZone;
+use Rovota\Framework\Http\Request;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Internal;
 
@@ -52,7 +53,7 @@ final class Localization
 		self::$default_locale =$config['default']['locale'];
 		self::$default_timezone =$config['default']['timezone'];
 
-		self::setActiveLanguage($config['default']['locale']);
+		self::determineActiveLanguage($config['default']['locale']);
 		self::setActiveTimezone($config['default']['timezone']);
 	}
 
@@ -169,6 +170,14 @@ final class Localization
 		if (file_exists($file)) {
 			self::$languages[$locale] = new Language($locale, require $file);
 		}
+	}
+
+	protected static function determineActiveLanguage(string $default): void
+	{
+		$locales = array_keys(self::$languages);
+		$preferred = Request::current()->prefersLocale($locales, $default);
+
+		self::setActiveLanguage($preferred);
 	}
 
 }
