@@ -19,7 +19,7 @@ final class Url
 
 	// -----------------
 
-	public function current(): UrlObject
+	public static function current(): UrlObject
 	{
 		return Request::current()->url();
 	}
