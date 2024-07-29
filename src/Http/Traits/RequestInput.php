@@ -11,6 +11,7 @@ use BackedEnum;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Http\RequestData;
+use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 
 trait RequestInput
@@ -122,6 +123,11 @@ trait RequestInput
 	public function text(string $key, Text|string $default = new Text()): Text
 	{
 		return $this->query->text($key, $this->post->text($key, $default));
+	}
+
+	public function moment(string $key, mixed $default = null, DateTimeZone|int|string|null $timezone = null): Moment|null
+	{
+		return $this->query->moment($key, $this->post->moment($key, $default, $timezone), $timezone);
 	}
 
 	// -----------------
