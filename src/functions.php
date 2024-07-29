@@ -11,6 +11,7 @@ use Rovota\Framework\Http\Request;
 use Rovota\Framework\Http\RequestObject;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Interfaces\Arrayable;
+use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
 
@@ -35,6 +36,23 @@ if (!function_exists('__')) {
 	function __(string|null $string, array|object $data = []): string
 	{
 		return Str::translate($string, $data);
+	}
+}
+
+// -----------------
+// DateTime
+
+if (!function_exists('now')) {
+	function now(DateTimeZone|string|int|null $timezone = null): Moment
+	{
+		return new Moment(timezone: $timezone);
+	}
+}
+
+if (!function_exists('moment')) {
+	function moment(mixed $time = 'now', DateTimeZone|string|int|null $timezone = null): Moment|null
+	{
+		return new Moment($time, $timezone);
 	}
 }
 
