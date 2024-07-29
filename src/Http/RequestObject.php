@@ -44,11 +44,6 @@ final class RequestObject
 		$this->query = new RequestData($data['query']);
 	}
 
-	public function __get(string $name): mixed
-	{
-		return $this->has($name) ? $this->get($name) : null;
-	}
-
 	// -----------------
 
 	public function headers(): RequestHeaders
