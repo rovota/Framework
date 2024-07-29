@@ -19,9 +19,6 @@ use Rovota\Framework\Logging\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Support\Internal;
 
-/**
- * @internal
- */
 final class Logging
 {
 
@@ -122,6 +119,5 @@ final class Logging
 	{
 		return self::$default;
 	}
-
 
 }
