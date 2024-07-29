@@ -13,6 +13,7 @@ use BackedEnum;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 use Throwable;
 
@@ -71,6 +72,11 @@ trait TypeAccessors
 	public function text(string $key, Text $default = new Text()): Text
 	{
 		return new Text($this->get($key, $default));
+	}
+
+	public function moment(string $key, DateTimeZone|int|string|null $timezone = null): Moment|null
+	{
+		return $this->has($key) ? new Moment($this->get($key), $timezone) : null;
 	}
 
 }
