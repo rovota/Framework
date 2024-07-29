@@ -13,6 +13,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Logging\Logging;
 use Rovota\Framework\Security\Encryption;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
@@ -52,6 +53,7 @@ final class Framework
 		self::serverCompatCheck();
 
 		// Foundation
+		Logging::initialize();
 		Encryption::initialize();
 		Request::initialize();
 		Localization::initialize();
