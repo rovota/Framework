@@ -9,8 +9,25 @@
 
 namespace Rovota\Framework\Support\Traits;
 
+use DateTimeZone;
+use ReturnTypeWillChange;
+use Rovota\Framework\Localization\Localization;
+
 trait MomentModifiers
 {
+
+	#[ReturnTypeWillChange]
+	public function setTimezone(DateTimeZone|string|int $timeZone): static
+	{
+		if ($timeZone === 'local') {
+			$timeZone = Localization::getActiveTimezone();
+		}
+
+		parent::setTimezone($timeZone);
+		return $this;
+	}
+
+	// -----------------
 
 	public function toUtc(): static
 	{

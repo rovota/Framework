@@ -8,9 +8,6 @@
 namespace Rovota\Framework\Support;
 
 use Carbon\Carbon;
-use DateTimeZone;
-use ReturnTypeWillChange;
-use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Support\Traits\MomentModifiers;
 use Rovota\Framework\Support\Traits\MomentValidation;
 
@@ -23,20 +20,6 @@ final class Moment extends Carbon
 	public function __toString(): string
 	{
 		return $this->format();
-	}
-
-	// -----------------
-
-	/** @noinspection PhpUnnecessaryStaticReferenceInspection */
-	#[ReturnTypeWillChange]
-	public function setTimezone(DateTimeZone|string|int $timeZone): static
-	{
-		if ($timeZone === 'local') {
-			$timeZone = Localization::getActiveTimezone();
-		}
-
-		parent::setTimezone($timeZone);
-		return $this;
 	}
 
 	// -----------------
