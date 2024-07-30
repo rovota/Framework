@@ -49,7 +49,7 @@ trait UrlModifiers
 			return $this;
 		}
 
-		$this->config->subdomain = trim($subdomain);
+		$this->config->subdomain = $subdomain;
 
 		return $this;
 	}
@@ -60,6 +60,7 @@ trait UrlModifiers
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
 			$this->domain(Request::current()->targetHost());
+			return $this;
 		}
 
 		if (Str::occurrences($domain, '.') > 1) {
@@ -67,7 +68,7 @@ trait UrlModifiers
 			$domain = Str::after($domain, '.');
 		}
 
-		$this->config->domain = trim($domain);
+		$this->config->domain = $domain;
 
 		return $this;
 	}
@@ -85,7 +86,7 @@ trait UrlModifiers
 		$path = trim($path, ' /');
 
 		// Set to null when unusable value is given.
-		if (mb_strlen($path) === 0) {
+		if (mb_strlen($path) === 0 || $path === '-') {
 			$this->config->path = null;
 			return $this;
 		}
@@ -128,12 +129,12 @@ trait UrlModifiers
 		$fragment = trim($fragment);
 
 		// Set to null when unusable value is given.
-		if (mb_strlen($fragment) === 0) {
+		if (mb_strlen($fragment) === 0 || $fragment === '-') {
 			$this->config->fragment = null;
 			return $this;
 		}
 
-		$this->config->fragment = trim($fragment);
+		$this->config->fragment = $fragment;
 
 		return $this;
 	}
