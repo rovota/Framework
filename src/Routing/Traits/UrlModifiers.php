@@ -39,13 +39,13 @@ trait UrlModifiers
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($subdomain) === 0) {
-			$this->config->subdomain = null;
+			$this->stripSubdomain();
 			return $this;
 		}
 
 		// Set to null when useless value is given.
 		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
-			$this->config->subdomain = null;
+			$this->stripSubdomain();
 			return $this;
 		}
 
@@ -59,7 +59,7 @@ trait UrlModifiers
 		$domain = trim($domain);
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->domain(Request::current()->targetHost());
+			$this->currentHostAsDomain();
 			return $this;
 		}
 
@@ -87,7 +87,7 @@ trait UrlModifiers
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($path) === 0 || $path === '-') {
-			$this->config->path = null;
+			$this->stripPath();
 			return $this;
 		}
 
@@ -99,7 +99,7 @@ trait UrlModifiers
 	public function parameters(array $parameters): static
 	{
 		if (empty($parameters)) {
-			$this->config->remove('parameters');
+			$this->stripParameters();
 			return $this;
 		}
 
@@ -130,12 +130,46 @@ trait UrlModifiers
 
 		// Set to null when unusable value is given.
 		if (mb_strlen($fragment) === 0 || $fragment === '-') {
-			$this->config->fragment = null;
+			$this->stripFragment();
 			return $this;
 		}
 
 		$this->config->fragment = $fragment;
 
+		return $this;
+	}
+
+	// -----------------
+
+	public function currentHostAsDomain(): static
+	{
+		$this->domain(Request::current()->targetHost());
+		return $this;
+	}
+
+	// -----------------
+
+	public function stripSubdomain(): static
+	{
+		$this->config->subdomain = null;
+		return $this;
+	}
+
+	public function stripPath(): static
+	{
+		$this->config->path = null;
+		return $this;
+	}
+
+	public function stripParameters(): static
+	{
+		$this->config->parameters = null;
+		return $this;
+	}
+
+	public function stripFragment(): static
+	{
+		$this->config->fragment = null;
 		return $this;
 	}
 
