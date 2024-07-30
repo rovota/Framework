@@ -98,7 +98,7 @@ final class UrlObject implements Stringable, JsonSerializable
 			$url = Str::before($url, ':');
 		}
 
-		$object->domain($url);
+		$object->domain(strlen($url) > 0 ? $url : '-');
 
 		return $object;
 	}
