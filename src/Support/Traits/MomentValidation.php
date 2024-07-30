@@ -2,7 +2,7 @@
 
 /**
  * @copyright   Léandro Tijink
- * * @license     MIT
+ * @license     MIT
  *
  * Inspired by the Laravel/Conditionable trait.
  */
