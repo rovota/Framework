@@ -39,7 +39,40 @@ class Client
 
 	// -----------------
 
+	public function get(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('GET', $target);
+	}
 
+	public function delete(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('DELETE', $target);
+	}
+
+	public function head(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('HEAD', $target);
+	}
+
+	public function options(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('OPTIONS', $target);
+	}
+
+	public function patch(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('PATCH', $target);
+	}
+
+	public function post(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('POST', $target);
+	}
+
+	public function put(UrlObject|string $target): Request
+	{
+		return $this->getRequestInstance('PUT', $target);
+	}
 
 	// -----------------
 
@@ -56,7 +89,6 @@ class Client
 			'decode_content' => true,
 			'verify' => true,
 			'cookies' => false,
-			'idn_conversion' => false,
 
 			'version' => 2.0,
 			'connect_timeout' => 2.0,
