@@ -56,6 +56,14 @@ trait HibpPasswordService
 
 	// -----------------
 
+	public function clearCache(): static
+	{
+		$this->results = [];
+		return $this;
+	}
+
+	// -----------------
+
 	private function getPrefixFromHash(string $hash): string
 	{
 		return Str::limit(strtoupper($hash), 5);
