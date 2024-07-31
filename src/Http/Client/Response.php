@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Rovota\Framework\Http\Client\Traits\ResponseContent;
 use Rovota\Framework\Http\Client\Traits\ResponseValidation;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Support\Arr;
 
 final class Response
 {
@@ -57,6 +58,19 @@ final class Response
 
 	// -----------------
 
-	// TODO: Headers
+	public function headers(): array
+	{
+		return $this->response->getHeaders();
+	}
+
+	public function header(string $name, string|null $default = null): string|null
+	{
+		return Arr::first($this->response->getHeader($name), default: $default);
+	}
+
+	public function hasHeader(string $name): bool
+	{
+		return $this->response->hasHeader($name);
+	}
 
 }
