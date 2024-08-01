@@ -14,7 +14,7 @@ use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Http;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
@@ -281,7 +281,7 @@ final class RequestObject
 			return $this->headers->get('Sec-CH-UA-Model');
 		}
 
-		return Internal::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+		return Http::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
 	}
 
 	public function locale(): string
