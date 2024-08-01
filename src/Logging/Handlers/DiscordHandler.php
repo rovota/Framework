@@ -35,8 +35,6 @@ class DiscordHandler extends AbstractProcessingHandler
 
 	// -----------------
 
-	// TODO: Update this method to match new Client.
-
 	protected function write(LogRecord $record): void
 	{
 		if ($this->initialized === false) {

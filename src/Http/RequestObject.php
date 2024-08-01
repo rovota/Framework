@@ -14,7 +14,7 @@ use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
-use Rovota\Framework\Support\Http;
+use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
@@ -281,7 +281,7 @@ final class RequestObject
 			return $this->headers->get('Sec-CH-UA-Model');
 		}
 
-		return Http::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+		return Internal::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
 	}
 
 	public function locale(): string
@@ -446,7 +446,7 @@ final class RequestObject
 			return $this->acceptable_locales;
 		}
 
-		$locales = Http::acceptHeaderToArray($this->headers->get('Accept-Language'));
+		$locales = $this->acceptHeaderToArray($this->headers->get('Accept-Language'));
 		if (empty($locales)) {
 			return [Localization::getDefaultLocale() => 1.0];
 		}
@@ -469,7 +469,7 @@ final class RequestObject
 			return $this->acceptable_encodings;
 		}
 
-		$encodings = Http::acceptHeaderToArray($this->headers->get('Accept-Encoding'));
+		$encodings = $this->acceptHeaderToArray($this->headers->get('Accept-Encoding'));
 		return $this->acceptable_encodings = $encodings;
 	}
 
@@ -479,7 +479,7 @@ final class RequestObject
 			return $this->acceptable_content_types;
 		}
 
-		$types = Http::acceptHeaderToArray($this->headers->get('Accept'));
+		$types = $this->acceptHeaderToArray($this->headers->get('Accept'));
 		return $this->acceptable_content_types = $types;
 	}
 
@@ -508,6 +508,24 @@ final class RequestObject
 			}
 			return $actual[1] === '*';
 		}
+	}
+
+	// -----------------
+
+	protected function acceptHeaderToArray(string|null $header): array
+	{
+		$header = trim($header ?? '');
+		if (mb_strlen($header) === 0) {
+			return [];
+		}
+		return array_reduce(explode(',', $header),
+			function ($carry, $element) {
+				$type = Str::before($element, ';');
+				$quality = str_contains($element, ';q=') ? Str::afterLast($element, ';q=') : 1.00;
+				$carry[trim($type)] = (float) $quality;
+				return $carry;
+			},[]
+		);
 	}
 
 }
