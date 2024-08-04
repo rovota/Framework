@@ -9,7 +9,11 @@ use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
 use Rovota\Framework\Http\RequestObject;
+use Rovota\Framework\Http\Response;
+use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Responses\RedirectResponse;
 use Rovota\Framework\Kernel\Framework;
+use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
@@ -63,6 +67,20 @@ if (!function_exists('request')) {
 	function request(): RequestObject
 	{
 		return Request::current();
+	}
+}
+
+if (!function_exists('response')) {
+	function response(mixed $content, StatusCode|int $status = StatusCode::Ok): ResponseObject
+	{
+		return Response::make($content, $status);
+	}
+}
+
+if (!function_exists('redirect')) {
+	function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
+	{
+		return Response::redirect($location, $status);
 	}
 }
 

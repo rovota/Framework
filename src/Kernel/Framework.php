@@ -11,6 +11,7 @@ use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\Response;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Logging\Logging;
@@ -57,6 +58,7 @@ final class Framework
 		Encryption::initialize();
 		Request::initialize();
 		Localization::initialize();
+		Response::initialize();
 
 		// Additional
 		TextConverter::initialize();
