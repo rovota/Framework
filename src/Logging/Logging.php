@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Logging;
 
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Logging\Drivers\Discord;
 use Rovota\Framework\Logging\Drivers\Monolog;
 use Rovota\Framework\Logging\Drivers\Stack;
@@ -15,7 +16,6 @@ use Rovota\Framework\Logging\Drivers\Stream;
 use Rovota\Framework\Logging\Enums\Driver;
 use Rovota\Framework\Logging\Exceptions\ChannelMisconfigurationException;
 use Rovota\Framework\Logging\Exceptions\MissingChannelConfigException;
-use Rovota\Framework\Logging\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Support\Internal;
 
@@ -83,7 +83,11 @@ final class Logging
 
 	public static function add(string $name, array $config): void
 	{
-		self::$channels[$name] = self::build($name, $config);
+		$channel = self::build($name, $config);
+
+		if ($channel instanceof ChannelInterface) {
+			self::$channels[$name] = $channel;
+		}
 	}
 
 	public static function get(string|null $name = null): ChannelInterface|null
