@@ -25,6 +25,32 @@ class RequestData extends Bucket
 
 	// -----------------
 
+	public function whenFilled(string $key, callable $callback): mixed
+	{
+		if ($this->filled($key)) {
+			return $callback();
+		}
+		return null;
+	}
+
+	public function whenPresent(string $key, callable $callback): mixed
+	{
+		if ($this->has($key)) {
+			return $callback();
+		}
+		return null;
+	}
+
+	public function whenMissing(string $key, callable $callback): mixed
+	{
+		if ($this->has($key) === false) {
+			return $callback();
+		}
+		return null;
+	}
+
+	// -----------------
+
 	/**
 	 * @internal
 	 */
