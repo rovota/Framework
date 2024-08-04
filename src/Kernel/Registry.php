@@ -7,8 +7,13 @@
 
 namespace Rovota\Framework\Kernel;
 
+use BackedEnum;
+use DateTime;
+use DateTimeZone;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Moment;
+use Rovota\Framework\Support\Text;
 
 /**
  * @internal
@@ -73,6 +78,55 @@ final class Registry
 	public static function set(mixed $key, mixed $value = null): void
 	{
 		self::$entries->set($key, $value);
+	}
+
+	// -----------------
+
+	public static function array(string $key, array $default = []): array
+	{
+		return self::$entries->array($key, $default);
+	}
+
+	public static function bool(string $key, bool $default = false): bool
+	{
+		return self::$entries->bool($key, $default);
+	}
+
+	public static function date(string $key, DateTimeZone|null $timezone = null): DateTime|null
+	{
+		return self::$entries->date($key, $timezone);
+	}
+
+	public static function enum(string $key, BackedEnum|string $class, BackedEnum|null $default = null): BackedEnum|null
+	{
+		return self::$entries->enum($key, $class, $default);
+	}
+
+	public static function float(string $key, float $default = 0.00): float|false
+	{
+		return self::$entries->float($key, $default);
+	}
+
+	public static function int(string $key, int $default = 0): int|false
+	{
+		return self::$entries->int($key, $default);
+	}
+
+	public static function string(string $key, string $default = ''): string
+	{
+		return self::$entries->string($key, $default);
+	}
+
+	// -----------------
+
+	public static function text(string $key, Text $default = new Text()): Text
+	{
+		return self::$entries->text($key, $default);
+	}
+
+	public static function moment(string $key, mixed $default = null, DateTimeZone|int|string|null $timezone = null): Moment|null
+	{
+		return self::$entries->moment($key, $default, $timezone);
 	}
 
 }
