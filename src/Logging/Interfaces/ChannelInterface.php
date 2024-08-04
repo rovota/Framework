@@ -13,6 +13,14 @@ use Stringable;
 interface ChannelInterface
 {
 
+	public function __toString(): string;
+
+	// -----------------
+
+	public static function create(array $options, string|null $name = null): ChannelInterface;
+
+	// -----------------
+
 	public function isDefault(): bool;
 
 	// -----------------
