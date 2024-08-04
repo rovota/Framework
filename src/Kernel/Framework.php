@@ -54,6 +54,7 @@ final class Framework
 		self::serverCompatCheck();
 
 		// Foundation
+		Registry::initialize();
 		Logging::initialize();
 		Encryption::initialize();
 		Request::initialize();
