@@ -11,6 +11,9 @@ use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 
+/**
+ * @internal
+ */
 final class RequestManager
 {
 	protected static Request $current;
@@ -23,9 +26,6 @@ final class RequestManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
 		self::$current = new Request([

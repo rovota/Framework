@@ -13,6 +13,9 @@ use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Arr;
 use Throwable;
 
+/**
+ * @internal
+ */
 final class CookieManager
 {
 
@@ -36,9 +39,6 @@ final class CookieManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
 		self::$received = new Map();
@@ -55,10 +55,17 @@ final class CookieManager
 
 	// -----------------
 
+	public static function createCookie(string $name, string|null $value, array $options = []): Cookie
+	{
+		return new Cookie($name, $value, $options);
+	}
+
+	// -----------------
+
 	/**
 	 * @returns Map<string, Cookie>
 	 */
-	public static function received(): Map
+	public static function getReceived(): Map
 	{
 		return self::$received;
 	}
@@ -68,18 +75,10 @@ final class CookieManager
 	/**
 	 * @returns Map<string, Cookie>
 	 */
-	public static function queued(): Map
+	public static function getQueued(): Map
 	{
 		return self::$queued;
 	}
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
 
 	// -----------------
 
