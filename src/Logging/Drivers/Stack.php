@@ -72,7 +72,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->log($level, $message, $context); continue;
 			}
-			LoggingManager::get($channel)->log($level, $message, $context);
+			LoggingManager::getChannel($channel)->log($level, $message, $context);
 		}
 	}
 
@@ -124,7 +124,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->{$type}($message, $context); continue;
 			}
-			LoggingManager::get($channel)->{$type}($message, $context);
+			LoggingManager::getChannel($channel)->{$type}($message, $context);
 		}
 	}
 

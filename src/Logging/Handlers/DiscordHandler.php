@@ -43,7 +43,7 @@ class DiscordHandler extends AbstractProcessingHandler
 		}
 
 		try {
-			$this->client->post($this->url)->json([
+			$this->client->post($this->url)->withJson([
 				'content' => Moment::create($record->datetime)->toRfc3339String(),
 				'embeds' => [$this->createEmbed($record)],
 			])->execute();

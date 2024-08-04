@@ -66,7 +66,7 @@ final class Request
 		}
 
 		if (count($target->parameters) > 0) {
-			$this->parameters($target->parameters);
+			$this->withParameters($target->parameters);
 			$target->stripParameters();
 		}
 
