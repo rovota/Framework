@@ -32,7 +32,7 @@ trait UrlModifiers
 	public function subdomain(string $subdomain): static
 	{
 		if ($this->config->domain === null) {
-			$this->domain(RequestManager::current()->targetHost());
+			$this->domain(RequestManager::getCurrent()->targetHost());
 		}
 
 		$subdomain = trim($subdomain);
@@ -143,7 +143,7 @@ trait UrlModifiers
 
 	public function currentHostAsDomain(): static
 	{
-		$this->domain(RequestManager::current()->targetHost());
+		$this->domain(RequestManager::getCurrent()->targetHost());
 		return $this;
 	}
 

@@ -68,7 +68,7 @@ if (!function_exists('moment')) {
 if (!function_exists('request')) {
 	function request(): Request
 	{
-		return RequestManager::current();
+		return RequestManager::getCurrent();
 	}
 }
 

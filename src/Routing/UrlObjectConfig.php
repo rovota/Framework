@@ -39,12 +39,12 @@ class UrlObjectConfig extends Config
 
 	protected function getDomain(): string
 	{
-		return $this->string('domain', RequestManager::current()->targetHost());
+		return $this->string('domain', RequestManager::getCurrent()->targetHost());
 	}
 
 	protected function getPort(): int
 	{
-		return $this->int('port', RequestManager::current()->port());
+		return $this->int('port', RequestManager::getCurrent()->port());
 	}
 
 	// -----------------

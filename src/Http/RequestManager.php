@@ -38,7 +38,7 @@ final class RequestManager
 
 	// -----------------
 
-	public static function current(): Request
+	public static function getCurrent(): Request
 	{
 		return self::$current;
 	}
