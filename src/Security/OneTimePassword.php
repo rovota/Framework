@@ -9,31 +9,24 @@ namespace Rovota\Framework\Security;
 
 use OTPHP\TOTP;
 use OTPHP\TOTPInterface;
-use Rovota\Framework\Caching\Caching;
+use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Support\Clock;
 use Rovota\Framework\Support\QrCode;
 
 final class OneTimePassword
 {
-	protected TOTPInterface $agent;
+	protected TOTPInterface $totp;
 
 	// -----------------
 
 	public function __construct(string|null $secret, int $digits = 6, int $period = 30, string $digest = 'sha1', int $timestamp = 0)
 	{
 		$clock = new Clock();
-		$this->agent = $secret === null ? TOTP::generate($clock) : TOTP::createFromSecret($secret, $clock);
-		$this->agent->setPeriod($period);
-		$this->agent->setDigest($digest);
-		$this->agent->setDigits($digits);
-		$this->agent->setEpoch($timestamp);
-	}
-
-	// -----------------
-
-	public function agent(): TOTPInterface
-	{
-		return $this->agent;
+		$this->totp = $secret === null ? TOTP::generate($clock) : TOTP::createFromSecret($secret, $clock);
+		$this->totp->setPeriod($period);
+		$this->totp->setDigest($digest);
+		$this->totp->setDigits($digits);
+		$this->totp->setEpoch($timestamp);
 	}
 
 	// -----------------
@@ -43,7 +36,7 @@ final class OneTimePassword
 		return new self(null, $digits, $period);
 	}
 
-	public static function fromSecret(string $secret, int $digits = 6, int $period = 30): self
+	public static function from(string $secret, int $digits = 6, int $period = 30): self
 	{
 		return new self($secret, $digits, $period);
 	}
@@ -52,15 +45,15 @@ final class OneTimePassword
 
 	public function verify(string $input, int|null $timestamp = null, int|null $leeway = null): bool
 	{
-		$leeway = $leeway ?? round($this->agent->getPeriod() / 4);
-		$result = $this->agent->verify($input, $timestamp, $leeway);
+		$leeway = $leeway ?? round($this->totp->getPeriod() / 4);
+		$result = $this->totp->verify($input, $timestamp, $leeway);
 
 		if ($result === true) {
 			$key = hash('sha256', $this->secret().'-'.$input);
-			if (Caching::get()->has($key)) {
+			if (CacheManager::get()->has($key)) {
 				return false;
 			}
-			Caching::get()->set($key, 1, $this->agent()->getPeriod());
+			CacheManager::get()->set($key, 1, $this->totp->getPeriod());
 		}
 
 		return $result;
@@ -70,31 +63,31 @@ final class OneTimePassword
 
 	public function current(): string
 	{
-		return $this->agent->now();
+		return $this->totp->now();
 	}
 
 	public function at(int $timestamp): string
 	{
-		return $this->agent->at($timestamp);
+		return $this->totp->at($timestamp);
 	}
 
 	// -----------------
 
 	public function label(string $label): self
 	{
-		$this->agent->setLabel(trim($label));
+		$this->totp->setLabel(trim($label));
 		return $this;
 	}
 
 	public function issuer(string $issuer): self
 	{
-		$this->agent->setIssuer(trim($issuer));
+		$this->totp->setIssuer(trim($issuer));
 		return $this;
 	}
 
 	public function parameter(string $name, string $value): self
 	{
-		$this->agent->setParameter(trim($name), trim($value));
+		$this->totp->setParameter(trim($name), trim($value));
 		return $this;
 	}
 
@@ -102,14 +95,14 @@ final class OneTimePassword
 
 	public function secret(): string
 	{
-		return $this->agent->getSecret();
+		return $this->totp->getSecret();
 	}
 
 	// -----------------
 
 	public function image(): QrCode
 	{
-		return QrCode::from($this->agent()->getProvisioningUri());
+		return QrCode::from($this->totp->getProvisioningUri());
 	}
 
 }

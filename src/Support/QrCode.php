@@ -9,10 +9,14 @@ namespace Rovota\Framework\Support;
 
 use JsonSerializable;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Support\Traits\QrCodeModifiers;
 use Stringable;
 
 final class QrCode implements Stringable, JsonSerializable
 {
+	use QrCodeModifiers;
+
+	// -----------------
 
 	protected QrCodeConfig $config;
 
@@ -28,6 +32,16 @@ final class QrCode implements Stringable, JsonSerializable
 	public function __toString(): string
 	{
 		return (string) $this->url();
+	}
+
+	public function __get(string $name)
+	{
+		return $this->config->get($name);
+	}
+
+	public function __set(string $name, $value): void
+	{
+		$this->config->set($name, $value);
 	}
 
 	// -----------------
@@ -46,53 +60,15 @@ final class QrCode implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function config(): QrCodeConfig
-	{
-		return $this->config;
-	}
-
-	// -----------------
-
-	public function margin(int $margin): QrCode
-	{
-		$this->config->margin = limit(abs($margin), 0, 100);
-		return $this;
-	}
-
-	// -----------------
-
-	public function size(int $height, int $width): QrCode
-	{
-		$this->config->height = $height;
-		$this->config->width = $width;
-		return $this;
-	}
-
-	// -----------------
-
-	public function background(string $color): QrCode
-	{
-		$this->config->background = trim($color, '#');
-		return $this;
-	}
-
-	public function foreground(string $color): QrCode
-	{
-		$this->config->foreground = trim($color, '#');
-		return $this;
-	}
-
-	// -----------------
-
 	public function url(): UrlObject
 	{
-		return Url::foreign('api.qrserver.com/v1/create-qr-code')->parameters([
-			'size' => $this->config->size,
-			'bgcolor' => $this->config->background,
-			'color' => $this->config->foreground,
-			'qzone' => $this->config->margin,
-			'format' => $this->config->format,
-			'data' => $this->config->data,
+		return Url::foreign('api.qrserver.com/v1/create-qr-code')->withParameters([
+			'size' => $this->size,
+			'bgcolor' => $this->background,
+			'color' => $this->foreground,
+			'qzone' => $this->margin,
+			'format' => $this->format,
+			'data' => $this->data,
 		]);
 	}
 

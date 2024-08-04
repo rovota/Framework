@@ -13,9 +13,9 @@ use Rovota\Framework\Support\Internal;
 final class Language
 {
 
-	protected string $locale;
+	public readonly string $locale;
 
-	protected Bucket $data;
+	public readonly Bucket $data;
 
 	// -----------------
 
@@ -49,16 +49,6 @@ final class Language
 	}
 
 	// -----------------
-
-	public function locale(): string
-	{
-		return $this->locale;
-	}
-
-	public function data(): Bucket
-	{
-		return $this->data;
-	}
 
 	public function about(): Bucket
 	{

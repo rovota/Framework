@@ -12,19 +12,19 @@ namespace Rovota\Framework\Http\Client\Traits;
 trait ClientModifiers
 {
 
-	public function latestVersion(): static
+	public function setLatestVersion(): static
 	{
 		$this->config->set('version', 3.0);
 		return $this;
 	}
 
-	public function oldestVersion(): static
+	public function setOldestVersion(): static
 	{
 		$this->config->set('version', 1.1);
 		return $this;
 	}
 
-	public function version(int|float $version): static
+	public function setVersion(int|float $version): static
 	{
 		$this->config->set('version', (float) $version);
 		return $this;

@@ -21,6 +21,7 @@ class DiscordHandler extends AbstractProcessingHandler
 {
 
 	private bool $initialized = false;
+
 	private Client $client;
 
 	private string $url;

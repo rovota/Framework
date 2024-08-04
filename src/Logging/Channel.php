@@ -10,9 +10,7 @@ namespace Rovota\Framework\Logging;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
-use Rovota\Framework\Logging\Drivers\Stack;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
-use Rovota\Framework\Support\Str;
 use Stringable;
 
 abstract class Channel implements ChannelInterface
@@ -46,16 +44,9 @@ abstract class Channel implements ChannelInterface
 
 	// -----------------
 
-	public static function create(array $options, string|null $name = null): ChannelInterface
-	{
-		return Logging::build($name ?? Str::random(20), $options);
-	}
-
-	// -----------------
-
 	public function isDefault(): bool
 	{
-		return Logging::getDefault() === $this->name;
+		return LoggingManager::getDefault() === $this->name;
 	}
 
 	// -----------------
@@ -74,7 +65,7 @@ abstract class Channel implements ChannelInterface
 
 	public function attach(ChannelInterface|string|array $channel): ChannelInterface
 	{
-		return Stack::create([$this])->attach($channel);
+		return LoggingManager::createStack([$this])->attach($channel);
 	}
 
 	// -----------------

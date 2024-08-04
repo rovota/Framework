@@ -17,10 +17,6 @@ interface CacheInterface
 
 	// -----------------
 
-	public static function create(array $options, string|null $name = null): CacheInterface;
-
-	// -----------------
-
 	public function isDefault(): bool;
 
 	// -----------------

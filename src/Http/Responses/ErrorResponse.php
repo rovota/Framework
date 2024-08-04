@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Http\Responses;
 
-use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response;

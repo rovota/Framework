@@ -25,57 +25,55 @@ trait SharedModifiers
 
 	// -----------------
 
-	public function header(string $name, string $value): static
+	public function withHeader(string $name, string $value): static
 	{
 		$this->config->set('headers.'.$name, trim($value));
 		return $this;
 	}
 
-	public function headers(array $headers): static
+	public function withHeaders(array $headers): static
 	{
 		foreach ($headers as $name => $value) {
-			$this->header($name, $value);
+			$this->withHeader($name, $value);
 		}
 		return $this;
 	}
 
 	// -----------------
 
-	public function useragent(string $useragent): static
+	public function setUseragent(string $useragent): static
 	{
-		$this->header('User-Agent', $useragent);
+		$this->withHeader('User-Agent', $useragent);
 		return $this;
 	}
 
 	public function preferLocale(string $value): static
 	{
-		$this->header('Accept-Language', $value);
+		$this->withHeader('Accept-Language', $value);
 		return $this;
 	}
 
 	public function preferFresh(): static
 	{
-		$this->header('Cache-Control', 'no-cache');
+		$this->withHeader('Cache-Control', 'no-cache');
 		return $this;
 	}
 
 	// -----------------
 
-	public function authorization(string $type, string $credentials): static
+	public function provideAuthorization(string $type, string $credentials): static
 	{
-		$this->header('Authorization', sprintf('%s %s', $type, $credentials));
+		$this->withHeader('Authorization', sprintf('%s %s', $type, $credentials));
 		return $this;
 	}
 
-	public function bearer(string $token): static
+	public function provideBearerToken(string $token): static
 	{
-		$this->authorization('Bearer', $token);
+		$this->provideAuthorization('Bearer', $token);
 		return $this;
 	}
 
-	// -----------------
-
-	public function basicAuth(string $username, string $password): static
+	public function provideBasicAuth(string $username, string $password): static
 	{
 		$this->config->set('auth', [$username, $password]);
 		return $this;
@@ -83,19 +81,19 @@ trait SharedModifiers
 
 	// -----------------
 
-	public function delay(int|float $milliseconds): static
+	public function setDelay(int|float $milliseconds): static
 	{
 		$this->config->set('delay', $milliseconds);
 		return $this;
 	}
 
-	public function connectTimeout(int|float $seconds): static
+	public function setConnectTimeout(int|float $seconds): static
 	{
 		$this->config->set('timeout', (float) $seconds);
 		return $this;
 	}
 
-	public function responseTimeout(int|float $seconds): static
+	public function setResponseTimeout(int|float $seconds): static
 	{
 		$this->config->set('connect_timeout', (float) $seconds);
 		return $this;

@@ -17,10 +17,6 @@ interface ChannelInterface
 
 	// -----------------
 
-	public static function create(array $options, string|null $name = null): ChannelInterface;
-
-	// -----------------
-
 	public function isDefault(): bool;
 
 	// -----------------

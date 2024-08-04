@@ -7,10 +7,8 @@
 
 namespace Rovota\Framework\Facades;
 
-use Rovota\Framework\Logging\Channel;
-use Rovota\Framework\Logging\Drivers\Stack;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
-use Rovota\Framework\Logging\Logging;
+use Rovota\Framework\Logging\LoggingManager;
 use Stringable;
 
 final class Log
@@ -24,61 +22,61 @@ final class Log
 
 	public static function channel(string $name): ChannelInterface|null
 	{
-		return Logging::get($name);
+		return LoggingManager::getChannel($name);
 	}
 
 	// -----------------
 
-	public static function stack(array $channels, string|null $name = null): ChannelInterface
+	public static function stack(array $channels, string|null $name = null): ChannelInterface|null
 	{
-		return Stack::create($channels, $name);
+		return LoggingManager::createStack($channels, $name);
 	}
 
-	public static function build(array $options, string|null $name = null): ChannelInterface
+	public static function create(array $config, string|null $name = null): ChannelInterface|null
 	{
-		return Channel::create($options, $name);
+		return LoggingManager::createChannel($config, $name);
 	}
 
 	// -----------------
 
 	public static function debug(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->debug($message, $context);
+		LoggingManager::getChannel()?->debug($message, $context);
 	}
 
 	public static function info(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->info($message, $context);
+		LoggingManager::getChannel()?->info($message, $context);
 	}
 
 	public static function notice(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->notice($message, $context);
+		LoggingManager::getChannel()?->notice($message, $context);
 	}
 
 	public static function warning(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->warning($message, $context);
+		LoggingManager::getChannel()?->warning($message, $context);
 	}
 
 	public static function error(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->error($message, $context);
+		LoggingManager::getChannel()?->error($message, $context);
 	}
 
 	public static function critical(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->critical($message, $context);
+		LoggingManager::getChannel()?->critical($message, $context);
 	}
 
 	public static function alert(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->alert($message, $context);
+		LoggingManager::getChannel()?->alert($message, $context);
 	}
 
 	public static function emergency(string|Stringable $message, array $context = []): void
 	{
-		Logging::get()?->emergency($message, $context);
+		LoggingManager::getChannel()?->emergency($message, $context);
 	}
 
 }

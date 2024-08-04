@@ -23,7 +23,7 @@ class Response implements Stringable
 
 	public StatusCode $status;
 
-	public Config $config;
+	public readonly Config $config;
 
 	// -----------------
 

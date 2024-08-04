@@ -62,11 +62,11 @@ final class Request
 	protected function getSanitizedTarget(UrlObject|string $target): string
 	{
 		if (is_string($target)) {
-			$target = UrlObject::fromString($target);
+			$target = UrlObject::from($target);
 		}
 
-		if (count($target->config()->parameters) > 0) {
-			$this->parameters($target->config()->parameters);
+		if (count($target->parameters) > 0) {
+			$this->parameters($target->parameters);
 			$target->stripParameters();
 		}
 

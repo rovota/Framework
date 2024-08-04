@@ -9,7 +9,7 @@ namespace Rovota\Framework\Kernel;
 
 use Monolog\Level;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Logging\Logging;
+use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Internal;
@@ -72,7 +72,7 @@ final class ExceptionHandler
 	public static function logThrowable(Throwable $throwable): void
 	{
 		if (self::$log_enabled) {
-			Logging::get()->log(Level::Critical, $throwable->getMessage(), [
+			LoggingManager::getChannel()->log(Level::Critical, $throwable->getMessage(), [
 				$throwable::class, $throwable->getFile(), $throwable->getLine(), self::getRequestInfo()['full_url']
 			]);
 		}
@@ -81,7 +81,7 @@ final class ExceptionHandler
 	public static function logError(int $number, string $message, string $file, int $line): void
 	{
 		if (self::$log_enabled) {
-			Logging::get()->error($message, [
+			LoggingManager::getChannel()->error($message, [
 				PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error', $file, $line
 			]);
 		}

@@ -82,7 +82,7 @@ final class Number
 
 	protected static function getLocale(string|null $locale): string
 	{
-		return $locale ?? Localization::getActiveLanguage()->locale() ?? 'en_US';
+		return $locale ?? Localization::getActiveLanguage()->locale ?? 'en_US';
 	}
 
 }

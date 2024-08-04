@@ -17,29 +17,10 @@ use Rovota\Framework\Support\Text;
 trait RequestInput
 {
 
-	protected readonly string|null $body;
+	public readonly string|null $body;
 
-	protected readonly RequestData $post;
-	protected readonly RequestData $query;
-
-	// -----------------
-
-	public function body(): string|null
-	{
-		return $this->body;
-	}
-
-	// -----------------
-
-	public function post(): RequestData
-	{
-		return $this->post;
-	}
-
-	public function query(): RequestData
-	{
-		return $this->query;
-	}
+	public readonly RequestData $post;
+	public readonly RequestData $query;
 
 	// -----------------
 

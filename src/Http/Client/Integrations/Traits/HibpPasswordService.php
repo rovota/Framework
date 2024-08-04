@@ -69,11 +69,6 @@ trait HibpPasswordService
 		return Str::limit(strtoupper($hash), 5);
 	}
 
-	private function getSuffixFromHash(string $hash): string
-	{
-		return substr(strtoupper($hash), 5);
-	}
-
 	// -----------------
 
 	private function retrieveResultsForPrefix(string $prefix): array
@@ -105,8 +100,8 @@ trait HibpPasswordService
 
 		try {
 			$response = $this->get($url)
-				->header('Add-Padding', 'true')
-				->connectTimeout(2)
+				->withHeader('Add-Padding', 'true')
+				->setConnectTimeout(2)
 				->execute()
 				->content();
 		} catch (Throwable $throwable) {

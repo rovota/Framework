@@ -9,8 +9,7 @@ namespace Rovota\Framework\Logging\Drivers;
 
 use Rovota\Framework\Logging\ChannelConfig;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
-use Rovota\Framework\Logging\Logging;
-use Rovota\Framework\Support\Str;
+use Rovota\Framework\Logging\LoggingManager;
 use Stringable;
 
 final class Stack implements ChannelInterface
@@ -37,20 +36,9 @@ final class Stack implements ChannelInterface
 
 	// -----------------
 
-	public static function create(array $channels, string|null $name = null): ChannelInterface
-	{
-		return Logging::build($name ?? Str::random(20), [
-			'driver' => 'stack',
-			'label' => 'Unnamed Channel',
-			'channels' => $channels,
-		]);
-	}
-
-	// -----------------
-
 	public function isDefault(): bool
 	{
-		return Logging::getDefault() === $this->name;
+		return LoggingManager::getDefault() === $this->name;
 	}
 
 	// -----------------
@@ -84,7 +72,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->log($level, $message, $context); continue;
 			}
-			Logging::get($channel)->log($level, $message, $context);
+			LoggingManager::get($channel)->log($level, $message, $context);
 		}
 	}
 
@@ -136,7 +124,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->{$type}($message, $context); continue;
 			}
-			Logging::get($channel)->{$type}($message, $context);
+			LoggingManager::get($channel)->{$type}($message, $context);
 		}
 	}
 

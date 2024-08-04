@@ -36,7 +36,7 @@ final class Url
 
 	public static function foreign(string $location, array $parameters = []): UrlObject
 	{
-		return UrlObject::fromString($location)->parameters($parameters);
+		return UrlObject::from($location)->withParameters($parameters);
 	}
 
 	// -----------------

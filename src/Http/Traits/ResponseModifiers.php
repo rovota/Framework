@@ -14,7 +14,7 @@ use Rovota\Framework\Support\Str;
 trait ResponseModifiers
 {
 
-	public function header(string $name, string $value): static
+	public function withHeader(string $name, string $value): static
 	{
 		$name = trim($name);
 		$value = trim($value);
@@ -26,10 +26,10 @@ trait ResponseModifiers
 		return $this;
 	}
 
-	public function headers(array $headers): static
+	public function withHeaders(array $headers): static
 	{
 		foreach ($headers as $name => $value) {
-			$this->header($name, $value);
+			$this->withHeader($name, $value);
 		}
 
 		return $this;
@@ -59,14 +59,14 @@ trait ResponseModifiers
 
 	public function setContentType(string $value): static
 	{
-		$this->header('Content-Type', trim($value));
+		$this->withHeader('Content-Type', trim($value));
 
 		return $this;
 	}
 
 	public function setContentDisposition(string $value): static
 	{
-		$this->header('Content-Disposition', trim($value));
+		$this->withHeader('Content-Disposition', trim($value));
 
 		return $this;
 	}

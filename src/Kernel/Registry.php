@@ -15,9 +15,6 @@ use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 
-/**
- * @internal
- */
 final class Registry
 {
 

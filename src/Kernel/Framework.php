@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Kernel;
 
-use Rovota\Framework\Caching\Caching;
+use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\CookieManager;
@@ -16,8 +16,8 @@ use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
-use Rovota\Framework\Logging\Logging;
-use Rovota\Framework\Security\Encryption;
+use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
 final class Framework
@@ -53,9 +53,9 @@ final class Framework
 
 		// Foundation
 		Registry::initialize();
-		Logging::initialize();
-		Caching::initialize();
-		Encryption::initialize();
+		LoggingManager::initialize();
+		CacheManager::initialize();
+		EncryptionManager::initialize();
 		CookieManager::initialize();
 		RequestManager::initialize();
 		Localization::initialize();

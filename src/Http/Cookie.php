@@ -10,7 +10,7 @@ namespace Rovota\Framework\Http;
 use DateTime;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
-use Rovota\Framework\Security\Encryption;
+use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Moment;
 use Throwable;
 
@@ -23,7 +23,7 @@ final class Cookie
 
 	protected array $options;
 
-	public bool $received;
+	protected bool $received;
 
 	// -----------------
 
@@ -58,7 +58,7 @@ final class Cookie
 
 		try {
 			if (CookieManager::hasEncryptionEnabled($this->name)) {
-				$value = Encryption::encryptString($value);
+				$value = EncryptionManager::getAgent()->encrypt($value, false);
 			}
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
@@ -98,11 +98,6 @@ final class Cookie
 	protected function addPrefix(string $name): string
 	{
 		return sprintf('__Secure-%s', $name);
-	}
-
-	protected function stripPrefix(string $name): string
-	{
-		return str_replace('__Secure-', '', trim($name));
 	}
 
 	// -----------------

@@ -28,16 +28,23 @@ final class UrlObject implements Stringable, JsonSerializable
 		$this->config = new UrlObjectConfig();
 
 		foreach (convert_to_array($data) as $key => $value) {
-			$method = Str::camel($key);
-			if (method_exists($this, $method)) {
-				$this->$method($value);
-			}
+			$this->{$key} = $value;
 		}
 	}
 
 	public function __toString(): string
 	{
 		return $this->build();
+	}
+
+	public function __get(string $name)
+	{
+		return $this->config->get($name);
+	}
+
+	public function __set(string $name, $value): void
+	{
+		$this->config->set($name, $value);
 	}
 
 	// -----------------
@@ -49,9 +56,44 @@ final class UrlObject implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public function config(): UrlObjectConfig
+	public static function from(string $url): UrlObject
 	{
-		return $this->config;
+		$object = new UrlObject();
+
+		// Extract scheme
+		if (Str::contains($url, '://')) {
+			$object->withScheme(Str::before($url, '://'));
+			$url = Str::after($url, '://');
+		}
+
+		// Extract fragment
+		if (Str::contains($url, '#')) {
+			$object->withFragment(Str::afterLast($url, '#'));
+			$url = Str::beforeLast($url, '#');
+		}
+
+		// Extract query parameters
+		if (Str::contains($url, '?')) {
+			$parameters = Str::after($url, '?');
+			$object->withParameters(Url::queryToArray($parameters));
+			$url = Str::beforeLast($url, '?');
+		}
+
+		// Extract path
+		if (Str::contains($url, '/')) {
+			$object->withPath(Str::after($url, '/'));
+			$url = Str::before($url, '/');
+		}
+
+		// Extract port number
+		if (Str::contains($url, ':')) {
+			$object->withPort((int) Str::after($url, ':'));
+			$url = Str::before($url, ':');
+		}
+
+		$object->withDomain(strlen($url) > 0 ? $url : '-');
+
+		return $object;
 	}
 
 	// -----------------
@@ -59,48 +101,6 @@ final class UrlObject implements Stringable, JsonSerializable
 	public function copy(): UrlObject
 	{
 		return clone $this;
-	}
-
-	// -----------------
-
-	public static function fromString(string $url): UrlObject
-	{
-		$object = new UrlObject();
-
-		// Extract scheme
-		if (Str::contains($url, '://')) {
-			$object->scheme(Str::before($url, '://'));
-			$url = Str::after($url, '://');
-		}
-
-		// Extract fragment
-		if (Str::contains($url, '#')) {
-			$object->fragment(Str::afterLast($url, '#'));
-			$url = Str::beforeLast($url, '#');
-		}
-
-		// Extract query parameters
-		if (Str::contains($url, '?')) {
-			$parameters = Str::after($url, '?');
-			$object->parameters(Url::queryToArray($parameters));
-			$url = Str::beforeLast($url, '?');
-		}
-
-		// Extract path
-		if (Str::contains($url, '/')) {
-			$object->path(Str::after($url, '/'));
-			$url = Str::before($url, '/');
-		}
-
-		// Extract port number
-		if (Str::contains($url, ':')) {
-			$object->port((int) Str::after($url, ':'));
-			$url = Str::before($url, ':');
-		}
-
-		$object->domain(strlen($url) > 0 ? $url : '-');
-
-		return $object;
 	}
 
 	// -----------------

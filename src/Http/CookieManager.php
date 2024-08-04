@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Http;
 
 use Rovota\Framework\Kernel\Registry;
-use Rovota\Framework\Security\Encryption;
+use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Arr;
 use Throwable;
@@ -100,7 +100,7 @@ final class CookieManager
 
 			if (self::hasEncryptionEnabled($name)) {
 				try {
-					$value = Encryption::decryptString($value);
+					$value = EncryptionManager::getAgent()->decrypt($value, false);
 				} catch (Throwable) {
 					continue;
 				}

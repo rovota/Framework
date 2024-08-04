@@ -16,15 +16,20 @@ use Rovota\Framework\Caching\Exceptions\MissingCacheStoreException;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
+use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Str;
 
-final class Caching
+/**
+ * @internal
+ */
+final class CacheManager
 {
 
 	/**
-	 * @var array<string, CacheInterface>
+	 * @var Map<string, CacheInterface>
 	 */
-	protected static array $stores = [];
+	protected static Map $stores;
 
 	protected static string $default;
 
@@ -36,17 +41,16 @@ final class Caching
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
+		self::$stores = new Map();
+
 		$config = require Internal::projectFile('config/caching.php');
 
 		foreach ($config['stores'] as $name => $options) {
 			$store =  self::build($name, $options);
 			if ($store instanceof CacheInterface) {
-				self::$stores[$name] = $store;
+				self::$stores->set($name, $store);
 			}
 		}
 
@@ -55,7 +59,64 @@ final class Caching
 
 	// -----------------
 
-	public static function build(string $name, array $config): CacheInterface|null
+	public static function createStore(array $options, string|null $name = null): CacheInterface|null
+	{
+		return self::build($name ?? Str::random(20), $options);
+	}
+
+	// -----------------
+
+	public static function hasStore(string $name): bool
+	{
+		return isset(self::$stores[$name]);
+	}
+
+	public static function addStore(string $name, array $config): void
+	{
+		$store = self::build($name, $config);
+
+		if ($store instanceof CacheInterface) {
+			self::$stores[$name] = $store;
+		}
+	}
+
+	public static function getStore(string|null $name = null): CacheInterface|null
+	{
+		if ($name === null) {
+			$name = self::$default;
+		}
+
+		return self::$stores[$name] ?? null;
+	}
+
+	// -----------------
+
+	/**
+	 * @returns Map<string, CacheInterface>
+	 */
+	public static function getStores(): Map
+	{
+		return self::$stores;
+	}
+
+	// -----------------
+
+	public static function setDefault(string $name): void
+	{
+		if (isset(self::$stores[$name]) === false) {
+			ExceptionHandler::handleThrowable(new MissingCacheStoreException("Undefined caches cannot be set as default: '$name'."));
+		}
+		self::$default = $name;
+	}
+
+	public static function getDefault(): string
+	{
+		return self::$default;
+	}
+
+	// -----------------
+
+	protected static function build(string $name, array $config): CacheInterface|null
 	{
 		$config = new CacheStoreConfig($config);
 
@@ -75,56 +136,6 @@ final class Caching
 			Driver::Redis => new RedisDriver($name, $config),
 			default => null,
 		};
-	}
-
-	// -----------------
-
-	public static function has(string $name): bool
-	{
-		return isset(self::$stores[$name]);
-	}
-
-	public static function add(string $name, array $config): void
-	{
-		$store = self::build($name, $config);
-
-		if ($store instanceof CacheInterface) {
-			self::$stores[$name] = $store;
-		}
-	}
-
-	public static function get(string|null $name = null): CacheInterface|null
-	{
-		if ($name === null) {
-			$name = self::$default;
-		}
-
-		return self::$stores[$name] ?? null;
-	}
-
-	// -----------------
-
-	/**
-	 * @returns array<string, CacheInterface>
-	 */
-	public static function all(): array
-	{
-		return self::$stores;
-	}
-
-	// -----------------
-
-	public static function setDefault(string $name): void
-	{
-		if (isset(self::$stores[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingCacheStoreException("Undefined caches cannot be set as default: '$name'."));
-		}
-		self::$default = $name;
-	}
-
-	public static function getDefault(): string
-	{
-		return self::$default;
 	}
 
 }

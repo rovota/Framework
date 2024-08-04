@@ -10,7 +10,6 @@ namespace Rovota\Framework\Http\Responses;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\Response;
-use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Url;
@@ -18,7 +17,7 @@ use Rovota\Framework\Support\Url;
 class RedirectResponse extends Response
 {
 
-	protected UrlObject $location;
+	public UrlObject $location;
 
 	// -----------------
 
@@ -26,7 +25,7 @@ class RedirectResponse extends Response
 	{
 		$this->location = match(true) {
 			$content instanceof UrlObject => $content,
-			is_string($content) => UrlObject::fromString($content),
+			is_string($content) => UrlObject::from($content),
 			default => RequestManager::getCurrent()->url()->stripParameters()
 		};
 
@@ -42,7 +41,7 @@ class RedirectResponse extends Response
 
 	protected function prepareForPrinting(): void
 	{
-		$this->header('Location', $this->location);
+		$this->withHeader('Location', $this->location);
 	}
 
 	// -----------------
@@ -74,59 +73,5 @@ class RedirectResponse extends Response
 	// TODO: toNext()
 
 	// TODO: toIntended()
-
-	// -----------------
-
-	public function scheme(Scheme|string $scheme): static
-	{
-		$this->location->scheme($scheme);
-		return $this;
-	}
-
-	// -----------------
-
-	public function subdomain(string $subdomain): static
-	{
-		$this->location->subdomain($subdomain);
-		return $this;
-	}
-
-	public function domain(string $domain): static
-	{
-		$this->location->domain($domain);
-		return $this;
-	}
-
-	public function port(int $port): static
-	{
-		$this->location->port($port);
-		return $this;
-	}
-
-	// -----------------
-
-	public function path(string $path): static
-	{
-		$this->location->path($path);
-		return $this;
-	}
-
-	public function parameters(array $parameters): static
-	{
-		$this->location->parameters($parameters);
-		return $this;
-	}
-
-	public function parameter(string $name, mixed $value): static
-	{
-		$this->location->parameter($name, $value);
-		return $this;
-	}
-
-	public function fragment(string $fragment): static
-	{
-		$this->location->fragment($fragment);
-		return $this;
-	}
 
 }

@@ -11,69 +11,40 @@ namespace Rovota\Framework\Routing\Traits;
 
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Routing\Enums\Scheme;
-use Rovota\Framework\Support\Str;
 
+/**
+ * @property Scheme|string $scheme
+ * @property string|null $subdomain
+ * @property string $domain
+ * @property int $port
+ * @property string $path
+ * @property array $parameters
+ * @property string|null $fragment
+ */
 trait UrlModifiers
 {
 
-	public function scheme(Scheme|string $scheme): static
+	public function withScheme(Scheme|string $scheme): static
 	{
-		if (is_string($scheme)) {
-			$scheme = Scheme::tryFrom($scheme) ?? Scheme::Https;
-		}
-
 		$this->config->scheme = $scheme;
-
 		return $this;
 	}
 	
 	// -----------------
 
-	public function subdomain(string $subdomain): static
+	public function withSubdomain(string|null $subdomain): static
 	{
-		if ($this->config->domain === null) {
-			$this->domain(RequestManager::getCurrent()->targetHost());
-		}
-
-		$subdomain = trim($subdomain);
-
-		// Set to null when unusable value is given.
-		if (mb_strlen($subdomain) === 0) {
-			$this->stripSubdomain();
-			return $this;
-		}
-
-		// Set to null when useless value is given.
-		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
-			$this->stripSubdomain();
-			return $this;
-		}
-
 		$this->config->subdomain = $subdomain;
-
 		return $this;
 	}
 
-	public function domain(string $domain): static
+	public function withDomain(string $domain): static
 	{
-		$domain = trim($domain);
-
-		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->currentHostAsDomain();
-			return $this;
-		}
-
-		if (Str::occurrences($domain, '.') > 1) {
-			$this->config->subdomain = Str::before($domain, '.');
-			$domain = Str::after($domain, '.');
-		}
-
 		$this->config->domain = $domain;
-
 		return $this;
 	}
 
-	public function port(int $port): static
+	public function withPort(int $port): static
 	{
 		$this->config->port = $port;
 		return $this;
@@ -81,69 +52,29 @@ trait UrlModifiers
 
 	// -----------------
 
-	public function path(string $path): static
+	public function withPath(string $path): static
 	{
-		$path = trim($path, ' /');
-
-		// Set to null when unusable value is given.
-		if (mb_strlen($path) === 0 || $path === '-') {
-			$this->stripPath();
-			return $this;
-		}
-
 		$this->config->path = $path;
-
 		return $this;
 	}
 
-	public function parameters(array $parameters): static
+	public function withParameters(array $parameters): static
 	{
-		if (empty($parameters)) {
-			$this->stripParameters();
-			return $this;
-		}
-
-		foreach ($parameters as $name => $value) {
-			$this->parameter($name, $value);
-		}
-
+		$this->config->parameters = $parameters;
 		return $this;
 	}
 
-	public function parameter(string $name, mixed $value): static
+	public function withFragment(string|null $fragment): static
 	{
-		$name = 'parameters.'.strtolower(trim($name));
-
-		if ($value === null) {
-			$this->config->remove($name);
-			return $this;
-		}
-
-		$this->config->set($name, $value);
-
-		return $this;
-	}
-
-	public function fragment(string $fragment): static
-	{
-		$fragment = trim($fragment);
-
-		// Set to null when unusable value is given.
-		if (mb_strlen($fragment) === 0 || $fragment === '-') {
-			$this->stripFragment();
-			return $this;
-		}
-
 		$this->config->fragment = $fragment;
-
 		return $this;
 	}
 
 	// -----------------
 
-	public function currentHostAsDomain(): static
+	public function setCurrentHostAsDomain(): static
 	{
-		$this->domain(RequestManager::getCurrent()->targetHost());
+		$this->withDomain(RequestManager::getCurrent()->targetHost());
 		return $this;
 	}
 
@@ -151,25 +82,25 @@ trait UrlModifiers
 
 	public function stripSubdomain(): static
 	{
-		$this->config->subdomain = null;
+		$this->config->remove('subdomain');
 		return $this;
 	}
 
 	public function stripPath(): static
 	{
-		$this->config->path = null;
+		$this->config->remove('path');
 		return $this;
 	}
 
 	public function stripParameters(): static
 	{
-		$this->config->parameters = null;
+		$this->config->remove('parameters');
 		return $this;
 	}
 
 	public function stripFragment(): static
 	{
-		$this->config->fragment = null;
+		$this->config->remove('fragment');
 		return $this;
 	}
 

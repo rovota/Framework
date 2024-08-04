@@ -14,7 +14,6 @@ use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
-use Rovota\Framework\Support\Http;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
@@ -23,10 +22,9 @@ final class Request
 {
 	use RequestInput;
 
-	protected RequestHeaders $headers;
+	public readonly RequestHeaders $headers;
 
-	protected UrlObject $url;
-
+	public readonly UrlObject $url;
 
 	protected array|null $acceptable_content_types = null;
 	protected array|null $acceptable_encodings = null;
@@ -37,7 +35,7 @@ final class Request
 	public function __construct(mixed $data = [])
 	{
 		$this->headers = new RequestHeaders(array_change_key_case($data['headers']));
-		$this->url = UrlObject::fromString($this->getFullUrlString());
+		$this->url = UrlObject::from($this->getFullUrlString());
 
 		$this->body = $data['body'];
 		$this->post = new RequestData($data['post']);
@@ -45,11 +43,6 @@ final class Request
 	}
 
 	// -----------------
-
-	public function headers(): RequestHeaders
-	{
-		return $this->headers;
-	}
 
 	/**
 	 * Relies on the experimental `Sec-CH-UA-Platform` HTTP header.
@@ -94,7 +87,7 @@ final class Request
 
 	public function urlWithoutParameters(): UrlObject
 	{
-		return $this->url->copy()->parameters([]);
+		return $this->url->copy()->withParameters([]);
 	}
 
 	public function scheme(): Scheme
@@ -121,7 +114,7 @@ final class Request
 
 	public function queryString(): string
 	{
-		return Url::arrayToQuery($this->url()->config()->parameters);
+		return Url::arrayToQuery($this->url()->parameters);
 	}
 
 	// -----------------
@@ -281,7 +274,7 @@ final class Request
 			return $this->headers->get('Sec-CH-UA-Model');
 		}
 
-		return Http::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+		return RequestManager::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
 	}
 
 	public function locale(): string

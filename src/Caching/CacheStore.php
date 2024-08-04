@@ -10,7 +10,6 @@ namespace Rovota\Framework\Caching;
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Caching\Traits\CacheFunctions;
-use Rovota\Framework\Support\Str;
 
 abstract class CacheStore implements CacheInterface
 {
@@ -40,16 +39,9 @@ abstract class CacheStore implements CacheInterface
 
 	// -----------------
 
-	public static function create(array $options, string|null $name = null): CacheInterface
-	{
-		return Caching::build($name ?? Str::random(20), $options);
-	}
-
-	// -----------------
-
 	public function isDefault(): bool
 	{
-		return Caching::getDefault() === $this->name;
+		return CacheManager::getDefault() === $this->name;
 	}
 
 	// -----------------

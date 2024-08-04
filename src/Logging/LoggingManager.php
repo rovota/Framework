@@ -17,15 +17,20 @@ use Rovota\Framework\Logging\Enums\Driver;
 use Rovota\Framework\Logging\Exceptions\ChannelMisconfigurationException;
 use Rovota\Framework\Logging\Exceptions\MissingChannelException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
+use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Str;
 
-final class Logging
+/**
+ * @internal
+ */
+final class LoggingManager
 {
 
 	/**
-	 * @var array<string, ChannelInterface>
+	 * @var Map<string, ChannelInterface>
 	 */
-	protected static array $channels = [];
+	protected static Map $channels;
 
 	protected static string $default;
 
@@ -37,17 +42,16 @@ final class Logging
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
+		self::$channels = new Map();
+
 		$config = require Internal::projectFile('config/logging.php');
 
 		foreach ($config['channels'] as $name => $options) {
 			$channel =  self::build($name, $options);
 			if ($channel instanceof ChannelInterface) {
-				self::$channels[$name] = $channel;
+				self::$channels->set($name, $channel);
 			}
 		}
 
@@ -56,7 +60,73 @@ final class Logging
 
 	// -----------------
 
-	public static function build(string $name, array $config): ChannelInterface|null
+	public static function createChannel(array $config, string|null $name = null): ChannelInterface|null
+	{
+		return self::build($name ?? Str::random(20), $config);
+	}
+
+	public static function createStack(array $channels, string|null $name = null): ChannelInterface|null
+	{
+		return self::build($name ?? Str::random(20), [
+			'driver' => 'stack',
+			'label' => 'Unnamed Channel',
+			'channels' => $channels,
+		]);
+	}
+
+	// -----------------
+
+	public static function hasChannel(string $name): bool
+	{
+		return isset(self::$channels[$name]);
+	}
+
+	public static function addChannel(string $name, array $config): void
+	{
+		$channel = self::build($name, $config);
+
+		if ($channel instanceof ChannelInterface) {
+			self::$channels[$name] = $channel;
+		}
+	}
+
+	public static function getChannel(string|null $name = null): ChannelInterface|null
+	{
+		if ($name === null) {
+			$name = self::$default;
+		}
+
+		return self::$channels[$name] ?? null;
+	}
+
+	// -----------------
+
+	/**
+	 * @returns Map<string, ChannelInterface>
+	 */
+	public static function getChannels(): Map
+	{
+		return self::$channels;
+	}
+
+	// -----------------
+
+	public static function setDefault(string $name): void
+	{
+		if (isset(self::$channels[$name]) === false) {
+			ExceptionHandler::handleThrowable(new MissingChannelException("Undefined channels cannot be set as default: '$name'."));
+		}
+		self::$default = $name;
+	}
+
+	public static function getDefault(): string
+	{
+		return self::$default;
+	}
+
+	// -----------------
+
+	protected static function build(string $name, array $config): ChannelInterface|null
 	{
 		$config = new ChannelConfig($config);
 
@@ -77,56 +147,6 @@ final class Logging
 			Driver::Stream => new Stream($name, $config),
 			default => null,
 		};
-	}
-
-	// -----------------
-
-	public static function has(string $name): bool
-	{
-		return isset(self::$channels[$name]);
-	}
-
-	public static function add(string $name, array $config): void
-	{
-		$channel = self::build($name, $config);
-
-		if ($channel instanceof ChannelInterface) {
-			self::$channels[$name] = $channel;
-		}
-	}
-
-	public static function get(string|null $name = null): ChannelInterface|null
-	{
-		if ($name === null) {
-			$name = self::$default;
-		}
-
-		return self::$channels[$name] ?? null;
-	}
-
-	// -----------------
-
-	/**
-	 * @returns array<string, ChannelInterface>
-	 */
-	public static function all(): array
-	{
-		return self::$channels;
-	}
-
-	// -----------------
-
-	public static function setDefault(string $name): void
-	{
-		if (isset(self::$channels[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingChannelException("Undefined channels cannot be set as default: '$name'."));
-		}
-		self::$default = $name;
-	}
-
-	public static function getDefault(): string
-	{
-		return self::$default;
 	}
 
 }
