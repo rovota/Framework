@@ -15,7 +15,7 @@ use Rovota\Framework\Logging\Drivers\Stack;
 use Rovota\Framework\Logging\Drivers\Stream;
 use Rovota\Framework\Logging\Enums\Driver;
 use Rovota\Framework\Logging\Exceptions\ChannelMisconfigurationException;
-use Rovota\Framework\Logging\Exceptions\MissingChannelConfigException;
+use Rovota\Framework\Logging\Exceptions\MissingChannelException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Support\Internal;
 
@@ -114,7 +114,7 @@ final class Logging
 	public static function setDefault(string $name): void
 	{
 		if (isset(self::$channels[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingChannelConfigException("Undefined channels cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingChannelException("Undefined channels cannot be set as default: '$name'."));
 		}
 		self::$default = $name;
 	}

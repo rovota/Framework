@@ -9,7 +9,7 @@ namespace Rovota\Framework\Logging\Solutions;
 
 use Rovota\Framework\Support\Interfaces\Solution;
 
-class MissingChannelConfigSolution implements Solution
+class MissingChannelSolution implements Solution
 {
 
 	public function title(): string
