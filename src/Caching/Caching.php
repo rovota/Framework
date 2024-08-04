@@ -9,6 +9,7 @@ namespace Rovota\Framework\Caching;
 
 use Rovota\Framework\Caching\Drivers\APCuDriver;
 use Rovota\Framework\Caching\Drivers\ArrayDriver;
+use Rovota\Framework\Caching\Drivers\RedisDriver;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Caching\Exceptions\CacheMisconfigurationException;
 use Rovota\Framework\Caching\Exceptions\MissingCacheStoreException;
@@ -71,7 +72,7 @@ final class Caching
 		return match($config->driver) {
 			Driver::APCu => new APCuDriver($name, $config),
 			Driver::Array => new ArrayDriver($name, $config),
-//			Driver::Redis => new Stack($name, $config),
+			Driver::Redis => new RedisDriver($name, $config),
 			default => null,
 		};
 	}
