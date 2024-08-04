@@ -48,4 +48,39 @@ final class Response
 		return ResponseManager::createJsonResponse($content, $status);
 	}
 
+	// -----------------
+
+	public static function attachHeader(string $name, string $value): void
+	{
+		$name = trim($name);
+		$value = trim($value);
+
+		if (Str::length($name) > 0 && Str::length($value) > 0) {
+			ResponseManager::getConfig()->set('headers.'.$name, $value);
+		}
+	}
+
+	public static function attachHeaders(array $headers): void
+	{
+		foreach ($headers as $name => $value) {
+			self::attachHeader($name, $value);
+		}
+	}
+
+	public function withoutHeader(string $name): void
+	{
+		ResponseManager::getConfig()->remove('headers.'.trim($name));
+	}
+
+	public function withoutHeaders(array $names = []): void
+	{
+		if (empty($names)) {
+			ResponseManager::getConfig()->remove('headers');
+		} else {
+			foreach ($names as $name) {
+				self::withoutHeader($name);
+			}
+		}
+	}
+
 }

@@ -15,9 +15,11 @@ use Rovota\Framework\Http\Responses\RedirectResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Internal;
-use Rovota\Framework\Support\Str;
 use Throwable;
 
+/**
+ * @internal
+ */
 final class ResponseManager
 {
 
@@ -31,9 +33,6 @@ final class ResponseManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
 		$config = require Internal::projectFile('config/responses.php');
@@ -48,9 +47,6 @@ final class ResponseManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function getConfig(): Config
 	{
 		return self::$config;
@@ -58,9 +54,6 @@ final class ResponseManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): Response
 	{
 		// TODO: Return different response classes based on detected content.
@@ -91,63 +84,19 @@ final class ResponseManager
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
 	{
 		return new RedirectResponse($location, $status, self::$config);
 	}
 
-	/**
-	 * @internal
-	 */
 	public static function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
 	{
 		return new ErrorResponse($error, $status, self::$config);
 	}
 
-	/**
-	 * @internal
-	 */
 	public static function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
 	{
 		return new JsonResponse($content, $status, self::$config);
-	}
-
-	// -----------------
-
-	public static function attachHeader(string $name, string $value): void
-	{
-		$name = trim($name);
-		$value = trim($value);
-
-		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			self::$config->set('headers.'.$name, $value);
-		}
-	}
-
-	public static function attachHeaders(array $headers): void
-	{
-		foreach ($headers as $name => $value) {
-			self::attachHeader($name, $value);
-		}
-	}
-
-	public function withoutHeader(string $name): void
-	{
-		self::$config->remove('headers.'.trim($name));
-	}
-
-	public function withoutHeaders(array $names = []): void
-	{
-		if (empty($names)) {
-			self::$config->remove('headers');
-		} else {
-			foreach ($names as $name) {
-				self::withoutHeader($name);
-			}
-		}
 	}
 
 }
