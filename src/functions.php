@@ -13,7 +13,9 @@ use Rovota\Framework\Http\Response;
 use Rovota\Framework\Http\ResponseObject;
 use Rovota\Framework\Http\Responses\RedirectResponse;
 use Rovota\Framework\Kernel\Framework;
+use Rovota\Framework\Kernel\Registry;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
@@ -81,6 +83,13 @@ if (!function_exists('redirect')) {
 	function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
 	{
 		return Response::redirect($location, $status);
+	}
+}
+
+if (!function_exists('registry')) {
+	function registry(): Bucket
+	{
+		return Registry::entries();
 	}
 }
 
