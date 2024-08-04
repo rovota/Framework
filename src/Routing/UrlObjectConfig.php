@@ -51,7 +51,7 @@ class UrlObjectConfig extends Config
 
 	protected function getPath(): string
 	{
-		return Str::start($this->string('path', ''), '/');
+		return Str::start($this->string('path'), '/');
 	}
 
 	protected function getParameters(): array
