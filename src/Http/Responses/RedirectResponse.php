@@ -9,13 +9,13 @@ namespace Rovota\Framework\Http\Responses;
 
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
-use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Response;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Url;
 
-class RedirectResponse extends ResponseObject
+class RedirectResponse extends Response
 {
 
 	protected UrlObject $location;

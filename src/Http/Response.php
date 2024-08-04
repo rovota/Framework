@@ -7,131 +7,90 @@
 
 namespace Rovota\Framework\Http;
 
-use JsonSerializable;
+use BackedEnum;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Responses\ErrorResponse;
-use Rovota\Framework\Http\Responses\JsonResponse;
-use Rovota\Framework\Http\Responses\RedirectResponse;
-use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Http\Traits\ResponseModifiers;
 use Rovota\Framework\Structures\Config;
-use Rovota\Framework\Support\Internal;
-use Rovota\Framework\Support\Str;
-use Throwable;
+use Stringable;
 
-final class Response
+class Response implements Stringable
 {
-
-	protected static Config $config;
+	use ResponseModifiers;
 
 	// -----------------
 
-	protected function __construct()
+	protected mixed $content;
+
+	protected StatusCode $status;
+
+	protected Config $config;
+
+	// -----------------
+
+	public function __construct(mixed $content, StatusCode|int $status, Config $config)
 	{
+		$this->content = $content;
+		$this->config = $config;
+
+		$this->setHttpCode($status);
+	}
+
+	public function __toString(): string
+	{
+		ob_end_clean();
+
+		$this->prepareForPrinting();
+
+		$this->applyStatusCode();
+		$this->applyHeaders();
+		$this->applyCookies();
+
+		return $this->getPrintableContent();
 	}
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
-	public static function initialize(): void
+	protected function applyCookies(): void
 	{
-		$config = require Internal::projectFile('config/responses.php');
-
-		self::$config = new Config($config);
-
-		self::$config->set([
-			'headers.X-Powered-By' => 'Rovota Framework',
-			'headers.X-XSS-Protection' => '0',
-		]);
+		// TODO: Implement this method to apply cookies to a response.
 	}
 
-	// -----------------
-
-	public static function config(): Config
+	protected function applyStatusCode(): void
 	{
-		return self::$config;
-	}
-
-	// -----------------
-
-	// TODO: Return different response classes based on detected content.
-	public static function make(mixed $content, StatusCode|int $status = StatusCode::Ok): ResponseObject
-	{
-		// FileResponse
-
-		// ImageResponse
-
-		// RedirectResponse
-		if ($content instanceof UrlObject) {
-			return self::redirect($content, $status);
+		if ($this->content instanceof StatusCode) {
+			http_response_code($this->content->value);
+			return;
 		}
 
-		// ErrorResponse
-		if ($content instanceof Throwable || $content instanceof ApiError) {
-			return self::error($content, $status);
+		if (is_int($this->content) && StatusCode::tryFrom($this->content) instanceof BackedEnum) {
+			http_response_code($this->content);
+			return;
 		}
 
-		// JsonResponse
-		if ($content instanceof JsonSerializable || is_array($content)) {
-			return self::json($content, $status);
-		}
-
-		// ViewResponse
-
-		return new ResponseObject($content, $status, self::$config);
+		http_response_code($this->status->value);
 	}
 
-	// -----------------
-
-	public static function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
+	protected function applyHeaders(): void
 	{
-		return new RedirectResponse($location, $status, self::$config);
-	}
-
-	public static function error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
-	{
-		return new ErrorResponse($error, $status, self::$config);
-	}
-
-	public static function json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
-	{
-		return new JsonResponse($content, $status, self::$config);
-	}
-
-	// -----------------
-
-	public static function attachHeader(string $name, string $value): void
-	{
-		$name = trim($name);
-		$value = trim($value);
-
-		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			self::$config->set('headers.'.$name, $value);
-		}
-	}
-
-	public static function attachHeaders(array $headers): void
-	{
-		foreach ($headers as $name => $value) {
-			self::attachHeader($name, $value);
-		}
-	}
-
-	public function withoutHeader(string $name): void
-	{
-		self::$config->remove('headers.'.trim($name));
-	}
-
-	public function withoutHeaders(array $names = []): void
-	{
-		if (empty($names)) {
-			self::$config->remove('headers');
-		} else {
-			foreach ($names as $name) {
-				self::withoutHeader($name);
+		foreach ($this->config->array('headers') as $name => $value) {
+			if (strlen($value) > 0) {
+				header(sprintf('%s: %s', $name, $value));
 			}
 		}
+	}
+
+	protected function getPrintableContent(): string
+	{
+		if ($this->content instanceof Stringable) {
+			return $this->content->__toString();
+		}
+
+		return (string) $this->content;
+	}
+
+	protected function prepareForPrinting(): void
+	{
+
 	}
 
 }

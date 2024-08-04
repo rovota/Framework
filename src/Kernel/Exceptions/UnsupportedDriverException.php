@@ -9,6 +9,7 @@
 namespace Rovota\Framework\Kernel\Exceptions;
 
 use Exception;
+use Rovota\Framework\Kernel\Solutions\UnsupportedDriverSolution;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Interfaces\Solution;
 

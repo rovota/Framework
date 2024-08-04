@@ -10,12 +10,12 @@ namespace Rovota\Framework\Http\Responses;
 use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Response;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Str;
 use Throwable;
 
-class ErrorResponse extends ResponseObject
+class ErrorResponse extends Response
 {
 
 	public function __construct(Throwable|ApiError|array $content, StatusCode|int $status, Config $config)
