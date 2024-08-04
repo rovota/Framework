@@ -7,16 +7,16 @@
 
 namespace Rovota\Framework\Caching\Drivers;
 
-use Rovota\Framework\Caching\Adapters\PhpArrayAdapter;
+use Rovota\Framework\Caching\Adapters\ArrayAdapter;
 use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\CacheStoreConfig;
 
-class PhpArray extends CacheStore
+class ArrayDriver extends CacheStore
 {
 
 	public function __construct(string $name, CacheStoreConfig $config)
 	{
-		$adapter = new PhpArrayAdapter($config->parameters);
+		$adapter = new ArrayAdapter($config->parameters);
 
 		parent::__construct($name, $adapter, $config);
 	}

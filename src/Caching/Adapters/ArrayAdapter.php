@@ -12,7 +12,7 @@ use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Structures\Config;
 
-class PhpArrayAdapter implements CacheAdapterInterface
+class ArrayAdapter implements CacheAdapterInterface
 {
 
 	protected Bucket $storage;
