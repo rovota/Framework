@@ -81,6 +81,11 @@ final class Logging
 
 	// -----------------
 
+	public static function has(string $name): bool
+	{
+		return isset(self::$channels[$name]);
+	}
+
 	public static function add(string $name, array $config): void
 	{
 		$channel = self::build($name, $config);
