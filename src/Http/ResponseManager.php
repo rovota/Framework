@@ -15,6 +15,7 @@ use Rovota\Framework\Http\Responses\RedirectResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Str;
 use Throwable;
 
 /**
@@ -97,6 +98,67 @@ final class ResponseManager
 	public static function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
 	{
 		return new JsonResponse($content, $status, self::$config);
+	}
+
+	// -----------------
+
+	public static function attachHeader(string $name, string $value): void
+	{
+		$name = trim($name);
+		$value = trim($value);
+
+		if (Str::length($name) > 0 && Str::length($value) > 0) {
+			self::getConfig()->set('headers.'.$name, $value);
+		}
+	}
+
+	public static function attachHeaders(array $headers): void
+	{
+		foreach ($headers as $name => $value) {
+			self::attachHeader($name, $value);
+		}
+	}
+
+	public static function withoutHeader(string $name): void
+	{
+		self::getConfig()->remove('headers.'.trim($name));
+	}
+
+	public static function withoutHeaders(array $names = []): void
+	{
+		if (empty($names)) {
+			self::getConfig()->remove('headers');
+		} else {
+			foreach ($names as $name) {
+				self::withoutHeader($name);
+			}
+		}
+	}
+
+	// -----------------
+
+	public static function attachCookie(Cookie $cookie): void
+	{
+		self::getConfig()->set('cookies.'.$cookie->name, $cookie);
+	}
+
+	public static function attachCookies(array $cookies): void
+	{
+		foreach ($cookies as $cookie) {
+			if ($cookie instanceof Cookie) {
+				self::getConfig()->set('cookies.'.$cookie->name, $cookie);
+			}
+		}
+	}
+
+	public static function withoutCookie(string $name): void
+	{
+		self::getConfig()->remove('cookies.'.trim($name));
+	}
+
+	public static function withoutCookies(): void
+	{
+		self::getConfig()->remove('cookies');
 	}
 
 }

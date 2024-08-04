@@ -64,6 +64,16 @@ trait ResponseModifiers
 		return $this;
 	}
 
+	public function withCookies(array $cookies): static
+	{
+		foreach ($cookies as $cookie) {
+			if ($cookie instanceof Cookie) {
+				$this->config->set('cookies.'.$cookie->name, $cookie);
+			}
+		}
+		return $this;
+	}
+
 	public function withoutCookie(string $name): static
 	{
 		$this->config->remove('cookies.'.trim($name));

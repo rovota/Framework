@@ -9,6 +9,7 @@ namespace Rovota\Framework\Facades;
 
 use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
+use Rovota\Framework\Http\Cookie;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Http\Responses\ErrorResponse;
@@ -53,35 +54,44 @@ final class Response
 
 	public static function attachHeader(string $name, string $value): void
 	{
-		$name = trim($name);
-		$value = trim($value);
-
-		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			ResponseManager::getConfig()->set('headers.'.$name, $value);
-		}
+		ResponseManager::attachHeader($name, $value);
 	}
 
 	public static function attachHeaders(array $headers): void
 	{
-		foreach ($headers as $name => $value) {
-			self::attachHeader($name, $value);
-		}
+		ResponseManager::attachHeaders($headers);
 	}
 
-	public function withoutHeader(string $name): void
+	public static function withoutHeader(string $name): void
 	{
-		ResponseManager::getConfig()->remove('headers.'.trim($name));
+		ResponseManager::withoutHeader($name);
 	}
 
-	public function withoutHeaders(array $names = []): void
+	public static function withoutHeaders(array $names = []): void
 	{
-		if (empty($names)) {
-			ResponseManager::getConfig()->remove('headers');
-		} else {
-			foreach ($names as $name) {
-				self::withoutHeader($name);
-			}
-		}
+		ResponseManager::withoutHeaders($names);
+	}
+
+	// -----------------
+
+	public static function attachCookie(Cookie $cookie): void
+	{
+		ResponseManager::attachCookie($cookie);
+	}
+
+	public static function attachCookies(array $cookies): void
+	{
+		ResponseManager::attachCookies($cookies);
+	}
+
+	public static function withoutCookie(string $name): void
+	{
+		ResponseManager::withoutCookie($name);
+	}
+
+	public static function withoutCookies(): void
+	{
+		ResponseManager::withoutCookies();
 	}
 
 }
