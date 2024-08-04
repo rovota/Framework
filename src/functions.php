@@ -86,13 +86,6 @@ if (!function_exists('redirect')) {
 	}
 }
 
-if (!function_exists('registry')) {
-	function registry(): Bucket
-	{
-		return Registry::entries();
-	}
-}
-
 // -----------------
 
 // -----------------
