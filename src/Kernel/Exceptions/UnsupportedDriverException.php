@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @copyright   Léandro Tijink
+ * @author      Software Department <developers@rovota.com>
+ * @copyright   Copyright (c), Rovota
  * @license     MIT
  */
 
-namespace Rovota\Framework\Logging\Exceptions;
+namespace Rovota\Framework\Kernel\Exceptions;
 
 use Exception;
-use Rovota\Framework\Logging\Solutions\UnsupportedDriverSolution;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Interfaces\Solution;
 
