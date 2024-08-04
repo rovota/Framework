@@ -33,6 +33,9 @@ interface CacheInterface
 
 	// -----------------
 
+	/**
+	 * Only available when using the `array` driver. Returns an empty Map otherwise.
+	 */
 	public function all(): Map;
 
 	// -----------------

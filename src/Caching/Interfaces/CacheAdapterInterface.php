@@ -10,6 +10,9 @@ namespace Rovota\Framework\Caching\Interfaces;
 interface CacheAdapterInterface
 {
 
+	/**
+	 * Only available when using the `array` driver. Returns an empty array otherwise.
+	 */
 	public function all(): array;
 
 	// -----------------
