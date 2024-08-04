@@ -19,11 +19,11 @@ class Response implements Stringable
 
 	// -----------------
 
-	protected mixed $content;
+	public mixed $content;
 
-	protected StatusCode $status;
+	public StatusCode $status;
 
-	protected Config $config;
+	public Config $config;
 
 	// -----------------
 
