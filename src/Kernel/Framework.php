@@ -10,8 +10,9 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Caching\Caching;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
+use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\Response;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
@@ -55,7 +56,8 @@ final class Framework
 		Logging::initialize();
 		Caching::initialize();
 		Encryption::initialize();
-		Request::initialize();
+		CookieManager::initialize();
+		RequestManager::initialize();
 		Localization::initialize();
 		Response::initialize();
 

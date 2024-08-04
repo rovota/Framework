@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Localization;
 
 use DateTimeZone;
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Internal;
 
@@ -175,7 +175,7 @@ final class Localization
 	protected static function determineActiveLanguage(string $default): void
 	{
 		$locales = array_keys(self::$languages);
-		$preferred = Request::current()->prefersLocale($locales, $default);
+		$preferred = RequestManager::current()->prefersLocale($locales, $default);
 
 		self::setActiveLanguage($preferred);
 	}

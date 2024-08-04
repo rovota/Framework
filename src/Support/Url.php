@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Routing\UrlObject;
 
 final class Url
@@ -21,7 +21,7 @@ final class Url
 
 	public static function current(): UrlObject
 	{
-		return Request::current()->url();
+		return RequestManager::current()->url();
 	}
 
 	// -----------------

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Routing;
 
 use BackedEnum;
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Str;
@@ -39,12 +39,12 @@ class UrlObjectConfig extends Config
 
 	protected function getDomain(): string
 	{
-		return $this->string('domain', Request::current()->targetHost());
+		return $this->string('domain', RequestManager::current()->targetHost());
 	}
 
 	protected function getPort(): int
 	{
-		return $this->int('port', Request::current()->port());
+		return $this->int('port', RequestManager::current()->port());
 	}
 
 	// -----------------

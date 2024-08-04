@@ -9,7 +9,7 @@
 
 namespace Rovota\Framework\Routing\Traits;
 
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Support\Str;
 
@@ -32,7 +32,7 @@ trait UrlModifiers
 	public function subdomain(string $subdomain): static
 	{
 		if ($this->config->domain === null) {
-			$this->domain(Request::current()->targetHost());
+			$this->domain(RequestManager::current()->targetHost());
 		}
 
 		$subdomain = trim($subdomain);
@@ -143,7 +143,7 @@ trait UrlModifiers
 
 	public function currentHostAsDomain(): static
 	{
-		$this->domain(Request::current()->targetHost());
+		$this->domain(RequestManager::current()->targetHost());
 		return $this;
 	}
 

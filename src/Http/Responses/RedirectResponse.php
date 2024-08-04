@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Http\Responses;
 
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\ResponseObject;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
@@ -27,7 +27,7 @@ class RedirectResponse extends ResponseObject
 		$this->location = match(true) {
 			$content instanceof UrlObject => $content,
 			is_string($content) => UrlObject::fromString($content),
-			default => Request::current()->url()->stripParameters()
+			default => RequestManager::current()->url()->stripParameters()
 		};
 
 		parent::__construct(null, $status, $config);
@@ -61,7 +61,7 @@ class RedirectResponse extends ResponseObject
 
 	public function reload(): static
 	{
-		$this->location = Request::current()->url();
+		$this->location = RequestManager::current()->url();
 		return $this;
 	}
 
