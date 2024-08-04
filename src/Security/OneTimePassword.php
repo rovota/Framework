@@ -9,6 +9,7 @@ namespace Rovota\Framework\Security;
 
 use OTPHP\TOTP;
 use OTPHP\TOTPInterface;
+use Rovota\Framework\Caching\Caching;
 use Rovota\Framework\Support\Clock;
 use Rovota\Framework\Support\QrCode;
 
@@ -54,7 +55,13 @@ final class OneTimePassword
 		$leeway = $leeway ?? round($this->agent->getPeriod() / 4);
 		$result = $this->agent->verify($input, $timestamp, $leeway);
 
-		// TODO: Cache the result, so that successfully validated OTPs cannot be used again.
+		if ($result === true) {
+			$key = hash('sha256', $this->secret().'-'.$input);
+			if (Caching::get()->has($key)) {
+				return false;
+			}
+			Caching::get()->set($key, 1, $this->agent()->getPeriod());
+		}
 
 		return $result;
 	}
