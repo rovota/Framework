@@ -52,7 +52,9 @@ class Response implements Stringable
 
 	protected function applyCookies(): void
 	{
-		// TODO: Implement this method to apply cookies to a response.
+		foreach ($this->config->get('cookies') as $cookie) {
+			$cookie->apply();
+		}
 	}
 
 	protected function applyStatusCode(): void

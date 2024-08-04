@@ -24,6 +24,8 @@ final class Request
 
 	public readonly RequestHeaders $headers;
 
+	public readonly RequestCookies $cookies;
+
 	public readonly UrlObject $url;
 
 	protected array|null $acceptable_content_types = null;
@@ -35,6 +37,7 @@ final class Request
 	public function __construct(mixed $data = [])
 	{
 		$this->headers = new RequestHeaders(array_change_key_case($data['headers']));
+		$this->cookies = new RequestCookies();
 		$this->url = UrlObject::from($this->getFullUrlString());
 
 		$this->body = $data['body'];

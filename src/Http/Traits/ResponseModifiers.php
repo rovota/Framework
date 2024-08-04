@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Http\Traits;
 
 use JsonSerializable;
+use Rovota\Framework\Http\Cookie;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Str;
 
@@ -52,6 +53,26 @@ trait ResponseModifiers
 			}
 		}
 
+		return $this;
+	}
+
+	// -----------------
+
+	public function withCookie(Cookie $cookie): static
+	{
+		$this->config->set('cookies.'.$cookie->name, $cookie);
+		return $this;
+	}
+
+	public function withoutCookie(string $name): static
+	{
+		$this->config->remove('cookies.'.trim($name));
+		return $this;
+	}
+
+	public function withoutCookies(): static
+	{
+		$this->config->remove('cookies');
 		return $this;
 	}
 
@@ -125,6 +146,5 @@ trait ResponseModifiers
 			default => sprintf('%s.%s', $name, 'txt')
 		};
 	}
-
 
 }
