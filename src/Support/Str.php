@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support;
 
 use Closure;
+use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Structures\Basket;
@@ -51,6 +52,13 @@ final class Str
 		}
 
 		return $string;
+	}
+
+	// -----------------
+
+	public static function toHtml(string $string, string|null $language = null): string
+	{
+		return MarkupConverter::toHtml($string, $language);
 	}
 
 	// -----------------
