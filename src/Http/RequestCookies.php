@@ -47,7 +47,7 @@ class RequestCookies extends RequestData
 		if ($cookie instanceof Cookie) {
 			$cookie->value = $value ?? $cookie->value;
 			$cookie->update($options);
-			ResponseManager::getConfig()->set('cookies.'.trim($cookie->name), $cookie);
+			ResponseManager::attachCookie($cookie);
 		}
 	}
 
@@ -56,7 +56,7 @@ class RequestCookies extends RequestData
 		$cookie = $this->get($name);
 		if ($cookie instanceof Cookie) {
 			$cookie->update(['expires' => -1]);
-			ResponseManager::getConfig()->set('cookies.'.trim($cookie->name), $cookie);
+			ResponseManager::attachCookie($cookie);
 		}
 	}
 
