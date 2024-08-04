@@ -13,14 +13,14 @@
 /** @var $snippet array **/
 
 use Rovota\Framework\Kernel\Framework;
-use Rovota\Framework\Support\Enums\PHPErrorLevels;
+use Rovota\Framework\Support\Enums\PHPErrorLevel;
 
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 	<meta charset="UTF-8">
-	<title><?= PHPErrorLevels::tryFrom($number)?->label() ?? 'Unknown Error' ?></title>
+	<title><?= PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error' ?></title>
 	<meta name="theme-color" content="#F6F6F6">
 	<meta name="color-scheme" content="light dark">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1, viewport-fit=cover">
@@ -42,7 +42,7 @@ use Rovota\Framework\Support\Enums\PHPErrorLevels;
 
 		<card class="details">
 			<div class="name">
-				<span><?= PHPErrorLevels::tryFrom($number)?->label() ?? 'Unknown Error' ?></span>
+				<span><?= PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error' ?></span>
 			</div>
 			<h1><?= $message ?? 'There is no message available' ?></h1>
 			<hr>

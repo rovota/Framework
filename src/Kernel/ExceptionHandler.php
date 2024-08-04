@@ -10,7 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Monolog\Level;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Logging\Logging;
-use Rovota\Framework\Support\Enums\PHPErrorLevels;
+use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Internal;
 use Throwable;
@@ -82,7 +82,7 @@ final class ExceptionHandler
 	{
 		if (self::$log_enabled) {
 			Logging::get()->error($message, [
-				PHPErrorLevels::tryFrom($number)?->label() ?? 'Unknown Error', $file, $line
+				PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error', $file, $line
 			]);
 		}
 	}
