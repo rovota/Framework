@@ -11,6 +11,9 @@ use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\Inflector\Language;
 
+/**
+ * @internal
+ */
 final class TextConverter
 {
 
@@ -34,9 +37,6 @@ final class TextConverter
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function inflector(): Inflector
 	{
 		return self::$inflector;
@@ -44,9 +44,6 @@ final class TextConverter
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function toPlural(string $word, mixed $count = 2): string
 	{
 		if (is_countable($count) && !is_int($count)) {
@@ -60,9 +57,6 @@ final class TextConverter
 		return self::matchCase(self::inflector()->pluralize($word), $word);
 	}
 
-	/**
-	 * @internal
-	 */
 	public static function toSingular(string $word): string
 	{
 		return self::matchCase(self::inflector()->singularize($word), $word);
