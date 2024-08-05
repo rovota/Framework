@@ -324,10 +324,6 @@ final class Request
 
 	// -----------------
 
-	// TODO: Cookies
-
-	// -----------------
-
 	public function encoding(): string|null
 	{
 		$accepts = $this->getAcceptableEncodings();

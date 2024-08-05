@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-use Rovota\Framework\Kernel\Application;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Kernel\ExceptionHandler;
 
 // -----------------
@@ -30,7 +30,7 @@ set_error_handler(function(int $number, string $message, string $file, int $line
 	ExceptionHandler::handleError($number, $message, $file, $line);
 });
 
-register_shutdown_function(fn () => Application::shutdown());
+register_shutdown_function(fn () => Framework::shutdown());
 
 // -----------------
 
@@ -39,4 +39,4 @@ require 'functions.php';
 
 // -----------------
 
-Application::start();
+Framework::start();
