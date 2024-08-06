@@ -15,6 +15,7 @@ use Rovota\Framework\Conversion\Units\Pressure;
 use Rovota\Framework\Conversion\Units\Speed;
 use Rovota\Framework\Conversion\Units\Temperature;
 use Rovota\Framework\Conversion\Units\Time;
+use Rovota\Framework\Conversion\Units\Volume;
 use Rovota\Framework\Support\Traits\EnumHelpers;
 
 enum UnitType: int
@@ -33,7 +34,7 @@ enum UnitType: int
 	case Speed = 10;
 	case Temperature = 11;
 	case Time = 12;
-//	case Volume = 13;
+	case Volume = 13;
 
 	// -----------------
 
@@ -52,7 +53,7 @@ enum UnitType: int
 			UnitType::Speed => Speed::class,
 			UnitType::Temperature => Temperature::class,
 			UnitType::Time => Time::class,
-//			UnitType::Volume => '',
+			UnitType::Volume => Volume::class,
 		};
 	}
 
