@@ -76,7 +76,7 @@ abstract class Unit implements Stringable, JsonSerializable
 
 	// -----------------
 
-	public static function from(float|int $value, string $unit): Unit
+	public static function from(float|int $value, string $unit): static
 	{
 		$unit = trim($unit);
 		if (str_contains($unit, '\\') === false) {
@@ -90,7 +90,7 @@ abstract class Unit implements Stringable, JsonSerializable
 		return new $unit($value);
 	}
 
-	public function to(string $unit): Unit
+	public function to(string $unit): static
 	{
 		$base = $this->toBaseUnit();
 
