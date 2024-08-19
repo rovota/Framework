@@ -118,7 +118,7 @@ trait ResponseModifiers
 
 	// -----------------
 
-	public function setHttpCode(StatusCode|int $status): static
+	public function withStatus(StatusCode|int $status): static
 	{
 		if ($status instanceof StatusCode) {
 			$this->status = $status;
