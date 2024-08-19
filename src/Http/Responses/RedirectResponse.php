@@ -34,9 +34,9 @@ class RedirectResponse extends Response
 
 	// -----------------
 
-	protected function getPrintableContent(): string
+	protected function getPrintableContent(): string|null
 	{
-		return '';
+		return null;
 	}
 
 	protected function prepareForPrinting(): void

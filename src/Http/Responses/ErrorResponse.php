@@ -24,7 +24,7 @@ class ErrorResponse extends Response
 
 	// -----------------
 
-	protected function getPrintableContent(): string
+	protected function getPrintableContent(): string|null
 	{
 		return json_encode_clean($this->content);
 	}
