@@ -12,6 +12,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Responses\ErrorResponse;
 use Rovota\Framework\Http\Responses\JsonResponse;
 use Rovota\Framework\Http\Responses\RedirectResponse;
+use Rovota\Framework\Http\Responses\StatusResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Structures\Config;
 use Rovota\Framework\Support\Internal;
@@ -80,6 +81,11 @@ final class ResponseManager
 
 		// ViewResponse
 
+		// StatusResponse
+		if ($content instanceof StatusCode || is_int($content)) {
+			return self::createStatusResponse($content, $status);
+		}
+
 		return new Response($content, $status, self::$config);
 	}
 
@@ -98,6 +104,11 @@ final class ResponseManager
 	public static function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
 	{
 		return new JsonResponse($content, $status, self::$config);
+	}
+
+	public static function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponse
+	{
+		return new StatusResponse($content, $status, self::$config);
 	}
 
 	// -----------------
