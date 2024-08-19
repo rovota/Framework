@@ -9,6 +9,7 @@ namespace Rovota\Framework\Http;
 
 use BackedEnum;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Traits\ResponseInitializers;
 use Rovota\Framework\Http\Traits\ResponseModifiers;
 use Rovota\Framework\Structures\Config;
 use Stringable;
@@ -32,7 +33,7 @@ class Response implements Stringable
 		$this->content = $content;
 		$this->config = $config;
 
-		$this->setHttpCode($status);
+		$this->withStatus($status);
 	}
 
 	public function __toString(): string
@@ -45,14 +46,14 @@ class Response implements Stringable
 		$this->applyHeaders();
 		$this->applyCookies();
 
-		return $this->getPrintableContent();
+		return $this->getPrintableContent() ?? '';
 	}
 
 	// -----------------
 
 	protected function applyCookies(): void
 	{
-		foreach ($this->config->get('cookies') as $cookie) {
+		foreach ($this->config->array('cookies') as $cookie) {
 			$cookie->apply();
 		}
 	}
@@ -81,7 +82,7 @@ class Response implements Stringable
 		}
 	}
 
-	protected function getPrintableContent(): string
+	protected function getPrintableContent(): string|null
 	{
 		if ($this->content instanceof Stringable) {
 			return $this->content->__toString();
