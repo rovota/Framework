@@ -17,6 +17,7 @@ use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Localization\Localization;
 use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
@@ -31,6 +32,8 @@ final class Framework
 
 	protected static Version $version;
 	protected static DefaultEnvironment $environment;
+
+	protected static ServiceContainer $services;
 
 	// -----------------
 
@@ -48,11 +51,11 @@ final class Framework
 	{
 		self::$version = new Version(self::APP_VERSION);
 
-		self::createEnvironment();
 		self::serverCompatCheck();
+		self::createEnvironment();
+		self::configureServices();
 
 		// Foundation
-		Registry::initialize();
 		LoggingManager::initialize();
 		CacheManager::initialize();
 		EncryptionManager::initialize();
@@ -64,6 +67,7 @@ final class Framework
 		// Additional
 		TextConverter::initialize();
 		MarkupConverter::initialize();
+		RouteManager::initialize();
 
 		// Finish
 		// TODO: Execute routes
@@ -99,15 +103,39 @@ final class Framework
 		return self::$environment;
 	}
 
+	public static function services(): ServiceContainer
+	{
+		return self::$services;
+	}
+
+	public static function service(string $name): object|null
+	{
+		if (str_contains($name, '\\')) {
+			return self::$services->resolve($name);
+		}
+
+		return self::$services->get($name);
+	}
+
 	// -----------------
 
 	protected static function createEnvironment(): void
 	{
 		if (class_exists('\App\Setup\Environment')) {
 			self::$environment = new \App\Setup\Environment();
+			return;
 		}
 
 		self::$environment = new DefaultEnvironment();
+	}
+
+	protected static function configureServices(): void
+	{
+		self::$services = new ServiceContainer();
+
+		foreach (self::$environment->services() as $name => $class) {
+			self::$services->register($class, $name);
+		}
 	}
 
 	/**

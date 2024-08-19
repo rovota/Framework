@@ -80,35 +80,19 @@ class DefaultEnvironment
 
 	// -----------------
 
-	// TODO: methods like authProviders() and libraries()
-	// For example, Environment::authProviders() returns an array with auth provider classes/config.
-	// And Environment::libraries() returns an array of library classes to call a load() method on.
+	public function services(): array
+	{
+		return [
+			// Foundation
+			'registry' => RegistryManager::class,
+		];
+	}
 
 	// -----------------
 
-	private function getEnvironmentType(): EnvironmentType
-	{
-		if (is_string(getenv('ENVIRONMENT'))) {
-			return EnvironmentType::tryFrom(getenv('ENVIRONMENT')) ?? EnvironmentType::Production;
-		}
-
-		$server_name = $this->server->get('server_name');
-		$server_address = $this->server->get('server_addr');
-
-		if ($this->detectsDevelopmentEnvironment($server_name, $server_address)) {
-			return EnvironmentType::Development;
-		}
-
-		if ($this->detectsTestEnvironment($server_name)) {
-			return EnvironmentType::Testing;
-		}
-
-		if ($this->detectsStagingEnvironment($server_name)) {
-			return EnvironmentType::Staging;
-		}
-
-		return EnvironmentType::Production;
-	}
+	// TODO: methods like authProviders() and libraries()
+	// For example, Environment::authProviders() returns an array with auth provider classes/config.
+	// And Environment::libraries() returns an array of library classes to call a load() method on.
 
 	// -----------------
 
@@ -149,6 +133,32 @@ class DefaultEnvironment
 		}
 
 		return false;
+	}
+
+	// -----------------
+
+	private function getEnvironmentType(): EnvironmentType
+	{
+		if (is_string(getenv('ENVIRONMENT'))) {
+			return EnvironmentType::tryFrom(getenv('ENVIRONMENT')) ?? EnvironmentType::Production;
+		}
+
+		$server_name = $this->server->get('server_name');
+		$server_address = $this->server->get('server_addr');
+
+		if ($this->detectsDevelopmentEnvironment($server_name, $server_address)) {
+			return EnvironmentType::Development;
+		}
+
+		if ($this->detectsTestEnvironment($server_name)) {
+			return EnvironmentType::Testing;
+		}
+
+		if ($this->detectsStagingEnvironment($server_name)) {
+			return EnvironmentType::Staging;
+		}
+
+		return EnvironmentType::Production;
 	}
 
 }
