@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http;
 
-use Rovota\Framework\Kernel\Registry;
+use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Security\EncryptionManager;
 use Throwable;
 

@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Security;
 
-use Rovota\Framework\Kernel\Registry;
+use Rovota\Framework\Facades\Registry;
 
 final class Password
 {
