@@ -7,69 +7,53 @@
 
 namespace Rovota\Framework\Facades;
 
+use Closure;
 use Rovota\Framework\Http\Client\Client;
-use Rovota\Framework\Http\Client\Integrations\HibpClient;
+use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\Client\Request;
+use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Support\Str;
 
-final class Http
+/**
+ * @method static Client client(mixed $options = [])
+ * @method static Request request(string $method, string $location, array $options = [])
+ * @method static Request get(string $location, array $options = [])
+ * @method static Request delete(string $location, array $options = [])
+ * @method static Request head(string $location, array $options = [])
+ * @method static Request options(string $location, array $options = [])
+ * @method static Request patch(string $location, array $options = [])
+ * @method static Request post(string $location, array $options = [])
+ * @method static Request put(string $location, array $options = [])
+ */
+final class Http extends Facade
 {
 
-	protected function __construct()
+	public static function service(): ClientManager
 	{
+		return parent::service();
 	}
 
 	// -----------------
 
-	public static function client(mixed $options = []): Client
+	protected static function getFacadeTarget(): string
 	{
-		return new Client($options);
+		return ClientManager::class;
 	}
 
-	public static function HibpClient(string|null $key = null, mixed $options = []): HibpClient
+	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return new HibpClient($key, $options);
-	}
+		$methods = ['request', 'get', 'delete', 'head', 'options', 'patch', 'post', 'put'];
 
-	// -----------------
+		if (Str::containsAny($method, $methods)) {
+			return function (ClientManager $instance, string $method, array $parameters = []) {
+				return $instance->createClient()->$method(...$parameters);
+			};
+		}
 
-	public static function request(string $method, string $location, array $options = []): Request
-	{
-		return self::client($options)->request($method, $location);
-	}
-
-	public static function get(string $location, array $options = []): Request
-	{
-		return self::client($options)->get($location);
-	}
-
-	public static function delete(string $location, array $options = []): Request
-	{
-		return self::client($options)->delete($location);
-	}
-
-	public static function head(string $location, array $options = []): Request
-	{
-		return self::client($options)->head($location);
-	}
-
-	public static function options(string $location, array $options = []): Request
-	{
-		return self::client($options)->options($location);
-	}
-
-	public static function patch(string $location, array $options = []): Request
-	{
-		return self::client($options)->patch($location);
-	}
-
-	public static function post(string $location, array $options = []): Request
-	{
-		return self::client($options)->post($location);
-	}
-
-	public static function put(string $location, array $options = []): Request
-	{
-		return self::client($options)->put($location);
+		return match ($method) {
+			'client' => 'createClient',
+			default => $method,
+		};
 	}
 
 }
