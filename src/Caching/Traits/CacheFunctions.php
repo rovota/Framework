@@ -19,20 +19,6 @@ trait CacheFunctions
 
 	// -----------------
 
-	public function set(string|int|array $key, mixed $value = null, int|null $retention = null): void
-	{
-		foreach (is_array($key) ? $key : [$key => $value] as $entry => $value) {
-			$this->adapter->set($entry, $value, $this->getRetentionPeriod($retention));
-		}
-	}
-
-	public function forever(string|int|array $key, mixed $value = null): void
-	{
-		$this->set($key, $value, 31536000);
-	}
-
-	// -----------------
-
 	public function has(string|array $key): bool
 	{
 		foreach (is_array($key) ? $key : [$key] as $key) {
@@ -70,15 +56,6 @@ trait CacheFunctions
 
 		return $result;
 	}
-
-	public function remove(string|array $key): void
-	{
-		foreach (is_array($key) ? $key : [$key] as $entry) {
-			$this->adapter->remove($entry);
-		}
-	}
-
-	// -----------------
 
 	/**
 	 * Returns the cached value (or the default), and then removes it from cache if present.
@@ -119,6 +96,27 @@ trait CacheFunctions
 	public function rememberForever(string $key, callable $callback): mixed
 	{
 		return $this->remember($key, $callback, 31536000);
+	}
+
+	// -----------------
+
+	public function set(string|int|array $key, mixed $value = null, int|null $retention = null): void
+	{
+		foreach (is_array($key) ? $key : [$key => $value] as $entry => $value) {
+			$this->adapter->set($entry, $value, $this->getRetentionPeriod($retention));
+		}
+	}
+
+	public function forever(string|int|array $key, mixed $value = null): void
+	{
+		$this->set($key, $value, 31536000);
+	}
+
+	public function remove(string|array $key): void
+	{
+		foreach (is_array($key) ? $key : [$key] as $entry) {
+			$this->adapter->remove($entry);
+		}
 	}
 
 	// -----------------

@@ -41,7 +41,7 @@ abstract class CacheStore implements CacheInterface
 
 	public function isDefault(): bool
 	{
-		return CacheManager::getDefault() === $this->name;
+		return CacheManager::instance()->getDefault() === $this->name;
 	}
 
 	// -----------------

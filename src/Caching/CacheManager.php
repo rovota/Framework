@@ -16,77 +16,76 @@ use Rovota\Framework\Caching\Exceptions\MissingCacheStoreException;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 
-/**
- * @internal
- */
-final class CacheManager
+final class CacheManager extends ServiceProvider
 {
 
 	/**
 	 * @var Map<string, CacheInterface>
 	 */
-	protected static Map $stores;
+	protected Map $stores;
 
-	protected static string $default;
-
-	// -----------------
-
-	protected function __construct()
-	{
-	}
+	protected string $default;
 
 	// -----------------
 
-	public static function initialize(): void
+	/**
+	 * @internal
+	 */
+	public function __construct()
 	{
-		self::$stores = new Map();
+		$this->stores = new Map();
 
 		$config = require Internal::projectFile('config/caching.php');
 
 		foreach ($config['stores'] as $name => $options) {
-			$store =  self::build($name, $options);
+			$store =  $this->build($name, $options);
 			if ($store instanceof CacheInterface) {
-				self::$stores->set($name, $store);
+				$this->stores->set($name, $store);
 			}
 		}
 
-		self::setDefault($config['default']);
+		$this->setDefault($config['default']);
 	}
 
 	// -----------------
 
-	public static function createStore(array $options, string|null $name = null): CacheInterface|null
+	public function createStore(array $options, string|null $name = null): CacheInterface|null
 	{
-		return self::build($name ?? Str::random(20), $options);
+		return $this->build($name ?? Str::random(20), $options);
 	}
 
 	// -----------------
 
-	public static function hasStore(string $name): bool
+	public function hasStore(string $name): bool
 	{
-		return isset(self::$stores[$name]);
+		return isset($this->stores[$name]);
 	}
 
-	public static function addStore(string $name, array $config): void
+	public function addStore(string $name, array $config): void
 	{
-		$store = self::build($name, $config);
+		$store = $this->build($name, $config);
 
 		if ($store instanceof CacheInterface) {
-			self::$stores[$name] = $store;
+			$this->stores[$name] = $store;
 		}
 	}
 
-	public static function getStore(string|null $name = null): CacheInterface|null
+	public function getStore(string|null $name = null): CacheInterface
 	{
 		if ($name === null) {
-			$name = self::$default;
+			$name = $this->default;
 		}
 
-		return self::$stores[$name] ?? null;
+		if (isset($this->stores[$name]) === false) {
+			ExceptionHandler::handleThrowable(new MissingCacheStoreException("The specified cache could not be found: '$name'."));
+		}
+
+		return $this->stores[$name];
 	}
 
 	// -----------------
@@ -94,29 +93,29 @@ final class CacheManager
 	/**
 	 * @returns Map<string, CacheInterface>
 	 */
-	public static function getStores(): Map
+	public function getStores(): Map
 	{
-		return self::$stores;
+		return $this->stores;
 	}
 
 	// -----------------
 
-	public static function setDefault(string $name): void
+	public function setDefault(string $name): void
 	{
-		if (isset(self::$stores[$name]) === false) {
+		if (isset($this->stores[$name]) === false) {
 			ExceptionHandler::handleThrowable(new MissingCacheStoreException("Undefined caches cannot be set as default: '$name'."));
 		}
-		self::$default = $name;
+		$this->default = $name;
 	}
 
-	public static function getDefault(): string
+	public function getDefault(): string
 	{
-		return self::$default;
+		return $this->default;
 	}
 
 	// -----------------
 
-	protected static function build(string $name, array $config): CacheInterface|null
+	protected function build(string $name, array $config): CacheInterface|null
 	{
 		$config = new CacheStoreConfig($config);
 

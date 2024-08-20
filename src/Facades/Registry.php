@@ -43,7 +43,7 @@ final class Registry extends Facade
 
 	protected static function getFacadeTarget(): string
 	{
-		return 'registry';
+		return RegistryManager::class;
 	}
 
 	protected static function getMethodTarget(string $method): mixed

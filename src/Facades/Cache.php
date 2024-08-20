@@ -7,115 +7,62 @@
 
 namespace Rovota\Framework\Facades;
 
+use Closure;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Structures\Map;
+use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Support\Str;
 
-final class Cache
+/**
+ * @method static CacheInterface store(string $name)
+ * @method static CacheInterface create(array $config, string|null $name = null)
+ *
+ * @method static Map all()
+ * @method static bool has(string|array $key)
+ * @method static bool missing(string|array $key)
+ * @method static mixed get(string|array $key, mixed $default = null)
+ * @method static mixed pull(string|array $key, mixed $default = null)
+ * @method static mixed remember(string $key, callable $callback, int|null $retention = null)
+ * @method static mixed rememberForever(string $key, callable $callback)
+ * @method static void set(string|int|array $key, mixed $value = null, int|null $retention = null)
+ * @method static void forever(string|int|array $key, mixed $value = null)
+ * @method static void remove(string|array $key)
+ * @method static void increment(string $key, int $step = 1)
+ * @method static void decrement(string $key, int $step = 1)
+ * @method static void flush()
+ * @method static string|null lastModified()
+ */
+final class Cache extends Facade
 {
 
-	protected function __construct()
+	public static function service(): CacheManager
 	{
+		return parent::service();
 	}
 
 	// -----------------
 
-	public static function store(string $name): CacheInterface|null
+	protected static function getFacadeTarget(): string
 	{
-		return CacheManager::getStore($name);
+		return CacheManager::class;
 	}
 
-	// -----------------
-
-	public static function create(array $config, string|null $name = null): CacheInterface|null
+	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return CacheManager::createStore($config, $name);
-	}
+		$methods = ['all', 'set', 'forever', 'has', 'missing', 'get', 'remove', 'pull', 'remember', 'rememberForever', 'increment', 'decrement', 'flush', 'lastModified'];
 
-	// -----------------
+		if (Str::containsAny($method, $methods)) {
+			return function (CacheManager $instance, string $method, array $parameters = []) {
+				return $instance->getStore()->$method(...$parameters);
+			};
+		}
 
-	public static function all(): Map
-	{
-		return CacheManager::getStore()?->all() ?? new Map();
-	}
-
-	// -----------------
-
-	public static function set(string|int|array $key, mixed $value = null, int|null $retention = null): void
-	{
-		CacheManager::getStore()?->set($key, $value, $retention);
-	}
-
-	public static function forever(string|int|array $key, mixed $value = null): void
-	{
-		CacheManager::getStore()?->forever($key, $value);
-	}
-
-	// -----------------
-
-	public static function has(string|array $key): bool
-	{
-		return CacheManager::getStore()?->has($key) ?? false;
-	}
-
-	public static function missing(string|array $key): bool
-	{
-		return CacheManager::getStore()?->missing($key) ?? true;
-	}
-
-	// -----------------
-
-	public static function get(string|array $key, mixed $default = null): mixed
-	{
-		return CacheManager::getStore()?->get($key, $default) ?? $default;
-	}
-
-	public static function remove(string|array $key): void
-	{
-		CacheManager::getStore()?->remove($key);
-	}
-
-	// -----------------
-
-	public static function pull(string|array $key, mixed $default = null): mixed
-	{
-		return CacheManager::getStore()?->pull($key, $default) ?? $default;
-	}
-
-	public static function remember(string $key, callable $callback, int|null $retention = null): mixed
-	{
-		return CacheManager::getStore()?->remember($key, $callback, $retention) ?? $callback;
-	}
-
-	public static function rememberForever(string $key, callable $callback): mixed
-	{
-		return CacheManager::getStore()?->remember($key, $callback, 31536000) ?? $callback;
-	}
-
-	// -----------------
-
-	public static function increment(string $key, int $step = 1): void
-	{
-		CacheManager::getStore()?->increment($key, $step);
-	}
-
-	public static function decrement(string $key, int $step = 1): void
-	{
-		CacheManager::getStore()?->decrement($key, $step);
-	}
-
-	// -----------------
-
-	public static function flush(): void
-	{
-		CacheManager::getStore()?->flush();
-	}
-
-	// -----------------
-
-	public static function lastModified(): string|null
-	{
-		return CacheManager::getStore()?->lastModified();
+		return match ($method) {
+			'store' => 'getStore',
+			'create' => 'createStore',
+			default => $method,
+		};
 	}
 
 }

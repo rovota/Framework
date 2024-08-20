@@ -57,7 +57,6 @@ final class Framework
 		self::configureServices();
 
 		// Foundation
-		CacheManager::initialize();
 		EncryptionManager::initialize();
 		CookieManager::initialize();
 		RequestManager::initialize();
