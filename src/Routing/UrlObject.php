@@ -39,7 +39,7 @@ final class UrlObject implements Stringable, JsonSerializable
 
 	public function __get(string $name)
 	{
-		return $this->config->get($name);
+		return $this->config->{$name};
 	}
 
 	public function __set(string $name, $value): void
