@@ -21,6 +21,9 @@ use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 
+/**
+ * @internal
+ */
 final class CacheManager extends ServiceProvider
 {
 
@@ -33,9 +36,6 @@ final class CacheManager extends ServiceProvider
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public function __construct()
 	{
 		$this->stores = new Map();
