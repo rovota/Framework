@@ -7,7 +7,11 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Http\Client\ClientManager;
+use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Config;
+use RuntimeException;
 
 /**
  * @property-read string $cookie_domain
@@ -25,7 +29,22 @@ class EnvironmentConfig extends Config
 
 	protected function getServices(): array
 	{
-		return $this->array('services');
+		$services = [
+			// Foundation
+			'registry' => RegistryManager::class,
+			'logging' => LoggingManager::class,
+			'cache' => CacheManager::class,
+			'http' => ClientManager::class,
+		];
+
+		foreach ($this->array('services') as $name => $class) {
+			if (isset($services[$name])) {
+				throw new RuntimeException("A service with the name '{$name}' already exists.");
+			}
+			$services[$name] = $class;
+		}
+
+		return $services;
 	}
 
 	// -----------------
