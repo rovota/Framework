@@ -11,7 +11,7 @@ use BackedEnum;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Traits\ResponseInitializers;
 use Rovota\Framework\Http\Traits\ResponseModifiers;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 use Stringable;
 
 class Response implements Stringable

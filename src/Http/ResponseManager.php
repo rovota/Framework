@@ -14,7 +14,7 @@ use Rovota\Framework\Http\Responses\JsonResponse;
 use Rovota\Framework\Http\Responses\RedirectResponse;
 use Rovota\Framework\Http\Responses\StatusResponse;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 use Throwable;

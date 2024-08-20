@@ -11,7 +11,7 @@ use Redis;
 use RedisException;
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Kernel\Resolver;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 class RedisAdapter implements CacheAdapterInterface
 {

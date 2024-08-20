@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Rovota\Framework\Http\Client\Traits\RequestModifiers;
 use Rovota\Framework\Http\Client\Traits\SharedModifiers;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 final class Request
 {

@@ -10,7 +10,7 @@ namespace Rovota\Framework\Routing;
 use BackedEnum;
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Routing\Enums\Scheme;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 
 /**

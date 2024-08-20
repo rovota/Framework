@@ -10,7 +10,7 @@ namespace Rovota\Framework\Http\Responses;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 use Throwable;
 

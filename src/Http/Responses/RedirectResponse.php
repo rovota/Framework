@@ -11,7 +11,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\Response;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Url;
 
 class RedirectResponse extends Response

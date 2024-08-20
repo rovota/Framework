@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Caching\Adapters;
 
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 class APCuAdapter implements CacheAdapterInterface
 {

@@ -5,9 +5,9 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Structures;
+namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Support\Str;
+use Rovota\Framework\Structures\Bucket;
 
 class Config extends Bucket
 {
@@ -25,6 +25,16 @@ class Config extends Bucket
 		} else {
 			$this->set($name, $value);
 		}
+	}
+
+	// -----------------
+
+	public static function load(string $path, bool $source = false): static
+	{
+		$path = Str::finish($path, '.php');
+		$config = $source ? Internal::sourceFile($path) : Internal::projectFile($path);
+
+		return new static($config);
 	}
 
 }

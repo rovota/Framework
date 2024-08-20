@@ -13,7 +13,7 @@ use Rovota\Framework\Http\Client\Traits\ClientModifiers;
 use Rovota\Framework\Http\Client\Traits\SharedModifiers;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 class Client
 {

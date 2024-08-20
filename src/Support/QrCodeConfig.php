@@ -7,8 +7,6 @@
 
 namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Structures\Config;
-
 /**
  * @property-read string $data
  * @property-read string $format

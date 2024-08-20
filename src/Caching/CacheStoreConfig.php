@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Caching;
 
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 /**
  * @property Driver|null $driver

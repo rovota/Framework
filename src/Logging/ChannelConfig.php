@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Logging;
 
 use Rovota\Framework\Logging\Enums\Driver;
-use Rovota\Framework\Structures\Config;
+use Rovota\Framework\Support\Config;
 
 /**
  * @property Driver|null $driver
