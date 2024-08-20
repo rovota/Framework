@@ -31,7 +31,7 @@ final class Framework
 	// -----------------
 
 	protected static Version $version;
-	protected static DefaultEnvironment $environment;
+	protected static Environment $environment;
 
 	protected static ServiceContainer $services;
 
@@ -98,7 +98,7 @@ final class Framework
 		return self::$version;
 	}
 
-	public static function environment(): DefaultEnvironment
+	public static function environment(): Environment
 	{
 		return self::$environment;
 	}
@@ -121,19 +121,14 @@ final class Framework
 
 	protected static function createEnvironment(): void
 	{
-		if (class_exists('\App\Setup\Environment')) {
-			self::$environment = new \App\Setup\Environment();
-			return;
-		}
-
-		self::$environment = new DefaultEnvironment();
+		self::$environment = new Environment();
 	}
 
 	protected static function configureServices(): void
 	{
 		self::$services = new ServiceContainer();
 
-		foreach (self::$environment->services() as $name => $class) {
+		foreach (self::$environment->config()->services as $name => $class) {
 			self::$services->register($class, $name);
 		}
 	}

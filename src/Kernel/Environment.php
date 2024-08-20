@@ -10,12 +10,14 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Kernel\Enums\EnvironmentType;
 use Rovota\Framework\Support\Str;
 
-class DefaultEnvironment
+class Environment
 {
 
 	protected Server $server;
 
 	protected EnvironmentType $type;
+
+	protected EnvironmentConfig $config;
 
 	// -----------------
 
@@ -23,6 +25,8 @@ class DefaultEnvironment
 	{
 		$this->server = new Server();
 		$this->type = $this->getEnvironmentType();
+
+		$this->config = EnvironmentConfig::load('config/environment');
 	}
 
 	// -----------------
@@ -35,6 +39,11 @@ class DefaultEnvironment
 	public function type(): EnvironmentType
 	{
 		return $this->type;
+	}
+
+	public function config(): EnvironmentConfig
+	{
+		return $this->config;
 	}
 
 	// -----------------
@@ -69,23 +78,6 @@ class DefaultEnvironment
 	public function hasLoggingEnabled(): bool
 	{
 		return getenv('ENABLE_LOGGING') === 'true';
-	}
-
-	// -----------------
-
-	public function cookieDomain(): string
-	{
-		return $_SERVER['SERVER_NAME'];
-	}
-
-	// -----------------
-
-	public function services(): array
-	{
-		return [
-			// Foundation
-			'registry' => RegistryManager::class,
-		];
 	}
 
 	// -----------------

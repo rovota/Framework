@@ -15,9 +15,6 @@ use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 
-/**
- * @internal
- */
 final class RegistryManager
 {
 
@@ -25,6 +22,9 @@ final class RegistryManager
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public function __construct()
 	{
 		$file = require Internal::projectFile('config/registry.php');
