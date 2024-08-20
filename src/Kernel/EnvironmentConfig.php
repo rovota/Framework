@@ -25,10 +25,14 @@ class EnvironmentConfig extends Config
 
 	protected function getServices(): array
 	{
-		return $this->array('services', [
-
-		]);
+		return $this->array('services');
 	}
+
+	// -----------------
+
+	// TODO: methods like authProviders() and libraries()
+	// For example, Environment::authProviders() returns an array with auth provider classes/config.
+	// And Environment::libraries() returns an array of library classes to call a load() method on.
 
 	// -----------------
 

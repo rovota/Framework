@@ -9,6 +9,7 @@ namespace Rovota\Framework\Logging;
 
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Logging\Drivers\Discord;
 use Rovota\Framework\Logging\Drivers\Monolog;
 use Rovota\Framework\Logging\Drivers\Stack;
@@ -21,51 +22,45 @@ use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 
-/**
- * @internal
- */
-final class LoggingManager
+final class LoggingManager extends ServiceProvider
 {
 
 	/**
 	 * @var Map<string, ChannelInterface>
 	 */
-	protected static Map $channels;
+	protected Map $channels;
 
-	protected static string $default;
-
-	// -----------------
-
-	protected function __construct()
-	{
-	}
+	protected string $default;
 
 	// -----------------
 
-	public static function initialize(): void
+	/**
+	 * @internal
+	 */
+	public function __construct()
 	{
-		self::$channels = new Map();
+		$this->channels = new Map();
 
 		$config = require Internal::projectFile('config/logging.php');
 
 		foreach ($config['channels'] as $name => $options) {
-			$channel =  self::build($name, $options);
+			$channel =  $this->build($name, $options);
 			if ($channel instanceof ChannelInterface) {
-				self::$channels->set($name, $channel);
+				$this->channels->set($name, $channel);
 			}
 		}
 
-		self::setDefault($config['default']);
+		$this->setDefault($config['default']);
 	}
 
 	// -----------------
 
-	public static function createChannel(array $config, string|null $name = null): ChannelInterface|null
+	public function createChannel(array $config, string|null $name = null): ChannelInterface|null
 	{
 		return self::build($name ?? Str::random(20), $config);
 	}
 
-	public static function createStack(array $channels, string|null $name = null): ChannelInterface|null
+	public function createStack(array $channels, string|null $name = null): ChannelInterface|null
 	{
 		return self::build($name ?? Str::random(20), [
 			'driver' => 'stack',
@@ -76,27 +71,27 @@ final class LoggingManager
 
 	// -----------------
 
-	public static function hasChannel(string $name): bool
+	public function hasChannel(string $name): bool
 	{
-		return isset(self::$channels[$name]);
+		return isset($this->channels[$name]);
 	}
 
-	public static function addChannel(string $name, array $config): void
+	public function addChannel(string $name, array $config): void
 	{
 		$channel = self::build($name, $config);
 
 		if ($channel instanceof ChannelInterface) {
-			self::$channels[$name] = $channel;
+			$this->channels[$name] = $channel;
 		}
 	}
 
-	public static function getChannel(string|null $name = null): ChannelInterface|null
+	public function getChannel(string|null $name = null): ChannelInterface|null
 	{
 		if ($name === null) {
-			$name = self::$default;
+			$name = $this->default;
 		}
 
-		return self::$channels[$name] ?? null;
+		return $this->channels[$name] ?? null;
 	}
 
 	// -----------------
@@ -104,29 +99,29 @@ final class LoggingManager
 	/**
 	 * @returns Map<string, ChannelInterface>
 	 */
-	public static function getChannels(): Map
+	public function getChannels(): Map
 	{
-		return self::$channels;
+		return $this->channels;
 	}
 
 	// -----------------
 
-	public static function setDefault(string $name): void
+	public function setDefault(string $name): void
 	{
-		if (isset(self::$channels[$name]) === false) {
+		if (isset($this->channels[$name]) === false) {
 			ExceptionHandler::handleThrowable(new MissingChannelException("Undefined channels cannot be set as default: '$name'."));
 		}
-		self::$default = $name;
+		$this->default = $name;
 	}
 
-	public static function getDefault(): string
+	public function getDefault(): string
 	{
-		return self::$default;
+		return $this->default;
 	}
 
 	// -----------------
 
-	protected static function build(string $name, array $config): ChannelInterface|null
+	protected function build(string $name, array $config): ChannelInterface|null
 	{
 		$config = new ChannelConfig($config);
 

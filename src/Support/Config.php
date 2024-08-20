@@ -32,7 +32,12 @@ class Config extends Bucket
 	public static function load(string $path, bool $source = false): static
 	{
 		$path = Str::finish($path, '.php');
-		$config = $source ? Internal::sourceFile($path) : Internal::projectFile($path);
+
+		if ($source === true) {
+			$config = include Internal::sourceFile($path);
+		} else {
+			$config = include Internal::projectFile($path);
+		}
 
 		return new static($config);
 	}

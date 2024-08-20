@@ -38,7 +38,7 @@ final class Stack implements ChannelInterface
 
 	public function isDefault(): bool
 	{
-		return LoggingManager::getDefault() === $this->name;
+		return LoggingManager::instance()->getDefault() === $this->name;
 	}
 
 	// -----------------
@@ -72,7 +72,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->log($level, $message, $context); continue;
 			}
-			LoggingManager::getChannel($channel)->log($level, $message, $context);
+			LoggingManager::instance()->getChannel($channel)->log($level, $message, $context);
 		}
 	}
 
@@ -124,7 +124,7 @@ final class Stack implements ChannelInterface
 			if ($channel instanceof ChannelInterface) {
 				$channel->{$type}($message, $context); continue;
 			}
-			LoggingManager::getChannel($channel)->{$type}($message, $context);
+			LoggingManager::instance()->getChannel($channel)->{$type}($message, $context);
 		}
 	}
 

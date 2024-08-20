@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
+use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
@@ -56,7 +57,6 @@ final class Framework
 		self::configureServices();
 
 		// Foundation
-		LoggingManager::initialize();
 		CacheManager::initialize();
 		EncryptionManager::initialize();
 		CookieManager::initialize();

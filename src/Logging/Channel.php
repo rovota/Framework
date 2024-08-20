@@ -46,7 +46,7 @@ abstract class Channel implements ChannelInterface
 
 	public function isDefault(): bool
 	{
-		return LoggingManager::getDefault() === $this->name;
+		return LoggingManager::instance()->getDefault() === $this->name;
 	}
 
 	// -----------------
@@ -65,7 +65,7 @@ abstract class Channel implements ChannelInterface
 
 	public function attach(ChannelInterface|string|array $channel): ChannelInterface
 	{
-		return LoggingManager::createStack([$this])->attach($channel);
+		return LoggingManager::instance()->createStack([$this])->attach($channel);
 	}
 
 	// -----------------

@@ -9,8 +9,9 @@ namespace Rovota\Framework\Facades;
 
 use DateTime;
 use DateTimeZone;
-use Rovota\Framework\Kernel\Facade;
+use Rovota\Framework\Kernel\RegistryManager;
 use Rovota\Framework\Structures\Bucket;
+use Rovota\Framework\Support\Facade;
 
 /**
  * @method static void import(array $entries)
@@ -33,9 +34,21 @@ use Rovota\Framework\Structures\Bucket;
 final class Registry extends Facade
 {
 
+	public static function service(): RegistryManager
+	{
+		return parent::service();
+	}
+
+	// -----------------
+
 	protected static function getFacadeTarget(): string
 	{
 		return 'registry';
+	}
+
+	protected static function getMethodTarget(string $method): mixed
+	{
+		return $method;
 	}
 
 }

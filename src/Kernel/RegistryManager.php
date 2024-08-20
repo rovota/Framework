@@ -15,7 +15,7 @@ use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 
-final class RegistryManager
+final class RegistryManager extends ServiceProvider
 {
 
 	protected Bucket $entries;
