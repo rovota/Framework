@@ -15,8 +15,7 @@ use Rovota\Framework\Support\Str;
 use Stringable;
 
 /**
- * @method static ChannelInterface|null channel(string $name)
- *
+ * @method static ChannelInterface channel(string $name)
  * @method static ChannelInterface create(array $config, string|null $name = null)
  * @method static ChannelInterface stack(array $channels, string|null $name = null)
  *
@@ -41,7 +40,7 @@ final class Log extends Facade
 
 	protected static function getFacadeTarget(): string
 	{
-		return 'logging';
+		return LoggingManager::class;
 	}
 
 	protected static function getMethodTarget(string $method): Closure|string
@@ -50,7 +49,7 @@ final class Log extends Facade
 
 		if (Str::containsAny($method, $methods)) {
 			return function (LoggingManager $instance, string $method, array $parameters = []) {
-				return $instance->getChannel()?->$method(...$parameters);
+				return $instance->getChannel()->$method(...$parameters);
 			};
 		}
 

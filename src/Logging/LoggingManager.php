@@ -22,6 +22,9 @@ use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 
+/**
+ * @internal
+ */
 final class LoggingManager extends ServiceProvider
 {
 
@@ -34,9 +37,6 @@ final class LoggingManager extends ServiceProvider
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public function __construct()
 	{
 		$this->channels = new Map();
@@ -85,13 +85,17 @@ final class LoggingManager extends ServiceProvider
 		}
 	}
 
-	public function getChannel(string|null $name = null): ChannelInterface|null
+	public function getChannel(string|null $name = null): ChannelInterface
 	{
 		if ($name === null) {
 			$name = $this->default;
 		}
 
-		return $this->channels[$name] ?? null;
+		if (isset($this->channels[$name]) === false) {
+			ExceptionHandler::handleThrowable(new MissingChannelException("The specified channel could not be found: '$name'."));
+		}
+
+		return $this->channels[$name];
 	}
 
 	// -----------------
