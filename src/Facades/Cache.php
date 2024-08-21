@@ -50,18 +50,12 @@ final class Cache extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		$methods = ['all', 'set', 'forever', 'has', 'missing', 'get', 'remove', 'pull', 'remember', 'rememberForever', 'increment', 'decrement', 'flush', 'lastModified'];
-
-		if (Str::containsAny($method, $methods)) {
-			return function (CacheManager $instance, string $method, array $parameters = []) {
-				return $instance->getStore()->$method(...$parameters);
-			};
-		}
-
 		return match ($method) {
 			'store' => 'getStore',
 			'create' => 'createStore',
-			default => $method,
+			default => function (CacheManager $instance, string $method, array $parameters = []) {
+				return $instance->getStore()->$method(...$parameters);
+			},
 		};
 	}
 

@@ -42,17 +42,11 @@ final class Http extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		$methods = ['request', 'get', 'delete', 'head', 'options', 'patch', 'post', 'put'];
-
-		if (Str::containsAny($method, $methods)) {
-			return function (ClientManager $instance, string $method, array $parameters = []) {
-				return $instance->createClient()->$method(...$parameters);
-			};
-		}
-
 		return match ($method) {
 			'client' => 'createClient',
-			default => $method,
+			default => function (ClientManager $instance, string $method, array $parameters = []) {
+				return $instance->createClient()->$method(...$parameters);
+			},
 		};
 	}
 

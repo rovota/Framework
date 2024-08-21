@@ -39,17 +39,11 @@ final class Encryption extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		$methods = ['generateKey', 'encrypt', 'encryptString', 'decrypt', 'decryptString'];
-
-		if (Str::containsAny($method, $methods)) {
-			return function (EncryptionManager $instance, string $method, array $parameters = []) {
-				return $instance->getAgent()->$method(...$parameters);
-			};
-		}
-
 		return match ($method) {
 			'agent' => 'getAgent',
-			default => $method,
+			default => function (EncryptionManager $instance, string $method, array $parameters = []) {
+				return $instance->getAgent()->$method(...$parameters);
+			},
 		};
 	}
 

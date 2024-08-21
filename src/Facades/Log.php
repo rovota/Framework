@@ -45,19 +45,13 @@ final class Log extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		$methods = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
-
-		if (Str::containsAny($method, $methods)) {
-			return function (LoggingManager $instance, string $method, array $parameters = []) {
-				return $instance->getChannel()->$method(...$parameters);
-			};
-		}
-
 		return match ($method) {
 			'channel' => 'getChannel',
 			'create' => 'createChannel',
 			'stack' => 'createStack',
-			default => $method,
+			default => function (LoggingManager $instance, string $method, array $parameters = []) {
+				return $instance->getChannel()->$method(...$parameters);
+			},
 		};
 	}
 
