@@ -7,39 +7,36 @@
 
 namespace Rovota\Framework\Security;
 
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 use Rovota\Framework\Support\Internal;
 
-final class EncryptionManager
+/**
+ * @internal
+ */
+final class EncryptionManager extends ServiceProvider
 {
-	protected static EncryptionAgent $agent;
-
-	// -----------------
-
-	protected function __construct()
-	{
-	}
+	protected EncryptionAgent $agent;
 
 	// -----------------
 
 	/**
-	 * @internal
 	 * @throws IncorrectKeyException
 	 */
-	public static function initialize(): void
+	public function __construct()
 	{
 		$config = require Internal::projectFile('config/encryption.php');
 
-		self::$agent = new EncryptionAgent(
+		$this->agent = new EncryptionAgent(
 			base64_decode($config['key']), $config['cipher']
 		);
 	}
 
 	// -----------------
 
-	public static function getAgent(): EncryptionAgent
+	public function getAgent(): EncryptionAgent
 	{
-		return self::$agent;
+		return $this->agent;
 	}
 
 }

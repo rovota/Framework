@@ -98,6 +98,14 @@ final class EncryptionAgent
 	}
 
 	/**
+	 * @throws EncryptionException
+	 */
+	public function encryptString(string $value): string
+	{
+		return $this->encrypt($value, false);
+	}
+
+	/**
 	 * @throws PayloadException
 	 */
 	public function decrypt(string $payload, bool $deserialize = true): mixed
@@ -118,6 +126,14 @@ final class EncryptionAgent
 		}
 
 		return $deserialize ? unserialize($decrypted) : $decrypted;
+	}
+
+	/**
+	 * @throws PayloadException
+	 */
+	public function decryptString(mixed $payload): string|null
+	{
+		return $this->decrypt($payload, false);
 	}
 
 	// -----------------

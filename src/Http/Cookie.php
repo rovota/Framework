@@ -58,7 +58,7 @@ final class Cookie
 
 		try {
 			if (CookieManager::hasEncryptionEnabled($this->name)) {
-				$value = EncryptionManager::getAgent()->encrypt($value, false);
+				$value = EncryptionManager::instance()->getAgent()->encrypt($value, false);
 			}
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);

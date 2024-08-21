@@ -7,68 +7,50 @@
 
 namespace Rovota\Framework\Facades;
 
+use Closure;
 use Rovota\Framework\Security\EncryptionAgent;
 use Rovota\Framework\Security\EncryptionManager;
-use Rovota\Framework\Security\Exceptions\EncryptionException;
-use Rovota\Framework\Security\Exceptions\PayloadException;
-use Rovota\Framework\Security\Exceptions\UnsupportedCipherException;
+use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Support\Str;
 
-final class Encryption
+/**
+ * @method static EncryptionAgent agent()
+ *
+ * @method static string generateKey(string $cipher, bool $encode = false)
+ * @method static string encrypt(mixed $value, bool $serialize = true)
+ * @method static string encryptString(string $value)
+ * @method static mixed decrypt(string $payload, bool $deserialize = true)
+ * @method static string|null decryptString(string $payload)
+ */
+final class Encryption extends Facade
 {
 
-	protected function __construct()
+	public static function service(): EncryptionManager
 	{
+		return parent::service();
 	}
 
 	// -----------------
 
-	public static function agent(): EncryptionAgent
+	protected static function getFacadeTarget(): string
 	{
-		return EncryptionManager::getAgent();
+		return EncryptionManager::class;
 	}
 
-	// -----------------
-
-	/**
-	 * @throws UnsupportedCipherException
-	 */
-	public static function generateKey(string $cipher, bool $encode = false): string
+	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return EncryptionManager::getAgent()->generateKey($cipher, $encode);
-	}
+		$methods = ['generateKey', 'encrypt', 'encryptString', 'decrypt', 'decryptString'];
 
-	// -----------------
+		if (Str::containsAny($method, $methods)) {
+			return function (EncryptionManager $instance, string $method, array $parameters = []) {
+				return $instance->getAgent()->$method(...$parameters);
+			};
+		}
 
-	/**
-	 * @throws EncryptionException
-	 */
-	public static function encrypt(mixed $value, bool $serialize = true): string
-	{
-		return EncryptionManager::getAgent()->encrypt($value, $serialize);
-	}
-
-	/**
-	 * @throws EncryptionException
-	 */
-	public static function encryptString(string $value): string
-	{
-		return EncryptionManager::getAgent()->encrypt($value, false);
-	}
-
-	/**
-	 * @throws PayloadException
-	 */
-	public static function decrypt(string $payload, bool $deserialize = true): mixed
-	{
-		return EncryptionManager::getAgent()->decrypt($payload, $deserialize);
-	}
-
-	/**
-	 * @throws PayloadException
-	 */
-	public static function decryptString(string $payload): string|null
-	{
-		return EncryptionManager::getAgent()->decrypt($payload, false);
+		return match ($method) {
+			'agent' => 'getAgent',
+			default => $method,
+		};
 	}
 
 }

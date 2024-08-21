@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
 use RuntimeException;
 
@@ -34,7 +35,8 @@ class EnvironmentConfig extends Config
 			'registry' => RegistryManager::class,
 			'logging' => LoggingManager::class,
 			'cache' => CacheManager::class,
-			'http' => ClientManager::class,
+			'client' => ClientManager::class,
+			'encryption' => EncryptionManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {
