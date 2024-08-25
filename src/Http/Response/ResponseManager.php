@@ -11,10 +11,10 @@ use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Response\Variants\ErrorResponseObject;
-use Rovota\Framework\Http\Response\Variants\JsonResponseObject;
-use Rovota\Framework\Http\Response\Variants\RedirectResponseObject;
-use Rovota\Framework\Http\Response\Variants\StatusResponseObject;
+use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
+use Rovota\Framework\Http\Response\Extensions\JsonResponse;
+use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
+use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
@@ -65,7 +65,7 @@ final class ResponseManager extends ServiceProvider
 
 	// -----------------
 
-	public function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): ResponseObject
+	public function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): DefaultResponse
 	{
 		// TODO: Return different response classes based on detected content.
 
@@ -95,29 +95,29 @@ final class ResponseManager extends ServiceProvider
 			return self::createStatusResponse($content, $status);
 		}
 
-		return new ResponseObject($content, $status, $this->config);
+		return new DefaultResponse($content, $status, $this->config);
 	}
 
 	// -----------------
 
-	public function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponseObject
+	public function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
 	{
-		return new RedirectResponseObject($location, $status, $this->config);
+		return new RedirectResponse($location, $status, $this->config);
 	}
 
-	public function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponseObject
+	public function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
 	{
-		return new ErrorResponseObject($error, $status, $this->config);
+		return new ErrorResponse($error, $status, $this->config);
 	}
 
-	public function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponseObject
+	public function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
 	{
-		return new JsonResponseObject($content, $status, $this->config);
+		return new JsonResponse($content, $status, $this->config);
 	}
 
-	public function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponseObject
+	public function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponse
 	{
-		return new StatusResponseObject($content, $status, $this->config);
+		return new StatusResponse($content, $status, $this->config);
 	}
 
 	// -----------------

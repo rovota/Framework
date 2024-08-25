@@ -5,16 +5,16 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Response\Variants;
+namespace Rovota\Framework\Http\Response\Extensions;
 
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request\RequestManager;
-use Rovota\Framework\Http\Response\ResponseObject;
+use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Url;
 
-class RedirectResponseObject extends ResponseObject
+class RedirectResponse extends DefaultResponse
 {
 
 	public UrlObject $location;

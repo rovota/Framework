@@ -5,9 +5,11 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Response\Variants;
+namespace Rovota\Framework\Http\Response\Extensions;
 
-class ImageResponse extends FileResponseObject
+use Rovota\Framework\Http\Response\DefaultResponse;
+
+class FileResponse extends DefaultResponse
 {
 
 	// -----------------

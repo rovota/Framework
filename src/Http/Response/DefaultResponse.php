@@ -13,7 +13,7 @@ use Rovota\Framework\Http\Response\Traits\ResponseModifiers;
 use Rovota\Framework\Support\Config;
 use Stringable;
 
-class ResponseObject implements Stringable
+class DefaultResponse implements Stringable
 {
 	use ResponseModifiers;
 

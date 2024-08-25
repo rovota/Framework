@@ -12,13 +12,13 @@ use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Http\Response\ResponseConfig;
 use Rovota\Framework\Http\Response\ResponseManager;
-use Rovota\Framework\Http\Response\ResponseObject;
-use Rovota\Framework\Http\Response\Variants\ErrorResponseObject;
-use Rovota\Framework\Http\Response\Variants\JsonResponseObject;
-use Rovota\Framework\Http\Response\Variants\RedirectResponseObject;
-use Rovota\Framework\Http\Response\Variants\StatusResponseObject;
+use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
+use Rovota\Framework\Http\Response\Extensions\JsonResponse;
+use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
+use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Facade;
 use Throwable;
@@ -26,11 +26,11 @@ use Throwable;
 /**
  * @method static ResponseConfig config()
  *
- * @method static ResponseObject create(mixed $content, StatusCode|int $status = StatusCode::Ok)
- * @method static RedirectResponseObject redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
- * @method static ErrorResponseObject error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok)
- * @method static JsonResponseObject json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
- * @method static StatusResponseObject status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static DefaultResponse create(mixed $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static RedirectResponse redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
+ * @method static ErrorResponse error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok)
+ * @method static JsonResponse json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static StatusResponse status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)
  *
  * @method static void attachHeader(string $name, string $value)
  * @method static void attachHeaders(array $headers)

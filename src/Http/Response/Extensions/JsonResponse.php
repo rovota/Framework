@@ -5,15 +5,15 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Response\Variants;
+namespace Rovota\Framework\Http\Response\Extensions;
 
 use JsonSerializable;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Response\ResponseObject;
+use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
-class JsonResponseObject extends ResponseObject
+class JsonResponse extends DefaultResponse
 {
 	public function __construct(JsonSerializable|array $content, StatusCode|int $status, Config $config)
 	{
