@@ -11,11 +11,10 @@ use Closure;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Support\Str;
 use Stringable;
 
 /**
- * @method static ChannelInterface channel(string $name)
+ * @method static ChannelInterface channel(string|null $name = null)
  * @method static ChannelInterface create(array $config, string|null $name = null)
  * @method static ChannelInterface stack(array $channels, string|null $name = null)
  *

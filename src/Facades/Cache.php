@@ -12,10 +12,9 @@ use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Support\Str;
 
 /**
- * @method static CacheInterface store(string $name)
+ * @method static CacheInterface store(string|null $name = null)
  * @method static CacheInterface create(array $config, string|null $name = null)
  *
  * @method static Map all()
