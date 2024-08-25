@@ -11,7 +11,7 @@ namespace Rovota\Framework\Support\Traits;
 
 use DateTimeZone;
 use ReturnTypeWillChange;
-use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Localization\LocalizationManager;
 
 trait MomentModifiers
 {
@@ -20,7 +20,7 @@ trait MomentModifiers
 	public function setTimezone(DateTimeZone|string|int $timeZone): static
 	{
 		if ($timeZone === 'local') {
-			$timeZone = Localization::getActiveTimezone();
+			$timeZone = LocalizationManager::instance()->getCurrentTimezone();
 		}
 
 		parent::setTimezone($timeZone);

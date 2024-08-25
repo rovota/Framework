@@ -10,7 +10,7 @@ namespace Rovota\Framework\Support;
 use Closure;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
-use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Structures\Basket;
 use Throwable;
 
@@ -25,7 +25,7 @@ final class Str
 
 	public static function translate(string|null $string, array|object $data = []): string
 	{
-		$string = Localization::getTranslatedString($string ?? '');
+		$string = LocalizationManager::instance()->getTranslatedString($string ?? '');
 
 		if (empty($data) === false && Str::length($string) > 0) {
 			if (is_object($data)) {

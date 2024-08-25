@@ -14,7 +14,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
-use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
@@ -53,7 +53,6 @@ final class Framework
 		self::configureServices();
 
 		// Foundation
-		Localization::initialize();
 		ResponseManager::initialize();
 
 		// Additional

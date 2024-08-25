@@ -10,7 +10,7 @@ namespace Rovota\Framework\Http;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
-use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
@@ -440,7 +440,7 @@ final class RequestInstance
 
 		$locales = $this->acceptHeaderToArray($this->headers->get('Accept-Language'));
 		if (empty($locales)) {
-			return [Localization::getDefaultLocale() => 1.0];
+			return [LocalizationManager::instance()->getDefaultLocale() => 1.0];
 		}
 
 		$normalized = [];

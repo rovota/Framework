@@ -10,7 +10,7 @@ namespace Rovota\Framework\Localization;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Internal;
 
-final class Language
+final class LanguageObject
 {
 
 	public readonly string $locale;
@@ -23,10 +23,10 @@ final class Language
 
 	// -----------------
 
-	public function __construct(string $locale, array $data = [])
+	public function __construct(string $locale)
 	{
 		$this->locale = $locale;
-		$this->data = new Bucket($data);
+		$this->data = $this->getLanguageData();
 	}
 
 	// -----------------
@@ -64,7 +64,24 @@ final class Language
 
 	public function findTranslation(string $key): string|null
 	{
+		if (empty($this->translations)) {
+			$this->loadTranslations();
+		}
 		return $this->translations[$key] ?? null;
+	}
+
+	// -----------------
+
+	public function getLanguageData(): Bucket
+	{
+		$data = new Bucket();
+		$file = Internal::projectFile('/config/locales/'.$this->locale.'.php');
+
+		if (file_exists($file)) {
+			$data->import(require $file);
+		}
+
+		return $data;
 	}
 
 }

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Support;
 
 use NumberFormatter;
-use Rovota\Framework\Localization\Localization;
+use Rovota\Framework\Localization\LocalizationManager;
 
 final class Number
 {
@@ -49,7 +49,7 @@ final class Number
 	public static function storage(int|float $bytes, int $precision = 2, string $format = 'short', string|null $locale = null): string
 	{
 		$locale = self::getLocale($locale);
-		$suffixes = Localization::getLanguage($locale)->units()->get('storage.'.$format);
+		$suffixes = LocalizationManager::instance()->getLanguage($locale)->units()->get('storage.'.$format);
 
 		$data = self::getAbbreviationData($bytes, 1024, $suffixes);
 		$value = self::format($data['value'], $precision, $locale);
@@ -60,7 +60,7 @@ final class Number
 	public static function shorten(int|float $number, int $precision = 0, string $format = 'short', string|null $locale = null): string
 	{
 		$locale = self::getLocale($locale);
-		$suffixes = Localization::getLanguage($locale)->units()->get('numbers.'.$format);
+		$suffixes = LocalizationManager::instance()->getLanguage($locale)->units()->get('numbers.'.$format);
 
 		$data = self::getAbbreviationData($number, 1000, $suffixes);
 		$value = self::format($data['value'], $precision, $locale);
@@ -82,7 +82,7 @@ final class Number
 
 	protected static function getLocale(string|null $locale): string
 	{
-		return $locale ?? Localization::getActiveLanguage()->locale ?? 'en_US';
+		return $locale ?? LocalizationManager::instance()->getCurrentLanguage()->locale ?? 'en_US';
 	}
 
 }

@@ -11,6 +11,7 @@ use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
@@ -41,6 +42,7 @@ class EnvironmentConfig extends Config
 			'encryption' => EncryptionManager::class,
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
+			'localize' => LocalizationManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {
@@ -58,8 +60,6 @@ class EnvironmentConfig extends Config
 	// TODO: methods like authProviders() and libraries()
 	// For example, Environment::authProviders() returns an array with auth provider classes/config.
 	// And Environment::libraries() returns an array of library classes to call a load() method on.
-
-	// -----------------
 
 	// -----------------
 
