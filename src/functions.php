@@ -167,3 +167,27 @@ if (!function_exists('limit')) {
 		return min(max($minimum, $value), $maximum);
 	}
 }
+
+if (!function_exists('throw_if')) {
+	/**
+	 * @throws Throwable
+	 */
+	function throw_if(bool $bool, Throwable|string $throwable, string|null $message = ''): void
+	{
+		if ($bool === true) {
+			throw (is_string($throwable) ? new $throwable($message) : $throwable);
+		}
+	}
+}
+
+if (!function_exists('throw_unless')) {
+	/**
+	 * @throws Throwable
+	 */
+	function throw_unless(bool $bool, Throwable|string $throwable, string|null $message = ''): void
+	{
+		if ($bool === false) {
+			throw (is_string($throwable) ? new $throwable($message) : $throwable);
+		}
+	}
+}
