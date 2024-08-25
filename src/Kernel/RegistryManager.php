@@ -11,8 +11,8 @@ use BackedEnum;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Moment;
+use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Text;
 
 /**
@@ -27,7 +27,7 @@ final class RegistryManager extends ServiceProvider
 
 	public function __construct()
 	{
-		$file = require Internal::projectFile('config/registry.php');
+		$file = require Path::toProjectFile('config/registry.php');
 
 		$this->entries = new Bucket($file);
 	}

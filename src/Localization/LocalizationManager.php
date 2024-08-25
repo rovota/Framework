@@ -11,7 +11,7 @@ use DateTimeZone;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Path;
 
 /**
  * @internal
@@ -34,7 +34,7 @@ final class LocalizationManager extends ServiceProvider
 
 	public function __construct()
 	{
-		$config = require Internal::projectFile('config/localization.php');
+		$config = require Path::toProjectFile('config/localization.php');
 
 		foreach ($config['locales'] as $locale) {
 			$this->loadLanguageUsingLocale($locale);
@@ -157,7 +157,7 @@ final class LocalizationManager extends ServiceProvider
 
 	protected function loadLanguageUsingLocale(string $locale): void
 	{
-		$file = Internal::projectFile('/config/locales/'.$locale.'.php');
+		$file = Path::toProjectFile('/config/locales/'.$locale.'.php');
 
 		if (file_exists($file)) {
 			$this->languages[$locale] = new LanguageObject($locale);

@@ -34,9 +34,9 @@ class Config extends Bucket
 		$path = Str::finish($path, '.php');
 
 		if ($source === true) {
-			$config = include Internal::sourceFile($path);
+			$config = include Path::toSourceFile($path);
 		} else {
-			$config = include Internal::projectFile($path);
+			$config = include Path::toProjectFile($path);
 		}
 
 		return new static($config);

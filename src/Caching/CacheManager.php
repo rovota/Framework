@@ -18,7 +18,7 @@ use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -40,7 +40,7 @@ final class CacheManager extends ServiceProvider
 	{
 		$this->stores = new Map();
 
-		$config = require Internal::projectFile('config/caching.php');
+		$config = require Path::toProjectFile('config/caching.php');
 
 		foreach ($config['stores'] as $name => $options) {
 			$store =  $this->build($name, $options);

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Localization;
 
 use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Path;
 
 final class LanguageObject
 {
@@ -33,7 +33,7 @@ final class LanguageObject
 
 	public function loadTranslations(): void
 	{
-		$file = Internal::projectFile('/resources/translations/'.$this->locale.'.json');
+		$file = Path::toProjectFile('/resources/translations/'.$this->locale.'.json');
 
 		if (file_exists($file)) {
 			$contents = file_get_contents($file);
@@ -75,7 +75,7 @@ final class LanguageObject
 	public function getLanguageData(): Bucket
 	{
 		$data = new Bucket();
-		$file = Internal::projectFile('/config/locales/'.$this->locale.'.php');
+		$file = Path::toProjectFile('/config/locales/'.$this->locale.'.php');
 
 		if (file_exists($file)) {
 			$data->import(require $file);

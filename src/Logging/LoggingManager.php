@@ -19,7 +19,7 @@ use Rovota\Framework\Logging\Exceptions\ChannelMisconfigurationException;
 use Rovota\Framework\Logging\Exceptions\MissingChannelException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -41,7 +41,7 @@ final class LoggingManager extends ServiceProvider
 	{
 		$this->channels = new Map();
 
-		$config = require Internal::projectFile('config/logging.php');
+		$config = require Path::toProjectFile('config/logging.php');
 
 		foreach ($config['channels'] as $name => $options) {
 			$channel =  $this->build($name, $options);

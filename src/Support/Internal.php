@@ -11,30 +11,14 @@ use ArrayAccess;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
+/**
+ * @internal
+ */
 final class Internal
 {
 
 	protected function __construct()
 	{
-	}
-
-	// -----------------
-
-	/**
-	 * Returns a complete path to a given file in the framework folder, where `bootloader.php` is located.
-	 */
-	public static function sourceFile(string $path = ''): string
-	{
-		return self::projectFile($path, self::getFrameworkRootPath());
-	}
-
-	/**
-	 * Returns a complete path to a given file in the project folder, where `app.php` is located.
-	 */
-	public static function projectFile(string $path = '', string|null $base = null): string
-	{
-		$base = $base ?? self::getProjectRootPath();
-		return strlen($path) > 0 ? $base.'/'.ltrim($path, '/') : $base;
 	}
 
 	// -----------------
@@ -109,18 +93,6 @@ final class Internal
 		}
 
 		return $target;
-	}
-
-	// -----------------
-	
-	protected static function getFrameworkRootPath(): string
-	{
-		return str_replace('\Support', '', dirname(__FILE__));
-	}
-
-	protected static function getProjectRootPath(): string
-	{
-		return defined('BASE_PATH') ? BASE_PATH : self::getFrameworkRootPath();
 	}
 
 }

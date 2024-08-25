@@ -18,7 +18,6 @@ use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
-use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Str;
 use Throwable;
 
@@ -35,20 +34,6 @@ final class ResponseManager extends ServiceProvider
 	public function __construct()
 	{
 		$this->config = ResponseConfig::load('config/responses.php');
-
-		$this->config->set([
-			'headers.X-Powered-By' => 'Rovota Framework',
-			'headers.X-XSS-Protection' => '0',
-		]);
-	}
-
-	// -----------------
-
-	public function initialize(): void
-	{
-		$config = require Internal::projectFile('config/responses.php');
-
-		$this->config = new Config($config);
 
 		$this->config->set([
 			'headers.X-Powered-By' => 'Rovota Framework',

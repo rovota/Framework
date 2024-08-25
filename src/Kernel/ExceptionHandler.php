@@ -12,7 +12,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
-use Rovota\Framework\Support\Internal;
+use Rovota\Framework\Support\Path;
 use Throwable;
 
 final class ExceptionHandler
@@ -97,7 +97,7 @@ final class ExceptionHandler
 		$snippet = self::getSnippet($throwable->getFile());
 		$traces = self::getFilteredTrace($throwable);
 
-		include Internal::sourceFile('web/templates/debug_throwable.php');
+		include Path::toSourceFile('web/templates/debug_throwable.php');
 		exit;
 	}
 
@@ -107,7 +107,7 @@ final class ExceptionHandler
 		$request = self::getRequestInfo();
 		$snippet = self::getSnippet($file);
 
-		include Internal::sourceFile('web/templates/debug_error.php');
+		include Path::toSourceFile('web/templates/debug_error.php');
 		exit;
 	}
 
