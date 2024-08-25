@@ -36,7 +36,8 @@
       "phpseclib/phpseclib": "^3.0",
       "spomky-labs/otphp": "^11.2",
       "doctrine/inflector": "^2.0",
-      "nesbot/carbon": "^3.0"
+      "nesbot/carbon": "^3.0",
+      "jaybizzle/crawler-detect": "^1.2"
    },
 
    "require-dev": {

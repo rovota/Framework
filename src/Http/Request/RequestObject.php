@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Http\Request;
 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
@@ -187,6 +188,12 @@ final class RequestObject
 		return false;
 	}
 
+	public function isBot(string|null $useragent = null): bool
+	{
+		$detection = new CrawlerDetect();
+		return $detection->isCrawler($useragent);
+	}
+
 	public function isXmlHttp(): bool
 	{
 		return $this->headers->get('X-Requested-With') === 'XMLHttpRequest';
@@ -252,7 +259,7 @@ final class RequestObject
 
 	public function ip(): string
 	{
-		return match(true) {
+		return match (true) {
 			$this->headers->has('CF-Connecting-IP') => $this->headers->get('CF-Connecting-IP'),
 			$this->headers->has('X-Forwarded-For') => $this->headers->get('X-Forwarded-For'),
 			default => Framework::environment()->server()->get('REMOTE_ADDR'),
@@ -280,6 +287,28 @@ final class RequestObject
 	public function platform(): string
 	{
 		return trim($this->headers->string('Sec-CH-UA-Platform', 'Unknown'), '"');
+	}
+
+	/**
+	 * Uses the experimental 'Sec-CH-UA' HTTP header. If a match cannot be found, the default is returned.
+	 */
+	public function client(string|null $default = null): string|null
+	{
+		if ($this->headers->has('Sec-CH-UA')) {
+			$names = array_reduce(explode(',', trim($this->headers->get('Sec-CH-UA'))),
+				function ($carry, $element) {
+					$brand = Str::remove(Str::beforeLast($element, ';'), '"');
+					$version = str_contains($element, ';v=') ? Str::afterLast($element, ';v=') : '';
+					if (Str::containsNone($brand, ['Brand', 'Chromium'])) {
+						$carry[trim($brand)] = (int) Str::remove($version, '"');
+					}
+					return $carry;
+				}, []
+			);
+			$client = array_key_first($names);
+		}
+
+		return $client ?? $default;
 	}
 
 	public function locale(): string
@@ -354,7 +383,7 @@ final class RequestObject
 			}
 
 			foreach ($types as $type) {
-				if ($this->matchesType($type, $accept) || $accept === strtok($type, '/').'/*') {
+				if ($this->matchesType($type, $accept) || $accept === strtok($type, '/') . '/*') {
 					return $type;
 				}
 			}
@@ -447,7 +476,7 @@ final class RequestObject
 
 		$normalized = [];
 		foreach ($locales as $locale => $quality) {
-			$locale = mb_strlen($locale) === 2 ? $locale.'_'.strtoupper($locale) : $locale;
+			$locale = mb_strlen($locale) === 2 ? $locale . '_' . strtoupper($locale) : $locale;
 			$locale = str_replace('-', '_', $locale);
 			if (!isset($locales[$locale])) {
 				$normalized[$locale] = $quality;
@@ -487,7 +516,7 @@ final class RequestObject
 		$path = Str::before(Framework::environment()->server()->get('REQUEST_URI'), '?');
 		$query = Framework::environment()->server()->get('QUERY_STRING');
 
-		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path. (strlen($query) > 0 ? '?' : '') .$query);
+		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path . (strlen($query) > 0 ? '?' : '') . $query);
 	}
 
 	protected function matchesType(string $actual, string $type): bool
@@ -516,9 +545,9 @@ final class RequestObject
 			function ($carry, $element) {
 				$type = Str::before($element, ';');
 				$quality = str_contains($element, ';q=') ? Str::afterLast($element, ';q=') : 1.00;
-				$carry[trim($type)] = (float) $quality;
+				$carry[trim($type)] = (float)$quality;
 				return $carry;
-			},[]
+			}, []
 		);
 	}
 
