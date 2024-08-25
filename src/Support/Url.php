@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Support;
 
+use Rovota\Framework\Facades\Cache;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\UrlObject;
 
@@ -43,11 +44,33 @@ final class Url
 
 	// TODO: route()
 
-	// TODO: previous()
+	/**
+	 * This method requires the presence of a cache store using `session` as name.
+	 */
+	public static function previous(string $default = '/'): UrlObject
+	{
+		$referrer = RequestManager::instance()->getCurrent()->referrer();
+		$location = Cache::store('session')->pull('location.previous', $referrer ?? $default);
+		return UrlObject::from($location);
+	}
 
-	// TODO: next()
+	/**
+	 * This method requires the presence of a cache store using `session` as name.
+	 */
+	public static function next(string $default = '/'): UrlObject
+	{
+		$location = Cache::store('session')->pull('location.next', $default);
+		return UrlObject::from($location);
+	}
 
-	// TODO: intended()
+	/**
+	 * This method requires the presence of a cache store using `session` as name.
+	 */
+	public static function intended(string $default = '/'): UrlObject
+	{
+		$location = Cache::store('session')->pull('location.intended', $default);
+		return UrlObject::from($location);
+	}
 
 	// -----------------
 

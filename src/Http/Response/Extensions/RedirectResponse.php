@@ -68,10 +68,22 @@ class RedirectResponse extends DefaultResponse
 
 	// TODO: toRoute()
 
-	// TODO: toPrevious()
+	public function toPrevious(string $default = '/'): static
+	{
+		$this->location = Url::previous($default);
+		return $this;
+	}
 
-	// TODO: toNext()
+	public function toNext(string $default = '/'): static
+	{
+		$this->location = Url::next($default);
+		return $this;
+	}
 
-	// TODO: toIntended()
+	public function toIntended(string $default = '/'): static
+	{
+		$this->location = Url::intended($default);
+		return $this;
+	}
 
 }
