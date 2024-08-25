@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Http\Request;
 
+use Rovota\Framework\Facades\Cache;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Support\Arr;
@@ -30,6 +31,11 @@ final class RequestManager extends ServiceProvider
 			'post' => $this->getRequestPostData(),
 			'query' => $this->getRequestQueryData(),
 		]);
+		
+		$continue = $this->current->query->string('continue');
+		if (mb_strlen($continue) > 0 && Cache::service()->hasStore('session')) {
+			Cache::store('session')->set('location.next', $continue);
+		}
 	}
 
 	// -----------------
