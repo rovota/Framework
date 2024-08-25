@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Http;
 
 use DateTime;
-use Rovota\Framework\Facades\Cookie;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Security\EncryptionManager;
@@ -58,7 +57,7 @@ final class CookieObject
 		$value = trim($this->value);
 
 		try {
-			if (Cookie::hasEncryptionEnabled($this->name)) {
+			if (CookieManager::instance()->hasEncryptionEnabled($this->name)) {
 				$value = EncryptionManager::instance()->getAgent()->encrypt($value, false);
 			}
 		} catch (Throwable $throwable) {
@@ -106,7 +105,7 @@ final class CookieObject
 	protected function setDefaultOptions(): void
 	{
 		$this->options = [
-			'domain' => Cookie::domain(),
+			'domain' => Framework::environment()->config()->cookie_domain,
 			'expires' => 0, // when client is closed
 			'path' => '/',
 			'httponly' => true,

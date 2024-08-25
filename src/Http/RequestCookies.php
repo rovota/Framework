@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Http;
 
-use Rovota\Framework\Facades\Cookie;
 use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Security\EncryptionManager;
 use Throwable;
@@ -26,7 +25,7 @@ class RequestCookies extends RequestData
 
 			$name = str_replace('__Secure-', '', trim($name));
 
-			if (Cookie::hasEncryptionEnabled($name)) {
+			if (CookieManager::instance()->hasEncryptionEnabled($name)) {
 				try {
 					$value = EncryptionManager::instance()->getAgent()->decrypt($value, false);
 				} catch (Throwable) {
@@ -34,7 +33,7 @@ class RequestCookies extends RequestData
 				}
 			}
 
-			$items[$name] = Cookie::create($name, $value, ['expires' => now()->addHour()], received: true);
+			$items[$name] = CookieManager::instance()->createCookie($name, $value, ['expires' => now()->addHour()], received: true);
 		}
 
 		parent::__construct($items);
