@@ -148,7 +148,7 @@ final class ResponseManager
 
 	// -----------------
 
-	public static function attachCookie(Cookie $cookie): void
+	public static function attachCookie(CookieInstance $cookie): void
 	{
 		self::getConfig()->set('cookies.'.$cookie->name, $cookie);
 	}
@@ -156,7 +156,7 @@ final class ResponseManager
 	public static function attachCookies(array $cookies): void
 	{
 		foreach ($cookies as $cookie) {
-			if ($cookie instanceof Cookie) {
+			if ($cookie instanceof CookieInstance) {
 				self::getConfig()->set('cookies.'.$cookie->name, $cookie);
 			}
 		}

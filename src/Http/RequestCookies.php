@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Http;
 
+use Rovota\Framework\Facades\Cookie;
 use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Security\EncryptionManager;
 use Throwable;
@@ -25,7 +26,7 @@ class RequestCookies extends RequestData
 
 			$name = str_replace('__Secure-', '', trim($name));
 
-			if (CookieManager::hasEncryptionEnabled($name)) {
+			if (Cookie::hasEncryptionEnabled($name)) {
 				try {
 					$value = EncryptionManager::instance()->getAgent()->decrypt($value, false);
 				} catch (Throwable) {
@@ -33,7 +34,7 @@ class RequestCookies extends RequestData
 				}
 			}
 
-			$items[$name] = new Cookie($name, $value, ['expires' => now()->addHour()], received: true);
+			$items[$name] = Cookie::create($name, $value, ['expires' => now()->addHour()], received: true);
 		}
 
 		parent::__construct($items);
@@ -44,7 +45,7 @@ class RequestCookies extends RequestData
 	public function recycle(string $name, string|null $value, array $options = []): void
 	{
 		$cookie = $this->get($name);
-		if ($cookie instanceof Cookie) {
+		if ($cookie instanceof CookieInstance) {
 			$cookie->value = $value ?? $cookie->value;
 			$cookie->update($options);
 			ResponseManager::attachCookie($cookie);
@@ -54,7 +55,7 @@ class RequestCookies extends RequestData
 	public function expire(string $name): void
 	{
 		$cookie = $this->get($name);
-		if ($cookie instanceof Cookie) {
+		if ($cookie instanceof CookieInstance) {
 			$cookie->update(['expires' => -1]);
 			ResponseManager::attachCookie($cookie);
 		}

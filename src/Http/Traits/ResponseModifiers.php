@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Http\Traits;
 
 use JsonSerializable;
-use Rovota\Framework\Http\Cookie;
+use Rovota\Framework\Http\CookieInstance;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Str;
 
@@ -58,7 +58,7 @@ trait ResponseModifiers
 
 	// -----------------
 
-	public function withCookie(Cookie $cookie): static
+	public function withCookie(CookieInstance $cookie): static
 	{
 		$this->config->set('cookies.'.$cookie->name, $cookie);
 		return $this;
@@ -67,7 +67,7 @@ trait ResponseModifiers
 	public function withCookies(array $cookies): static
 	{
 		foreach ($cookies as $cookie) {
-			if ($cookie instanceof Cookie) {
+			if ($cookie instanceof CookieInstance) {
 				$this->config->set('cookies.'.$cookie->name, $cookie);
 			}
 		}

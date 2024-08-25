@@ -9,6 +9,7 @@ namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Http\Client\ClientManager;
+use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
@@ -37,6 +38,7 @@ class EnvironmentConfig extends Config
 			'cache' => CacheManager::class,
 			'client' => ClientManager::class,
 			'encryption' => EncryptionManager::class,
+			'cookie' => CookieManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {

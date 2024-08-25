@@ -8,36 +8,38 @@
 namespace Rovota\Framework\Http;
 
 use Rovota\Framework\Facades\Registry;
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Support\Arr;
 
 /**
  * @internal
  */
-final class CookieManager
+final class CookieManager extends ServiceProvider
 {
 	
-	protected static array $plain_text = [];
+	protected array $plain_text = [];
 
 	// -----------------
 
-	protected function __construct()
+	public function __construct()
 	{
-	}
-
-	// -----------------
-
-	public static function initialize(): void
-	{
-		self::$plain_text = array_merge(Registry::array('security.plain_text_cookies'), [
+		$this->plain_text = array_merge(Registry::array('security.plain_text_cookies'), [
 			'locale', Registry::string('security.csrf.cookie_name', 'csrf_token'),
 		]);
 	}
 
 	// -----------------
 
-	public static function hasEncryptionEnabled(string $name): bool
+	public function createCookie(string $name, string $value, array $options = [], bool $received = false): CookieInstance
 	{
-		return Arr::contains(self::$plain_text, $name) === false;
+		return new CookieInstance($name, $value, $options, $received);
+	}
+
+	// -----------------
+
+	public function hasEncryptionEnabled(string $name): bool
+	{
+		return Arr::contains($this->plain_text, $name) === false;
 	}
 
 }
