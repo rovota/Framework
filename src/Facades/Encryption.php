@@ -11,7 +11,6 @@ use Closure;
 use Rovota\Framework\Security\EncryptionAgent;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Support\Str;
 
 /**
  * @method static EncryptionAgent agent()

@@ -12,7 +12,6 @@ use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Routing\RouteManager;
-use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
 final class Framework
 {
@@ -38,7 +37,6 @@ final class Framework
 
 	/**
 	 * @throws SystemRequirementException
-	 * @throws IncorrectKeyException
 	 */
 	public static function start(): void
 	{

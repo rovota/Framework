@@ -9,7 +9,6 @@ namespace Rovota\Framework\Security;
 
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
-use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Path;
 
 /**
