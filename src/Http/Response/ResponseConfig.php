@@ -18,6 +18,7 @@ class ResponseConfig extends Config
 	protected function getHeaders(): array
 	{
 		return $this->array('headers', [
+			'X-Frame-Options' => 'SAMEORIGIN',
 			'X-Content-Type-Options' => 'nosniff',
 			'Referrer-Policy' => 'same-origin',
 			'Cross-Origin-Opener-Policy' => 'same-origin',

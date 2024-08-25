@@ -16,6 +16,7 @@ use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;
+use Rovota\Framework\Session\SessionManager;
 use Rovota\Framework\Support\Config;
 use RuntimeException;
 

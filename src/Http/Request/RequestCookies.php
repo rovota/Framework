@@ -22,10 +22,6 @@ class RequestCookies extends RequestData
 		$items = [];
 
 		foreach ($_COOKIE as $name => $value) {
-			if (str_contains($name, Registry::string('session.cookie_name', 'session'))) {
-				continue;
-			}
-
 			$name = str_replace('__Secure-', '', trim($name));
 
 			if (CookieManager::instance()->hasEncryptionEnabled($name)) {
