@@ -9,11 +9,11 @@ namespace Rovota\Framework\Http\Responses;
 
 use JsonSerializable;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Response;
+use Rovota\Framework\Http\ResponseObject;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
-class JsonResponse extends Response
+class JsonResponseObject extends ResponseObject
 {
 	public function __construct(JsonSerializable|array $content, StatusCode|int $status, Config $config)
 	{

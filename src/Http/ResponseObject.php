@@ -14,7 +14,7 @@ use Rovota\Framework\Http\Traits\ResponseModifiers;
 use Rovota\Framework\Support\Config;
 use Stringable;
 
-class Response implements Stringable
+class ResponseObject implements Stringable
 {
 	use ResponseModifiers;
 

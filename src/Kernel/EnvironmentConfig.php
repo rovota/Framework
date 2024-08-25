@@ -11,6 +11,7 @@ use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;
@@ -43,6 +44,7 @@ class EnvironmentConfig extends Config
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
 			'localize' => LocalizationManager::class,
+			'response' => ResponseManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {

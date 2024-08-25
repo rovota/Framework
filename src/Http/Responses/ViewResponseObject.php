@@ -7,9 +7,9 @@
 
 namespace Rovota\Framework\Http\Responses;
 
-use Rovota\Framework\Http\Response;
+use Rovota\Framework\Http\ResponseObject;
 
-class ViewResponse extends Response
+class ViewResponseObject extends ResponseObject
 {
 
 	// -----------------

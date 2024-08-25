@@ -52,9 +52,6 @@ final class Framework
 		self::createEnvironment();
 		self::configureServices();
 
-		// Foundation
-		ResponseManager::initialize();
-
 		// Additional
 		TextConverter::initialize();
 		MarkupConverter::initialize();

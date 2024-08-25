@@ -10,8 +10,8 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
 use Rovota\Framework\Http\RequestObject;
 use Rovota\Framework\Http\ResponseManager;
-use Rovota\Framework\Http\Response;
-use Rovota\Framework\Http\Responses\RedirectResponse;
+use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Responses\RedirectResponseObject;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Interfaces\Arrayable;
@@ -71,16 +71,16 @@ if (!function_exists('request')) {
 }
 
 if (!function_exists('response')) {
-	function response(mixed $content, StatusCode|int $status = StatusCode::Ok): Response
+	function response(mixed $content, StatusCode|int $status = StatusCode::Ok): ResponseObject
 	{
-		return ResponseManager::createResponse($content, $status);
+		return ResponseManager::instance()->createResponse($content, $status);
 	}
 }
 
 if (!function_exists('redirect')) {
-	function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
+	function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponseObject
 	{
-		return ResponseManager::createRedirectResponse($location, $status);
+		return ResponseManager::instance()->createRedirectResponse($location, $status);
 	}
 }
 

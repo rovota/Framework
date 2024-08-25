@@ -7,90 +7,69 @@
 
 namespace Rovota\Framework\Facades;
 
+use Closure;
 use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
 use Rovota\Framework\Http\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\ResponseConfig;
 use Rovota\Framework\Http\ResponseManager;
-use Rovota\Framework\Http\Responses\ErrorResponse;
-use Rovota\Framework\Http\Responses\JsonResponse;
-use Rovota\Framework\Http\Responses\RedirectResponse;
+use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Responses\ErrorResponseObject;
+use Rovota\Framework\Http\Responses\JsonResponseObject;
+use Rovota\Framework\Http\Responses\RedirectResponseObject;
+use Rovota\Framework\Http\Responses\StatusResponseObject;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Support\Facade;
 use Throwable;
 
-final class Response
+/**
+ * @method static ResponseConfig config()
+ *
+ * @method static ResponseObject create(mixed $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static RedirectResponseObject redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
+ * @method static ErrorResponseObject error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok)
+ * @method static JsonResponseObject json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static StatusResponseObject status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)
+ *
+ * @method static void attachHeader(string $name, string $value)
+ * @method static void attachHeaders(array $headers)
+ * @method static void withoutHeader(string $name)
+ * @method static void withoutHeaders(array $names = [])
+ *
+ * @method static void attachCookie(CookieObject $cookie)
+ * @method static void attachCookies(array $cookies)
+ * @method static void withoutCookie(string $name)
+ * @method static void withoutCookies()
+ */
+final class Response extends Facade
 {
 
-	protected function __construct()
+	public static function service(): ResponseManager
 	{
+		return parent::service();
 	}
 
 	// -----------------
 
-	public static function make(mixed $content, StatusCode|int $status = StatusCode::Ok): \Rovota\Framework\Http\Response
+	protected static function getFacadeTarget(): string
 	{
-		return ResponseManager::createResponse($content, $status);
+		return ResponseManager::class;
 	}
 
-	// -----------------
-
-	public static function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
+	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return ResponseManager::createRedirectResponse($location, $status);
-	}
+		return match ($method) {
+			'config' => 'getConfig',
 
-	public static function error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
-	{
-		return ResponseManager::createErrorResponse($error, $status);
-	}
+			'create' => 'createResponse',
+			'redirect' => 'createRedirectResponse',
+			'error' => 'createErrorResponse',
+			'json' => 'createJsonResponse',
+			'status' => 'createStatusResponse',
 
-	public static function json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
-	{
-		return ResponseManager::createJsonResponse($content, $status);
-	}
-
-	// -----------------
-
-	public static function attachHeader(string $name, string $value): void
-	{
-		ResponseManager::attachHeader($name, $value);
-	}
-
-	public static function attachHeaders(array $headers): void
-	{
-		ResponseManager::attachHeaders($headers);
-	}
-
-	public static function withoutHeader(string $name): void
-	{
-		ResponseManager::withoutHeader($name);
-	}
-
-	public static function withoutHeaders(array $names = []): void
-	{
-		ResponseManager::withoutHeaders($names);
-	}
-
-	// -----------------
-
-	public static function attachCookie(CookieObject $cookie): void
-	{
-		ResponseManager::attachCookie($cookie);
-	}
-
-	public static function attachCookies(array $cookies): void
-	{
-		ResponseManager::attachCookies($cookies);
-	}
-
-	public static function withoutCookie(string $name): void
-	{
-		ResponseManager::withoutCookie($name);
-	}
-
-	public static function withoutCookies(): void
-	{
-		ResponseManager::withoutCookies();
+			default => $method,
+		};
 	}
 
 }

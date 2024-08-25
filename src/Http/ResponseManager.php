@@ -9,10 +9,11 @@ namespace Rovota\Framework\Http;
 
 use JsonSerializable;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Responses\ErrorResponse;
-use Rovota\Framework\Http\Responses\JsonResponse;
-use Rovota\Framework\Http\Responses\RedirectResponse;
-use Rovota\Framework\Http\Responses\StatusResponse;
+use Rovota\Framework\Http\Responses\ErrorResponseObject;
+use Rovota\Framework\Http\Responses\JsonResponseObject;
+use Rovota\Framework\Http\Responses\RedirectResponseObject;
+use Rovota\Framework\Http\Responses\StatusResponseObject;
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Internal;
@@ -22,26 +23,18 @@ use Throwable;
 /**
  * @internal
  */
-final class ResponseManager
+final class ResponseManager extends ServiceProvider
 {
 
-	protected static Config $config;
+	protected Config $config;
 
 	// -----------------
 
-	protected function __construct()
+	public function __construct()
 	{
-	}
+		$this->config = ResponseConfig::load('config/responses.php');
 
-	// -----------------
-
-	public static function initialize(): void
-	{
-		$config = require Internal::projectFile('config/responses.php');
-
-		self::$config = new Config($config);
-
-		self::$config->set([
+		$this->config->set([
 			'headers.X-Powered-By' => 'Rovota Framework',
 			'headers.X-XSS-Protection' => '0',
 		]);
@@ -49,14 +42,28 @@ final class ResponseManager
 
 	// -----------------
 
-	public static function getConfig(): Config
+	public function initialize(): void
 	{
-		return self::$config;
+		$config = require Internal::projectFile('config/responses.php');
+
+		$this->config = new Config($config);
+
+		$this->config->set([
+			'headers.X-Powered-By' => 'Rovota Framework',
+			'headers.X-XSS-Protection' => '0',
+		]);
 	}
 
 	// -----------------
 
-	public static function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): Response
+	public function getConfig(): Config
+	{
+		return $this->config;
+	}
+
+	// -----------------
+
+	public function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): ResponseObject
 	{
 		// TODO: Return different response classes based on detected content.
 
@@ -86,34 +93,34 @@ final class ResponseManager
 			return self::createStatusResponse($content, $status);
 		}
 
-		return new Response($content, $status, self::$config);
+		return new ResponseObject($content, $status, $this->config);
 	}
 
 	// -----------------
 
-	public static function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
+	public function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponseObject
 	{
-		return new RedirectResponse($location, $status, self::$config);
+		return new RedirectResponseObject($location, $status, $this->config);
 	}
 
-	public static function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
+	public function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponseObject
 	{
-		return new ErrorResponse($error, $status, self::$config);
+		return new ErrorResponseObject($error, $status, $this->config);
 	}
 
-	public static function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
+	public function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponseObject
 	{
-		return new JsonResponse($content, $status, self::$config);
+		return new JsonResponseObject($content, $status, $this->config);
 	}
 
-	public static function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponse
+	public function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponseObject
 	{
-		return new StatusResponse($content, $status, self::$config);
+		return new StatusResponseObject($content, $status, $this->config);
 	}
 
 	// -----------------
 
-	public static function attachHeader(string $name, string $value): void
+	public function attachHeader(string $name, string $value): void
 	{
 		$name = trim($name);
 		$value = trim($value);
@@ -123,19 +130,19 @@ final class ResponseManager
 		}
 	}
 
-	public static function attachHeaders(array $headers): void
+	public function attachHeaders(array $headers): void
 	{
 		foreach ($headers as $name => $value) {
 			self::attachHeader($name, $value);
 		}
 	}
 
-	public static function withoutHeader(string $name): void
+	public function withoutHeader(string $name): void
 	{
 		self::getConfig()->remove('headers.'.trim($name));
 	}
 
-	public static function withoutHeaders(array $names = []): void
+	public function withoutHeaders(array $names = []): void
 	{
 		if (empty($names)) {
 			self::getConfig()->remove('headers');
@@ -148,12 +155,12 @@ final class ResponseManager
 
 	// -----------------
 
-	public static function attachCookie(CookieObject $cookie): void
+	public function attachCookie(CookieObject $cookie): void
 	{
 		self::getConfig()->set('cookies.'.$cookie->name, $cookie);
 	}
 
-	public static function attachCookies(array $cookies): void
+	public function attachCookies(array $cookies): void
 	{
 		foreach ($cookies as $cookie) {
 			if ($cookie instanceof CookieObject) {
@@ -162,12 +169,12 @@ final class ResponseManager
 		}
 	}
 
-	public static function withoutCookie(string $name): void
+	public function withoutCookie(string $name): void
 	{
 		self::getConfig()->remove('cookies.'.trim($name));
 	}
 
-	public static function withoutCookies(): void
+	public function withoutCookies(): void
 	{
 		self::getConfig()->remove('cookies');
 	}
