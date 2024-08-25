@@ -5,9 +5,12 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Request;
 
 use Rovota\Framework\Facades\Registry;
+use Rovota\Framework\Http\Cookie\CookieManager;
+use Rovota\Framework\Http\Cookie\CookieObject;
+use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Throwable;
 

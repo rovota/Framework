@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\UrlObject;
 
 final class Url

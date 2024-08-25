@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Cookie;
 
 use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Kernel\ServiceProvider;

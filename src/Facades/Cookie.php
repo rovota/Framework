@@ -8,8 +8,8 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
-use Rovota\Framework\Http\CookieObject;
-use Rovota\Framework\Http\CookieManager;
+use Rovota\Framework\Http\Cookie\CookieManager;
+use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Facade;
 

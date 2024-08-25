@@ -9,8 +9,8 @@ namespace Rovota\Framework\Facades;
 
 use Closure;
 use Rovota\Framework\Http\Enums\RequestMethod;
-use Rovota\Framework\Http\RequestObject;
-use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Facade;

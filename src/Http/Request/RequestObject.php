@@ -5,10 +5,10 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Request;
 
 use Rovota\Framework\Http\Enums\RequestMethod;
-use Rovota\Framework\Http\Traits\RequestInput;
+use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\Enums\Scheme;

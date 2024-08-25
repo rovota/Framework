@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Request;
 
 class RequestHeaders extends RequestData
 {

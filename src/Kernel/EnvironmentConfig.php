@@ -9,9 +9,10 @@ namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Http\Client\ClientManager;
-use Rovota\Framework\Http\CookieManager;
-use Rovota\Framework\Http\RequestManager;
-use Rovota\Framework\Http\ResponseManager;
+use Rovota\Framework\Http\Cookie\CookieManager;
+use Rovota\Framework\Http\MiddlewareManager;
+use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;

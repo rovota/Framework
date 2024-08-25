@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
-use Rovota\Framework\Kernel\MiddlewareManager;
+use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Support\Facade;
 
 /** *

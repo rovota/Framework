@@ -5,9 +5,11 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Kernel;
+namespace Rovota\Framework\Http;
 
-use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Kernel\Resolver;
+use Rovota\Framework\Kernel\ServiceProvider;
 
 /**
  * @internal

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Localization;
 
 use DateTimeZone;
-use Rovota\Framework\Http\RequestManager;
+use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Internal;

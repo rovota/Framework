@@ -5,10 +5,10 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Traits;
+namespace Rovota\Framework\Http\Response\Traits;
 
 use JsonSerializable;
-use Rovota\Framework\Http\CookieObject;
+use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Str;
 

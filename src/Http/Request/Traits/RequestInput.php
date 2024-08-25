@@ -5,12 +5,12 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Traits;
+namespace Rovota\Framework\Http\Request\Traits;
 
 use BackedEnum;
 use DateTime;
 use DateTimeZone;
-use Rovota\Framework\Http\RequestData;
+use Rovota\Framework\Http\Request\RequestData;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 

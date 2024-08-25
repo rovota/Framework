@@ -5,12 +5,11 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Response;
 
 use BackedEnum;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Traits\ResponseInitializers;
-use Rovota\Framework\Http\Traits\ResponseModifiers;
+use Rovota\Framework\Http\Response\Traits\ResponseModifiers;
 use Rovota\Framework\Support\Config;
 use Stringable;
 

@@ -5,10 +5,10 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http\Responses;
+namespace Rovota\Framework\Http\Response\Variants;
 
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\ResponseObject;
+use Rovota\Framework\Http\Response\ResponseObject;
 use Rovota\Framework\Support\Config;
 
 class StatusResponseObject extends ResponseObject

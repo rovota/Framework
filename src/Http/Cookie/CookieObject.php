@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Cookie;
 
 use DateTime;
 use Rovota\Framework\Kernel\ExceptionHandler;

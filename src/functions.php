@@ -7,11 +7,11 @@
 
 use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\RequestManager;
-use Rovota\Framework\Http\RequestObject;
-use Rovota\Framework\Http\ResponseManager;
-use Rovota\Framework\Http\ResponseObject;
-use Rovota\Framework\Http\Responses\RedirectResponseObject;
+use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Http\Request\RequestObject;
+use Rovota\Framework\Http\Response\ResponseManager;
+use Rovota\Framework\Http\Response\ResponseObject;
+use Rovota\Framework\Http\Response\Variants\RedirectResponseObject;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Interfaces\Arrayable;

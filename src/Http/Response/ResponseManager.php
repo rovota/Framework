@@ -5,14 +5,16 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Response;
 
 use JsonSerializable;
+use Rovota\Framework\Http\ApiError;
+use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\Responses\ErrorResponseObject;
-use Rovota\Framework\Http\Responses\JsonResponseObject;
-use Rovota\Framework\Http\Responses\RedirectResponseObject;
-use Rovota\Framework\Http\Responses\StatusResponseObject;
+use Rovota\Framework\Http\Response\Variants\ErrorResponseObject;
+use Rovota\Framework\Http\Response\Variants\JsonResponseObject;
+use Rovota\Framework\Http\Response\Variants\RedirectResponseObject;
+use Rovota\Framework\Http\Response\Variants\StatusResponseObject;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
