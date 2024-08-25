@@ -7,7 +7,8 @@
 
 namespace Rovota\Framework\Support;
 
-use Rovota\Framework\Facades\Cache;
+use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\UrlObject;
 
@@ -45,30 +46,30 @@ final class Url
 	// TODO: route()
 
 	/**
-	 * This method requires the presence of a cache store using `session` as name.
+	 * This method requires the presence of a cache store using the `session` driver.
 	 */
 	public static function previous(string $default = '/'): UrlObject
 	{
 		$referrer = RequestManager::instance()->getCurrent()->referrer();
-		$location = Cache::store('session')->pull('location.previous', $referrer ?? $default);
+		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.previous') ?? $referrer ?? $default;
 		return UrlObject::from($location);
 	}
 
 	/**
-	 * This method requires the presence of a cache store using `session` as name.
+	 * This method requires the presence of a cache store using the `session` driver.
 	 */
 	public static function next(string $default = '/'): UrlObject
 	{
-		$location = Cache::store('session')->pull('location.next', $default);
+		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.next') ?? $default;
 		return UrlObject::from($location);
 	}
 
 	/**
-	 * This method requires the presence of a cache store using `session` as name.
+	 * This method requires the presence of a cache store using the `session` driver.
 	 */
 	public static function intended(string $default = '/'): UrlObject
 	{
-		$location = Cache::store('session')->pull('location.intended', $default);
+		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.intended') ?? $default;
 		return UrlObject::from($location);
 	}
 
