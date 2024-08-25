@@ -12,7 +12,6 @@ use Rovota\Framework\Http\Client\Client;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\Client\Request;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Support\Str;
 
 /**
  * @method static Client client(mixed $options = [])

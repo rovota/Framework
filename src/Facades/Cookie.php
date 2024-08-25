@@ -15,6 +15,7 @@ use Rovota\Framework\Support\Facade;
 
 /**
  * @method static CookieInstance create(string $name, string $value, array $options = [], bool $received = false)
+ *
  * @method static string domain()
  * @method static bool hasEncryptionEnabled(string $name)
  */

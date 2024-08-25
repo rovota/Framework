@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Http;
 
 use Rovota\Framework\Kernel\Framework;
+use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
@@ -15,33 +16,27 @@ use Rovota\Framework\Support\Text;
 /**
  * @internal
  */
-final class RequestManager
+final class RequestManager extends ServiceProvider
 {
-	protected static Request $current;
+	protected RequestInstance $current;
 
 	// -----------------
 
-	protected function __construct()
+	public function __construct()
 	{
-	}
-
-	// -----------------
-
-	public static function initialize(): void
-	{
-		self::$current = new Request([
+		$this->current = new RequestInstance([
 			'headers' => getallheaders(),
-			'body' => self::getRequestBody(),
-			'post' => self::getRequestPostData(),
-			'query' => self::getRequestQueryData(),
+			'body' => $this->getRequestBody(),
+			'post' => $this->getRequestPostData(),
+			'query' => $this->getRequestQueryData(),
 		]);
 	}
 
 	// -----------------
 
-	public static function getCurrent(): Request
+	public function getCurrent(): RequestInstance
 	{
-		return self::$current;
+		return $this->current;
 	}
 
 	// -----------------
@@ -49,7 +44,7 @@ final class RequestManager
 	/**
 	 * Attempts to retrieve a usable device name from a given useragent string. If nothing can be found, `Unknown` will be returned.
 	 */
-	public static function getApproximateDeviceFromUserAgent(string $useragent): string
+	public function getApproximateDeviceFromUserAgent(string $useragent): string
 	{
 		$useragent = Text::from($useragent)->remove([
 			'; x64', '; Win64', '; WOW64', '; K', ' like Mac OS X', 'X11; '
@@ -103,13 +98,13 @@ final class RequestManager
 
 	// -----------------
 
-	protected static function getRequestBody(): string|null
+	protected function getRequestBody(): string|null
 	{
 		$body = file_get_contents('php://input');
 		return $body === false ? null : trim($body);
 	}
 
-	protected static function getRequestPostData(): array
+	protected function getRequestPostData(): array
 	{
 		$data = $_POST;
 		array_walk_recursive($data, function(&$item) {
@@ -126,7 +121,7 @@ final class RequestManager
 		return $data;
 	}
 
-	protected static function getRequestQueryData(): array
+	protected function getRequestQueryData(): array
 	{
 		$url = Framework::environment()->server()->get('REQUEST_URI');
 

@@ -53,7 +53,6 @@ final class Framework
 		self::configureServices();
 
 		// Foundation
-		RequestManager::initialize();
 		Localization::initialize();
 		ResponseManager::initialize();
 

@@ -8,7 +8,7 @@
 use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\RequestManager;
-use Rovota\Framework\Http\Request;
+use Rovota\Framework\Http\RequestInstance;
 use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Http\Response;
 use Rovota\Framework\Http\Responses\RedirectResponse;
@@ -64,9 +64,9 @@ if (!function_exists('moment')) {
 // Components
 
 if (!function_exists('request')) {
-	function request(): Request
+	function request(): RequestInstance
 	{
-		return RequestManager::getCurrent();
+		return RequestManager::instance()->getCurrent();
 	}
 }
 

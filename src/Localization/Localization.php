@@ -172,7 +172,7 @@ final class Localization
 	protected static function determineActiveLanguage(string $default): void
 	{
 		$locales = array_keys(self::$languages);
-		$preferred = RequestManager::getCurrent()->prefersLocale($locales, $default);
+		$preferred = RequestManager::instance()->getCurrent()->prefersLocale($locales, $default);
 
 		self::setActiveLanguage($preferred);
 	}

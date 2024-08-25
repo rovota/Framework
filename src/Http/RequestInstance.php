@@ -18,7 +18,7 @@ use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
 
-final class Request
+final class RequestInstance
 {
 	use RequestInput;
 
@@ -46,15 +46,6 @@ final class Request
 	}
 
 	// -----------------
-
-	/**
-	 * Relies on the experimental `Sec-CH-UA-Platform` HTTP header.
-	 * For non-supported clients, it will return `Unknown`.
-	 */
-	public function platform(): string
-	{
-		return trim($this->headers->string('Sec-CH-UA-Platform', 'Unknown'), '"');
-	}
 
 	/**
 	 * Only available when using Cloudflare. Paid plan may be required.
@@ -239,15 +230,6 @@ final class Request
 		return $this->headers->get('User-Agent');
 	}
 
-	public function ip(): string
-	{
-		return match(true) {
-			$this->headers->has('CF-Connecting-IP') => $this->headers->get('CF-Connecting-IP'),
-			$this->headers->has('X-Forwarded-For') => $this->headers->get('X-Forwarded-For'),
-			default => Framework::environment()->server()->get('REMOTE_ADDR'),
-		};
-	}
-
 	/**
 	 * Requires either the Cloudflare IPCountry feature or the GeoIP PHP extension.
 	 */
@@ -266,6 +248,15 @@ final class Request
 		return null;
 	}
 
+	public function ip(): string
+	{
+		return match(true) {
+			$this->headers->has('CF-Connecting-IP') => $this->headers->get('CF-Connecting-IP'),
+			$this->headers->has('X-Forwarded-For') => $this->headers->get('X-Forwarded-For'),
+			default => Framework::environment()->server()->get('REMOTE_ADDR'),
+		};
+	}
+
 	/**
 	 * Uses the experimental `Sec-CH-UA-Model` HTTP header.
 	 * For non-supported clients, it will attempt to guess/approximate the device name using the useragent.
@@ -277,7 +268,16 @@ final class Request
 			return $this->headers->get('Sec-CH-UA-Model');
 		}
 
-		return RequestManager::getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+		return RequestManager::instance()->getApproximateDeviceFromUserAgent($this->headers->get('User-Agent'));
+	}
+
+	/**
+	 * Relies on the experimental `Sec-CH-UA-Platform` HTTP header.
+	 * For non-supported clients, it will return `Unknown`.
+	 */
+	public function platform(): string
+	{
+		return trim($this->headers->string('Sec-CH-UA-Platform', 'Unknown'), '"');
 	}
 
 	public function locale(): string

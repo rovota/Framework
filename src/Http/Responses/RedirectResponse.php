@@ -26,7 +26,7 @@ class RedirectResponse extends Response
 		$this->location = match(true) {
 			$content instanceof UrlObject => $content,
 			is_string($content) => UrlObject::from($content),
-			default => RequestManager::getCurrent()->url()->stripParameters()
+			default => RequestManager::instance()->getCurrent()->url()->stripParameters()
 		};
 
 		parent::__construct(null, $status, $config);
@@ -60,7 +60,7 @@ class RedirectResponse extends Response
 
 	public function reload(): static
 	{
-		$this->location = RequestManager::getCurrent()->url();
+		$this->location = RequestManager::instance()->getCurrent()->url();
 		return $this;
 	}
 

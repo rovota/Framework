@@ -21,7 +21,7 @@ final class Url
 
 	public static function current(): UrlObject
 	{
-		return RequestManager::getCurrent()->url();
+		return RequestManager::instance()->getCurrent()->url();
 	}
 
 	// -----------------

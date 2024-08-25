@@ -54,7 +54,7 @@ class UrlObjectConfig extends Config
 		}
 
 		if ($this->get('domain') === null) {
-			$this->setDomain(RequestManager::getCurrent()->targetHost());
+			$this->setDomain(RequestManager::instance()->getCurrent()->targetHost());
 		}
 
 		$subdomain = trim($subdomain);
@@ -76,7 +76,7 @@ class UrlObjectConfig extends Config
 
 	protected function getDomain(): string
 	{
-		return $this->string('domain', RequestManager::getCurrent()->targetHost());
+		return $this->string('domain', RequestManager::instance()->getCurrent()->targetHost());
 	}
 
 	protected function setDomain(string $domain): void
@@ -84,7 +84,7 @@ class UrlObjectConfig extends Config
 		$domain = trim($domain);
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->setDomain(RequestManager::getCurrent()->targetHost());
+			$this->setDomain(RequestManager::instance()->getCurrent()->targetHost());
 			return;
 		}
 
@@ -98,7 +98,7 @@ class UrlObjectConfig extends Config
 
 	protected function getPort(): int
 	{
-		return $this->int('port', RequestManager::getCurrent()->port());
+		return $this->int('port', RequestManager::instance()->getCurrent()->port());
 	}
 
 	// -----------------
