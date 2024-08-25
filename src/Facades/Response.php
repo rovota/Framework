@@ -9,7 +9,7 @@ namespace Rovota\Framework\Facades;
 
 use JsonSerializable;
 use Rovota\Framework\Http\ApiError;
-use Rovota\Framework\Http\CookieInstance;
+use Rovota\Framework\Http\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Http\Responses\ErrorResponse;
@@ -73,7 +73,7 @@ final class Response
 
 	// -----------------
 
-	public static function attachCookie(CookieInstance $cookie): void
+	public static function attachCookie(CookieObject $cookie): void
 	{
 		ResponseManager::attachCookie($cookie);
 	}

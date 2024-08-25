@@ -30,9 +30,9 @@ final class CookieManager extends ServiceProvider
 
 	// -----------------
 
-	public function createCookie(string $name, string $value, array $options = [], bool $received = false): CookieInstance
+	public function createCookie(string $name, string $value, array $options = [], bool $received = false): CookieObject
 	{
-		return new CookieInstance($name, $value, $options, $received);
+		return new CookieObject($name, $value, $options, $received);
 	}
 
 	// -----------------

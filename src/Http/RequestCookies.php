@@ -45,7 +45,7 @@ class RequestCookies extends RequestData
 	public function recycle(string $name, string|null $value, array $options = []): void
 	{
 		$cookie = $this->get($name);
-		if ($cookie instanceof CookieInstance) {
+		if ($cookie instanceof CookieObject) {
 			$cookie->value = $value ?? $cookie->value;
 			$cookie->update($options);
 			ResponseManager::attachCookie($cookie);
@@ -55,7 +55,7 @@ class RequestCookies extends RequestData
 	public function expire(string $name): void
 	{
 		$cookie = $this->get($name);
-		if ($cookie instanceof CookieInstance) {
+		if ($cookie instanceof CookieObject) {
 			$cookie->update(['expires' => -1]);
 			ResponseManager::attachCookie($cookie);
 		}

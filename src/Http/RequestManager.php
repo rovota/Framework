@@ -18,13 +18,13 @@ use Rovota\Framework\Support\Text;
  */
 final class RequestManager extends ServiceProvider
 {
-	protected RequestInstance $current;
+	protected RequestObject $current;
 
 	// -----------------
 
 	public function __construct()
 	{
-		$this->current = new RequestInstance([
+		$this->current = new RequestObject([
 			'headers' => getallheaders(),
 			'body' => $this->getRequestBody(),
 			'post' => $this->getRequestPostData(),
@@ -34,7 +34,7 @@ final class RequestManager extends ServiceProvider
 
 	// -----------------
 
-	public function getCurrent(): RequestInstance
+	public function getCurrent(): RequestObject
 	{
 		return $this->current;
 	}

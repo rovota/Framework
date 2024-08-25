@@ -8,13 +8,13 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
-use Rovota\Framework\Http\CookieInstance;
+use Rovota\Framework\Http\CookieObject;
 use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Facade;
 
 /**
- * @method static CookieInstance create(string $name, string $value, array $options = [], bool $received = false)
+ * @method static CookieObject create(string $name, string $value, array $options = [], bool $received = false)
  *
  * @method static string domain()
  * @method static bool hasEncryptionEnabled(string $name)

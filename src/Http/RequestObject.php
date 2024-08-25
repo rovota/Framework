@@ -18,7 +18,7 @@ use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
 
-final class RequestInstance
+final class RequestObject
 {
 	use RequestInput;
 

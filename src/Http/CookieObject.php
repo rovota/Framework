@@ -15,7 +15,7 @@ use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Moment;
 use Throwable;
 
-final class CookieInstance
+final class CookieObject
 {
 
 	public string $name;
