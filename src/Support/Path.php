@@ -16,6 +16,23 @@ final class Path
 
 	// -----------------
 
+	public static function buildUsingParameters(string $path, array $params): string
+	{
+		if (empty($params) === false) {
+			if (array_is_list($params)) {
+				$path = preg_replace('/{(.*?)}/', '{parameter}', $path);
+				$path = Str::replaceSequential($path, '{parameter}', $params);
+			} else {
+				foreach ($params as $key => $value) {
+					$path = str_replace(sprintf('{%s}', $key), $value, $path);
+				}
+			}
+		}
+		return $path;
+	}
+
+	// -----------------
+
 	/**
 	 * Returns a complete path to a given file in the framework folder, where `bootloader.php` is located.
 	 */
