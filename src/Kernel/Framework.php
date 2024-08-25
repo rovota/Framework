@@ -9,12 +9,8 @@ namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
-use Rovota\Framework\Http\CookieManager;
 use Rovota\Framework\Http\Enums\StatusCode;
-use Rovota\Framework\Http\RequestManager;
-use Rovota\Framework\Http\ResponseManager;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
-use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
 
