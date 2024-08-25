@@ -58,7 +58,7 @@ class SessionAdapter implements CacheAdapterInterface
 	public function get(string $key): mixed
 	{
 		$this->initialize();
-		return $_SESSION[$this->getScopedKey($key)];
+		return $_SESSION[$this->getScopedKey($key)] ?? null;
 	}
 
 	public function remove(string $key): void
@@ -74,14 +74,14 @@ class SessionAdapter implements CacheAdapterInterface
 	{
 		$this->initialize();
 		$this->last_modified = $key;
-		$_SESSION[$this->getScopedKey($key)] = $_SESSION[$this->getScopedKey($key)] + max($step, 0);
+		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) + max($step, 0);
 	}
 
 	public function decrement(string $key, int $step = 1): void
 	{
 		$this->initialize();
 		$this->last_modified = $key;
-		$_SESSION[$this->getScopedKey($key)] = $_SESSION[$this->getScopedKey($key)] - max($step, 0);
+		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) - max($step, 0);
 	}
 
 	// -----------------
@@ -122,7 +122,9 @@ class SessionAdapter implements CacheAdapterInterface
 			]);
 
 			session_name('__Secure-'.$this->cookie_name);
-			session_start();
+			if (session_start()) {
+				$this->session_loaded = true;
+			}
 		}
 	}
 
