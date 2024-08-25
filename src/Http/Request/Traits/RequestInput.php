@@ -10,6 +10,9 @@ namespace Rovota\Framework\Http\Request\Traits;
 use BackedEnum;
 use DateTime;
 use DateTimeZone;
+use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\Enums\Driver;
+use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Request\RequestData;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
@@ -113,6 +116,47 @@ trait RequestInput
 
 	// -----------------
 
+	/**
+	 * This method requires the presence of a cache store using the `session` driver.
+	 */
+	public function keep(): void
+	{
+		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+
+		if ($store instanceof CacheInterface) {
+			$store->set('request.data.post', $this->post->all());
+			$store->set('request.data.query', $this->query->all());
+		}
+	}
+
+	/**
+	 * This method requires the presence of a cache store using the `session` driver.
+	 */
+	public function keepOnly(array $keys): void
+	{
+		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+
+		if ($store instanceof CacheInterface) {
+			$store->set('request.data.post', $this->post->only($keys)->all());
+			$store->set('request.data.query', $this->query->only($keys)->all());
+		}
+	}
+
+	/**
+	 * This method requires the presence of a cache store using the `session` driver.
+	 */
+	public function keepExcept(array $keys): void
+	{
+		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+
+		if ($store instanceof CacheInterface) {
+			$store->set('request.data.post', $this->post->except($keys)->all());
+			$store->set('request.data.query', $this->query->except($keys)->all());
+		}
+	}
+
+	// -----------------
+
 	public function json(): string|null
 	{
 		if (json_validate($this->body ?? '') !== null) {
@@ -128,6 +172,22 @@ trait RequestInput
 			return is_array($json) ? $json : [$json];
 		}
 		return [];
+	}
+
+	// -----------------
+
+	// TODO: File methods
+
+	// -----------------
+
+	protected function loadRequestDataFromSession(): void
+	{
+		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+
+		if ($store instanceof CacheInterface) {
+			$this->post->import($store->pull('request.data.post'));
+			$this->query->import($store->pull('request.data.query'));
+		}
 	}
 
 }

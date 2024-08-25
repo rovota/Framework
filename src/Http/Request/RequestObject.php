@@ -43,6 +43,8 @@ final class RequestObject
 		$this->body = $data['body'];
 		$this->post = new RequestData($data['post']);
 		$this->query = new RequestData($data['query']);
+
+		$this->loadRequestDataFromSession();
 	}
 
 	// -----------------
