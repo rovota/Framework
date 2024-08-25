@@ -9,12 +9,14 @@ namespace Rovota\Framework\Facades;
 
 use Closure;
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Facade;
 
 /**
  * @method static CacheInterface store(string|null $name = null)
+ * @method static CacheInterface|null storeWithDriver(Driver $driver)
  * @method static CacheInterface create(array $config, string|null $name = null)
  *
  * @method static Map all()
@@ -51,6 +53,7 @@ final class Cache extends Facade
 	{
 		return match ($method) {
 			'store' => 'getStore',
+			'storeWithDriver' => 'getStoreWithDriver',
 			'create' => 'createStore',
 			default => function (CacheManager $instance, string $method, array $parameters = []) {
 				return $instance->getStore()->$method(...$parameters);

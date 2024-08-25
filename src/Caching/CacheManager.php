@@ -89,6 +89,13 @@ final class CacheManager extends ServiceProvider
 		return $this->stores[$name];
 	}
 
+	public function getStoreWithDriver(Driver $driver): CacheInterface|null
+	{
+		return $this->stores->first(function (CacheInterface $store) use ($driver) {
+			return $store->config()->driver === $driver;
+		});
+	}
+
 	// -----------------
 
 	/**
