@@ -45,6 +45,7 @@ class EnvironmentConfig extends Config
 			'request' => RequestManager::class,
 			'localize' => LocalizationManager::class,
 			'response' => ResponseManager::class,
+			'middleware' => MiddlewareManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {

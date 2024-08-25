@@ -15,6 +15,7 @@ use Rovota\Framework\Support\Facade;
 
 /**
  * @method static Client client(mixed $options = [])
+ *
  * @method static Request request(string $method, string $location, array $options = [])
  * @method static Request get(string $location, array $options = [])
  * @method static Request delete(string $location, array $options = [])
