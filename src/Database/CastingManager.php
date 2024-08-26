@@ -23,6 +23,7 @@ use Rovota\Framework\Database\Casts\StringCast;
 use Rovota\Framework\Database\Casts\TextCast;
 use Rovota\Framework\Database\Interfaces\CastInterface;
 use Rovota\Framework\Kernel\ServiceProvider;
+use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -32,14 +33,16 @@ final class CastingManager extends ServiceProvider
 {
 
 	/**
-	 * @var array<string, CastInterface>
+	 * @var Map<string, CastInterface>
 	 */
-	protected array $casts = [];
+	protected Map $casts;
 
 	// -----------------
 
 	public function __construct()
 	{
+		$this->casts = new Map();
+
 		$this->registerDefaultCasts();
 	}
 
@@ -117,6 +120,13 @@ final class CastingManager extends ServiceProvider
 	public function getCast(string $name): CastInterface|null
 	{
 		return $this->casts[$name] ?? null;
+	}
+
+	// -----------------
+
+	public function getCasts(): Map
+	{
+		return $this->casts;
 	}
 
 	// -----------------
