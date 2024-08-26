@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\Cookie\CookieManager;
 use Rovota\Framework\Http\MiddlewareManager;
@@ -42,6 +43,7 @@ class EnvironmentConfig extends Config
 			'cache' => CacheManager::class,
 			'client' => ClientManager::class,
 			'encryption' => EncryptionManager::class,
+			'casting' => CastingManager::class,
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
 			'localize' => LocalizationManager::class,
