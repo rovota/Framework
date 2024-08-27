@@ -99,13 +99,6 @@ final class LanguageManager
 
 	// -----------------
 
-	public function getTranslation(string $string): string
-	{
-		return trim($this->getCurrent()->findTranslation($string) ?? $string);
-	}
-
-	// -----------------
-
 	protected function loadLanguageUsingLocale(string $locale): void
 	{
 		$file = Path::toProjectFile('/config/locales/'.$locale.'.php');
