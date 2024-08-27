@@ -43,6 +43,13 @@ final class LanguageObject
 
 	// -----------------
 
+	public function label(bool $native = true): string
+	{
+		return $this->data->array('about.label')[$native ? 'native' : 'default'];
+	}
+
+	// -----------------
+
 	public function textDirection(): string
 	{
 		return $this->data->string('about.direction');
