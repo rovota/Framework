@@ -471,7 +471,7 @@ final class RequestObject
 
 		$locales = $this->acceptHeaderToArray($this->headers->get('Accept-Language'));
 		if (empty($locales)) {
-			return [LocalizationManager::instance()->getDefaultLocale() => 1.0];
+			return [LocalizationManager::instance()->getLanguageManager()->getDefaultLocale() => 1.0];
 		}
 
 		$normalized = [];

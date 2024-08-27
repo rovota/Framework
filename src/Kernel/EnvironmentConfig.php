@@ -46,8 +46,8 @@ class EnvironmentConfig extends Config
 			'casting' => CastingManager::class,
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
-			'localize' => LocalizationManager::class,
 			'response' => ResponseManager::class,
+			'localize' => LocalizationManager::class,
 			'middleware' => MiddlewareManager::class,
 		];
 

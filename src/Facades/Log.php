@@ -45,11 +45,11 @@ final class Log extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'channel' => 'getChannel',
+			'channel' => 'get',
 			'create' => 'createChannel',
 			'stack' => 'createStack',
 			default => function (LoggingManager $instance, string $method, array $parameters = []) {
-				return $instance->getChannel()->$method(...$parameters);
+				return $instance->get()->$method(...$parameters);
 			},
 		};
 	}

@@ -41,16 +41,16 @@ final class LoggingManager extends ServiceProvider
 	{
 		$this->channels = new Map();
 
-		$config = require Path::toProjectFile('config/logging.php');
+		$file = require Path::toProjectFile('config/logging.php');
 
-		foreach ($config['channels'] as $name => $options) {
-			$channel =  $this->build($name, $options);
+		foreach ($file['channels'] as $name => $config) {
+			$channel = $this->build($name, $config);
 			if ($channel instanceof ChannelInterface) {
 				$this->channels->set($name, $channel);
 			}
 		}
 
-		$this->setDefault($config['default']);
+		$this->setDefault($file['default']);
 	}
 
 	// -----------------
@@ -71,12 +71,12 @@ final class LoggingManager extends ServiceProvider
 
 	// -----------------
 
-	public function hasChannel(string $name): bool
+	public function has(string $name): bool
 	{
 		return isset($this->channels[$name]);
 	}
 
-	public function addChannel(string $name, array $config): void
+	public function add(string $name, array $config): void
 	{
 		$channel = self::build($name, $config);
 
@@ -85,7 +85,7 @@ final class LoggingManager extends ServiceProvider
 		}
 	}
 
-	public function getChannel(string|null $name = null): ChannelInterface
+	public function get(string|null $name = null): ChannelInterface
 	{
 		if ($name === null) {
 			$name = $this->default;
@@ -103,7 +103,7 @@ final class LoggingManager extends ServiceProvider
 	/**
 	 * @returns Map<string, ChannelInterface>
 	 */
-	public function getChannels(): Map
+	public function all(): Map
 	{
 		return $this->channels;
 	}

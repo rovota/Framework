@@ -72,7 +72,7 @@ final class ExceptionHandler
 	public static function logThrowable(Throwable $throwable): void
 	{
 		if (self::$log_enabled) {
-			LoggingManager::instance()->getChannel()->log(Level::Critical, $throwable->getMessage(), [
+			LoggingManager::instance()->get()->log(Level::Critical, $throwable->getMessage(), [
 				$throwable::class, $throwable->getFile(), $throwable->getLine(), self::getRequestInfo()['full_url']
 			]);
 		}
@@ -81,7 +81,7 @@ final class ExceptionHandler
 	public static function logError(int $number, string $message, string $file, int $line): void
 	{
 		if (self::$log_enabled) {
-			LoggingManager::instance()->getChannel()->error($message, [
+			LoggingManager::instance()->get()->error($message, [
 				PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error', $file, $line
 			]);
 		}

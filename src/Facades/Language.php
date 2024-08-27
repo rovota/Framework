@@ -12,13 +12,12 @@ use Rovota\Framework\Localization\LanguageObject;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Support\Str;
 
 /**
- * @method static LanguageObject current()
- * @method static LanguageObject|null get(string $locale)
- *
- * @method static void makeCurrent(string $locale)
  * @method static bool exists(string $locale)
+ * @method static LanguageObject|null get(string $locale)
+ * @method static LanguageObject current()
  * @method static array all()
  * @method static array allWithPrefix(string $prefix)
  *
@@ -43,16 +42,18 @@ final class Language extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return match ($method) {
-			'makeCurrent' => 'setActiveLocale',
-			'current' => 'getCurrentLanguage',
-			'get' => 'getLanguage',
-			'exists' => 'hasLanguage',
-			'all' => 'getLanguages',
-			'allWithPrefix' => 'getLanguagesWithPrefix',
-			default => function (LocalizationManager $instance, string $method, array $parameters = []) {
-				return $instance->getCurrentLanguage()->$method(...$parameters);
-			},
+		return function (LocalizationManager $instance, string $method, array $parameters = []) {
+			if (Str::containsAny($method, ['textDirection', 'units', 'about'])) {
+				return $instance->getLanguageManager()->getCurrent()->$method(...$parameters);
+			}
+
+			$method = match ($method) {
+				'exists' => 'has',
+				'current' => 'getCurrent',
+				default => $method,
+			};
+
+			return $instance->getLanguageManager()->$method(...$parameters);
 		};
 	}
 
