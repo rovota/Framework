@@ -9,7 +9,6 @@ namespace Rovota\Framework\Support;
 
 use NumberFormatter;
 use Rovota\Framework\Facades\Language;
-use Rovota\Framework\Localization\LocalizationManager;
 
 final class Number
 {
