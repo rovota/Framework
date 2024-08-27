@@ -44,6 +44,13 @@ final class CookieObject
 
 	// -----------------
 
+	public static function create(string $name, string $value, array $options = [], bool $received = false): CookieObject
+	{
+		return new CookieObject($name, $value, $options, $received);
+	}
+
+	// -----------------
+
 	public function prefixedName(): string
 	{
 		return $this->addPrefix($this->name);
