@@ -7,11 +7,15 @@
 
 namespace Rovota\Framework\Facades;
 
+use BackedEnum;
+use Closure;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Kernel\RegistryManager;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Support\Moment;
+use Rovota\Framework\Support\Text;
 
 /**
  * @method static void import(array $entries)
@@ -30,6 +34,9 @@ use Rovota\Framework\Support\Facade;
  * @method static string string(string $key, string $default = '')
  *
  * @method static DateTime|null date(string $key, DateTimeZone|null $timezone = null)
+ * @method static BackedEnum|null enum(string $key, BackedEnum|string $class, BackedEnum|null $default = null)
+ * @method static Text text(string $key, Text $default = new Text())
+ * @method static Moment|null moment(string $key, mixed $default = null, DateTimeZone|int|string|null $timezone = null)
  */
 final class Registry extends Facade
 {
@@ -46,9 +53,15 @@ final class Registry extends Facade
 		return RegistryManager::class;
 	}
 
-	protected static function getMethodTarget(string $method): mixed
+	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return $method;
+		return match ($method) {
+			'import' => 'import',
+			'entries' => 'entries',
+			default => function (RegistryManager $instance, string $method, array $parameters = []) {
+				return $instance->entries()->$method(...$parameters);
+			},
+		};
 	}
 
 }
