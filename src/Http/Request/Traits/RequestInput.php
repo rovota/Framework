@@ -121,7 +121,7 @@ trait RequestInput
 	 */
 	public function keep(): void
 	{
-		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
 		if ($store instanceof CacheInterface) {
 			$store->set('request.data.post', $this->post->all());
@@ -134,7 +134,7 @@ trait RequestInput
 	 */
 	public function keepOnly(array $keys): void
 	{
-		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
 		if ($store instanceof CacheInterface) {
 			$store->set('request.data.post', $this->post->only($keys)->all());
@@ -147,7 +147,7 @@ trait RequestInput
 	 */
 	public function keepExcept(array $keys): void
 	{
-		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
 		if ($store instanceof CacheInterface) {
 			$store->set('request.data.post', $this->post->except($keys)->all());
@@ -182,7 +182,7 @@ trait RequestInput
 
 	protected function loadRequestDataFromSession(): void
 	{
-		$store = CacheManager::instance()->getStoreWithDriver(Driver::Session);
+		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
 		if ($store instanceof CacheInterface) {
 			$this->post->import($store->pull('request.data.post'));

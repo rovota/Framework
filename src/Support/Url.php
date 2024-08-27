@@ -51,7 +51,7 @@ final class Url
 	public static function previous(string $default = '/'): UrlObject
 	{
 		$referrer = RequestManager::instance()->getCurrent()->referrer();
-		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.previous') ?? $referrer ?? $default;
+		$location = CacheManager::instance()->getWithDriver(Driver::Session)?->pull('location.previous') ?? $referrer ?? $default;
 		return UrlObject::from($location);
 	}
 
@@ -60,7 +60,7 @@ final class Url
 	 */
 	public static function next(string $default = '/'): UrlObject
 	{
-		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.next') ?? $default;
+		$location = CacheManager::instance()->getWithDriver(Driver::Session)?->pull('location.next') ?? $default;
 		return UrlObject::from($location);
 	}
 
@@ -69,7 +69,7 @@ final class Url
 	 */
 	public static function intended(string $default = '/'): UrlObject
 	{
-		$location = CacheManager::instance()->getStoreWithDriver(Driver::Session)?->pull('location.intended') ?? $default;
+		$location = CacheManager::instance()->getWithDriver(Driver::Session)?->pull('location.intended') ?? $default;
 		return UrlObject::from($location);
 	}
 

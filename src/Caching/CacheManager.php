@@ -41,33 +41,33 @@ final class CacheManager extends ServiceProvider
 	{
 		$this->stores = new Map();
 
-		$config = require Path::toProjectFile('config/caching.php');
+		$file = require Path::toProjectFile('config/caching.php');
 
-		foreach ($config['stores'] as $name => $options) {
-			$store =  $this->build($name, $options);
+		foreach ($file['stores'] as $name => $config) {
+			$store = $this->build($name, $config);
 			if ($store instanceof CacheInterface) {
 				$this->stores->set($name, $store);
 			}
 		}
 
-		$this->setDefault($config['default']);
+		$this->setDefault($file['default']);
 	}
 
 	// -----------------
 
-	public function createStore(array $options, string|null $name = null): CacheInterface|null
+	public function createStore(array $config, string|null $name = null): CacheInterface|null
 	{
-		return $this->build($name ?? Str::random(20), $options);
+		return $this->build($name ?? Str::random(20), $config);
 	}
 
 	// -----------------
 
-	public function hasStore(string $name): bool
+	public function has(string $name): bool
 	{
 		return isset($this->stores[$name]);
 	}
 
-	public function addStore(string $name, array $config): void
+	public function add(string $name, array $config): void
 	{
 		$store = $this->build($name, $config);
 
@@ -76,7 +76,7 @@ final class CacheManager extends ServiceProvider
 		}
 	}
 
-	public function getStore(string|null $name = null): CacheInterface
+	public function get(string|null $name = null): CacheInterface
 	{
 		if ($name === null) {
 			$name = $this->default;
@@ -89,7 +89,7 @@ final class CacheManager extends ServiceProvider
 		return $this->stores[$name];
 	}
 
-	public function getStoreWithDriver(Driver $driver): CacheInterface|null
+	public function getWithDriver(Driver $driver): CacheInterface|null
 	{
 		return $this->stores->first(function (CacheInterface $store) use ($driver) {
 			return $store->config()->driver === $driver;
@@ -101,7 +101,7 @@ final class CacheManager extends ServiceProvider
 	/**
 	 * @returns Map<string, CacheInterface>
 	 */
-	public function getStores(): Map
+	public function all(): Map
 	{
 		return $this->stores;
 	}

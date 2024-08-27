@@ -50,10 +50,10 @@ final class OneTimePassword
 
 		if ($result === true) {
 			$key = hash('sha256', $this->secret().'-'.$input);
-			if (CacheManager::instance()->getStore()->has($key)) {
+			if (CacheManager::instance()->get()->has($key)) {
 				return false;
 			}
-			CacheManager::instance()->getStore()->set($key, 1, $this->totp->getPeriod());
+			CacheManager::instance()->get()->set($key, 1, $this->totp->getPeriod());
 		}
 
 		return $result;

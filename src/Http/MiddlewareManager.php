@@ -30,12 +30,12 @@ final class MiddlewareManager extends ServiceProvider
 
 	// -----------------
 
-	public function hasMiddleware(string $name): bool
+	public function has(string $name): bool
 	{
 		return isset($this->middleware[$name]);
 	}
 
-	public function addMiddleware(string $name, string $target, bool $global = false): void
+	public function add(string $name, string $target, bool $global = false): void
 	{
 		$this->middleware[$name] = $target;
 
@@ -44,9 +44,9 @@ final class MiddlewareManager extends ServiceProvider
 		}
 	}
 
-	public function getMiddleware(string $name): array
+	public function get(string $name): string
 	{
-		return $this->middleware;
+		return $this->middleware[$name];
 	}
 
 	// -----------------

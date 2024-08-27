@@ -52,11 +52,11 @@ final class Cache extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'store' => 'getStore',
-			'storeWithDriver' => 'getStoreWithDriver',
+			'store' => 'get',
+			'storeWithDriver' => 'getWithDriver',
 			'create' => 'createStore',
 			default => function (CacheManager $instance, string $method, array $parameters = []) {
-				return $instance->getStore()->$method(...$parameters);
+				return $instance->get()->$method(...$parameters);
 			},
 		};
 	}

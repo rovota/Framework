@@ -34,8 +34,7 @@ final class Middleware extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'has' => 'hasMiddleware',
-			'register' => 'addMiddleware',
+			'register' => 'add',
 			'globalize' => 'setAsGlobal',
 			default => $method,
 		};
