@@ -9,6 +9,7 @@ namespace Rovota\Framework\Kernel;
 
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Database\CastingManager;
+use Rovota\Framework\Database\ConnectionManager;
 use Rovota\Framework\Http\Client\ClientManager;
 use Rovota\Framework\Http\Cookie\CookieManager;
 use Rovota\Framework\Http\MiddlewareManager;
@@ -41,6 +42,7 @@ class EnvironmentConfig extends Config
 			'registry' => RegistryManager::class,
 			'logging' => LoggingManager::class,
 			'cache' => CacheManager::class,
+			'database' => ConnectionManager::class,
 			'client' => ClientManager::class,
 			'encryption' => EncryptionManager::class,
 			'casting' => CastingManager::class,
@@ -53,7 +55,7 @@ class EnvironmentConfig extends Config
 
 		foreach ($this->array('services') as $name => $class) {
 			if (isset($services[$name])) {
-				throw new RuntimeException("A service with the name '{$name}' already exists.");
+				throw new RuntimeException("A service with the name '$name' already exists.");
 			}
 			$services[$name] = $class;
 		}
