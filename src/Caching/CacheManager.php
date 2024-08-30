@@ -92,7 +92,7 @@ final class CacheManager extends ServiceProvider
 	public function getWithDriver(Driver $driver): CacheInterface|null
 	{
 		return $this->stores->first(function (CacheInterface $store) use ($driver) {
-			return $store->config()->driver === $driver;
+			return $store->getConfig()->driver === $driver;
 		});
 	}
 
@@ -128,7 +128,7 @@ final class CacheManager extends ServiceProvider
 		$config = new CacheStoreConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
-			ExceptionHandler::handleThrowable(new UnsupportedDriverException("The selected driver '{$config->get('driver')}' is not supported."));
+			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
 			return null;
 		}
 

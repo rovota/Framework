@@ -130,7 +130,7 @@ final class LoggingManager extends ServiceProvider
 		$config = new ChannelConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
-			ExceptionHandler::handleThrowable(new UnsupportedDriverException("The selected driver '{$config->get('driver')}' is not supported."));
+			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
 			return null;
 		}
 
