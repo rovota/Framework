@@ -17,7 +17,7 @@ class UnsupportedDriverException extends Exception implements ProvidesSolution
 
 	public function __construct(string $driver)
 	{
-		parent::__construct("The selected driver '{$driver}' is not supported.");
+		parent::__construct("The selected driver '$driver' is not supported.");
 	}
 
 	public function solution(): Solution

@@ -46,17 +46,17 @@ abstract class CacheStore implements CacheInterface
 
 	// -----------------
 
-	public function name(): string
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	public function config(): CacheStoreConfig
+	public function getConfig(): CacheStoreConfig
 	{
 		return $this->config;
 	}
 
-	public function adapter(): CacheAdapterInterface
+	public function getAdapter(): CacheAdapterInterface
 	{
 		return $this->adapter;
 	}

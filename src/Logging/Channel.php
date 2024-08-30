@@ -51,12 +51,12 @@ abstract class Channel implements ChannelInterface
 
 	// -----------------
 
-	public function name(): string
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	public function config(): ChannelConfig
+	public function getConfig(): ChannelConfig
 	{
 		return $this->config;
 	}

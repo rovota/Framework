@@ -21,9 +21,9 @@ interface ChannelInterface
 
 	// -----------------
 
-	public function name(): string;
+	public function getName(): string;
 
-	public function config(): ChannelConfig;
+	public function getConfig(): ChannelConfig;
 
 	// -----------------
 

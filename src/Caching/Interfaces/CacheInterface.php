@@ -21,11 +21,11 @@ interface CacheInterface
 
 	// -----------------
 
-	public function name(): string;
+	public function getName(): string;
 
-	public function config(): CacheStoreConfig;
+	public function getConfig(): CacheStoreConfig;
 
-	public function adapter(): CacheAdapterInterface;
+	public function getAdapter(): CacheAdapterInterface;
 
 	// -----------------
 

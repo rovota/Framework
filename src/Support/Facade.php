@@ -19,7 +19,7 @@ abstract class Facade
 		$instance = self::getFacadeTargetInstance();
 
 		if ($instance === null) {
-			throw new RuntimeException("A target for method '{$method}' on " . static::class . ' could not be resolved.');
+			throw new RuntimeException("A target for method '$method' on " . static::class . ' could not be resolved.');
 		}
 
 		$target = static::getMethodTarget($method);
