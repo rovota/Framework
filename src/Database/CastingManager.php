@@ -22,7 +22,6 @@ use Rovota\Framework\Database\Casts\SerialCast;
 use Rovota\Framework\Database\Casts\StringCast;
 use Rovota\Framework\Database\Casts\TextCast;
 use Rovota\Framework\Database\Interfaces\CastInterface;
-use Rovota\Framework\Database\Interfaces\ModelInterface;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Str;
@@ -128,24 +127,6 @@ final class CastingManager extends ServiceProvider
 	public function getCasts(): Map
 	{
 		return $this->casts;
-	}
-
-	// -----------------
-
-	public static function normalizeValueForColumn(mixed $value, string $column, ModelInterface|null $model = null): mixed
-	{
-		if ($model instanceof ModelInterface) {
-			// TODO: Transform data based on casts defined by model
-		}
-		return self::instance()->castToRawAutomatic($value);
-	}
-
-	public static function normalizeValue(mixed $value, ModelInterface|null $model = null): mixed
-	{
-		if ($model instanceof ModelInterface) {
-			// TODO: Transform data based on casts defined by model
-		}
-		return self::instance()->castToRawAutomatic($value);
 	}
 
 	// -----------------
