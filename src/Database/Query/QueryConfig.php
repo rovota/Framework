@@ -7,12 +7,12 @@
 
 namespace Rovota\Framework\Database\Query;
 
-use Rovota\Framework\Database\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Support\Config;
 
 /**
  * @property string|array|null $table
- * @property ModelInterface|null $model
+ * @property ModelInterface|string|null $model
  */
 final class QueryConfig extends Config
 {
@@ -30,19 +30,24 @@ final class QueryConfig extends Config
 		$this->set('table', $name);
 	}
 
+	// -----------------
+
 	protected function getModel(): ModelInterface|null
 	{
 		return $this->get('model');
 	}
 
-	protected function setModel(ModelInterface|null $model): void
+	protected function setModel(ModelInterface|string|null $model): void
 	{
 		if ($model === null) {
 			$this->remove('model');
 		}
-		$this->set('model', $model);
+		if (is_string($model)) {
+			$model = new $model();
+		}
 
-		// TODO: Set table from model when provided
+		$this->set('model', $model);
+		$this->set('table', $this->model->getTable());
 	}
 
 }

@@ -28,7 +28,7 @@ trait WhereQueryConstraints
 	public function whereExpression(string $expression, array $parameters, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		foreach ($parameters as $key => $value) {
-			$parameters[$key] = CastingManager::normalizeValue($value, $this->config->model);
+			$parameters[$key] = CastingManager::instance()->castToRawAutomatic($value);
 		}
 
 		$this->getWherePredicate()->addPredicate(
@@ -61,7 +61,7 @@ trait WhereQueryConstraints
 
 	public function whereEqual(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new Operator($column, Operator::OPERATOR_EQUAL_TO, $value), $mode->realType()
@@ -72,7 +72,7 @@ trait WhereQueryConstraints
 
 	public function whereNotEqual(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new Operator($column, Operator::OPERATOR_NOT_EQUAL_TO, $value), $mode->realType()
@@ -85,7 +85,7 @@ trait WhereQueryConstraints
 
 	public function whereLessThan(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new Operator($column, Operator::OPERATOR_LESS_THAN, $value), $mode->realType()
@@ -96,7 +96,7 @@ trait WhereQueryConstraints
 
 	public function whereGreaterThan(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new Operator($column, Operator::OPERATOR_GREATER_THAN, $value), $mode->realType()
@@ -109,7 +109,7 @@ trait WhereQueryConstraints
 
 	public function whereLike(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		if (Str::contains($value, '%') === false) {
 			$value = Str::wrap($value, '%');
@@ -124,7 +124,7 @@ trait WhereQueryConstraints
 
 	public function whereNotLike(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$value = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+		$value = $this->normalizeValueForColumn($value, $column);
 
 		if (Str::contains($value, '%') === false) {
 			$value = Str::wrap($value, '%');
@@ -177,7 +177,7 @@ trait WhereQueryConstraints
 	public function whereIn(string $column, array $values, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		foreach ($values as $key => $value) {
-			$values[$key] = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+			$values[$key] = $this->normalizeValueForColumn($value, $column);
 		}
 
 		$this->getWherePredicate()->addPredicate(
@@ -190,7 +190,7 @@ trait WhereQueryConstraints
 	public function whereNotIn(string $column, array $values, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		foreach ($values as $key => $value) {
-			$values[$key] = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+			$values[$key] = $this->normalizeValueForColumn($value, $column);
 		}
 
 		$this->getWherePredicate()->addPredicate(
@@ -204,8 +204,8 @@ trait WhereQueryConstraints
 
 	public function whereBetween(string $column, mixed $start, mixed $end, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$start = CastingManager::normalizeValueForColumn($start, $column, $this->config->model);
-		$end = CastingManager::normalizeValueForColumn($end, $column, $this->config->model);
+		$start = $this->normalizeValueForColumn($start, $column);
+		$end = $this->normalizeValueForColumn($end, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new Between($column, $start, $end), $mode->realType()
@@ -216,8 +216,8 @@ trait WhereQueryConstraints
 
 	public function whereNotBetween(string $column, mixed $start, mixed $end, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		$start = CastingManager::normalizeValueForColumn($start, $column, $this->config->model);
-		$end = CastingManager::normalizeValueForColumn($end, $column, $this->config->model);
+		$start = $this->normalizeValueForColumn($start, $column);
+		$end = $this->normalizeValueForColumn($end, $column);
 
 		$this->getWherePredicate()->addPredicate(
 			new NotBetween($column, $start, $end), $mode->realType()

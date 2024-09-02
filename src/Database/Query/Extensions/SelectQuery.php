@@ -12,7 +12,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Select;
 use Rovota\Framework\Database\Enums\Sort;
-use Rovota\Framework\Database\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
@@ -129,9 +129,10 @@ final class SelectQuery extends QueryExtension
 	public function find(string|int $identifier, string|null $column = null): ModelInterface|array|null
 	{
 		if ($column === null) {
-			$column = 'id';
 			if ($this->config->model instanceof ModelInterface) {
-				// TODO: Set identifier column from Model
+				$column = $this->config->model->getPrimaryKey();
+			} else {
+				$column = 'id';
 			}
 		}
 
@@ -150,7 +151,9 @@ final class SelectQuery extends QueryExtension
 
 		if ($results->count() > 0) {
 			foreach ($results as $key => $result) {
-				// TODO: Transform into model when model has been specified
+				if ($this->config->model instanceof ModelInterface) {
+					$result = $this->config->model::newFromQueryResult($result);
+				}
 				$basket->set($key, $result);
 			}
 		}
