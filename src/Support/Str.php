@@ -170,7 +170,7 @@ final class Str
 
 	// -----------------
 
-	public static function plural(string $string, mixed $count): string
+	public static function plural(string $string, mixed $count = 2): string
 	{
 		return TextConverter::toPlural($string, $count);
 	}
