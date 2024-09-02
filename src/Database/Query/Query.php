@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Database\Query;
 
 use Laminas\Db\Adapter\AdapterInterface;
-use Rovota\Framework\Database\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\InsertQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
@@ -37,7 +37,7 @@ final class Query
 		return $this;
 	}
 
-	public function withModel(ModelInterface $model): Query
+	public function withModel(ModelInterface|string $model): Query
 	{
 		$this->config->model = $model;
 		return $this;
@@ -45,37 +45,25 @@ final class Query
 
 	// -----------------
 
-	public function select(string|null $table = null): SelectQuery
+	public function select(): SelectQuery
 	{
-		if ($table !== null) {
-			$this->config->table = $table;
-		}
 		return new SelectQuery($this->adapter, $this->config);
 	}
 
-	public function update(string|null $table = null): UpdateQuery
+	public function update(): UpdateQuery
 	{
-		if ($table !== null) {
-			$this->config->table = $table;
-		}
 		return new UpdateQuery($this->adapter, $this->config);
 	}
 
-	public function delete(string|null $table = null): DeleteQuery
+	public function delete(): DeleteQuery
 	{
-		if ($table !== null) {
-			$this->config->table = $table;
-		}
 		return new DeleteQuery($this->adapter, $this->config);
 	}
 
 	// -----------------
 
-	public function insert(string|null $table = null): InsertQuery
+	public function insert(): InsertQuery
 	{
-		if ($table !== null) {
-			$this->config->table = $table;
-		}
 		return new InsertQuery($this->adapter, $this->config);
 	}
 
