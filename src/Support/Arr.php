@@ -42,6 +42,28 @@ final class Arr
 	}
 
 	/**
+	 * Returns the items from the array that pass a given truth test.
+	 */
+	public static function reject(array $array, callable $callback): array
+	{
+		$new = [];
+		foreach ($array as $key => $value) {
+			if (is_array($value)) {
+				$new[$key] = Arr::reject($value, $callback);
+				if (empty($new[$key])) {
+					unset($new[$key]);
+				}
+			} else {
+				if ($callback($value, $key) === false) {
+					$new[$key] = $value;
+				}
+			}
+		}
+
+		return $new;
+	}
+
+	/**
 	 * Returns the percentage of how often a given value appears in the given array.
 	 */
 	public static function percentage(array $array, mixed $value, int $precision = 2): float

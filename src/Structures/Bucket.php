@@ -187,6 +187,14 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 	}
 
 	/**
+	 * Only returns items that match a given truth test.
+	 */
+	public function reject(callable $callback): static
+	{
+		return new static(Arr::reject($this->toArray(), $callback));
+	}
+
+	/**
 	 * Returns all items, except for those with the key(s) given.
 	 */
 	public function except(array $keys): static
