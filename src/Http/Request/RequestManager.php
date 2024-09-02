@@ -123,7 +123,7 @@ final class RequestManager extends ServiceProvider
 			}
 		});
 
-		// TODO: Implement request files processing.
+		// TODO: Implement request files processing
 
 //		$files = FilesArrayOrganizer::organize($_FILES);
 

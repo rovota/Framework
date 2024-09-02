@@ -52,7 +52,7 @@ final class InsertQuery extends QueryExtension
 			if ($value === null) {
 				unset($data[$column]);
 			}
-			$data[$column] = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+			$data[$column] = $this->normalizeValueForColumn($value, $column);
 		}
 
 		$this->insert->values($data);

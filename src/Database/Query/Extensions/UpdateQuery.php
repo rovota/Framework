@@ -60,7 +60,7 @@ final class UpdateQuery extends QueryExtension
 			if ($value === null) {
 				continue;
 			}
-			$data[$column] = CastingManager::normalizeValueForColumn($value, $column, $this->config->model);
+			$data[$column] = $this->normalizeValueForColumn($value, $column);
 		}
 
 		$this->update->set($data);
