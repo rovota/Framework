@@ -40,13 +40,8 @@ trait WhereQueryConstraints
 
 	// -----------------
 
-	public function where(Closure|string|array $column, mixed $value = null, ConstraintMode $mode = ConstraintMode::And): static
+	public function where(string|array $column, mixed $value = null, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		if ($column instanceof Closure) {
-			$this->where($column, $mode->realType());
-			return $this;
-		}
-
 		if (is_array($column)) {
 			foreach ($column as $col => $value) {
 				$this->where($col, $value, $mode);

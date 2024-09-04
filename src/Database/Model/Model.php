@@ -13,6 +13,7 @@ use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\ConnectionManager;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Traits\ModelQueryFunctions;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
@@ -25,7 +26,7 @@ use TypeError;
 
 abstract class Model implements ModelInterface, JsonSerializable
 {
-	use Macroable, Conditionable;
+	use Macroable, Conditionable, ModelQueryFunctions;
 
 	// -----------------
 
