@@ -22,11 +22,12 @@ use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Conditionable;
 use Rovota\Framework\Support\Traits\Macroable;
+use Rovota\Framework\Support\Traits\MagicMethods;
 use TypeError;
 
 abstract class Model implements ModelInterface, JsonSerializable
 {
-	use Macroable, Conditionable, ModelQueryFunctions;
+	use MagicMethods, Macroable, Conditionable, ModelQueryFunctions;
 
 	// -----------------
 
