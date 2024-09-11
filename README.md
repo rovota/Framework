@@ -1,5 +1,3 @@
-![Rovota Logo](https://cdn.rovota.com/branding/rovota/main/64x64.png)
-
 ![GitHub](https://img.shields.io/github/license/Rovota/Framework?style=flat-square)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Rovota/Framework?sort=semver&style=flat-square)
 
@@ -12,7 +10,7 @@ A modern framework written in PHP designed to be reliable, fast and accessible. 
 ## System Requirements
 
 * PHP 8.3 or newer.
-* MySQL 8+ with InnoDB, MariaDB 10.6+ or PostgreSQL 14+.
+* MySQL 8+ with InnoDB, MariaDB 10.6+ or PostgreSQL 15+.
 
 ## Dependencies
 
