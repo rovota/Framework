@@ -16,7 +16,6 @@ use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -38,9 +37,9 @@ final class ConnectionManager extends ServiceProvider
 	{
 		$this->connections = new Map();
 
-		$file = require Path::toProjectFile('config/databases.php');
+		$file = DatabaseConfig::load('config/databases.php');
 
-		foreach ($file['connections'] as $name => $config) {
+		foreach ($file->connections as $name => $config) {
 			$connection = $this->build($name, $config);
 			if ($connection instanceof ConnectionInterface) {
 				$this->connections->set($name, $connection);
