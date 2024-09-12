@@ -56,9 +56,19 @@ trait OrWhereQueryConstraints
 		return $this->whereLessThan($column, $value, ConstraintMode::Or);
 	}
 
+	public function orWhereBefore(string $column, mixed $value): static
+	{
+		return $this->orWhereLessThan($column, $value);
+	}
+
 	public function orWhereGreaterThan(string $column, mixed $value): static
 	{
 		return $this->whereGreaterThan($column, $value, ConstraintMode::Or);
+	}
+
+	public function orWhereAfter(string $column, mixed $value): static
+	{
+		return $this->orWhereGreaterThan($column, $value);
 	}
 
 	// -----------------

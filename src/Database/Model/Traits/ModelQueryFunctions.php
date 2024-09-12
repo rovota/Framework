@@ -17,6 +17,8 @@ use Rovota\Framework\Structures\Basket;
  * @method static SelectQuery whereNotEqual(string $column, mixed $value)
  * @method static SelectQuery whereLessThan(string $column, mixed $value)
  * @method static SelectQuery whereGreaterThan(string $column, mixed $value)
+ * @method static SelectQuery whereBefore(string $column, mixed $value)
+ * @method static SelectQuery whereAfter(string $column, mixed $value)
  * @method static SelectQuery whereLike(string $column, mixed $value)
  * @method static SelectQuery whereNotLike(string $column, mixed $value)
  * @method static SelectQuery whereFullText(string|array $column, string $value)

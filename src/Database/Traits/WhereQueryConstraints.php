@@ -89,6 +89,11 @@ trait WhereQueryConstraints
 		return $this;
 	}
 
+	public function whereBefore(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		return $this->whereLessThan($column, $value, $mode);
+	}
+
 	public function whereGreaterThan(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		$value = $this->normalizeValueForColumn($value, $column);
@@ -98,6 +103,11 @@ trait WhereQueryConstraints
 		);
 
 		return $this;
+	}
+
+	public function whereAfter(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		return $this->whereGreaterThan($column, $value, $mode);
 	}
 
 	// -----------------
