@@ -15,10 +15,12 @@ use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
 use Rovota\Framework\Http\Response\Extensions\JsonResponse;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
 use Rovota\Framework\Http\Response\Extensions\StatusResponse;
+use Rovota\Framework\Http\Response\Extensions\ViewResponse;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
+use Rovota\Framework\Views\View;
 use Throwable;
 
 /**
@@ -74,6 +76,9 @@ final class ResponseManager extends ServiceProvider
 		}
 
 		// ViewResponse
+		if ($content instanceof View) {
+			return self::createViewResponse($content, $status);
+		}
 
 		// StatusResponse
 		if ($content instanceof StatusCode || is_int($content)) {
@@ -98,6 +103,11 @@ final class ResponseManager extends ServiceProvider
 	public function createJsonResponse(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok): JsonResponse
 	{
 		return new JsonResponse($content, $status, $this->config);
+	}
+
+	public function createViewResponse(View $content, StatusCode|int $status = StatusCode::Ok): ViewResponse
+	{
+		return new ViewResponse($content, $status, $this->config);
 	}
 
 	public function createStatusResponse(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok): StatusResponse

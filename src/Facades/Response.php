@@ -21,6 +21,7 @@ use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
 use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Facade;
+use Rovota\Framework\Views\View;
 use Throwable;
 
 /**
@@ -30,6 +31,7 @@ use Throwable;
  * @method static RedirectResponse redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
  * @method static ErrorResponse error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok)
  * @method static JsonResponse json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static View view(View $content, StatusCode|int $status = StatusCode::Ok)
  * @method static StatusResponse status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)
  *
  * @method static void attachHeader(string $name, string $value)
@@ -66,6 +68,7 @@ final class Response extends Facade
 			'redirect' => 'createRedirectResponse',
 			'error' => 'createErrorResponse',
 			'json' => 'createJsonResponse',
+			'view' => 'createViewResponse',
 			'status' => 'createStatusResponse',
 
 			default => $method,

@@ -19,6 +19,7 @@ use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
+use Rovota\Framework\Views\ViewManager;
 use RuntimeException;
 
 /**
@@ -48,8 +49,9 @@ class EnvironmentConfig extends Config
 			'casting' => CastingManager::class,
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
-			'response' => ResponseManager::class,
 			'localize' => LocalizationManager::class,
+			'response' => ResponseManager::class,
+			'views' => ViewManager::class,
 			'middleware' => MiddlewareManager::class,
 		];
 

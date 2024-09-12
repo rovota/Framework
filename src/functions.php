@@ -18,6 +18,8 @@ use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
+use Rovota\Framework\Views\View;
+use Rovota\Framework\Views\ViewManager;
 
 // -----------------
 // Strings
@@ -81,6 +83,13 @@ if (!function_exists('redirect')) {
 	function redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
 	{
 		return ResponseManager::instance()->createRedirectResponse($location, $status);
+	}
+}
+
+if (!function_exists('view')) {
+	function view(string $template, string|null $class = null): View
+	{
+		return ViewManager::instance()->createView($template, $class);
 	}
 }
 
