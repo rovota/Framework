@@ -15,6 +15,7 @@ use Rovota\Framework\Support\Str;
 use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
+use Rovota\Framework\Views\Interfaces\ViewInterface;
 
 /**
  * @internal
@@ -51,7 +52,7 @@ final class ViewManager extends ServiceProvider
 
 	// -----------------
 
-	public function createView(string $template, string|null $class = null): View
+	public function createView(string $template, string|null $class = null): ViewInterface
 	{
 		$config = new ViewConfig([
 			'links' => $this->getDataForType('links', $template),
@@ -63,7 +64,7 @@ final class ViewManager extends ServiceProvider
 			return new $class(null, $config);
 		}
 
-		return new View($template, $config);
+		return new DefaultView($template, $config);
 	}
 
 	// -----------------
