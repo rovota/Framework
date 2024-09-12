@@ -629,7 +629,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected static function getQueryBuilderFromStaticModel(): Query
 	{
 		$model = new static();
-		return $model->getConnection()->buildQuery(['model' => $model]);
+		return $model->getConnection()->query(['model' => $model]);
 	}
 
 	/**
@@ -637,7 +637,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getQueryBuilder(): Query
 	{
-		return ConnectionManager::instance()->get($this->config->connection)->buildQuery([
+		return ConnectionManager::instance()->get($this->config->connection)->query([
 			'model' => $this
 		]);
 	}

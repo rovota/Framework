@@ -51,7 +51,7 @@ final class ConnectionManager extends ServiceProvider
 
 	// -----------------
 
-	public function create(array $config, string|null $name = null): ConnectionInterface|null
+	public function createConnection(array $config, string|null $name = null): ConnectionInterface|null
 	{
 		return self::build($name ?? Str::random(20), $config);
 	}

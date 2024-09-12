@@ -11,6 +11,10 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Rovota\Framework\Database\Interfaces\ConnectionHandlerInterface;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
+use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
+use Rovota\Framework\Database\Query\Extensions\InsertQuery;
+use Rovota\Framework\Database\Query\Extensions\SelectQuery;
+use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
 
 abstract class Connection implements ConnectionInterface
@@ -81,14 +85,55 @@ abstract class Connection implements ConnectionInterface
 
 	// -----------------
 
-	public function buildQuery(mixed $options = []): Query
+	public function query(mixed $options = []): Query
 	{
 		return new Query($this->handler->getAdapter(), $options);
 	}
 
-	public function buildQueryForTable(string $table): Query
+	public function queryForTable(string $table): Query
 	{
 		return new Query($this->handler->getAdapter(), ['table' => $table]);
+	}
+
+	// -----------------
+
+	public function select(): SelectQuery
+	{
+		return $this->query()->select();
+	}
+
+	public function update(): UpdateQuery
+	{
+		return $this->query()->update();
+	}
+
+	public function delete(): DeleteQuery
+	{
+		return $this->query()->delete();
+	}
+
+	public function insert(): InsertQuery
+	{
+		return $this->query()->insert();
+	}
+
+	// -----------------
+
+	public function tables(): array
+	{
+		return $this->getHandler()->getTables();
+	}
+
+	public function hasTable(string $name): bool
+	{
+		return $this->getHandler()->hasTable($name);
+	}
+
+	// -----------------
+
+	public function lastId(): string|int
+	{
+		return $this->getHandler()->getLastId();
 	}
 
 }
