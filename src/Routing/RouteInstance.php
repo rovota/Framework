@@ -107,17 +107,21 @@ final class RouteInstance extends RouteEntry
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public function setContext(array $context): void
 	{
 		$this->config->context = $context;
 	}
 
+	/**
+	 * @internal
+	 */
 	public function listensTo(RequestMethod $method): bool
 	{
 		return in_array($method->value, $this->config->methods);
 	}
-
-	// -----------------
 
 	// -----------------
 

@@ -52,6 +52,7 @@ final class Framework
 
 		// Finish
 		// TODO: Execute routes
+//		RouteManager::instance()->getRouter()->run();
 	}
 
 	public static function shutdown(): void

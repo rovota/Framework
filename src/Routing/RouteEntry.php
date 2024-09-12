@@ -28,6 +28,9 @@ abstract class RouteEntry
 
 	// -----------------
 
+	/**
+	 * @internal
+	 */
 	public function getAttributes(): Bucket
 	{
 		return $this->attributes;
