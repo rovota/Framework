@@ -17,6 +17,7 @@ use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Views\ViewManager;
@@ -53,6 +54,7 @@ class EnvironmentConfig extends Config
 			'response' => ResponseManager::class,
 			'views' => ViewManager::class,
 			'middleware' => MiddlewareManager::class,
+			'routing' => RouteManager::class,
 		];
 
 		foreach ($this->array('services') as $name => $class) {

@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http;
 
-abstract class Controller
+class Controller
 {
 
 	// -----------------

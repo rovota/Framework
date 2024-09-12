@@ -7,40 +7,28 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Kernel\ServiceProvider;
+
 /**
  * @internal
  */
-final class RouteManager
+final class RouteManager extends ServiceProvider
 {
 
+	protected Router $router;
+
 	// -----------------
 
-	protected function __construct()
+	public function __construct()
 	{
+		$this->router = new Router();
 	}
 
 	// -----------------
 
-	public static function initialize(): void
+	public function getRouter(): Router
 	{
+		return $this->router;
 	}
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
 
 }

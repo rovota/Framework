@@ -49,7 +49,6 @@ final class Framework
 		// Additional
 		TextConverter::initialize();
 		MarkupConverter::initialize();
-		RouteManager::initialize();
 
 		// Finish
 		// TODO: Execute routes
