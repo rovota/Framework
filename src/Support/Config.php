@@ -12,6 +12,10 @@ use Rovota\Framework\Structures\Bucket;
 class Config extends Bucket
 {
 
+	protected static string|null $file = null;
+
+	// -----------------
+
 	public function __get(string $name)
 	{
 		return $this->{'get'.Str::pascal($name)}();
@@ -29,17 +33,16 @@ class Config extends Bucket
 
 	// -----------------
 
-	public static function load(string $path, bool $source = false): static
+	public static function load(string $path): static
 	{
 		$path = Str::finish($path, '.php');
+		$path = Path::toProjectFile($path);
 
-		if ($source === true) {
-			$config = include Path::toSourceFile($path);
-		} else {
-			$config = include Path::toProjectFile($path);
+		if (file_exists($path)) {
+			$config = include $path;
 		}
 
-		return new static($config);
+		return new static($config ?? []);
 	}
 
 }
