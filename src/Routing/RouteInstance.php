@@ -41,6 +41,11 @@ final class RouteInstance extends RouteEntry
 
 	// -----------------
 
+	public function getPath(): string
+	{
+		return $this->config->path;
+	}
+
 	public function getContext(): array
 	{
 		return $this->config->context;
