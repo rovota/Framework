@@ -35,7 +35,7 @@ final class ResponseManager extends ServiceProvider
 
 	public function __construct()
 	{
-		$this->config = ResponseConfig::load('config/responses.php');
+		$this->config = ResponseConfig::load('config/responses');
 
 		$this->config->set([
 			'headers.X-Powered-By' => 'Rovota Framework',

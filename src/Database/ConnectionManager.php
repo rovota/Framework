@@ -37,7 +37,7 @@ final class ConnectionManager extends ServiceProvider
 	{
 		$this->connections = new Map();
 
-		$file = DatabaseConfig::load('config/databases.php');
+		$file = DatabaseConfig::load('config/databases');
 
 		foreach ($file->connections as $name => $config) {
 			$connection = $this->build($name, $config);
