@@ -53,6 +53,19 @@ class DefaultView implements Stringable, ViewInterface
 
 	// -----------------
 
+	public static function make(array $variables = []): static
+	{
+		$view = ViewManager::instance()->createView(null, static::class);
+
+		foreach ($variables as $name => $value) {
+			$view->with($name, $value);
+		}
+
+		return $view;
+	}
+
+	// -----------------
+
 	protected function getTemplatePath(): string
 	{
 		$file = Str::replace($this->template, '.', '/');;

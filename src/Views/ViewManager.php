@@ -52,7 +52,7 @@ final class ViewManager extends ServiceProvider
 
 	// -----------------
 
-	public function createView(string $template, string|null $class = null): ViewInterface
+	public function createView(string|null $template, string|null $class = null): ViewInterface
 	{
 		$config = new ViewConfig([
 			'links' => $this->getDataForType('links', $template),
@@ -175,24 +175,27 @@ final class ViewManager extends ServiceProvider
 
 	// -----------------
 
-	protected function getDataForType(string $type, string $name): array
+	protected function getDataForType(string $type, string|null $name): array
 	{
-		$levels = explode('.', $name);
 		$items = [];
 
 		foreach ($this->config->array($type . '.*') as $key => $value) {
 			$items[$key] = $value;
 		}
 
-		foreach ($levels as $level) {
-			if (Str::endsWith($name, $level) === false) {
-				$level = Str::before($name, Str::after($name, $level. '.')) . '*';
-			} else {
-				$level = $name;
-			}
+		if ($name !== null) {
+			$levels = explode('.', $name);
 
-			foreach ($this->config->array($type . '.' . $level) as $key => $value) {
-				$items[$key] = $value;
+			foreach ($levels as $level) {
+				if (Str::endsWith($name, $level) === false) {
+					$level = Str::before($name, Str::after($name, $level. '.')) . '*';
+				} else {
+					$level = $name;
+				}
+
+				foreach ($this->config->array($type . '.' . $level) as $key => $value) {
+					$items[$key] = $value;
+				}
 			}
 		}
 
