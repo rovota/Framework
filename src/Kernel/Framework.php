@@ -51,8 +51,8 @@ final class Framework
 		MarkupConverter::initialize();
 
 		// Finish
-		// TODO: Execute routes
-//		RouteManager::instance()->getRouter()->run();
+		RouteManager::instance()->importRoutes();
+		RouteManager::instance()->getRouter()->run();
 	}
 
 	public static function shutdown(): void
