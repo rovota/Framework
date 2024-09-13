@@ -27,8 +27,4 @@ final class Hash
 		return 0;
 	}
 
-	// -----------------
-
-	// TODO: Methods like fromString, fromFile, etc.
-
 }

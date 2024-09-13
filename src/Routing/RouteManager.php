@@ -47,4 +47,9 @@ final class RouteManager extends ServiceProvider
 		return $this->router;
 	}
 
+	public function getRouteGroup(): RouteGroup
+	{
+		return $this->router->getGroup();
+	}
+
 }
