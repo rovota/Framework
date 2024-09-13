@@ -10,6 +10,7 @@ namespace Rovota\Framework\Support;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\UrlObject;
 
 final class Url
@@ -43,7 +44,21 @@ final class Url
 
 	// -----------------
 
-	// TODO: route()
+	public static function route(string $name, array $context = [], array $parameters = []): UrlObject
+	{
+		$route = RouteManager::instance()->getRouter()->findRouteByName($name);
+
+		if ($route === null) {
+			return self::local('/');
+		}
+		
+		$path = Path::buildUsingContext($route->getPath(), $context);
+
+		return new UrlObject([
+			'path' => $path,
+			'parameters' => $parameters,
+		]);
+	}
 
 	/**
 	 * This method requires the presence of a cache store using the `session` driver.
