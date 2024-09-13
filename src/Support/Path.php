@@ -16,14 +16,14 @@ final class Path
 
 	// -----------------
 
-	public static function buildUsingParameters(string $path, array $params): string
+	public static function buildUsingContext(string $path, array $context): string
 	{
-		if (empty($params) === false) {
-			if (array_is_list($params)) {
-				$path = preg_replace('/{(.*?)}/', '{parameter}', $path);
-				$path = Str::replaceSequential($path, '{parameter}', $params);
+		if (empty($context) === false) {
+			if (array_is_list($context)) {
+				$path = preg_replace('/{(.*?)}/', '{item}', $path);
+				$path = Str::replaceSequential($path, '{item}', $context);
 			} else {
-				foreach ($params as $key => $value) {
+				foreach ($context as $key => $value) {
 					$path = str_replace(sprintf('{%s}', $key), $value, $path);
 				}
 			}
