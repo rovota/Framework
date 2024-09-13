@@ -41,14 +41,9 @@ final class RouteInstance extends RouteEntry
 
 	// -----------------
 
-	public function getName(): string
+	public function getContext(): array
 	{
-		return $this->attributes->string('name', Str::random(20));
-	}
-
-	public function getPrefix(): string
-	{
-		return $this->attributes->string('prefix');
+		return $this->config->context;
 	}
 
 	public function getTarget(): mixed
@@ -127,13 +122,13 @@ final class RouteInstance extends RouteEntry
 
 	protected function buildPattern(): string
 	{
-		$pattern = $this->config->path;
+		$path = $this->config->path;
 
-		foreach ($this->attributes->array('parameters') as $name => $expression) {
-			$pattern = str_replace(sprintf('{%s}', $name), sprintf('(%s)', $expression), $pattern);
+		foreach ($this->attributes->array('parameters') as $name => $pattern) {
+			$path = str_replace(sprintf('{%s}', $name), sprintf('(%s)', $pattern), $path);
 		}
 
-		$pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $pattern);
+		$pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $path);
 		return Str::start($pattern, '/');
 	}
 

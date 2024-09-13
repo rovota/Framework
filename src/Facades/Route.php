@@ -13,7 +13,6 @@ use Rovota\Framework\Routing\RouteInstance;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\Router;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Support\Str;
 
 /**
  * @method static Router router()
@@ -66,6 +65,28 @@ final class Route extends Facade
 	public static function controller(string $class): RouteGroup
 	{
 		return self::getRouter()->getGroup()->controller($class);
+	}
+
+	// -----------------
+
+	public static function where(array|string $parameter, string|null $pattern = null): RouteGroup
+	{
+		return self::getRouter()->getGroup()->where($parameter, $pattern);
+	}
+
+	public static function whereHash(array|string $parameter, string|int $algorithm): RouteGroup
+	{
+		return self::getRouter()->getGroup()->whereHash($parameter, $algorithm);
+	}
+
+	public static function whereNumber(array|string $parameter, int|null $length = null): RouteGroup
+	{
+		return self::getRouter()->getGroup()->whereNumber($parameter, $length);
+	}
+
+	public static function whereSlug(array|string $parameter, int|null $length = null): RouteGroup
+	{
+		return self::getRouter()->getGroup()->whereSlug($parameter, $length);
 	}
 
 	// -----------------

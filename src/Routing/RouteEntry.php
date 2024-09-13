@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Security\Hash;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Str;
 
@@ -36,6 +37,16 @@ abstract class RouteEntry
 		return $this->attributes;
 	}
 
+	public function getName(): string
+	{
+		return $this->attributes->string('name', Str::random(20));
+	}
+
+	public function getPrefix(): string
+	{
+		return $this->attributes->string('prefix');
+	}
+
 	// -----------------
 
 	public function name(string $value): static
@@ -53,6 +64,33 @@ abstract class RouteEntry
 	// -----------------
 
 	// -----------------
+
+	public function where(array|string $parameter, string|null $pattern = null): static
+	{
+		$parameters = is_array($parameter) ? $parameter : [$parameter => $pattern];
+		foreach ($parameters as $parameter => $pattern) {
+			$this->attributes->set('parameters.' . $parameter, $pattern);
+		}
+		return $this;
+	}
+
+	public function whereHash(array|string $parameter, string|int $algorithm): static
+	{
+		$this->where($parameter, '[a-zA-Z0-9_-]{'.(is_string($algorithm) ? Hash::length($algorithm) ?? 1 : $algorithm).'}');
+		return $this;
+	}
+
+	public function whereNumber(array|string $parameter, int|null $length = null): static
+	{
+		$this->where($parameter, '\d'.($length ? '{'.$length.'}' : '+'));
+		return $this;
+	}
+
+	public function whereSlug(array|string $parameter, int|null $length = null): static
+	{
+		$this->where($parameter, '[a-zA-Z0-9_-]'.($length ? '{'.$length.'}' : '+'));
+		return $this;
+	}
 
 	// -----------------
 
