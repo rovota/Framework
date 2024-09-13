@@ -8,11 +8,14 @@
 namespace Rovota\Framework\Http\Request;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Rovota\Framework\Facades\Route;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\Enums\Scheme;
+use Rovota\Framework\Routing\RouteInstance;
+use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Moment;
@@ -112,6 +115,28 @@ final class RequestObject
 	public function queryString(): string
 	{
 		return Url::arrayToQuery($this->url()->parameters);
+	}
+
+	// -----------------
+
+	public function route(): RouteInstance|null
+	{
+		return RouteManager::instance()->getRouter()->getCurrentRoute();
+	}
+
+	public function routeIsNamed(string $name): bool
+	{
+		$route = $this->route();
+
+		if ($route instanceof RouteInstance) {
+			if (str_ends_with($name, '.*')) {
+				return str_starts_with($route->getName(), Str::beforeLast($name, '.*'));
+			}
+
+			return $route->getName() === $name;
+		}
+
+		return false;
 	}
 
 	// -----------------

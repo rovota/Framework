@@ -66,7 +66,11 @@ class RedirectResponse extends DefaultResponse
 
 	// -----------------
 
-	// TODO: toRoute()
+	public function toRoute(string $name, array $context = [], array $parameters = []): static
+	{
+		$this->location = Url::route($name, $context, $parameters);
+		return $this;
+	}
 
 	public function toPrevious(string $default = '/'): static
 	{
