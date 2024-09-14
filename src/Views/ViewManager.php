@@ -57,6 +57,7 @@ final class ViewManager extends ServiceProvider
 		$config = new ViewConfig([
 			'links' => $this->getDataForType('links', $template),
 			'meta' => $this->getDataForType('meta', $template),
+			'scripts' => $this->getDataForType('scripts', $template),
 			'variables' => $this->getDataForType('variables', $template),
 		]);
 
