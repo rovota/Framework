@@ -129,7 +129,7 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 		return $this;
 	}
 
-	public function find(mixed $value): string|int|null
+	public function find(mixed $value): string|int|bool
 	{
 		return Arr::search($this->toArray(), $value);
 	}
