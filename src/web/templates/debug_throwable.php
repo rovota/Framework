@@ -23,8 +23,8 @@ use Rovota\Framework\Support\Interfaces\Solution;
 	<meta name="theme-color" content="#F6F6F6">
 	<meta name="color-scheme" content="light dark">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1, viewport-fit=cover">
-	<link rel="stylesheet" href="/vendor/rovota/framework/src/web/assets/styles/theming.css">
-	<link rel="stylesheet" href="/vendor/rovota/framework/src/web/assets/styles/debug.css">
+	<link rel="stylesheet" href="/vendor/rovota/framework/src/assets/styles/theming.css">
+	<link rel="stylesheet" href="/vendor/rovota/framework/src/assets/styles/debug.css">
 </head>
 <body class="theme-automatic accent-default">
 
