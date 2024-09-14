@@ -9,6 +9,7 @@ namespace Rovota\Framework\Localization;
 
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Path;
+use Rovota\Framework\Support\Str;
 
 final class LanguageObject
 {
@@ -46,6 +47,11 @@ final class LanguageObject
 	public function label(bool $native = true): string
 	{
 		return $this->data->array('about.label')[$native ? 'native' : 'default'];
+	}
+
+	public function iso2(): string
+	{
+		return Str::limit($this->locale, 2);
 	}
 
 	// -----------------
