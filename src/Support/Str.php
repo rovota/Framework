@@ -503,6 +503,30 @@ final class Str
 		return implode($character, mb_str_split($string, $interval));
 	}
 
+	public static function insertBetweenTypes(string $number, string $character): string
+	{
+		$previous_type = null;
+		$result = '';
+
+		for ($i = 0; $i < strlen($number); $i++) {
+			$current = $number[$i];
+			$current_type = match(true) {
+				ctype_alpha($current) => 'alpha',
+				ctype_digit($current) => 'digit',
+				default => 'other'
+			};
+
+			if ($previous_type !== null && $previous_type !== $current_type) {
+				$result .= $character;
+			}
+
+			$result .= $current;
+			$previous_type = $current_type;
+		}
+
+		return $result;
+	}
+
 	public static function merge(string $string, string|array $values): string
 	{
 		if (is_string($values)) {
