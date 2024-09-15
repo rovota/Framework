@@ -333,9 +333,9 @@ class Basket extends Bucket
 		return implode($value, $this->toArray());
 	}
 
-	public function join(string $glue, string $final_glue = ''): string
+	public function join(string $glue = '', string|null $final_glue = null): string
 	{
-		if ($final_glue === '') {
+		if ($final_glue === null) {
 			return $this->implode($glue);
 		}
 
