@@ -24,6 +24,7 @@
       "ext-sodium": "*",
       "ext-zip": "*",
       "ext-intl": "*",
+      "ext-ctype": "*",
       "dflydev/dot-access-data": "^3.0",
       "guzzlehttp/guzzle": "^7.9",
       "league/commonmark": "^2.5",
