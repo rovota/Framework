@@ -56,9 +56,6 @@
    },
 
    "autoload": {
-      "files": [
-
-      ],
       "psr-4": {
          "Rovota\\Framework\\": "src/"
       }
