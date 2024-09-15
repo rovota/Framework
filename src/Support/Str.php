@@ -30,36 +30,35 @@ final class Str
 		}
 
 		$translation = Language::current()->findTranslation($string);
-
-		if ($translation !== null) {
-			if (empty($data) === false && Str::length($translation) > 0) {
-				if (is_object($data)) {
-					$matches = [];
-					if (preg_match_all('#:([a-z\d_]*)#m', $translation, $matches) > 0) {
-						foreach ($matches[1] as $name) {
-							if ($data->{$name} !== null) {
-								$translation = str_replace(':'.$name, Str::translate($data->{$name}), $translation);
-							}
-						}
-					}
-				} else {
-					if (array_is_list($data)) {
-						return sprintf($translation, ...$data);
-					}
-					$data = Basket::from($data)->sortBy(fn ($variable, $key) => mb_strlen($key), descending: true);
-					foreach ($data as $name => $replacement) {
-						if (is_array($replacement)) {
-							continue;
-						}
-						$translation = str_replace(':'.$name, Str::translate($replacement), $translation);
-					}
-				}
-			}
-
-			return $translation;
+		if ($translation === null) {
+			$translation = $string;
 		}
 
-		return $string;
+		if (empty($data) === false && Str::length($translation) > 0) {
+			if (is_object($data)) {
+				$matches = [];
+				if (preg_match_all('#:([a-z\d_]*)#m', $translation, $matches) > 0) {
+					foreach ($matches[1] as $name) {
+						if ($data->{$name} !== null) {
+							$translation = str_replace(':' . $name, Str::translate($data->{$name}), $translation);
+						}
+					}
+				}
+			} else {
+				if (array_is_list($data)) {
+					return sprintf($translation, ...$data);
+				}
+				$data = Basket::from($data)->sortBy(fn($variable, $key) => mb_strlen($key), descending: true);
+				foreach ($data as $name => $replacement) {
+					if (is_array($replacement)) {
+						continue;
+					}
+					$translation = str_replace(':' . $name, Str::translate($replacement), $translation);
+				}
+			}
+		}
+
+		return $translation;
 	}
 
 	// -----------------
@@ -192,17 +191,17 @@ final class Str
 
 	public static function prepend(string $string, string $addition): string
 	{
-		return $addition.$string;
+		return $addition . $string;
 	}
 
 	public static function append(string $string, string $addition): string
 	{
-		return $string.$addition;
+		return $string . $addition;
 	}
 
 	public static function wrap(string $string, string $start, string|null $end = null): string
 	{
-		return $start.$string.($end ?? $start);
+		return $start . $string . ($end ?? $start);
 	}
 
 	public static function start(string $string, string $value): string
@@ -224,14 +223,14 @@ final class Str
 	{
 		// Inspired by the Laravel Str::padLeft() method.
 		$space = max(0, $length - mb_strlen($string));
-		return mb_substr(str_repeat($pad_with, $space), 0, $space).$string;
+		return mb_substr(str_repeat($pad_with, $space), 0, $space) . $string;
 	}
 
 	public static function padRight(string $string, int $length, string $pad_with = ' '): string
 	{
 		// Inspired by the Laravel Str::padRight() method.
 		$space = max(0, $length - mb_strlen($string));
-		return $string.mb_substr(str_repeat($pad_with, $space), 0, $space);
+		return $string . mb_substr(str_repeat($pad_with, $space), 0, $space);
 	}
 
 	public static function padBoth(string $string, int $length, string $pad_with = ' '): string
@@ -240,7 +239,7 @@ final class Str
 		$space = max(0, $length - mb_strlen($string));
 		$padding_left = mb_substr(str_repeat($pad_with, floor($space / 2)), 0, floor($space / 2));
 		$padding_right = mb_substr(str_repeat($pad_with, ceil($space / 2)), 0, ceil($space / 2));
-		return $padding_left.$string.$padding_right;
+		return $padding_left . $string . $padding_right;
 	}
 
 	// -----------------
@@ -262,7 +261,7 @@ final class Str
 
 		foreach ($words as $word) {
 			if (mb_strlen($word) < 4) {
-				$string .= $word.' ';
+				$string .= $word . ' ';
 			} else {
 				$string .= sprintf('%s%s%s ', $word[0], str_shuffle(substr($word, 1, -1)), $word[mb_strlen($word) - 1]);
 			}
@@ -294,7 +293,7 @@ final class Str
 		$segment_length = mb_strlen($segment, 'UTF-8');
 		$end = mb_substr($string, $start_index + $segment_length);
 
-		return $start.str_repeat(mb_substr($replacement, 0, 1, 'UTF-8'), $segment_length).$end;
+		return $start . str_repeat(mb_substr($replacement, 0, 1, 'UTF-8'), $segment_length) . $end;
 	}
 
 	public static function maskEmail(string $string, string $replacement, int $preserve = 3): string
@@ -302,7 +301,7 @@ final class Str
 		$maskable = Str::before($string, '@');
 		$rest = str_replace($maskable, '', $string);
 
-		return Str::mask($maskable, $replacement, mb_strlen($maskable) - $preserve, $preserve).$rest;
+		return Str::mask($maskable, $replacement, mb_strlen($maskable) - $preserve, $preserve) . $rest;
 	}
 
 	// -----------------
@@ -477,11 +476,11 @@ final class Str
 		preg_match('/(.+)' . preg_quote($separator, '/') . '(\d+)$/', $string, $matches);
 
 		if (isset($matches[2])) {
-			$new_value = (int) $matches[2] + max($step, 0);
-			return $matches[1].$separator.$new_value;
+			$new_value = (int)$matches[2] + max($step, 0);
+			return $matches[1] . $separator . $new_value;
 		}
 
-		return $string.$separator.$step;
+		return $string . $separator . $step;
 	}
 
 	public static function decrement(string $string, string $separator = '-', int $step = 1): string
@@ -490,8 +489,8 @@ final class Str
 		preg_match('/(.+)' . preg_quote($separator, '/') . '(\d+)$/', $string, $matches);
 
 		if (isset($matches[2])) {
-			$new_value = max((int) $matches[2] - max($step, 0), 0);
-			return $new_value === 0 ? $matches[1] : $matches[1].$separator.$new_value;
+			$new_value = max((int)$matches[2] - max($step, 0), 0);
+			return $new_value === 0 ? $matches[1] : $matches[1] . $separator . $new_value;
 		}
 
 		return $string;
@@ -611,7 +610,7 @@ final class Str
 
 		$acronym = '';
 		foreach (preg_split('/[^\p{L}]+/u', trim($string)) as $word) {
-			if(strlen($word > 0)){
+			if (strlen($word > 0)) {
 				$first_letter = mb_substr($word, 0, 1);
 
 				// Only words starting with an uppercase letter should be included.
