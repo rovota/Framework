@@ -25,30 +25,38 @@ final class Str
 
 	public static function translate(string|null $string, array|object $data = []): string
 	{
-		$string = Language::current()->findTranslation($string ?? '');
+		if ($string === null) {
+			return '';
+		}
 
-		if (empty($data) === false && Str::length($string) > 0) {
-			if (is_object($data)) {
-				$matches = [];
-				if (preg_match_all('#:([a-z\d_]*)#m', $string, $matches) > 0) {
-					foreach ($matches[1] as $name) {
-						if ($data->{$name} !== null) {
-							$string = str_replace(':'.$name, Str::translate($data->{$name}), $string);
+		$translation = Language::current()->findTranslation($string);
+
+		if ($translation !== null) {
+			if (empty($data) === false && Str::length($translation) > 0) {
+				if (is_object($data)) {
+					$matches = [];
+					if (preg_match_all('#:([a-z\d_]*)#m', $translation, $matches) > 0) {
+						foreach ($matches[1] as $name) {
+							if ($data->{$name} !== null) {
+								$translation = str_replace(':'.$name, Str::translate($data->{$name}), $translation);
+							}
 						}
 					}
-				}
-			} else {
-				if (array_is_list($data)) {
-					return sprintf($string, ...$data);
-				}
-				$data = Basket::from($data)->sortBy(fn ($variable, $key) => mb_strlen($key), descending: true);
-				foreach ($data as $name => $replacement) {
-					if (is_array($replacement)) {
-						continue;
+				} else {
+					if (array_is_list($data)) {
+						return sprintf($translation, ...$data);
 					}
-					$string = str_replace(':'.$name, Str::translate($replacement), $string);
+					$data = Basket::from($data)->sortBy(fn ($variable, $key) => mb_strlen($key), descending: true);
+					foreach ($data as $name => $replacement) {
+						if (is_array($replacement)) {
+							continue;
+						}
+						$translation = str_replace(':'.$name, Str::translate($replacement), $translation);
+					}
 				}
 			}
+
+			return $translation;
 		}
 
 		return $string;
