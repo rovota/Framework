@@ -69,18 +69,7 @@ class EnvironmentConfig extends Config
 
 	// -----------------
 
-	// TODO: methods like authProviders() and libraries()
+	// TODO: method authProviders()
 	// For example, Environment::authProviders() returns an array with auth provider classes/config.
-	// And Environment::libraries() returns an array of library classes to call a load() method on.
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
 
 }
