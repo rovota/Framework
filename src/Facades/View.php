@@ -29,8 +29,8 @@ use Rovota\Framework\Views\ViewManager;
  * @method static Script attachScript(array|string $templates, string $identifier, Script|array $attributes)
  *
  * @method static bool hasVariable(string $template, string $identifier)
- * @method static Script attachVariable(array|string $templates, string $identifier, mixed $value)
- * @method static Script updateVariable(array|string $templates, string $identifier, mixed $value)
+ * @method static void attachVariable(array|string $templates, string $identifier, mixed $value)
+ * @method static void updateVariable(array|string $templates, string $identifier, mixed $value)
  */
 final class View extends Facade
 {
