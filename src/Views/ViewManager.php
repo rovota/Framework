@@ -64,10 +64,10 @@ final class ViewManager extends ServiceProvider
 		]);
 
 		if ($class !== null) {
-			return new $class(null, $config);
+			$this->current = new $class(null, $config);
+		} else {
+			$this->current = new DefaultView($template, $config);
 		}
-
-		$this->current = new DefaultView($template, $config);
 
 		return $this->current;
 	}
