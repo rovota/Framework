@@ -66,13 +66,13 @@ final class MiddlewareManager extends ServiceProvider
 	{
 		foreach ($this->global as $name) {
 			if (!in_array($name, $without)) {
-				Resolver::invoke($this->middleware[$name], [RequestManager::instance()->getCurrent()]);
+				Resolver::invoke([$this->middleware[$name], 'handle'], [RequestManager::instance()->getCurrent()]);
 			}
 		}
 
 		foreach ($names as $name) {
 			if (isset($this->middleware[$name]) && !in_array($name, $without)) {
-				Resolver::invoke($this->middleware[$name], [RequestManager::instance()->getCurrent()]);
+				Resolver::invoke([$this->middleware[$name], 'handle'], [RequestManager::instance()->getCurrent()]);
 			}
 		}
 	}
