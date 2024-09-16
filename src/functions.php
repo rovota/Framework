@@ -18,6 +18,7 @@ use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
+use Rovota\Framework\Support\Url;
 use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\ViewManager;
 
@@ -94,6 +95,13 @@ if (!function_exists('view')) {
 }
 
 // -----------------
+
+if (!function_exists('route')) {
+	function route(string $name, array $context = [], array $parameters = []): UrlObject
+	{
+		return Url::route($name, $context, $parameters);
+	}
+}
 
 // -----------------
 
