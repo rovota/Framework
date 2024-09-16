@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Views\Interfaces;
 
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
@@ -58,7 +59,7 @@ interface ViewInterface
 
 	public function with(array|string $name, mixed $value = null): static;
 
-	public function getVariables(): array;
+	public function getVariables(): Bucket;
 
 	// -----------------
 

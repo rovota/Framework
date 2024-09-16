@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Views\Traits;
 
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
@@ -119,9 +120,9 @@ trait ViewFunctions
 		return $this;
 	}
 
-	public function getVariables(): array
+	public function getVariables(): Bucket
 	{
-		return $this->config->variables;
+		return Bucket::from($this->config->variables);
 	}
 
 	// -----------------
