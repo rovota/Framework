@@ -18,7 +18,7 @@ use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
-use Rovota\Framework\Views\DefaultView;
+use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\ViewManager;
 
 // -----------------
@@ -87,7 +87,7 @@ if (!function_exists('redirect')) {
 }
 
 if (!function_exists('view')) {
-	function view(string $template, string|null $class = null): DefaultView
+	function view(string $template, string|null $class = null): ViewInterface
 	{
 		return ViewManager::instance()->createView($template, $class);
 	}
