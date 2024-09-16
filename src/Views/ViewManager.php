@@ -25,6 +25,8 @@ final class ViewManager extends ServiceProvider
 
 	protected ViewConfig $config;
 
+	protected ViewInterface|null $current = null;
+
 	// -----------------
 
 	public function __construct()
@@ -65,7 +67,14 @@ final class ViewManager extends ServiceProvider
 			return new $class(null, $config);
 		}
 
-		return new DefaultView($template, $config);
+		$this->current = new DefaultView($template, $config);
+
+		return $this->current;
+	}
+
+	public function getCurrent(): ViewInterface|null
+	{
+		return $this->current;
 	}
 
 	// -----------------

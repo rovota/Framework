@@ -17,6 +17,7 @@ use Rovota\Framework\Views\ViewManager;
 
 /**
  * @method static ViewInterface create(string $template, string|null $class = null)
+ * @method static ViewInterface|null current()
  *
  * @method static bool hasLink(string $template, string $identifier)
  * @method static Link attachLink(array|string $templates, string $identifier, Link|array $attributes)
@@ -50,6 +51,7 @@ final class View extends Facade
 	{
 		return match ($method) {
 			'create' => 'createView',
+			'current' => 'getCurrent',
 			default => $method,
 		};
 	}

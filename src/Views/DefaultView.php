@@ -68,7 +68,7 @@ class DefaultView implements Stringable, ViewInterface
 
 	protected function getTemplatePath(): string
 	{
-		$file = Str::replace($this->template, '.', '/');;
+		$file = Str::replace($this->template, '.', '/');
 		$file = Str::finish($file, '.php');
 		$file = Str::start($file, 'resources/templates/');
 
