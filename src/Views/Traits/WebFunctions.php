@@ -17,7 +17,7 @@ trait WebFunctions
 		$title = Str::translate(trim($title));
 
 		$this->with('meta.title', $title);
-		$this->withMeta('og:title', ['name' => 'og:title', 'content' => $title]);
+		$this->withMeta('og:title', ['name' => 'og:title', 'content' => Str::translate($title)]);
 
 		return $this;
 	}
@@ -27,8 +27,8 @@ trait WebFunctions
 		$description = Str::translate(trim($description));
 
 		$this->with('meta.description', $description);
-		$this->withMeta('description', ['name' => 'description', 'content' => $description]);
-		$this->withMeta('og:description', ['name' => 'og:description', 'content' => $description]);
+		$this->withMeta('description', ['name' => 'description', 'content' => Str::translate($description)]);
+		$this->withMeta('og:description', ['name' => 'og:description', 'content' => Str::translate($description)]);
 
 		return $this;
 	}
