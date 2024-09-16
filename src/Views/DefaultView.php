@@ -82,7 +82,6 @@ class DefaultView implements Stringable, ViewInterface
 		ob_start();
 
 		extract($this->config->array('variables'));
-		$this->config->remove('variables');
 
 		include $this->getTemplatePath();
 
