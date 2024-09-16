@@ -15,6 +15,7 @@ namespace Rovota\Framework\Routing;
 use Closure;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
@@ -167,7 +168,9 @@ final class Router
 //		}
 //
 //		MiddlewareManager::execute($route->getMiddleware(), $route->getWithoutMiddleware());
-//
+		// TODO: Attach middleware added to routes.
+		MiddlewareManager::instance()->execute([]);
+		
 		if ($route->getTarget() instanceof Closure || is_array($route->getTarget())) {
 			$response = Resolver::invoke($route->getTarget(), $parameters);
 		} else {
