@@ -61,16 +61,4 @@ interface ViewInterface
 
 	public function getVariables(): Bucket;
 
-	// -----------------
-
-	public function withTitle(string $title): static;
-
-	public function withDescription(string $description): static;
-
-	public function withKeywords(array $keywords): static;
-
-	// -----------------
-
-	public function withAuthor(string $author): static;
-
 }

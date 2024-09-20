@@ -11,12 +11,11 @@ use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\Traits\ViewFunctions;
-use Rovota\Framework\Views\Traits\WebFunctions;
 use Stringable;
 
 class DefaultView implements Stringable, ViewInterface
 {
-	use ViewFunctions, WebFunctions;
+	use ViewFunctions;
 
 	// -----------------
 
