@@ -11,7 +11,6 @@ use Rovota\Framework\Database\Casts\ArrayCast;
 use Rovota\Framework\Database\Casts\BooleanCast;
 use Rovota\Framework\Database\Casts\DateTimeCast;
 use Rovota\Framework\Database\Casts\EncryptionCast;
-use Rovota\Framework\Database\Casts\EncryptionStringCast;
 use Rovota\Framework\Database\Casts\EnumCast;
 use Rovota\Framework\Database\Casts\FloatCast;
 use Rovota\Framework\Database\Casts\IntegerCast;
@@ -147,7 +146,6 @@ final class CastingManager extends ServiceProvider
 
 		$this->addCast(new JsonCast(), 'json');
 		$this->addCast(new EncryptionCast(), 'encrypted');
-		$this->addCast(new EncryptionStringCast(), 'encrypted_string');
 		$this->addCast(new SerialCast(), 'serial');
 	}
 

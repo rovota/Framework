@@ -17,7 +17,7 @@ final class EncryptionCast implements CastInterface
 
 	public function supports(mixed $value, array $options): bool
 	{
-		return true;
+		return is_string($value);
 	}
 
 	// -----------------
@@ -25,17 +25,17 @@ final class EncryptionCast implements CastInterface
 	public function toRaw(mixed $value, array $options): string|null
 	{
 		try {
-			return EncryptionManager::instance()->getAgent()->encrypt($value);
+			return EncryptionManager::instance()->getAgent()->encryptString($value);
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
 		}
 		return null;
 	}
 
-	public function fromRaw(mixed $value, array $options): mixed
+	public function fromRaw(mixed $value, array $options): string|null
 	{
 		try {
-			return EncryptionManager::instance()->getAgent()->decrypt($value);
+			return EncryptionManager::instance()->getAgent()->decryptString($value);
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
 		}
