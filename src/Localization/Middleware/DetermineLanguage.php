@@ -55,7 +55,9 @@ class DetermineLanguage
 //			}
 //		}
 
-		$manager->setActiveLocale($this->locale);
+		if ($this->locale !== null) {
+			$manager->setActiveLocale($this->locale);
+		}
 	}
 
 }
