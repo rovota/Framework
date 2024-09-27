@@ -32,6 +32,8 @@ class DefaultView implements Stringable, ViewInterface
 		if ($template !== null) {
 			$this->template = $template;
 		}
+
+		$this->configuration();
 	}
 
 	public function __toString(): string
@@ -88,6 +90,11 @@ class DefaultView implements Stringable, ViewInterface
 	}
 
 	protected function prepareForPrinting(): void
+	{
+
+	}
+
+	protected function configuration(): void
 	{
 
 	}
