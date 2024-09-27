@@ -134,7 +134,7 @@ final class RouteInstance extends RouteEntry
 		}
 
 		$pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $path);
-		return Str::start($pattern, '/');
+		return Str::start(Str::trimEnd($pattern, '/'), '/');
 	}
 
 }
