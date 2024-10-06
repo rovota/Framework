@@ -9,7 +9,7 @@ namespace Rovota\Framework\Facades;
 
 use Closure;
 use JsonSerializable;
-use Rovota\Framework\Http\ApiError;
+use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\DefaultResponse;
@@ -29,7 +29,7 @@ use Throwable;
  *
  * @method static DefaultResponse create(mixed $content, StatusCode|int $status = StatusCode::Ok)
  * @method static RedirectResponse redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
- * @method static ErrorResponse error(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok)
+ * @method static ErrorResponse error(Throwable|Error|array $error, StatusCode|int $status = StatusCode::Ok)
  * @method static JsonResponse json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
  * @method static DefaultView view(DefaultView $content, StatusCode|int $status = StatusCode::Ok)
  * @method static StatusResponse status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)

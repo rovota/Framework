@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http;
 
-class ApiError
+class Error
 {
 
 	protected int $code;

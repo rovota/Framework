@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http\Response\Extensions;
 
-use Rovota\Framework\Http\ApiError;
+use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Support\Config;
@@ -17,7 +17,7 @@ use Throwable;
 class ErrorResponse extends DefaultResponse
 {
 
-	public function __construct(Throwable|ApiError|array $content, StatusCode|int $status, Config $config)
+	public function __construct(Throwable|Error|array $content, StatusCode|int $status, Config $config)
 	{
 		parent::__construct($content, $status, $config);
 	}
@@ -36,7 +36,7 @@ class ErrorResponse extends DefaultResponse
 		$result = match (true) {
 			is_array($this->content) => $this->getContentAsArray($this->content),
 			$this->content instanceof Throwable => [$this->getThrowableAsArray($this->content)],
-			$this->content instanceof ApiError => [$this->getApiErrorAsArray($this->content)],
+			$this->content instanceof Error => [$this->getErrorAsArray($this->content)],
 			default => $this->content
 		};
 
@@ -56,8 +56,8 @@ class ErrorResponse extends DefaultResponse
 			if ($item instanceof Throwable) {
 				$result[] = $this->getThrowableAsArray($item);
 			}
-			if ($item instanceof ApiError) {
-				$result[] = $this->getApiErrorAsArray($item);
+			if ($item instanceof Error) {
+				$result[] = $this->getErrorAsArray($item);
 			}
 		}
 
@@ -73,7 +73,7 @@ class ErrorResponse extends DefaultResponse
 		];
 	}
 
-	protected function getApiErrorAsArray(ApiError $error): array
+	protected function getErrorAsArray(Error $error): array
 	{
 		return [
 			'type' => Str::afterLast($error::class, '\\'),

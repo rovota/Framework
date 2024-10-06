@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Http\Response;
 
 use JsonSerializable;
-use Rovota\Framework\Http\ApiError;
+use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
@@ -66,7 +66,7 @@ final class ResponseManager extends ServiceProvider
 		}
 
 		// ErrorResponse
-		if ($content instanceof Throwable || $content instanceof ApiError) {
+		if ($content instanceof Throwable || $content instanceof Error) {
 			return self::createErrorResponse($content, $status);
 		}
 
@@ -95,7 +95,7 @@ final class ResponseManager extends ServiceProvider
 		return new RedirectResponse($location, $status, $this->config);
 	}
 
-	public function createErrorResponse(Throwable|ApiError|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
+	public function createErrorResponse(Throwable|Error|array $error, StatusCode|int $status = StatusCode::Ok): ErrorResponse
 	{
 		return new ErrorResponse($error, $status, $this->config);
 	}
