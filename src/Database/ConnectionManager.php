@@ -46,7 +46,9 @@ final class ConnectionManager extends ServiceProvider
 			}
 		}
 
-		$this->setDefault($file['default']);
+		if (isset($file['default']) && (isset($file['connections']) && count($file['connections']) > 0)) {
+			$this->setDefault($file['default']);
+		}
 	}
 
 	// -----------------
