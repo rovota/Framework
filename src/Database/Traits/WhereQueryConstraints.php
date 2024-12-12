@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Database\Traits;
 
-use Closure;
 use Laminas\Db\Sql\Predicate\Between;
 use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Predicate\In;

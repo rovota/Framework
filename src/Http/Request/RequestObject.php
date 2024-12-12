@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Http\Request;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Rovota\Framework\Facades\Route;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;

@@ -12,7 +12,6 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Update;
-use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;

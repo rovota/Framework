@@ -10,7 +10,6 @@ namespace Rovota\Framework\Database\Query\Extensions;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Insert;
-use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
 
