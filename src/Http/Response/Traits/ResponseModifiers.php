@@ -107,7 +107,7 @@ trait ResponseModifiers
 	/**
 	 * When no extension is specified, one will be determined based on the content provided.
 	 */
-	public function asDownload(string $name = null): static
+	public function asDownload(string|null $name = null): static
 	{
 		$name = $this->getFileNameForContent($name);
 		$value = sprintf('attachment; filename="%s"', $name);
@@ -139,7 +139,7 @@ trait ResponseModifiers
 
 	// -----------------
 
-	protected function getFileNameForContent(string $name = null): string
+	protected function getFileNameForContent(string|null $name = null): string
 	{
 		if ($name === null) {
 			$name = 'download-'.Str::random(15);
