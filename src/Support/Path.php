@@ -53,7 +53,7 @@ final class Path
 	
 	protected static function getFrameworkRootPath(): string
 	{
-		return str_replace('\Support', '', dirname(__FILE__));
+		return str_replace(['\Support', '/Support'], ['', ''], dirname(__FILE__));
 	}
 
 	protected static function getProjectRootPath(): string
