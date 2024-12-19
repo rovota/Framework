@@ -27,7 +27,7 @@
       "ext-ctype": "*",
       "dflydev/dot-access-data": "^3.0",
       "guzzlehttp/guzzle": "^7.9",
-      "league/commonmark": "^2.5",
+      "league/commonmark": "2.6",
       "league/flysystem": "^3.28",
       "league/flysystem-read-only": "^3.28",
       "monolog/monolog": "^3.5",
