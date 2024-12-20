@@ -27,16 +27,16 @@ final class LanguageManager
 
 	// -----------------
 
-	public function __construct(array $config, string $default)
+	public function __construct(LocalizationConfig $config)
 	{
 		$this->languages = new Map();
 
-		foreach ($config['locales'] as $locale) {
+		foreach ($config->locales as $locale) {
 			$this->loadLanguageUsingLocale($locale);
 		}
 
-		$this->locale_default = $default;
-		$this->locale_active = $default;
+		$this->locale_default = $config->default['locale'];
+		$this->locale_active = $config->default['locale'];
 
 		$this->setActiveLocaleUsingRequest();
 	}

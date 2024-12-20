@@ -11,6 +11,7 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
+use Rovota\Framework\Localization\LocalizationConfig;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\RouteInstance;
@@ -495,7 +496,8 @@ final class RequestObject
 
 		$locales = $this->acceptHeaderToArray($this->headers->get('Accept-Language'));
 		if (empty($locales)) {
-			return [LocalizationManager::instance()->getLanguageManager()->getDefaultLocale() => 1.0];
+			$config = LocalizationConfig::load('config/localization');
+			return [$config->default['locale'] => 1.0];
 		}
 
 		$normalized = [];

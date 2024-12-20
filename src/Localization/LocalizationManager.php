@@ -10,13 +10,14 @@ namespace Rovota\Framework\Localization;
 use DateTimeZone;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Support\Path;
 
 /**
  * @internal
  */
 final class LocalizationManager extends ServiceProvider
 {
+
+	protected LocalizationConfig $config;
 
 	protected LanguageManager $language_manager;
 
@@ -27,13 +28,19 @@ final class LocalizationManager extends ServiceProvider
 
 	public function __construct()
 	{
-		$config = require Path::toProjectFile('config/localization.php');
+		$this->config = LocalizationConfig::load('config/localization');
 
-		$this->language_manager = new LanguageManager($config, $config['default']['locale']);
+		$this->language_manager = new LanguageManager($this->config);
 
-		$this->timezone_default = $config['default']['timezone'];
+		$this->timezone_default = $this->config->default['timezone'];
+		$this->setCurrentTimezone($this->config->default['timezone']);
+	}
 
-		$this->setCurrentTimezone($config['default']['timezone']);
+	// -----------------
+
+	public function getConfig(): LocalizationConfig
+	{
+		return $this->config;
 	}
 
 	// -----------------
