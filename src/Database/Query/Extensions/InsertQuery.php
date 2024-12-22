@@ -12,9 +12,13 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Insert;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
+use Rovota\Framework\Support\Traits\Conditionable;
 
 final class InsertQuery extends QueryExtension
 {
+	use Conditionable;
+
+	// -----------------
 
 	protected Insert $insert;
 

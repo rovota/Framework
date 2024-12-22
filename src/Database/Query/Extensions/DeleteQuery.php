@@ -17,10 +17,11 @@ use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
 use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
+use Rovota\Framework\Support\Traits\Conditionable;
 
 final class DeleteQuery extends QueryExtension
 {
-	use WhereQueryConstraints, OrWhereQueryConstraints;
+	use WhereQueryConstraints, OrWhereQueryConstraints, Conditionable;
 
 	// -----------------
 
