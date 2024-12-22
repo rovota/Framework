@@ -90,7 +90,7 @@ abstract class Unit implements Stringable, JsonSerializable
 		return new $unit($value);
 	}
 
-	public function to(string $unit): static
+	public function to(string $unit): self
 	{
 		$base = $this->toBaseUnit();
 
