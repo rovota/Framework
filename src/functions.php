@@ -52,7 +52,7 @@ if (!function_exists('__')) {
 if (!function_exists('now')) {
 	function now(DateTimeZone|string|int|null $timezone = null): Moment
 	{
-		return new Moment(timezone: $timezone);
+		return new Moment('now', $timezone);
 	}
 }
 
