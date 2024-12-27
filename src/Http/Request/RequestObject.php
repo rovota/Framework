@@ -12,7 +12,6 @@ use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Localization\LocalizationConfig;
-use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Routing\RouteInstance;
 use Rovota\Framework\Routing\RouteManager;
