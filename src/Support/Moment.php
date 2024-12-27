@@ -8,12 +8,29 @@
 namespace Rovota\Framework\Support;
 
 use Carbon\Carbon;
+use Carbon\Month;
+use Carbon\WeekDay;
+use DateTimeInterface;
+use DateTimeZone;
+use Rovota\Framework\Localization\LocalizationManager;
+use Rovota\Framework\Support\Traits\MomentFormatters;
 use Rovota\Framework\Support\Traits\MomentModifiers;
 use Rovota\Framework\Support\Traits\MomentValidation;
 
 final class Moment extends Carbon
 {
-	use MomentModifiers, MomentValidation;
+	use MomentModifiers, MomentValidation, MomentFormatters;
+
+	// -----------------
+
+	public function __construct(float|DateTimeInterface|int|string|WeekDay|Month|null $time = null, int|DateTimeZone|string|null $timezone = null)
+	{
+		if (is_numeric($time)) {
+			$time = (int) $time;
+		}
+
+		parent::__construct($time, $timezone);
+	}
 
 	// -----------------
 
@@ -30,11 +47,6 @@ final class Moment extends Carbon
 			$this->setTimezone('local');
 		}
 		return parent::format($format ?? 'Y-m-d H:i:s');
-	}
-
-	public function toEpochString(): string
-	{
-		return $this->format('U');
 	}
 
 	// -----------------
