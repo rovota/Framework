@@ -55,6 +55,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	public function __construct(array $attributes = [])
 	{
 		$this->setDefaultConfig();
+		$this->configuration();
 
 		if ($this->config->manage_timestamps) {
 			$this->casts = array_merge($this->casts, [
@@ -107,6 +108,13 @@ abstract class Model implements ModelInterface, JsonSerializable
 		$instance->eventPopulatedFromResult();
 
 		return $instance;
+	}
+
+	// -----------------
+
+	protected function configuration(): void
+	{
+
 	}
 
 	// -----------------
@@ -275,36 +283,37 @@ abstract class Model implements ModelInterface, JsonSerializable
 					$this->attributes_modified = [];
 
 					$this->eventUpdated();
-					return true;
 				}
 			}
 		} else {
 			$this->attributes = array_merge($this->attributes, $this->attributes_modified);
+
 			foreach ($this->attributes as $attribute => $value) {
-				if (empty($this->attributes[$attribute])) {
+				if ($this->attributes[$attribute] !== null) {
 					unset($this->attributes[$attribute]);
 				}
-				$this->isAllowedAttributeValue($attribute, $value);
 			}
+
 			if (empty($this->attributes) === false) {
 				if (!isset($this->attributes[self::CREATED_COLUMN]) && $this->config->manage_timestamps) {
 					$this->attributes[self::CREATED_COLUMN] = now();
 				}
+
 				if (empty($this->attributes[$this->getPrimaryKey()]) && !$this->config->auto_increment) {
 					throw new TypeError("A primary key must be defined when auto_increment is disabled.");
 				}
+
 				if ($this->getQueryBuilder()->insert()->data($this->attributes)->submit()) {
 					$this->config->is_stored = true;
 					$this->attributes[$this->getPrimaryKey()] = $this->getConnection()->getHandler()->getLastId();
 					$this->attributes_modified = [];
 
 					$this->eventCreated();
-					return true;
 				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	// -----------------
