@@ -9,6 +9,7 @@ namespace Rovota\Framework\Database\Query\Extensions;
 
 use Closure;
 use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Select;
 use Rovota\Framework\Database\Enums\Sort;
@@ -160,6 +161,22 @@ final class SelectQuery extends QueryExtension
 		}
 
 		return $basket;
+	}
+
+	public function count(): mixed
+	{
+		$this->config->model = null;
+		$this->columns(['count' => new Expression('COUNT(*)')]);
+		$results = $this->fetchResult($this->select);
+		$basket = new Basket();
+
+		if ($results->count() > 0) {
+			foreach ($results as $key => $result) {
+				$basket->set($key, $result);
+			}
+		}
+
+		return $basket->sum('count');
 	}
 
 	// -----------------
