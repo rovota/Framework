@@ -41,6 +41,7 @@ final class QueryConfig extends Config
 	{
 		if ($model === null) {
 			$this->remove('model');
+			return;
 		}
 		if (is_string($model)) {
 			$model = new $model();
