@@ -27,6 +27,15 @@ trait MomentModifiers
 		return $this;
 	}
 
+	public function shiftTimezone(DateTimeZone|string $timeZone): static
+	{
+		if ($timeZone === 'local') {
+			$timeZone = LocalizationManager::instance()->getCurrentTimezone();
+		}
+		parent::shiftTimezone($timeZone);
+		return $this;
+	}
+
 	// -----------------
 
 	public function toUtc(): static
