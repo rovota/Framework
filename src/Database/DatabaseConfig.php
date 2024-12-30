@@ -16,7 +16,7 @@ use Rovota\Framework\Support\Config;
 class DatabaseConfig extends Config
 {
 
-	protected function getHeaders(): string
+	protected function getDefault(): string
 	{
 		return $this->string('default', array_key_first($this->array('connections')) ?? '---');
 	}
