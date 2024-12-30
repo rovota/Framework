@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Database\Model\Traits;
 
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
+use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Structures\Basket;
 
 /**
@@ -40,6 +41,19 @@ trait ModelQueryFunctions
 	public function insertMultiple(array $rows): bool
 	{
 		return static::getQueryBuilderFromStaticModel()->insert()->rows($rows)->submit();
+	}
+
+	// -----------------
+
+	public static function update(array $data = []): UpdateQuery
+	{
+		$query = static::getQueryBuilderFromStaticModel()->update();
+
+		if (empty($data) === false) {
+			$query->set($data);
+		}
+
+		return $query;
 	}
 
 	// -----------------
