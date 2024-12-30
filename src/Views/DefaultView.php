@@ -54,7 +54,7 @@ class DefaultView implements Stringable, ViewInterface
 
 	// -----------------
 
-	public static function make(array $variables = []): static
+	public static function make(array $variables = []): ViewInterface|static
 	{
 		$view = ViewManager::instance()->createView(null, static::class);
 
@@ -70,8 +70,8 @@ class DefaultView implements Stringable, ViewInterface
 	protected function getTemplatePath(): string
 	{
 		$file = Str::replace($this->template, '.', '/');
-		$file = Str::finish($file, '.php');
 		$file = Str::start($file, 'resources/templates/');
+		$file = Str::finish($file, '.php');
 
 		return Path::toProjectFile($file);
 	}
