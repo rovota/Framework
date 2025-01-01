@@ -21,7 +21,7 @@ trait MomentValidation
 
 	public function isNight(): bool
 	{
-		return $this->isBetweenTimes('23:00:00', '1:59:59');
+		return $this->isBetweenTimes('00:00:00', '1:59:59');
 	}
 
 	public function isMorning(): bool
