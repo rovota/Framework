@@ -21,6 +21,7 @@ use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Structures\Bucket;
+use Rovota\Framework\Support\Buffer;
 
 /**
  * @internal
@@ -135,7 +136,7 @@ final class Router
 		echo $response;
 
 		if ($this->getRequest()->realMethod() === RequestMethod::Head) {
-			ob_end_clean();
+			Buffer::end();
 		}
 	}
 

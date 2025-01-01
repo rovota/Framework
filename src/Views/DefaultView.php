@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Views;
 
+use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Views\Interfaces\ViewInterface;
@@ -38,7 +39,7 @@ class DefaultView implements Stringable, ViewInterface
 
 	public function __toString(): string
 	{
-		ob_end_clean();
+		Buffer::end();
 
 		$this->prepareForPrinting();
 
@@ -80,13 +81,13 @@ class DefaultView implements Stringable, ViewInterface
 
 	protected function getPrintableContent(): string|null
 	{
-		ob_start();
+		Buffer::start();
 
 		extract($this->config->array('variables'));
 
 		include $this->getTemplatePath();
 
-		return ob_get_clean();
+		return Buffer::retrieveAndErase();
 	}
 
 	protected function prepareForPrinting(): void

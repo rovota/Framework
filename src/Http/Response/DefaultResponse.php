@@ -10,6 +10,7 @@ namespace Rovota\Framework\Http\Response;
 use BackedEnum;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\Traits\ResponseModifiers;
+use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Config;
 use Stringable;
 
@@ -37,7 +38,7 @@ class DefaultResponse implements Stringable
 
 	public function __toString(): string
 	{
-		ob_end_clean();
+		Buffer::end();
 
 		$this->prepareForPrinting();
 

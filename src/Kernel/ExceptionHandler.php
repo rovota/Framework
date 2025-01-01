@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Monolog\Level;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Path;
@@ -50,7 +51,7 @@ final class ExceptionHandler
 		if (self::$debug_enabled) {
 			self::renderThrowableDebugView($throwable);
 		} else {
-			ob_end_clean();
+			Buffer::end();
 			Framework::quit(StatusCode::InternalServerError);
 		}
 	}
@@ -62,7 +63,7 @@ final class ExceptionHandler
 		if (self::$debug_enabled) {
 			self::renderErrorDebugView($number, $message, $file, $line);
 		} else if ($number === E_ERROR) {
-			ob_end_clean();
+			Buffer::end();
 			Framework::quit(StatusCode::InternalServerError);
 		}
 	}
@@ -91,7 +92,7 @@ final class ExceptionHandler
 
 	public static function renderThrowableDebugView(Throwable $throwable): never
 	{
-		ob_clean();
+		Buffer::erase();
 		$request = self::getRequestInfo();
 		$solution = $throwable instanceof ProvidesSolution ? $throwable->solution() : null;
 		$snippet = self::getSnippet($throwable->getFile());
@@ -103,7 +104,7 @@ final class ExceptionHandler
 
 	public static function renderErrorDebugView(int $number, string $message, string $file, int $line): never
 	{
-		ob_clean();
+		Buffer::erase();
 		$request = self::getRequestInfo();
 		$snippet = self::getSnippet($file);
 
