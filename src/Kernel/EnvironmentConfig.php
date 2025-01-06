@@ -17,6 +17,7 @@ use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
+use Rovota\Framework\Mail\MailManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Support\Config;
@@ -51,6 +52,7 @@ class EnvironmentConfig extends Config
 			'cookie' => CookieManager::class,
 			'request' => RequestManager::class,
 			'localize' => LocalizationManager::class,
+			'mail' => MailManager::class,
 			'response' => ResponseManager::class,
 			'views' => ViewManager::class,
 			'middleware' => MiddlewareManager::class,
