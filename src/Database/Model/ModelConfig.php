@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Database\Model;
 
 use Rovota\Framework\Database\ConnectionManager;
+use Rovota\Framework\Facades\DB;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
@@ -21,9 +22,22 @@ use Rovota\Framework\Support\Str;
  * @property bool $auto_increment
  * @property bool $enable_composites
  * @property bool $manage_timestamps
+ *
+ * @property string $query_order_column
  */
 final class ModelConfig extends Config
 {
+
+	protected Model $model;
+
+	// -----------------
+
+	public function attachModelReference(Model $model): void
+	{
+		$this->model = $model;
+	}
+
+	// -----------------
 
 	protected function getTable(): string
 	{
@@ -32,7 +46,7 @@ final class ModelConfig extends Config
 
 	protected function setTable(string $name): void
 	{
-		if (ConnectionManager::instance()->get($this->connection)->getHandler()->hasTable($name)) {
+		if (DB::connection($this->connection)->getHandler()->hasTable($name)) {
 			$this->set('table', $name);
 		}
 	}
@@ -113,9 +127,21 @@ final class ModelConfig extends Config
 
 	// -----------------
 
+	protected function getQueryOrderColumn(): string
+	{
+		return $this->string('query_order_column', $this->model::CREATED_COLUMN);
+	}
+
+	protected function setQueryOrderColumn(string $value): void
+	{
+		$this->set('query_order_column', $value);
+	}
+
+	// -----------------
+
 	protected function getTableNameFromClass(): string
 	{
-		$normalized = $this->text('class_name')->afterLast('\\')->snake();
+		$normalized = $this->text($this->model::class)->afterLast('\\')->snake();
 		$sections = $normalized->explode('_');
 
 		foreach ($sections as $key => $section) {

@@ -94,17 +94,23 @@ final class SelectQuery extends QueryExtension
 	/**
 	 * Requires the presence of a `created` column, unless a different column is specified.
 	 */
-	public function latestFirst(string $column = 'created'): SelectQuery
+	public function latestFirst(string|null $column = null): SelectQuery
 	{
-		return $this->orderBy($column, Sort::Desc);
+		if ($column === null && $this->config->model instanceof ModelInterface) {
+			$column = $this->config->model->getConfig()->query_order_column;
+		}
+		return $this->orderBy($column ?? 'created', Sort::Desc);
 	}
 
 	/**
 	 * Requires the presence of a `created` column, unless a different column is specified.
 	 */
-	public function oldestFirst(string $column = 'created'): SelectQuery
+	public function oldestFirst(string|null $column = null): SelectQuery
 	{
-		return $this->orderBy($column);
+		if ($column === null && $this->config->model instanceof ModelInterface) {
+			$column = $this->config->model->getConfig()->query_order_column;
+		}
+		return $this->orderBy($column ?? 'created');
 	}
 
 	// -----------------
@@ -163,7 +169,7 @@ final class SelectQuery extends QueryExtension
 		return $basket;
 	}
 
-	public function count(): mixed
+	public function count(): int|float
 	{
 		$this->config->model = null;
 		$this->columns(['count' => new Expression('COUNT(*)')]);

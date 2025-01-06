@@ -289,7 +289,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 			$this->attributes = array_merge($this->attributes, $this->attributes_modified);
 
 			foreach ($this->attributes as $attribute => $value) {
-				if ($this->attributes[$attribute] !== null) {
+				if ($this->attributes[$attribute] === null) {
 					unset($this->attributes[$attribute]);
 				}
 			}
@@ -623,7 +623,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected function setDefaultConfig(): void
 	{
 		$this->config = new ModelConfig();
-		$this->config->set('class_name', static::class);
+		$this->config->attachModelReference($this);
 	}
 
 	// -----------------
@@ -634,7 +634,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected static function newInstance(array $attributes = [], bool $stored = false): static
 	{
 		$instance = new static($attributes);
-		$instance->getConfig()->is_stored = $stored;
+		$instance->config->is_stored = $stored;
 
 		return $instance;
 	}

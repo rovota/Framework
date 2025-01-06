@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Database\Model\Traits;
 
+use Rovota\Framework\Database\Enums\Sort;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Structures\Basket;
@@ -45,15 +46,36 @@ trait ModelQueryFunctions
 
 	// -----------------
 
-	public static function update(array $data = []): UpdateQuery
+	public static function orderBy(string|array $column, Sort $order = Sort::Asc): SelectQuery
 	{
-		$query = static::getQueryBuilderFromStaticModel()->update();
+		return static::getQueryBuilderFromStaticModel()->select()->orderBy($column, $order);
+	}
 
-		if (empty($data) === false) {
-			$query->set($data);
-		}
+	public static function latestFirst(string|null $column = null): SelectQuery
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->latestFirst($column);
+	}
 
-		return $query;
+	public static function oldestFirst(string|null $column = null): SelectQuery
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->oldestFirst($column);
+	}
+
+	// -----------------
+
+	public function limit(int $limit): SelectQuery
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->limit($limit);
+	}
+
+	public function offset(int $offset = 0): SelectQuery
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->offset($offset);
+	}
+
+	public function page(int $number, int $size = 10): SelectQuery
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->page($number, $size);
 	}
 
 	// -----------------
@@ -71,6 +93,24 @@ trait ModelQueryFunctions
 	public static function all(): Basket
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->get();
+	}
+
+	public static function count(): float|int
+	{
+		return static::getQueryBuilderFromStaticModel()->select()->count();
+	}
+
+	// -----------------
+
+	public static function update(array $data = []): UpdateQuery
+	{
+		$query = static::getQueryBuilderFromStaticModel()->update();
+
+		if (empty($data) === false) {
+			$query->set($data);
+		}
+
+		return $query;
 	}
 
 }
