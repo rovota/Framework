@@ -21,22 +21,22 @@ trait MomentValidation
 
 	public function isNight(): bool
 	{
-		return $this->isBetweenTimes('00:00:00', '1:59:59');
+		return $this->isBetweenTimes('21:00:00', '5:00:00');
 	}
 
 	public function isMorning(): bool
 	{
-		return $this->isBetweenTimes('2:00:00', '11:59:59');
+		return $this->isBetweenTimes('5:00:00', '12:00:00');
 	}
 
 	public function isAfternoon(): bool
 	{
-		return $this->isBetweenTimes('12:00:00', '17:00:59');
+		return $this->isBetweenTimes('12:00:00', '17:00:00');
 	}
 
 	public function isEvening(): bool
 	{
-		return $this->isBetweenTimes('17:01:00', '22:59:59');
+		return $this->isBetweenTimes('17:00:00', '21:00:00');
 	}
 
 	// -----------------
