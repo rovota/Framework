@@ -7,11 +7,12 @@
 
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Support\Buffer;
 
 // -----------------
 
 // Start buffering output
-ob_start();
+Buffer::start();
 
 // -----------------
 
