@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Http\Request;
 
+use Closure;
 use Rovota\Framework\Http\Cookie\CookieManager;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Response\ResponseManager;
@@ -35,6 +36,13 @@ class RequestCookies extends RequestData
 		}
 
 		parent::__construct($items);
+	}
+
+	// -----------------
+
+	public function get(mixed $key, mixed $default = null): CookieObject|null
+	{
+		return $this->offsetGet($key) ?? ($default instanceof Closure ? $default() : $default);
 	}
 
 	// -----------------
