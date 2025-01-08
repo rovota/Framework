@@ -10,6 +10,7 @@ namespace Rovota\Framework\Caching\Adapters;
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Config;
+use Rovota\Framework\Support\Path;
 
 class SessionAdapter implements CacheAdapterInterface
 {
@@ -18,15 +19,12 @@ class SessionAdapter implements CacheAdapterInterface
 
 	protected string|null $scope = null;
 
-	protected bool $session_loaded;
-
 	protected string $cookie_name;
 
 	// -----------------
 
 	public function __construct(Config $parameters)
 	{
-		$this->session_loaded = false;
 		$this->cookie_name = $parameters->string('cookie_name', 'session');
 
 		$this->scope = $parameters->get('scope');
@@ -36,7 +34,7 @@ class SessionAdapter implements CacheAdapterInterface
 
 	public function all(): array
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		return $_SESSION;
 	}
 
@@ -44,7 +42,7 @@ class SessionAdapter implements CacheAdapterInterface
 
 	public function has(string $key): bool
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		return array_key_exists($this->getScopedKey($key), $_SESSION);
 	}
 
@@ -57,13 +55,13 @@ class SessionAdapter implements CacheAdapterInterface
 
 	public function get(string $key): mixed
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		return $_SESSION[$this->getScopedKey($key)] ?? null;
 	}
 
 	public function remove(string $key): void
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		$this->last_modified = $key;
 		unset($_SESSION[$this->getScopedKey($key)]);
 	}
@@ -72,14 +70,14 @@ class SessionAdapter implements CacheAdapterInterface
 
 	public function increment(string $key, int $step = 1): void
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		$this->last_modified = $key;
 		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) + max($step, 0);
 	}
 
 	public function decrement(string $key, int $step = 1): void
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		$this->last_modified = $key;
 		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) - max($step, 0);
 	}
@@ -88,7 +86,7 @@ class SessionAdapter implements CacheAdapterInterface
 
 	public function flush(): void
 	{
-		$this->initialize();
+		$this->initIfCookiePresent();
 		$_SESSION = [];
 	}
 
@@ -109,9 +107,21 @@ class SessionAdapter implements CacheAdapterInterface
 		return sprintf('%s:%s', $this->scope, $key);
 	}
 
+	// -----------------
+
+	protected function initIfCookiePresent(): void
+	{
+		if (isset($_COOKIE['__Secure-'.$this->cookie_name])) {
+			$this->initialize();
+		}
+	}
+
 	protected function initialize(): void
 	{
-		if ($this->session_loaded === false) {
+		if (session_status() !== PHP_SESSION_ACTIVE) {
+
+			session_save_path(Path::toProjectFile('/storage/runtime/sessions'));
+
 			session_set_cookie_params([
 				'lifetime' => 0,
 				'path' => '/',
@@ -122,8 +132,11 @@ class SessionAdapter implements CacheAdapterInterface
 			]);
 
 			session_name('__Secure-'.$this->cookie_name);
-			if (session_start()) {
-				$this->session_loaded = true;
+
+			$success = session_start();
+
+			if ($success === false) {
+				session_gc();
 			}
 		}
 	}
