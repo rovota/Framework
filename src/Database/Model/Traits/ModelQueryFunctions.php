@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Database\Model\Traits;
 
 use Rovota\Framework\Database\Enums\Sort;
+use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Structures\Basket;
@@ -30,16 +31,33 @@ use Rovota\Framework\Structures\Basket;
  * @method static SelectQuery whereNotIn(string $column, array $values)
  * @method static SelectQuery whereBetween(string $column, mixed $start, mixed $end)
  * @method static SelectQuery whereNotBetween(string $column, mixed $start, mixed $end)
+ * @method static SelectQuery whereListHas(string $column, mixed $value)
  */
 trait ModelQueryFunctions
 {
 
-	public function insert(array $data): bool
+	public static function delete(mixed $identifier = null, string|null $column = null): DeleteQuery|bool
+	{
+		$query = static::getQueryBuilderFromStaticModel()->delete();
+
+		if ($identifier === null) {
+			return $query;
+		}
+
+		$identifiers = convert_to_array($identifier);
+		$column = $column ?? new static()->getPrimaryKey();
+
+		return $query->whereIn($column, $identifiers)->submit();
+	}
+
+	// -----------------
+
+	public static function insert(array $data): bool
 	{
 		return static::getQueryBuilderFromStaticModel()->insert()->data($data)->submit();
 	}
 
-	public function insertMultiple(array $rows): bool
+	public static function insertMultiple(array $rows): bool
 	{
 		return static::getQueryBuilderFromStaticModel()->insert()->rows($rows)->submit();
 	}
@@ -63,17 +81,17 @@ trait ModelQueryFunctions
 
 	// -----------------
 
-	public function limit(int $limit): SelectQuery
+	public static function limit(int $limit): SelectQuery
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->limit($limit);
 	}
 
-	public function offset(int $offset = 0): SelectQuery
+	public static function offset(int $offset = 0): SelectQuery
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->offset($offset);
 	}
 
-	public function page(int $number, int $size = 10): SelectQuery
+	public static function page(int $number, int $size = 10): SelectQuery
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->page($number, $size);
 	}

@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Database\Traits;
 
 use Closure;
+use Laminas\Db\Sql\Predicate\Expression;
 use Rovota\Framework\Database\Enums\ConstraintMode;
 
 trait OrWhereQueryConstraints
@@ -56,14 +57,14 @@ trait OrWhereQueryConstraints
 		return $this->whereLessThan($column, $value, ConstraintMode::Or);
 	}
 
-	public function orWhereBefore(string $column, mixed $value): static
-	{
-		return $this->orWhereLessThan($column, $value);
-	}
-
 	public function orWhereGreaterThan(string $column, mixed $value): static
 	{
 		return $this->whereGreaterThan($column, $value, ConstraintMode::Or);
+	}
+
+	public function orWhereBefore(string $column, mixed $value): static
+	{
+		return $this->orWhereLessThan($column, $value);
 	}
 
 	public function orWhereAfter(string $column, mixed $value): static
@@ -124,6 +125,13 @@ trait OrWhereQueryConstraints
 	public function orWhereNotBetween(string $column, mixed $start, mixed $end): static
 	{
 		return $this->whereNotBetween($column, $start, $end, ConstraintMode::Or);
+	}
+
+	// -----------------
+
+	public function orWhereListHas(string $column, mixed $value): static
+	{
+		return $this->whereListHas($column, $value, ConstraintMode::Or);
 	}
 
 }

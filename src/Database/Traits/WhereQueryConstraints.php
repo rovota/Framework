@@ -88,11 +88,6 @@ trait WhereQueryConstraints
 		return $this;
 	}
 
-	public function whereBefore(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
-	{
-		return $this->whereLessThan($column, $value, $mode);
-	}
-
 	public function whereGreaterThan(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		$value = $this->normalizeValueForColumn($value, $column);
@@ -102,6 +97,11 @@ trait WhereQueryConstraints
 		);
 
 		return $this;
+	}
+
+	public function whereBefore(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		return $this->whereLessThan($column, $value, $mode);
 	}
 
 	public function whereAfter(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
@@ -225,6 +225,19 @@ trait WhereQueryConstraints
 
 		$this->getWherePredicate()->addPredicate(
 			new NotBetween($column, $start, $end), $mode->realType()
+		);
+
+		return $this;
+	}
+
+	// -----------------
+
+	public function whereListHas(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		$value = $this->normalizeValueForColumn($value, $column);
+
+		$this->getWherePredicate()->addPredicate(
+			new Expression(sprintf('FIND_IN_SET(?, %s)', trim($column)), [$value]), $mode->realType()
 		);
 
 		return $this;

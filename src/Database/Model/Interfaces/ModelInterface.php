@@ -54,7 +54,7 @@ interface ModelInterface
 	/**
 	 * This method is only available when the specified `DELETED_COLUMN` is present.
 	 */
-	public function isDeleted(): bool;
+	public function isTrashed(): bool;
 
 	public function isRestricted(string $attribute): bool;
 
@@ -90,7 +90,7 @@ interface ModelInterface
 
 	// -----------------
 
-	public function delete(): bool;
+	public function destroy(): bool;
 
 	/**
 	 * This method is only available when the specified `TRASHED_COLUMN` is present.

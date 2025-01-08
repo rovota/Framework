@@ -170,7 +170,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 		return $this->config->is_stored;
 	}
 
-	public function isDeleted(): bool
+	public function isTrashed(): bool
 	{
 		return $this->getAttribute(static::TRASHED_COLUMN) !== null;
 	}
@@ -318,12 +318,12 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	// -----------------
 
-	public function delete(): bool
+	public function destroy(): bool
 	{
 		$result = $this->getDeleteQuery()->submit();
 
 		if ($result) {
-			$this->cleanAfterDeleted();
+			$this->cleanAfterDestroyed();
 			return true;
 		}
 
@@ -681,7 +681,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	/**
 	 * @internal
 	 */
-	protected function cleanAfterDeleted(): void
+	protected function cleanAfterDestroyed(): void
 	{
 		$this->config->is_stored = false;
 	}
