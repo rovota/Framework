@@ -10,7 +10,7 @@ namespace Rovota\Framework\Mail\Traits;
 use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\ViewManager;
 
-trait Content
+trait MailableContent
 {
 
 	protected mixed $content = null;

@@ -9,11 +9,12 @@ namespace Rovota\Framework\Mail;
 
 use Rovota\Framework\Mail\Enums\Priority;
 use Rovota\Framework\Mail\Interfaces\MailerInterface;
-use Rovota\Framework\Mail\Traits\Content;
+use Rovota\Framework\Mail\Traits\MailableContent;
+use Rovota\Framework\Mail\Traits\MailableEvents;
 
 class Mailable
 {
-	use Content;
+	use MailableContent, MailableEvents;
 
 	// -----------------
 
@@ -164,7 +165,12 @@ class Mailable
 			$this->html($content);
 		}
 
-		return $this->mailer->getHandler()->send();
+		if ($this->mailer->getHandler()->send()) {
+			$this->eventMailableDelivered();
+			return true;
+		}
+
+		return false;
 	}
 
 }
