@@ -57,6 +57,10 @@ final class Framework
 
 	public static function shutdown(): void
 	{
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			session_gc();
+		}
+
 		$error = error_get_last();
 
 		if ($error !== null && $error['type'] === E_ERROR) {

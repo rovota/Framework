@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Caching\Adapters;
 
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
+use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Path;
@@ -35,7 +36,7 @@ class SessionAdapter implements CacheAdapterInterface
 	public function all(): array
 	{
 		$this->initIfCookiePresent();
-		return $_SESSION;
+		return $_SESSION ?? [];
 	}
 
 	// -----------------
@@ -43,14 +44,16 @@ class SessionAdapter implements CacheAdapterInterface
 	public function has(string $key): bool
 	{
 		$this->initIfCookiePresent();
-		return array_key_exists($this->getScopedKey($key), $_SESSION);
+		return array_key_exists($this->getScopedKey($key), $_SESSION ?? []);
 	}
 
 	public function set(string $key, mixed $value, int $retention): void
 	{
 		$this->initialize();
 		$this->last_modified = $key;
-		$_SESSION[$this->getScopedKey($key)] = $value;
+		if (isset($_SESSION)) {
+			$_SESSION[$this->getScopedKey($key)] = $value;
+		}
 	}
 
 	public function get(string $key): mixed
@@ -72,14 +75,18 @@ class SessionAdapter implements CacheAdapterInterface
 	{
 		$this->initIfCookiePresent();
 		$this->last_modified = $key;
-		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) + max($step, 0);
+		if (isset($_SESSION)) {
+			$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) + max($step, 0);
+		}
 	}
 
 	public function decrement(string $key, int $step = 1): void
 	{
 		$this->initIfCookiePresent();
 		$this->last_modified = $key;
-		$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) - max($step, 0);
+		if (isset($_SESSION)) {
+			$_SESSION[$this->getScopedKey($key)] = ($_SESSION[$this->getScopedKey($key)] ?? 0) - max($step, 0);
+		}
 	}
 
 	// -----------------
@@ -87,7 +94,9 @@ class SessionAdapter implements CacheAdapterInterface
 	public function flush(): void
 	{
 		$this->initIfCookiePresent();
-		$_SESSION = [];
+		if (isset($_SESSION)) {
+			$_SESSION = [];
+		}
 	}
 
 	// -----------------
@@ -131,14 +140,39 @@ class SessionAdapter implements CacheAdapterInterface
 				'samesite' => 'Lax',
 			]);
 
-			session_name('__Secure-'.$this->cookie_name);
+			if ($this->createSessionDirectoryIfMissing()) {
+				set_error_handler(function(int $number, string $message, string $file, int $line) {
+					SessionAdapter::handleSessionError($number, $message, $file, $line);
+				});
 
-			$success = session_start();
+				session_name('__Secure-'.$this->cookie_name);
+				session_start();
 
-			if ($success === false) {
-				session_gc();
+				restore_error_handler();
 			}
 		}
+	}
+
+	// -----------------
+
+	protected function createSessionDirectoryIfMissing(): bool
+	{
+		$directory = Path::toProjectFile('storage/runtime/sessions');
+
+		if (!file_exists($directory)) {
+			return mkdir($directory, 0777, true);
+		}
+
+		return false;
+	}
+
+	// -----------------
+
+	public static function handleSessionError(int $number, string $message, string $file, int $line): void
+	{
+		ExceptionHandler::logError($number, $message, $file, $line);
+		session_regenerate_id(true);
+		$_SESSION = [];
 	}
 
 }
