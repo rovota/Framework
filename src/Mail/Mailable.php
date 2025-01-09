@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Mail;
 
 use Rovota\Framework\Mail\Enums\Priority;
+use Rovota\Framework\Mail\Events\MailableDelivered;
 use Rovota\Framework\Mail\Interfaces\MailerInterface;
 use Rovota\Framework\Mail\Traits\MailableContent;
 use Rovota\Framework\Mail\Traits\MailableEvents;
@@ -166,7 +167,7 @@ class Mailable
 		}
 
 		if ($this->mailer->getHandler()->send()) {
-			$this->eventMailableDelivered();
+			MailableDelivered::dispatch($this);
 			return true;
 		}
 
