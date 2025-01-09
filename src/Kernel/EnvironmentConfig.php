@@ -15,6 +15,7 @@ use Rovota\Framework\Http\Cookie\CookieManager;
 use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\ResponseManager;
+use Rovota\Framework\Kernel\Events\EventManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Mail\MailManager;
@@ -45,6 +46,7 @@ class EnvironmentConfig extends Config
 			'registry' => RegistryManager::class,
 			'logging' => LoggingManager::class,
 			'cache' => CacheManager::class,
+			'events' => EventManager::class,
 			'database' => ConnectionManager::class,
 			'client' => ClientManager::class,
 			'encryption' => EncryptionManager::class,
