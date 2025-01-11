@@ -609,7 +609,7 @@ final class Str
 
 	public static function escape(string|null $string, string $encoding = 'UTF-8'): string|null
 	{
-		return $string === null ? null : htmlentities($string, encoding: $encoding);
+		return $string === null ? null : htmlspecialchars($string, encoding: $encoding);
 	}
 
 	public static function random(int $length): string
