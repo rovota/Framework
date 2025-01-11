@@ -509,16 +509,20 @@ abstract class Model implements ModelInterface, JsonSerializable
 				}
 			}
 
-			if (isset($this->attributes[$name]) === false) {
+			if ($this->isStored() === false) {
 				$this->attributes[$name] = $value;
-			}
+			} else {
+				if (is_scalar($value) && $this->attributes[$name] !== $value) {
+					$this->attributes_modified[$name] = $value;
+				}
 
-			if (is_scalar($value) && $this->attributes[$name] !== $value) {
-				$this->attributes_modified[$name] = $value;
-			}
+				if ($value instanceof BackedEnum && ($value->value !== $this->attributes[$name]?->value)) {
+					$this->attributes_modified[$name] = $value;
+				}
 
-			if ($value instanceof BackedEnum && $value !== $this->attributes[$name]) {
-				$this->attributes_modified[$name] = $value;
+				if ($value === null && $this->attributes[$name] !== null) {
+					$this->attributes_modified[$name] = $value;
+				}
 			}
 		}
 	}
