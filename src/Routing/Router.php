@@ -177,6 +177,7 @@ final class Router
 		} else {
 			$response = $route->getTarget();
 		}
+
 		return ($response instanceof DefaultResponse) ? $response : response($response);
 	}
 
