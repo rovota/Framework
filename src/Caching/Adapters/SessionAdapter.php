@@ -163,7 +163,7 @@ class SessionAdapter implements CacheAdapterInterface
 			return mkdir($directory, 0777, true);
 		}
 
-		return false;
+		return true;
 	}
 
 	// -----------------
