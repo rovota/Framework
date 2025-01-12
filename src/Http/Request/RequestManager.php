@@ -35,10 +35,12 @@ final class RequestManager extends ServiceProvider
 		]);
 		
 		$continue = $this->current->query->string('continue');
-		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if (mb_strlen($continue) > 0 && $store instanceof CacheInterface) {
-			$store->set('location.next', $continue);
+		if (mb_strlen($continue) > 0) {
+			$store = CacheManager::instance()->getWithDriver(Driver::Session);
+			if ($store instanceof CacheInterface) {
+				$store->set('location.next', $continue);
+			}
 		}
 	}
 
