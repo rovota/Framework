@@ -38,7 +38,8 @@
       "doctrine/inflector": "^2.0",
       "nesbot/carbon": "^3.8",
       "jaybizzle/crawler-detect": "^1.2",
-      "laminas/laminas-db": "^2.20"
+      "laminas/laminas-db": "^2.20",
+      "myclabs/deep-copy": "^1.0"
    },
 
    "require-dev": {
