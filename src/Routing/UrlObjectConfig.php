@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Routing;
 
 use BackedEnum;
-use Rovota\Framework\Http\Request\RequestManager;
+use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
@@ -54,7 +54,7 @@ class UrlObjectConfig extends Config
 		}
 
 		if ($this->get('domain') === null) {
-			$this->setDomain(RequestManager::instance()->getCurrent()->targetHost());
+			$this->setDomain(Framework::environment()->server()->get('HTTP_HOST'));
 		}
 
 		$subdomain = trim($subdomain);
@@ -76,7 +76,7 @@ class UrlObjectConfig extends Config
 
 	protected function getDomain(): string
 	{
-		return $this->string('domain', RequestManager::instance()->getCurrent()->targetHost());
+		return $this->string('domain', Framework::environment()->server()->get('HTTP_HOST'));
 	}
 
 	protected function setDomain(string $domain): void
@@ -84,7 +84,7 @@ class UrlObjectConfig extends Config
 		$domain = trim($domain);
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->setDomain(RequestManager::instance()->getCurrent()->targetHost());
+			$this->setDomain(Framework::environment()->server()->get('HTTP_HOST'));
 			return;
 		}
 
@@ -98,7 +98,7 @@ class UrlObjectConfig extends Config
 
 	protected function getPort(): int
 	{
-		return $this->int('port', RequestManager::instance()->getCurrent()->port());
+		return $this->int('port', (int) Framework::environment()->server()->get('SERVER_PORT'));
 	}
 
 	// -----------------
