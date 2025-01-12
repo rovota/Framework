@@ -100,7 +100,7 @@ final class UrlObject implements Stringable, JsonSerializable
 
 	public function copy(): UrlObject
 	{
-		return clone $this;
+		return deep_clone($this);
 	}
 
 	// -----------------

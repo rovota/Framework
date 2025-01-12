@@ -58,6 +58,12 @@ trait UrlModifiers
 		return $this;
 	}
 
+	public function withParameter(string $name, mixed $value): static
+	{
+		$this->config->set('parameters.'.$name, $value);
+		return $this;
+	}
+
 	public function withParameters(array $parameters): static
 	{
 		$this->config->parameters = $parameters;
