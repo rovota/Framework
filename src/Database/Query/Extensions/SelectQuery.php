@@ -169,7 +169,7 @@ final class SelectQuery extends QueryExtension
 		return $basket;
 	}
 
-	public function count(): int|float
+	public function count(): int
 	{
 		$this->config->model = null;
 		$this->columns(['count' => new Expression('COUNT(*)')]);
@@ -182,7 +182,7 @@ final class SelectQuery extends QueryExtension
 			}
 		}
 
-		return $basket->sum('count');
+		return (int) $basket->sum('count');
 	}
 
 	// -----------------
