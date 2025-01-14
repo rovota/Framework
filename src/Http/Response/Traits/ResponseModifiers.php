@@ -11,6 +11,8 @@ use JsonSerializable;
 use Laminas\Db\Metadata\Object\ViewObject;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 
 trait ResponseModifiers
@@ -99,6 +101,21 @@ trait ResponseModifiers
 	public function setContentDisposition(string $value): static
 	{
 		$this->withHeader('Content-Disposition', trim($value));
+
+		return $this;
+	}
+
+	// -----------------
+
+	public function clearSiteData(string|array|null $value = null): static
+	{
+		$values = convert_to_array($value ?? '*');
+
+		foreach ($values as $key => $item) {
+			$values[$key] = '"'.trim($item).'"';
+		}
+
+		$this->withHeader('Clear-Site-Data', Basket::from($values)->join(', '));
 
 		return $this;
 	}
