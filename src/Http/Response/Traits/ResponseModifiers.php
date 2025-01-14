@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Http\Response\Traits;
 
 use JsonSerializable;
+use Laminas\Db\Metadata\Object\ViewObject;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Support\Str;
@@ -150,7 +151,7 @@ trait ResponseModifiers
 		}
 
 		return match(true) {
-//			$this->content instanceof View => sprintf('%s.%s', $name, 'html'),
+			$this->content instanceof ViewObject => sprintf('%s.%s', $name, 'html'),
 //			$this->content instanceof FileInterface => sprintf('%s.%s', $name, $this->content->properties()->extension),
 			$this->content instanceof JsonSerializable, is_array($this->content) => sprintf('%s.%s', $name, 'json'),
 			default => sprintf('%s.%s', $name, 'txt')
