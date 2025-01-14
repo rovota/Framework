@@ -13,6 +13,10 @@ use Rovota\Framework\Facades\Language;
 final class Number
 {
 
+	protected static string|null $currency = null;
+
+	// -----------------
+
 	protected function __construct()
 	{
 	}
@@ -29,12 +33,17 @@ final class Number
 
 	// -----------------
 
+	public static function setCurrency(string $value): void
+	{
+		self::$currency = $value;
+	}
+
 	public static function currency(int|float $amount, string|null $in = null, int $precision = 2, string|null $locale = null): string
 	{
 		$formatter = NumberFormatter::create(self::getLocale($locale), NumberFormatter::CURRENCY);
 		$formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, $precision);
 
-		return $formatter->formatCurrency($amount, $in ?? $formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL));
+		return $formatter->formatCurrency($amount, $in ?? self::$currency ?? $formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL));
 	}
 
 	public static function percentage(int|float $number, int $precision = 0, string|null $locale = null): string
