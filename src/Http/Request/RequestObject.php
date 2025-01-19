@@ -338,7 +338,7 @@ final class RequestObject
 	public function locale(): string
 	{
 		$accepts = $this->getAcceptableLocales();
-		return array_key_first($accepts);
+		return array_key_first($accepts) ?? 'en_US';
 	}
 
 	// -----------------
