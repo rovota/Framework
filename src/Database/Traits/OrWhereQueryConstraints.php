@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Database\Traits;
 
 use Closure;
-use Laminas\Db\Sql\Predicate\Expression;
 use Rovota\Framework\Database\Enums\ConstraintMode;
 
 trait OrWhereQueryConstraints

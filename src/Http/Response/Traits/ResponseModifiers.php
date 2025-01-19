@@ -12,7 +12,6 @@ use Laminas\Db\Metadata\Object\ViewObject;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Structures\Basket;
-use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 
 trait ResponseModifiers

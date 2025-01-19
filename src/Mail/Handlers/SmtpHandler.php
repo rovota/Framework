@@ -11,7 +11,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Mail\Enums\Priority;
 use Rovota\Framework\Mail\Interfaces\MailHandlerInterface;
-use Rovota\Framework\Mail\MailManager;
 use Rovota\Framework\Support\Config;
 use Throwable;
 

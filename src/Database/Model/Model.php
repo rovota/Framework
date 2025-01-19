@@ -26,7 +26,6 @@ use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
-use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Conditionable;
 use Rovota\Framework\Support\Traits\Macroable;
 use Rovota\Framework\Support\Traits\MagicMethods;
