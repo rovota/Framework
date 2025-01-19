@@ -122,24 +122,4 @@ interface ModelInterface
 
 	public function castToRaw(string $attribute, mixed $value): mixed;
 
-	// -----------------
-
-	public function eventPopulated(): void;
-
-	public function eventPopulatedFromResult(): void;
-
-	public function eventReloaded(): void;
-
-	public function eventUpdated(): void;
-
-	public function eventCreated(): void;
-
-	public function eventTrashed(): void;
-
-	public function eventRecovered(): void;
-
-	public function eventReverted(): void;
-
-	public function eventRevertedAttribute(string $attribute): void;
-
 }

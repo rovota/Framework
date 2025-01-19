@@ -11,6 +11,13 @@ use BackedEnum;
 use JsonSerializable;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\ConnectionManager;
+use Rovota\Framework\Database\Events\ModelCreated;
+use Rovota\Framework\Database\Events\ModelPopulated;
+use Rovota\Framework\Database\Events\ModelPopulatedFromResult;
+use Rovota\Framework\Database\Events\ModelReloaded;
+use Rovota\Framework\Database\Events\ModelReverted;
+use Rovota\Framework\Database\Events\ModelRevertedAttribute;
+use Rovota\Framework\Database\Events\ModelUpdated;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Model\Traits\ModelQueryFunctions;
@@ -67,7 +74,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 		$this->setAttributes($attributes);
 
-		$this->eventPopulated();
+		ModelPopulated::dispatch($this);
+		if (method_exists($this, 'finishAfterLoading')) {
+			$this->finishAfterLoading();
+		}
 	}
 
 	// -----------------
@@ -105,7 +115,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 			$instance->setRawAttribute($attribute, $value);
 		}
 
-		$instance->eventPopulatedFromResult();
+		ModelPopulatedFromResult::dispatch($instance);
+		if (method_exists($instance, 'finishAfterLoadingFromResult')) {
+			$instance->finishAfterLoadingFromResult();
+		}
 
 		return $instance;
 	}
@@ -249,7 +262,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 		foreach ($new->original() as $name => $value) {
 			$this->attributes[$name] = $value;
 		}
-		$this->eventReloaded();
+		ModelReloaded::dispatch($this);
+		if (method_exists($this, 'finishAfterReloading')) {
+			$this->finishAfterReloading();
+		}
 	}
 
 	public function revert(string|array|null $attribute = null): void
@@ -261,10 +277,16 @@ abstract class Model implements ModelInterface, JsonSerializable
 		} else {
 			if ($attribute !== null) {
 				unset($this->attributes_modified[$attribute]);
-				$this->eventRevertedAttribute($attribute);
+				ModelRevertedAttribute::dispatch($this, $attribute);
+				if (method_exists($this, 'finishAfterRevertingAttribute')) {
+					$this->finishAfterRevertingAttribute($attribute);
+				}
 			} else {
 				$this->attributes_modified = [];
-				$this->eventReverted();
+				ModelReverted::dispatch($this);
+				if (method_exists($this, 'finishAfterReverting')) {
+					$this->finishAfterReverting();
+				}
 			}
 		}
 	}
@@ -282,7 +304,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 					$this->attributes = array_merge($this->attributes, $this->attributes_modified);
 					$this->attributes_modified = [];
 
-					$this->eventUpdated();
+					ModelUpdated::dispatch($this);
+					if (method_exists($this, 'finishAfterUpdating')) {
+						$this->finishAfterUpdating();
+					}
 				}
 			}
 		} else {
@@ -308,7 +333,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 					$this->attributes[$this->getPrimaryKey()] = $this->getConnection()->getHandler()->getLastId();
 					$this->attributes_modified = [];
 
-					$this->eventCreated();
+					ModelCreated::dispatch($this);
+					if (method_exists($this, 'finishAfterSaving')) {
+						$this->finishAfterSaving();
+					}
 				}
 			}
 		}
@@ -445,44 +473,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 			return $value;
 		}
 		return CastingManager::instance()->castToRaw($value, $this->casts[$attribute]);
-	}
-
-	// -----------------
-
-	public function eventPopulated(): void
-	{
-	}
-
-	public function eventPopulatedFromResult(): void
-	{
-	}
-
-	public function eventReloaded(): void
-	{
-	}
-
-	public function eventUpdated(): void
-	{
-	}
-
-	public function eventCreated(): void
-	{
-	}
-
-	public function eventTrashed(): void
-	{
-	}
-
-	public function eventRecovered(): void
-	{
-	}
-
-	public function eventReverted(): void
-	{
-	}
-
-	public function eventRevertedAttribute(string $attribute): void
-	{
 	}
 
 	// -----------------
