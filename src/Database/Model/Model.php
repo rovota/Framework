@@ -491,14 +491,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected function setAttribute(string $name, mixed $value): void
 	{
 		if ($this->isAllowedAttributeValue($name, $value)) {
-			if ($this->config->enable_composites) {
-				$accessor = sprintf('set%sAttribute', Str::pascal($name));
-				if (method_exists($this, $accessor)) {
-					$this->{$accessor}($value);
-					return;
-				}
-			}
-
 			if ($this->isStored() === false) {
 				$this->attributes[$name] = $value;
 			} else {
@@ -534,16 +526,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getAttribute(string $name): mixed
 	{
-		$value = $this->attributes_modified[$name] ?? $this->attributes[$name] ?? null;
-
-		if ($this->config->enable_composites) {
-			$accessor = sprintf('get%sAttribute', Str::pascal($name));
-			if (method_exists($this, $accessor)) {
-				return $this->{$accessor}();
-			}
-		}
-
-		return $value;
+		return $this->attributes_modified[$name] ?? $this->attributes[$name] ?? null;
 	}
 
 	/**

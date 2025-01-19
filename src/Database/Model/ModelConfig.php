@@ -20,7 +20,6 @@ use Rovota\Framework\Support\Str;
  *
  * @property bool $is_stored
  * @property bool $auto_increment
- * @property bool $enable_composites
  * @property bool $manage_timestamps
  *
  * @property string $query_order_column
@@ -99,18 +98,6 @@ final class ModelConfig extends Config
 	protected function setAutoIncrement(bool $value): void
 	{
 		$this->set('auto_increment', $value);
-	}
-
-	// -----------------
-
-	protected function getEnableComposites(): bool
-	{
-		return $this->bool('enable_composites', true);
-	}
-
-	protected function setEnableComposites(bool $value): void
-	{
-		$this->set('enable_composites', $value);
 	}
 
 	// -----------------
