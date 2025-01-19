@@ -250,7 +250,8 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	public function fresh(): static|null
 	{
-		return $this->getQueryBuilder()->select()->find($this->getId(), $this->getPrimaryKey());
+		$result = $this->getQueryBuilder()->select()->find($this->getId(), $this->getPrimaryKey());
+		return $result instanceof static ? $result : null;
 	}
 
 	public function reload(): void
