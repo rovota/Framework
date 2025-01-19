@@ -109,12 +109,7 @@ class Basket extends Bucket
 	 */
 	public function every(callable $callback): bool
 	{
-		foreach ($this->toArray() as $key => $value) {
-			if ($callback($value, $key) === false) {
-				return false;
-			}
-		}
-		return true;
+		return array_all($this->toArray(), fn($value, $key) => $callback($value, $key) === true);
 	}
 
 	/**

@@ -21,24 +21,14 @@ trait CacheFunctions
 
 	public function has(string|array $key): bool
 	{
-		foreach (is_array($key) ? $key : [$key] as $key) {
-			if ($this->adapter->has($key) === false) {
-				return false;
-			}
-		}
+		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($key) === true);
 
-		return true;
 	}
 
 	public function missing(string|array $key): bool
 	{
-		foreach (is_array($key) ? $key : [$key] as $key) {
-			if ($this->adapter->has($key) === true) {
-				return false;
-			}
-		}
+		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($key) === false);
 
-		return true;
 	}
 
 	// -----------------

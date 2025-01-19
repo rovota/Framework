@@ -91,22 +91,12 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 
 	public function has(mixed $key): bool
 	{
-		foreach (is_array($key) ? $key : [$key] as $item) {
-			if ($this->offsetExists($item) === false) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($key) ? $key : [$key], fn($item) => $this->offsetExists($item) === true);
 	}
 
 	public function missing(mixed $key): bool
 	{
-		foreach (is_array($key) ? $key : [$key] as $item) {
-			if ($this->offsetExists($item) === true) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($key) ? $key : [$key], fn($item) => $this->offsetExists($item) === false);
 	}
 
 	public function pull(mixed $key, mixed $default = null): mixed

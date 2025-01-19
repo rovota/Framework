@@ -424,12 +424,10 @@ final class RequestObject
 		}
 
 		$encodings = is_array($encodings) ? $encodings : [$encodings];
-		foreach ($accepts as $accept => $value) {
-			if (Arr::contains($encodings, $accept)) {
-				return $accept;
-			}
-		}
-		return null;
+
+		return array_find_key($accepts, function ($accept) use ($encodings) {
+			return Arr::contains($encodings, $accept);
+		});
 	}
 
 	public function prefersLocale(string|array $locales, string|null $default = null): string|null

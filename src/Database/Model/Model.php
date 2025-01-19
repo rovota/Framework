@@ -214,13 +214,8 @@ abstract class Model implements ModelInterface, JsonSerializable
 		}
 
 		$attributes = is_array($attributes) ? $attributes : [$attributes];
-		foreach ($attributes as $attribute) {
-			if (isset($this->attributes_modified[$attribute])) {
-				return true;
-			}
-		}
 
-		return false;
+		return array_any($attributes, fn($attribute) => isset($this->attributes_modified[$attribute]));
 	}
 
 	public function isOriginal(array|string|null $attributes = null): bool

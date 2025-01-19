@@ -26,13 +26,7 @@ final class MultiInsertQuery
 
 	public function submit(): bool
 	{
-		foreach ($this->rows as $row) {
-			if ($row->submit() === false) {
-				return false;
-			}
-		}
-
-		return true;
+		return array_all($this->rows, fn($row) => $row->submit() === true);
 	}
 
 }

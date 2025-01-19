@@ -15,12 +15,7 @@ class RequestData extends Bucket
 	public function filled(mixed $key): bool
 	{
 		$keys = is_array($key) ? $key : [$key];
-		foreach ($keys as $key) {
-			if ($this->items->get($key, null) === null) {
-				return false;
-			}
-		}
-		return true;
+		return array_all($keys, fn($key) => $this->items->get($key, null) !== null);
 	}
 
 	// -----------------

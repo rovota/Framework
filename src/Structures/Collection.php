@@ -101,12 +101,8 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 				return $value;
 			}
 		}
-		foreach ($this->values as $key => $value) {
-			if ($callback($value, $this->keys[$key])) {
-				return $value;
-			}
-		}
-		return null;
+
+		return array_find($this->values, fn($value, $key) => $callback($value, $this->keys[$key]));
 	}
 
 	public function last(callable|null $callback = null): mixed
@@ -117,12 +113,8 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		if ($callback === null) {
 			return end($this->values);
 		}
-		foreach (array_reverse($this->values, true) as $key => $value) {
-			if ($callback($value, $this->keys[$key])) {
-				return $value;
-			}
-		}
-		return null;
+
+		return array_find(array_reverse($this->values, true), fn($value, $key) => $callback($value, $this->keys[$key]));
 	}
 
 	// -----------------
@@ -130,22 +122,13 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 	public function contains(mixed $values): bool
 	{
 		if (is_array($values)) {
-			foreach ($values as $value) {
-				if ($this->contains($value) === false) {
-					return false;
-				}
-			}
-			return true;
+			return array_all($values, fn($value) => $this->contains($value) === true);
 		}
 
 		if ($values instanceof Closure) {
-			foreach ($this->values as $index => $value) {
-				if ($values($value, $this->keys[$index])) {
-					return true;
-				}
-			}
-			return true;
+			return array_any($this->values, fn($value, $key) => $values($value, $this->keys[$key]));
 		}
+
 		return in_array($values, $this->values, true);
 	}
 
@@ -153,13 +136,9 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	public function filter(callable $callback): static
 	{
-		$filtered = [];
-		foreach ($this->values as $key => $value) {
-			if ($callback($value, $this->keys[$key]) === true) {
-				$filtered[$key] = $value;
-			}
-		}
-		return new static($filtered);
+		return new static(array_filter($this->values, function ($value, $key) use ($callback) {
+			return $callback($value, $this->keys[$key]) === true;
+		}, ARRAY_FILTER_USE_BOTH));
 	}
 
 	// -----------------

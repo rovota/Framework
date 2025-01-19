@@ -46,22 +46,12 @@ class Map extends Collection
 
 	public function hasKey(mixed $key): bool
 	{
-		foreach (is_array($key) ? $key : [$key] as $key) {
-			if (in_array($key, $this->keys, true) === false) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($key) ? $key : [$key], fn($key) => in_array($key, $this->keys, true) === true);
 	}
 
 	public function hasValue(mixed $value): bool
 	{
-		foreach (is_array($value) ? $value : [$value] as $value) {
-			if (in_array($value, $this->values, true) === false) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($value) ? $value : [$value], fn($value) => in_array($value, $this->values, true) === true);
 	}
 
 	// -----------------

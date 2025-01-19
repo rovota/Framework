@@ -400,22 +400,12 @@ final class Str
 
 	public static function containsAny(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_contains($string, $needle)) {
-				return true;
-			}
-		}
-		return false;
+		return array_any($needles, fn($needle) => str_contains($string, $needle));
 	}
 
 	public static function containsNone(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_contains($string, $needle)) {
-				return false;
-			}
-		}
-		return true;
+		return array_all($needles, fn($needle) => str_contains($string, $needle) === false);
 	}
 
 	public static function startsWith(string $string, string $needle): bool
@@ -425,22 +415,12 @@ final class Str
 
 	public static function startsWithAny(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_starts_with($string, $needle)) {
-				return true;
-			}
-		}
-		return false;
+		return array_any($needles, fn($needle) => str_starts_with($string, $needle));
 	}
 
 	public static function startsWithNone(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_starts_with($string, $needle)) {
-				return false;
-			}
-		}
-		return true;
+		return array_all($needles, fn($needle) => str_starts_with($string, $needle) === false);
 	}
 
 	public static function endsWith(string $string, string $needle): bool
@@ -450,22 +430,12 @@ final class Str
 
 	public static function endsWithAny(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_ends_with($string, $needle)) {
-				return true;
-			}
-		}
-		return false;
+		return array_any($needles, fn($needle) => str_ends_with($string, $needle));
 	}
 
 	public static function endsWithNone(string $string, array $needles): bool
 	{
-		foreach ($needles as $needle) {
-			if (str_ends_with($string, $needle)) {
-				return false;
-			}
-		}
-		return true;
+		return array_all($needles, fn($needle) => str_ends_with($string, $needle) === false);
 	}
 
 	// -----------------
