@@ -97,13 +97,7 @@ final class Arr
 			}
 		}
 
-		foreach ($array as $key => $value) {
-			if ($callback($value, $key)) {
-				return $value;
-			}
-		}
-
-		return $default;
+		return array_find($array,$callback);
 	}
 
 	/**
@@ -234,24 +228,12 @@ final class Arr
 
 	public static function has(array $array, mixed $key): bool
 	{
-		$keys = is_array($key) ? $key : [$key];
-		foreach ($keys as $key) {
-			if (array_key_exists($key, $array) === false) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($key) ? $key : [$key], fn($key) => array_key_exists($key, $array) === true);
 	}
 
 	public static function missing(array $array, mixed $key): bool
 	{
-		$keys = is_array($key) ? $key : [$key];
-		foreach ($keys as $key) {
-			if (array_key_exists($key, $array) === true) {
-				return false;
-			}
-		}
-		return true;
+		return array_all(is_array($key) ? $key : [$key], fn($key) => array_key_exists($key, $array) === false);
 	}
 
 	public static function contains(array $haystack, mixed $needle): bool
@@ -260,10 +242,8 @@ final class Arr
 
 		foreach ($needles as $needle) {
 			if ($needle instanceof Closure) {
-				foreach ($haystack as $key => $value) {
-					if ($needle($value, $key) === false) {
-						return false;
-					}
+				if (array_any($haystack, fn($value, $key) => $needle($value, $key) === false)) {
+					return false;
 				}
 			} else {
 				if (in_array($needle, $haystack, true) === false) {
@@ -279,10 +259,8 @@ final class Arr
 	{
 		foreach ($needles as $needle) {
 			if ($needle instanceof Closure) {
-				foreach ($haystack as $key => $value) {
-					if ($needle($value, $key)) {
-						return true;
-					}
+				if (array_any($haystack, fn($value, $key) => $needle($value, $key))) {
+					return true;
 				}
 			} else {
 				if (in_array($needle, $haystack, true)) {
