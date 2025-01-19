@@ -7,9 +7,7 @@
 
 namespace Rovota\Framework\Support;
 
-use BackedEnum;
 use Closure;
-use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
 final class Arr
@@ -337,28 +335,6 @@ final class Arr
 	{
 		shuffle($array);
 		return $array;
-	}
-
-	// -----------------
-
-	public static function toClassList(Arrayable|array $items): string
-	{
-		if ($items instanceof Arrayable) {
-			$items = $items->toArray();
-		}
-
-		$classes = new Basket();
-
-		foreach ($items as $key => $value) {
-			if (is_numeric($key)) {
-				$classes->append($value instanceof BackedEnum ? $value->value : $value);
-			}
-			if ($value === true) {
-				$classes->append((string) $key);
-			}
-		}
-
-		return $classes->join(' ');
 	}
 
 }
