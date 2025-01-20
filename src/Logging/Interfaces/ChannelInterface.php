@@ -13,17 +13,21 @@ use Stringable;
 interface ChannelInterface
 {
 
+	public string $name {
+		get;
+	}
+
+	public ChannelConfig $config {
+		get;
+	}
+
+	// -----------------
+
 	public function __toString(): string;
 
 	// -----------------
 
 	public function isDefault(): bool;
-
-	// -----------------
-
-	public function getName(): string;
-
-	public function getConfig(): ChannelConfig;
 
 	// -----------------
 

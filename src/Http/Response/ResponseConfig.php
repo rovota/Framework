@@ -9,15 +9,11 @@ namespace Rovota\Framework\Http\Response;
 
 use Rovota\Framework\Support\Config;
 
-/**
- * @property-read array $headers
- */
 class ResponseConfig extends Config
 {
 
-	protected function getHeaders(): array
-	{
-		return $this->array('headers', [
+	public array $headers {
+		get => $this->array('headers', [
 			'X-Frame-Options' => 'SAMEORIGIN',
 			'X-Content-Type-Options' => 'nosniff',
 			'Referrer-Policy' => 'same-origin',
@@ -27,6 +23,9 @@ class ResponseConfig extends Config
 			'Permissions-Policy' => 'geolocation=(), microphone=(), camera=(), usb=()',
 			'Vary' => 'Origin, User-Agent',
 		]);
+		set {
+			$this->set('headers', $value);
+		}
 	}
 
 }

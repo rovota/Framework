@@ -24,7 +24,7 @@ final class Url
 
 	public static function current(): UrlObject
 	{
-		return RequestManager::instance()->getCurrent()->url();
+		return RequestManager::instance()->current()->url();
 	}
 
 	// -----------------
@@ -65,7 +65,7 @@ final class Url
 	 */
 	public static function previous(string $default = '/'): UrlObject
 	{
-		$referrer = RequestManager::instance()->getCurrent()->referrer();
+		$referrer = RequestManager::instance()->current()->referrer();
 		$location = CacheManager::instance()->getWithDriver(Driver::Session)?->pull('location.previous') ?? $referrer ?? $default;
 		return UrlObject::from($location);
 	}

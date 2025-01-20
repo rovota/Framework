@@ -53,7 +53,7 @@ final class LanguageManager
 		return $this->languages[$locale] ?? null;
 	}
 
-	public function getCurrent(): LanguageObject
+	public function current(): LanguageObject
 	{
 		return $this->languages[$this->locale_active];
 	}
@@ -110,7 +110,7 @@ final class LanguageManager
 
 	protected function setActiveLocaleUsingRequest(): void
 	{
-		$request = RequestManager::instance()->getCurrent();
+		$request = RequestManager::instance()->current();
 		$locales = $this->all()->keys()->toArray();
 
 		$this->locale_active = $request->prefersLocale($locales, $this->locale_default);

@@ -46,7 +46,7 @@ final class RequestManager extends ServiceProvider
 
 	// -----------------
 
-	public function getCurrent(): RequestObject
+	public function current(): RequestObject
 	{
 		return $this->current;
 	}
@@ -135,7 +135,7 @@ final class RequestManager extends ServiceProvider
 
 	protected function getRequestQueryData(): array
 	{
-		$url = Framework::environment()->server()->get('REQUEST_URI');
+		$url = Framework::environment()->server->get('REQUEST_URI');
 
 		if (Str::contains($url, '?')) {
 			parse_str(Str::after($url, '?'), $parameters);

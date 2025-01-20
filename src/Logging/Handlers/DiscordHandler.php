@@ -68,7 +68,7 @@ class DiscordHandler extends AbstractProcessingHandler
 			'timestamp' => $record->datetime->format('c'),
 			'color' => hexdec($this->getColorForLevel($record->level)),
 			'footer' => [
-				'text' => Str::pascal(Framework::environment()->type()->label()),
+				'text' => Str::pascal(Framework::environment()->type->label()),
 			],
 		];
 		

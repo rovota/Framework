@@ -77,8 +77,8 @@ class ErrorResponse extends DefaultResponse
 	{
 		return [
 			'type' => Str::afterLast($error::class, '\\'),
-			'code' => $error->getCode(),
-			'message' => Str::translate($error->getMessage(), $error->getParameters()),
+			'code' => $error->code,
+			'message' => Str::translate($error->message, $error->parameters),
 		];
 	}
 

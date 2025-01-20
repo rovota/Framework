@@ -12,9 +12,9 @@ use Rovota\Framework\Http\Error;
 class ParameterMissing extends Error
 {
 
-	protected int $code = 400;
+	public int $code = 400;
 
-	protected string $message = 'A required parameter is missing. Check the documentation for more information.';
+	public string $message = 'A required parameter is missing. Check the documentation for more information.';
 
 	// -----------------
 

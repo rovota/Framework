@@ -12,8 +12,8 @@ use Rovota\Framework\Http\Error;
 class InternalServerError extends Error
 {
 
-	protected int $code = 100;
+	public int $code = 100;
 
-	protected string $message = 'Something went wrong on our end. Try again later.';
+	public string $message = 'Something went wrong on our end. Try again later.';
 
 }

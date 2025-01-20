@@ -23,7 +23,7 @@ final class ConnectionConfig extends Config
 	}
 
 	public string $label {
-		get => $this->get('label', 'Unnamed Connection');
+		get => $this->string('label', 'Unnamed Connection');
 		set {
 			$this->set('label', trim($value));
 		}

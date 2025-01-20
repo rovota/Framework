@@ -44,12 +44,11 @@ final class Language extends Facade
 	{
 		return function (LocalizationManager $instance, string $method, array $parameters = []) {
 			if (Str::containsAny($method, ['textDirection', 'units', 'about'])) {
-				return $instance->getLanguageManager()->getCurrent()->$method(...$parameters);
+				return $instance->getLanguageManager()->current()->$method(...$parameters);
 			}
 
 			$method = match ($method) {
 				'exists' => 'has',
-				'current' => 'getCurrent',
 				default => $method,
 			};
 

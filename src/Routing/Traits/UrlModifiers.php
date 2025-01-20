@@ -80,7 +80,7 @@ trait UrlModifiers
 
 	public function setCurrentHostAsDomain(): static
 	{
-		$this->withDomain(RequestManager::instance()->getCurrent()->targetHost());
+		$this->withDomain(RequestManager::instance()->current()->targetHost());
 		return $this;
 	}
 

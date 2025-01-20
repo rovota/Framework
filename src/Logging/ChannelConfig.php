@@ -10,41 +10,42 @@ namespace Rovota\Framework\Logging;
 use Rovota\Framework\Logging\Enums\Driver;
 use Rovota\Framework\Support\Config;
 
-/**
- * @property Driver|null $driver
- * @property string $label
- * @property array|null $channels
- * @property string|null $handler
- * @property Config $parameters
- */
 final class ChannelConfig extends Config
 {
 
-	protected function getDriver(): Driver|null
-	{
-		return Driver::tryFrom($this->string('driver'));
+	public Driver|null $driver {
+		get => Driver::tryFrom($this->string('driver'));
+		set {
+			if ($value instanceof Driver) {
+				$this->set('driver', $value->name);
+			}
+		}
 	}
 
-	protected function getLabel(): string
-	{
-		return $this->get('label', 'Unnamed Channel');
+	public string $label {
+		get => $this->string('label', 'Unnamed Channel');
+		set {
+			$this->set('label', trim($value));
+		}
 	}
 
 	// -----------------
 
-	protected function getChannels(): array|null
-	{
-		return $this->get('channels');
+	public array $channels {
+		get => $this->array('channels');
 	}
 
-	protected function getHandler(): string|null
-	{
-		return $this->get('handler');
+	public string|null $handler {
+		get => $this->get('handler');
 	}
 
-	protected function getParameters(): Config
-	{
-		return new Config($this->array('parameters'));
+	// -----------------
+
+	public Config $parameters {
+		get => new Config($this->array('parameters'));
+		set {
+			$this->set('parameters', $value->toArray());
+		}
 	}
 
 	// -----------------

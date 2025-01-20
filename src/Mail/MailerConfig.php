@@ -25,7 +25,7 @@ final class MailerConfig extends Config
 
 	protected function getLabel(): string
 	{
-		return $this->get('label', 'Unnamed Transporter');
+		return $this->string('label', 'Unnamed Transporter');
 	}
 
 	// -----------------

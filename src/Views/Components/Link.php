@@ -96,7 +96,7 @@ final class Link extends Asset
 	/**
 	 * Can be either `anonymous` or `use-credentials`.
 	 */
-	public function crossorigin(string $value): Link
+	public function crossOrigin(string $value): Link
 	{
 		$this->setAttribute('crossorigin', trim($value));
 		return $this;

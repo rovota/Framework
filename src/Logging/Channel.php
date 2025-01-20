@@ -16,9 +16,14 @@ use Stringable;
 abstract class Channel implements ChannelInterface
 {
 
-	protected string $name;
+	public string $name {
+		get => $this->name;
+	}
 
-	protected ChannelConfig $config;
+	public ChannelConfig $config {
+		get => $this->config;
+	}
+
 	protected HandlerInterface $handler;
 	protected Logger $logger;
 
@@ -47,18 +52,6 @@ abstract class Channel implements ChannelInterface
 	public function isDefault(): bool
 	{
 		return LoggingManager::instance()->getDefault() === $this->name;
-	}
-
-	// -----------------
-
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-	public function getConfig(): ChannelConfig
-	{
-		return $this->config;
 	}
 
 	// -----------------

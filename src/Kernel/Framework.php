@@ -114,7 +114,7 @@ final class Framework
 	{
 		self::$services = new ServiceContainer();
 
-		foreach (self::$environment->config()->services as $name => $class) {
+		foreach (self::$environment->config->services as $name => $class) {
 			self::$services->register($class, $name);
 		}
 	}

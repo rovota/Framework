@@ -45,13 +45,6 @@ final class ResponseManager extends ServiceProvider
 
 	// -----------------
 
-	public function getConfig(): Config
-	{
-		return $this->config;
-	}
-
-	// -----------------
-
 	public function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): DefaultResponse
 	{
 		// TODO: Return different response classes based on detected content.
@@ -123,7 +116,7 @@ final class ResponseManager extends ServiceProvider
 		$value = trim($value);
 
 		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			self::getConfig()->set('headers.'.$name, $value);
+			$this->config->set('headers.'.$name, $value);
 		}
 	}
 
@@ -136,13 +129,13 @@ final class ResponseManager extends ServiceProvider
 
 	public function withoutHeader(string $name): void
 	{
-		self::getConfig()->remove('headers.'.trim($name));
+		$this->config->remove('headers.'.trim($name));
 	}
 
 	public function withoutHeaders(array $names = []): void
 	{
 		if (empty($names)) {
-			self::getConfig()->remove('headers');
+			$this->config->remove('headers');
 		} else {
 			foreach ($names as $name) {
 				self::withoutHeader($name);
@@ -154,26 +147,26 @@ final class ResponseManager extends ServiceProvider
 
 	public function attachCookie(CookieObject $cookie): void
 	{
-		self::getConfig()->set('cookies.'.$cookie->name, $cookie);
+		$this->config->set('cookies.'.$cookie->name, $cookie);
 	}
 
 	public function attachCookies(array $cookies): void
 	{
 		foreach ($cookies as $cookie) {
 			if ($cookie instanceof CookieObject) {
-				self::getConfig()->set('cookies.'.$cookie->name, $cookie);
+				$this->config->set('cookies.'.$cookie->name, $cookie);
 			}
 		}
 	}
 
 	public function withoutCookie(string $name): void
 	{
-		self::getConfig()->remove('cookies.'.trim($name));
+		$this->config->remove('cookies.'.trim($name));
 	}
 
 	public function withoutCookies(): void
 	{
-		self::getConfig()->remove('cookies');
+		$this->config->remove('cookies');
 	}
 
 }

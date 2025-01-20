@@ -10,11 +10,17 @@ namespace Rovota\Framework\Http;
 class Error
 {
 
-	protected int $code;
+	public int $code {
+		get => $this->code;
+	}
 
-	protected string $message;
+	public string $message {
+		get => $this->message;
+	}
 
-	protected array $parameters = [];
+	public array $parameters = [] {
+		get => $this->parameters;
+	}
 
 	// -----------------
 
@@ -23,23 +29,6 @@ class Error
 		$this->message = $message ?? 'There is no information available about this error.';
 		$this->parameters = $parameters;
 		$this->code = $code;
-	}
-
-	// -----------------
-
-	public function getCode(): int
-	{
-		return $this->code;
-	}
-
-	public function getMessage(): string
-	{
-		return $this->message;
-	}
-
-	public function getParameters(): array
-	{
-		return $this->parameters;
 	}
 
 }

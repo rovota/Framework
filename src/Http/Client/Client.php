@@ -103,7 +103,7 @@ class Client
 	private function getClientUseragent(): string
 	{
 		$version = Framework::version()->basic();
-		$name = Framework::environment()->server()->get('server_name');
+		$name = Framework::environment()->server->get('server_name');
 
 		return sprintf('RovotaClient/%s (+%s)', $version, $name);
 	}

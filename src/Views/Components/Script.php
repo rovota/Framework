@@ -65,7 +65,7 @@ final class Script extends Asset
 	/**
 	 * Can be either `anonymous` or `use-credentials`.
 	 */
-	public function crossorigin(string $value): Script
+	public function crossOrigin(string $value): Script
 	{
 		$this->setAttribute('crossorigin', trim($value));
 		return $this;

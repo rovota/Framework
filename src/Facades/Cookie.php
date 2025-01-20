@@ -38,7 +38,7 @@ final class Cookie extends Facade
 	{
 		return match ($method) {
 			'create' => 'createCookie',
-			'domain' => Framework::environment()->config()->cookie_domain,
+			'domain' => Framework::environment()->config->cookie_domain,
 			default => $method,
 		};
 	}

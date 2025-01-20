@@ -97,9 +97,9 @@ final class Request extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'current' => 'getCurrent',
+			'current' => 'current',
 			default => function (RequestManager $instance, string $method, array $parameters = []) {
-				return $instance->getCurrent()->$method(...$parameters);
+				return $instance->current()->$method(...$parameters);
 			},
 		};
 	}

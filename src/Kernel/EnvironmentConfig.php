@@ -25,50 +25,52 @@ use Rovota\Framework\Support\Config;
 use Rovota\Framework\Views\ViewManager;
 use RuntimeException;
 
-/**
- * @property-read string $cookie_domain
- * @property-read array $services
- */
 class EnvironmentConfig extends Config
 {
 
-	protected function getCookieDomain(): string|null
-	{
-		return $this->get('cookie_domain', $_SERVER['SERVER_NAME']);
+	public string $cookie_domain {
+		get => $this->get('cookie_domain', $_SERVER['SERVER_NAME']);
+		set {
+			$this->set('cookie_domain', trim($value));
+		}
 	}
 
 	// -----------------
 
-	protected function getServices(): array
-	{
-		$services = [
-			// Foundation
-			'registry' => RegistryManager::class,
-			'logging' => LoggingManager::class,
-			'cache' => CacheManager::class,
-			'events' => EventManager::class,
-			'database' => ConnectionManager::class,
-			'client' => ClientManager::class,
-			'encryption' => EncryptionManager::class,
-			'casting' => CastingManager::class,
-			'cookie' => CookieManager::class,
-			'request' => RequestManager::class,
-			'localize' => LocalizationManager::class,
-			'mail' => MailManager::class,
-			'response' => ResponseManager::class,
-			'views' => ViewManager::class,
-			'middleware' => MiddlewareManager::class,
-			'routing' => RouteManager::class,
-		];
+	public array $services {
+		get {
+			$services = [
+				// Foundation
+				'registry' => RegistryManager::class,
+				'logging' => LoggingManager::class,
+				'cache' => CacheManager::class,
+				'events' => EventManager::class,
+				'database' => ConnectionManager::class,
+				'client' => ClientManager::class,
+				'encryption' => EncryptionManager::class,
+				'casting' => CastingManager::class,
+				'cookie' => CookieManager::class,
+				'request' => RequestManager::class,
+				'localize' => LocalizationManager::class,
+				'mail' => MailManager::class,
+				'response' => ResponseManager::class,
+				'views' => ViewManager::class,
+				'middleware' => MiddlewareManager::class,
+				'routing' => RouteManager::class,
+			];
 
-		foreach ($this->array('services') as $name => $class) {
-			if (isset($services[$name])) {
-				throw new RuntimeException("A service with the name '$name' already exists.");
+			foreach ($this->array('services') as $name => $class) {
+				if (isset($services[$name])) {
+					throw new RuntimeException("A service with the name '$name' already exists.");
+				}
+				$services[$name] = $class;
 			}
-			$services[$name] = $class;
-		}
 
-		return $services;
+			return $services;
+		}
+		set {
+			$this->set('services', $value);
+		}
 	}
 
 	// -----------------

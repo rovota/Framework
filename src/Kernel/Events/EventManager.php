@@ -17,13 +17,13 @@ use Rovota\Framework\Structures\Bucket;
 final class EventManager extends ServiceProvider
 {
 
-	protected Bucket $events;
+	protected Bucket $listeners;
 
 	// -----------------
 
 	public function __construct()
 	{
-		$this->events = new Bucket();
+		$this->listeners = new Bucket();
 	}
 
 	// -----------------
@@ -42,18 +42,18 @@ final class EventManager extends ServiceProvider
 
 	public function getListeners(string $event): Bucket
 	{
-		if ($this->events->missing($event)) {
+		if ($this->listeners->missing($event)) {
 			return new Bucket();
 		}
 
-		return $this->events->get($event);
+		return $this->listeners->get($event);
 	}
 
 	// -----------------
 
 	public function dispatchEvent(Event $event): void
 	{
-		if ($this->events->missing($event::class)) {
+		if ($this->listeners->missing($event::class)) {
 			return;
 		}
 
@@ -70,14 +70,14 @@ final class EventManager extends ServiceProvider
 
 	protected function addListenerToEvent(string $event, EventListener $listener): void
 	{
-		if ($this->events->missing($event)) {
-			$this->events->set($event, new Bucket());
+		if ($this->listeners->missing($event)) {
+			$this->listeners->set($event, new Bucket());
 		}
 
-		$group = $this->events->get($event);
+		$group = $this->listeners->get($event);
 		$group->set($listener::class, $listener);
 
-		$this->events->set($event, $group);
+		$this->listeners->set($event, $group);
 	}
 
 }

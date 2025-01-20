@@ -4,7 +4,6 @@
  * @copyright   Léandro Tijink
  * @license     MIT
  *
- * The parameter extraction logic has been derived from bramus/router:
  * @author      Bram(us) Van Damme <bramus@bram.us>
  * @copyright   Copyright (c), 2013 Bram(us) Van Damme
  * @license     MIT public license
@@ -206,7 +205,7 @@ final class Router
 
 	protected function getRequest(): RequestObject
 	{
-		return RequestManager::instance()->getCurrent();
+		return RequestManager::instance()->current();
 	}
 
 }

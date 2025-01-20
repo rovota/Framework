@@ -23,7 +23,7 @@ final class CacheStoreConfig extends Config
 	}
 
 	public string $label {
-		get => $this->get('label', 'Unnamed Cache');
+		get => $this->string('label', 'Unnamed Cache');
 		set {
 			$this->set('label', trim($value));
 		}
@@ -32,7 +32,7 @@ final class CacheStoreConfig extends Config
 	// -----------------
 
 	public int $retention {
-		get => $this->get('retention', 0);
+		get => $this->int('retention');
 		set {
 			$this->set('retention', abs($value));
 		}

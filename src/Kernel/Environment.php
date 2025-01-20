@@ -13,11 +13,11 @@ use Rovota\Framework\Support\Str;
 class Environment
 {
 
-	protected Server $server;
+	public Server $server;
 
-	protected EnvironmentType $type;
+	public EnvironmentType $type;
 
-	protected EnvironmentConfig $config;
+	public EnvironmentConfig $config;
 
 	// -----------------
 
@@ -27,23 +27,6 @@ class Environment
 		$this->type = $this->getEnvironmentType();
 
 		$this->config = EnvironmentConfig::load('config/environment');
-	}
-
-	// -----------------
-
-	public function server(): Server
-	{
-		return $this->server;
-	}
-
-	public function type(): EnvironmentType
-	{
-		return $this->type;
-	}
-
-	public function config(): EnvironmentConfig
-	{
-		return $this->config;
 	}
 
 	// -----------------

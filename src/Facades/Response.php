@@ -13,7 +13,6 @@ use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\DefaultResponse;
-use Rovota\Framework\Http\Response\ResponseConfig;
 use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
 use Rovota\Framework\Http\Response\Extensions\JsonResponse;
@@ -25,8 +24,6 @@ use Rovota\Framework\Views\DefaultView;
 use Throwable;
 
 /**
- * @method static ResponseConfig config()
- *
  * @method static DefaultResponse create(mixed $content, StatusCode|int $status = StatusCode::Ok)
  * @method static RedirectResponse redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
  * @method static ErrorResponse error(Throwable|Error|array $error, StatusCode|int $status = StatusCode::Ok)
@@ -62,8 +59,6 @@ final class Response extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'config' => 'getConfig',
-
 			'create' => 'createResponse',
 			'redirect' => 'createRedirectResponse',
 			'error' => 'createErrorResponse',

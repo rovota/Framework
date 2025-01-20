@@ -12,8 +12,8 @@ use Rovota\Framework\Http\Error;
 class ResourceNotFound extends Error
 {
 
-	protected int $code = 300;
+	public int $code = 300;
 
-	protected string $message = 'No resource could be found matching the provided parameters.';
+	public string $message = 'No resource could be found matching the provided parameters.';
 
 }

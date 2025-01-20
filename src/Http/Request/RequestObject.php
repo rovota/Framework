@@ -91,17 +91,17 @@ final class RequestObject
 
 	public function scheme(): Scheme
 	{
-		return Scheme::tryFrom(Framework::environment()->server()->get('REQUEST_SCHEME', 'https')) ?? Scheme::Https;
+		return Scheme::tryFrom(Framework::environment()->server->get('REQUEST_SCHEME', 'https')) ?? Scheme::Https;
 	}
 
 	public function port(): int
 	{
-		return (int) Framework::environment()->server()->get('SERVER_PORT');
+		return (int) Framework::environment()->server->get('SERVER_PORT');
 	}
 
 	public function path(): string
 	{
-		return Str::before(Framework::environment()->server()->get('REQUEST_URI'), '?');
+		return Str::before(Framework::environment()->server->get('REQUEST_URI'), '?');
 	}
 
 	public function pathMatchesPattern(string $pattern): bool
@@ -142,19 +142,19 @@ final class RequestObject
 
 	public function targetHost(): string
 	{
-		return Framework::environment()->server()->get('HTTP_HOST');
+		return Framework::environment()->server->get('HTTP_HOST');
 	}
 
 	public function remoteHost(): string
 	{
-		return Framework::environment()->server()->get('REMOTE_HOST');
+		return Framework::environment()->server->get('REMOTE_HOST');
 	}
 
 	// -----------------
 
 	public function realMethod(): RequestMethod
 	{
-		$method = Framework::environment()->server()->get('REQUEST_METHOD');
+		$method = Framework::environment()->server->get('REQUEST_METHOD');
 		return RequestMethod::tryFrom($method) ?? RequestMethod::Get;
 	}
 
@@ -190,7 +190,7 @@ final class RequestObject
 
 	public function isSecure(): bool
 	{
-		return $this->scheme() === Scheme::Https || Framework::environment()->server()->get('HTTPS') === 'on';
+		return $this->scheme() === Scheme::Https || Framework::environment()->server->get('HTTPS') === 'on';
 	}
 
 	public function isProxy(): bool
@@ -233,12 +233,12 @@ final class RequestObject
 
 	public function time(): Moment
 	{
-		return new Moment(Framework::environment()->server()->get('REQUEST_TIME_FLOAT'));
+		return new Moment(Framework::environment()->server->get('REQUEST_TIME_FLOAT'));
 	}
 
 	public function protocol(): string
 	{
-		return Framework::environment()->server()->get('SERVER_PROTOCOL');
+		return Framework::environment()->server->get('SERVER_PROTOCOL');
 	}
 
 	public function format(): string|null
@@ -286,7 +286,7 @@ final class RequestObject
 		return match (true) {
 			$this->headers->has('CF-Connecting-IP') => $this->headers->get('CF-Connecting-IP'),
 			$this->headers->has('X-Forwarded-For') => $this->headers->get('X-Forwarded-For'),
-			default => Framework::environment()->server()->get('REMOTE_ADDR'),
+			default => Framework::environment()->server->get('REMOTE_ADDR'),
 		};
 	}
 
@@ -350,13 +350,13 @@ final class RequestObject
 
 	public function username(): string|null
 	{
-		$username = Framework::environment()->server()->get('PHP_AUTH_USER');
+		$username = Framework::environment()->server->get('PHP_AUTH_USER');
 		return Str::length($username) > 0 ? $username : null;
 	}
 
 	public function password(): string|null
 	{
-		$password = Framework::environment()->server()->get('PHP_AUTH_PW');
+		$password = Framework::environment()->server->get('PHP_AUTH_PW');
 		return Str::length($password) > 0 ? $password : null;
 	}
 
@@ -533,11 +533,11 @@ final class RequestObject
 
 	protected function getFullUrlString(): string
 	{
-		$scheme = Framework::environment()->server()->get('REQUEST_SCHEME', 'https');
-		$host = Framework::environment()->server()->get('HTTP_HOST', 'localhost');
-		$port = Framework::environment()->server()->get('SERVER_PORT', '80');
-		$path = Str::before(Framework::environment()->server()->get('REQUEST_URI'), '?');
-		$query = Framework::environment()->server()->get('QUERY_STRING');
+		$scheme = Framework::environment()->server->get('REQUEST_SCHEME', 'https');
+		$host = Framework::environment()->server->get('HTTP_HOST', 'localhost');
+		$port = Framework::environment()->server->get('SERVER_PORT', '80');
+		$path = Str::before(Framework::environment()->server->get('REQUEST_URI'), '?');
+		$query = Framework::environment()->server->get('QUERY_STRING');
 
 		return sprintf('%s://%s:%s%s', $scheme, $host, $port, $path . (strlen($query) > 0 ? '?' : '') . $query);
 	}

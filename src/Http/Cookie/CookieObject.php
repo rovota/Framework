@@ -112,7 +112,7 @@ final class CookieObject
 	protected function setDefaultOptions(): void
 	{
 		$this->options = [
-			'domain' => Framework::environment()->config()->cookie_domain,
+			'domain' => Framework::environment()->config->cookie_domain,
 			'expires' => 0, // when client is closed
 			'path' => '/',
 			'httponly' => true,

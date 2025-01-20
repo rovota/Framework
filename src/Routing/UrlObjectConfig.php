@@ -54,7 +54,7 @@ class UrlObjectConfig extends Config
 		}
 
 		if ($this->get('domain') === null) {
-			$this->setDomain(Framework::environment()->server()->get('HTTP_HOST'));
+			$this->setDomain(Framework::environment()->server->get('HTTP_HOST'));
 		}
 
 		$subdomain = trim($subdomain);
@@ -76,7 +76,7 @@ class UrlObjectConfig extends Config
 
 	protected function getDomain(): string
 	{
-		return $this->string('domain', Framework::environment()->server()->get('HTTP_HOST'));
+		return $this->string('domain', Framework::environment()->server->get('HTTP_HOST'));
 	}
 
 	protected function setDomain(string $domain): void
@@ -84,7 +84,7 @@ class UrlObjectConfig extends Config
 		$domain = trim($domain);
 
 		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->setDomain(Framework::environment()->server()->get('HTTP_HOST'));
+			$this->setDomain(Framework::environment()->server->get('HTTP_HOST'));
 			return;
 		}
 
@@ -98,7 +98,7 @@ class UrlObjectConfig extends Config
 
 	protected function getPort(): int
 	{
-		return $this->int('port', (int) Framework::environment()->server()->get('SERVER_PORT'));
+		return $this->int('port', (int) Framework::environment()->server->get('SERVER_PORT'));
 	}
 
 	// -----------------

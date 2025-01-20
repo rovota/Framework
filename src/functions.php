@@ -70,7 +70,7 @@ if (!function_exists('moment')) {
 if (!function_exists('request')) {
 	function request(): RequestObject
 	{
-		return RequestManager::instance()->getCurrent();
+		return RequestManager::instance()->current();
 	}
 }
 

@@ -134,7 +134,7 @@ class SessionAdapter implements CacheAdapterInterface
 			session_set_cookie_params([
 				'lifetime' => 0,
 				'path' => '/',
-				'domain' => Framework::environment()->config()->cookie_domain,
+				'domain' => Framework::environment()->config->cookie_domain,
 				'httponly' => true,
 				'secure' => true,
 				'samesite' => 'Lax',
