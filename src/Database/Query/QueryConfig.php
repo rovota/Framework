@@ -13,7 +13,7 @@ use Rovota\Framework\Support\Config;
 final class QueryConfig extends Config
 {
 
-	public string|array|null $table {
+	public string|null $table {
 		get => $this->get('table');
 		set {
 			if ($value === null) {
@@ -36,7 +36,7 @@ final class QueryConfig extends Config
 				}
 
 				$this->set('model', $value);
-				$this->set('table', $this->model->config->table);
+				$this->set('table', $value->config->table);
 			}
 		}
 	}
