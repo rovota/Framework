@@ -17,11 +17,17 @@ use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 abstract class QueryExtension
 {
 
-	protected AdapterInterface $adapter;
+	public AdapterInterface $adapter {
+		get => $this->adapter;
+	}
 
-	protected QueryConfig $config;
+	public QueryConfig $config {
+		get => $this->config;
+	}
 
-	protected Sql $sql;
+	public Sql $sql {
+		get => $this->sql;
+	}
 
 	// -----------------
 
@@ -30,23 +36,6 @@ abstract class QueryExtension
 		$this->adapter = $adapter;
 		$this->config = $config;
 		$this->sql = new Sql($this->adapter);
-	}
-
-	// -----------------
-
-	public function getAdapter(): AdapterInterface
-	{
-		return $this->adapter;
-	}
-
-	public function getConfig(): QueryConfig
-	{
-		return $this->config;
-	}
-
-	public function getSql(): Sql
-	{
-		return $this->sql;
 	}
 
 	// -----------------
