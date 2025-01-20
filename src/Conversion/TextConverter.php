@@ -27,9 +27,6 @@ final class TextConverter
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
 	public static function initialize(): void
 	{
 		self::$inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
