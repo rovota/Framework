@@ -97,7 +97,7 @@ final class SelectQuery extends QueryExtension
 	public function latestFirst(string|null $column = null): SelectQuery
 	{
 		if ($column === null && $this->config->model instanceof ModelInterface) {
-			$column = $this->config->model->getConfig()->query_order_column;
+			$column = $this->config->model->config->query_order_column;
 		}
 		return $this->orderBy($column ?? 'created', Sort::Desc);
 	}
@@ -108,7 +108,7 @@ final class SelectQuery extends QueryExtension
 	public function oldestFirst(string|null $column = null): SelectQuery
 	{
 		if ($column === null && $this->config->model instanceof ModelInterface) {
-			$column = $this->config->model->getConfig()->query_order_column;
+			$column = $this->config->model->config->query_order_column;
 		}
 		return $this->orderBy($column ?? 'created');
 	}
@@ -138,7 +138,7 @@ final class SelectQuery extends QueryExtension
 	{
 		if ($column === null) {
 			if ($this->config->model instanceof ModelInterface) {
-				$column = $this->config->model->getPrimaryKey();
+				$column = $this->config->model->config->primary_key;
 			} else {
 				$column = 'id';
 			}

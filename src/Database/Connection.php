@@ -7,8 +7,6 @@
 
 namespace Rovota\Framework\Database;
 
-use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Rovota\Framework\Database\Interfaces\ConnectionHandlerInterface;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
@@ -20,11 +18,17 @@ use Rovota\Framework\Database\Query\Query;
 abstract class Connection implements ConnectionInterface
 {
 
-	protected string $name;
+	public string $name {
+		get => $this->name;
+	}
 
-	protected ConnectionConfig $config;
+	public ConnectionConfig $config {
+		get => $this->config;
+	}
 
-	protected ConnectionHandlerInterface $handler;
+	public ConnectionHandlerInterface $handler {
+		get => $this->handler;
+	}
 
 	// -----------------
 
@@ -51,48 +55,14 @@ abstract class Connection implements ConnectionInterface
 
 	// -----------------
 
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-	public function getConfig(): ConnectionConfig
-	{
-		return $this->config;
-	}
-
-	public function getHandler(): ConnectionHandlerInterface
-	{
-		return $this->handler;
-	}
-
-	// -----------------
-
-	public function getAdapter(): AdapterInterface
-	{
-		return $this->handler->getAdapter();
-	}
-
-	public function getPlatform(): PlatformInterface
-	{
-		return $this->handler->getPlatform();
-	}
-
-	public function getSchema(): string
-	{
-		return $this->handler->getSchema();
-	}
-
-	// -----------------
-
 	public function query(mixed $options = []): Query
 	{
-		return new Query($this->handler->getAdapter(), $options);
+		return new Query($this->handler->adapter, $options);
 	}
 
 	public function queryForTable(string $table): Query
 	{
-		return new Query($this->handler->getAdapter(), ['table' => $table]);
+		return new Query($this->handler->adapter, ['table' => $table]);
 	}
 
 	// -----------------
@@ -121,19 +91,19 @@ abstract class Connection implements ConnectionInterface
 
 	public function tables(): array
 	{
-		return $this->getHandler()->getTables();
+		return $this->handler->getTables();
 	}
 
 	public function hasTable(string $name): bool
 	{
-		return $this->getHandler()->hasTable($name);
+		return $this->handler->hasTable($name);
 	}
 
 	// -----------------
 
 	public function lastId(): string|int
 	{
-		return $this->getHandler()->getLastId();
+		return $this->handler->getLastId();
 	}
 
 }

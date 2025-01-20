@@ -7,8 +7,6 @@
 
 namespace Rovota\Framework\Database\Interfaces;
 
-use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Rovota\Framework\Database\ConnectionConfig;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\InsertQuery;
@@ -19,27 +17,25 @@ use Rovota\Framework\Database\Query\Query;
 interface ConnectionInterface
 {
 
+	public string $name {
+		get;
+	}
+
+	public ConnectionConfig $config {
+		get;
+	}
+
+	public ConnectionHandlerInterface $handler {
+		get;
+	}
+
+	// -----------------
+
 	public function __toString(): string;
 
 	// -----------------
 
 	public function isDefault(): bool;
-
-	// -----------------
-
-	public function getName(): string;
-
-	public function getConfig(): ConnectionConfig;
-
-	public function getHandler(): ConnectionHandlerInterface;
-
-	// -----------------
-
-	public function getAdapter(): AdapterInterface;
-
-	public function getPlatform(): PlatformInterface;
-
-	public function getSchema(): string;
 
 	// -----------------
 

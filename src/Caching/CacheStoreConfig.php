@@ -10,35 +10,39 @@ namespace Rovota\Framework\Caching;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Support\Config;
 
-/**
- * @property Driver|null $driver
- * @property string $label
- * @property int $retention
- * @property Config $parameters
- */
 final class CacheStoreConfig extends Config
 {
 
-	protected function getDriver(): Driver|null
-	{
-		return Driver::tryFrom($this->string('driver'));
+	public Driver|null $driver {
+		get => Driver::tryFrom($this->string('driver'));
+		set {
+			if ($value instanceof Driver) {
+				$this->set('driver', $value->name);
+			}
+		}
 	}
 
-	protected function getLabel(): string
-	{
-		return $this->get('label', 'Unnamed Cache');
+	public string $label {
+		get => $this->get('label', 'Unnamed Cache');
+		set {
+			$this->set('label', trim($value));
+		}
 	}
 
 	// -----------------
 
-	protected function getRetention(): int
-	{
-		return $this->get('retention', 0);
+	public int $retention {
+		get => $this->get('retention', 0);
+		set {
+			$this->set('retention', abs($value));
+		}
 	}
 
-	protected function getParameters(): Config
-	{
-		return new Config($this->array('parameters'));
+	public Config $parameters {
+		get => new Config($this->array('parameters'));
+		set {
+			$this->set('parameters', $value->toArray());
+		}
 	}
 
 	// -----------------

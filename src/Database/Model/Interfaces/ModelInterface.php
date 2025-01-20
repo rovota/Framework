@@ -13,6 +13,16 @@ use Rovota\Framework\Database\Model\ModelConfig;
 interface ModelInterface
 {
 
+	public ModelConfig $config {
+		get;
+	}
+
+	public ConnectionInterface $connection {
+		get;
+	}
+
+	// -----------------
+
 	public function __toString(): string;
 
 	public function __set(string $name, mixed $value): void;
@@ -27,25 +37,11 @@ interface ModelInterface
 
 	// -----------------
 
-	public function getConfig(): ModelConfig;
-
-	public function getTable(): string;
-
-	public function getConnection(): ConnectionInterface;
-
-	public function getPrimaryKey(): string;
-
-	// -----------------
-
 	public function toArray(): array;
 
 	public function toJson(): string;
 
 	public function jsonSerialize(): array;
-
-	// -----------------
-
-	public function getId(): string|int|null;
 
 	// -----------------
 

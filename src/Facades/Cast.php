@@ -39,8 +39,8 @@ final class Cast extends Facade
 	protected static function getMethodTarget(string $method): Closure|string
 	{
 		return match ($method) {
-			'get' => 'getCast',
-			'register' => 'addCast',
+			'get' => 'get',
+			'register' => 'add',
 
 			'toRaw' => 'castToRaw',
 			'toRawAutomatic' => 'castToRawAutomatic',

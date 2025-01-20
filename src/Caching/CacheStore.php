@@ -15,11 +15,19 @@ abstract class CacheStore implements CacheInterface
 {
 	use CacheFunctions;
 
-	protected string $name;
+	// -----------------
 
-	protected CacheStoreConfig $config;
+	public string $name {
+		get => $this->name;
+	}
 
-	protected CacheAdapterInterface $adapter;
+	public CacheStoreConfig $config {
+		get => $this->config;
+	}
+
+	public CacheAdapterInterface $adapter {
+		get => $this->adapter;
+	}
 
 	// -----------------
 
@@ -42,23 +50,6 @@ abstract class CacheStore implements CacheInterface
 	public function isDefault(): bool
 	{
 		return CacheManager::instance()->getDefault() === $this->name;
-	}
-
-	// -----------------
-
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-	public function getConfig(): CacheStoreConfig
-	{
-		return $this->config;
-	}
-
-	public function getAdapter(): CacheAdapterInterface
-	{
-		return $this->adapter;
 	}
 
 	// -----------------

@@ -67,10 +67,10 @@ final class ConnectionManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$channel = self::build($name, $config);
+		$connection = self::build($name, $config);
 
-		if ($channel instanceof ConnectionInterface) {
-			$this->connections[$name] = $channel;
+		if ($connection instanceof ConnectionInterface) {
+			$this->connections[$name] = $connection;
 		}
 	}
 
@@ -85,6 +85,13 @@ final class ConnectionManager extends ServiceProvider
 		}
 
 		return $this->connections[$name];
+	}
+
+	public function getWithDriver(Driver $driver): ConnectionInterface|null
+	{
+		return $this->connections->first(function (ConnectionInterface $connection) use ($driver) {
+			return $connection->config->driver === $driver;
+		});
 	}
 
 	// -----------------

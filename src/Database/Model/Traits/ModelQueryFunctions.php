@@ -45,7 +45,7 @@ trait ModelQueryFunctions
 		}
 
 		$identifiers = convert_to_array($identifier);
-		$column = $column ?? new static()->getPrimaryKey();
+		$column = $column ?? new static()->config->primary_key;
 
 		return $query->whereIn($column, $identifiers)->submit();
 	}

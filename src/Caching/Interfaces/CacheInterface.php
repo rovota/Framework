@@ -13,19 +13,25 @@ use Rovota\Framework\Structures\Map;
 interface CacheInterface
 {
 
+	public string $name {
+		get;
+	}
+
+	public CacheStoreConfig $config {
+		get;
+	}
+
+	public CacheAdapterInterface $adapter {
+		get;
+	}
+
+	// -----------------
+
 	public function __toString(): string;
 
 	// -----------------
 
 	public function isDefault(): bool;
-
-	// -----------------
-
-	public function getName(): string;
-
-	public function getConfig(): CacheStoreConfig;
-
-	public function getAdapter(): CacheAdapterInterface;
 
 	// -----------------
 

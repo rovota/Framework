@@ -9,21 +9,21 @@ namespace Rovota\Framework\Database;
 
 use Rovota\Framework\Support\Config;
 
-/**
- * @property-read string $default
- * @property-read array $connections
- */
 class DatabaseConfig extends Config
 {
 
-	protected function getDefault(): string
-	{
-		return $this->string('default', array_key_first($this->array('connections')) ?? '---');
+	public string $default {
+		get => $this->string('default', array_key_first($this->array('connections')) ?? '---');
+		set {
+			$this->set('default', $value);
+		}
 	}
 
-	protected function getConnections(): array
-	{
-		return $this->array('connections');
+	public array $connections {
+		get => $this->array('connections');
+		set {
+			$this->set('connections', $value);
+		}
 	}
 
 }

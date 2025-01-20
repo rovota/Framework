@@ -10,7 +10,6 @@ namespace Rovota\Framework\Database\Handlers;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
-use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Rovota\Framework\Database\Enums\Driver;
 use Rovota\Framework\Database\Interfaces\ConnectionHandlerInterface;
 use Rovota\Framework\Support\Config;
@@ -18,7 +17,9 @@ use Rovota\Framework\Support\Config;
 class MySqlHandler implements ConnectionHandlerInterface
 {
 
-	protected AdapterInterface $adapter;
+	public AdapterInterface $adapter {
+		get => $this->adapter;
+	}
 
 	protected array $tables = [];
 
@@ -36,23 +37,6 @@ class MySqlHandler implements ConnectionHandlerInterface
 		if ($this->hasTimezoneData()) {
 			$this->setTimezone('UTC');
 		}
-	}
-
-	// -----------------
-
-	public function getAdapter(): AdapterInterface
-	{
-		return $this->adapter;
-	}
-
-	public function getPlatform(): PlatformInterface
-	{
-		return $this->adapter->getPlatform();
-	}
-
-	public function getSchema(): string
-	{
-		return $this->adapter->getCurrentSchema();
 	}
 
 	// -----------------

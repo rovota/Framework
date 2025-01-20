@@ -54,7 +54,13 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	// -----------------
 
-	protected ModelConfig $config;
+	public ModelConfig $config {
+		get => $this->config;
+	}
+
+	public ConnectionInterface $connection {
+		get => ConnectionManager::instance()->get($this->config->connection);
+	}
 
 	// -----------------
 
@@ -131,28 +137,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	// -----------------
 
-	public function getConfig(): ModelConfig
-	{
-		return $this->config;
-	}
-
-	public function getTable(): string
-	{
-		return $this->config->table;
-	}
-
-	public function getConnection(): ConnectionInterface
-	{
-		return ConnectionManager::instance()->get($this->config->connection);
-	}
-
-	public function getPrimaryKey(): string
-	{
-		return $this->config->primary_key;
-	}
-
-	// -----------------
-
 	public function toArray(): array
 	{
 		return Bucket::from(array_merge($this->attributes, $this->attributes_modified))->except($this->hidden)->toArray();
@@ -166,13 +150,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 	public function jsonSerialize(): array
 	{
 		return $this->toArray();
-	}
-
-	// -----------------
-
-	public function getId(): string|int|null
-	{
-		return $this->getAttribute($this->config->primary_key);
 	}
 
 	// -----------------
@@ -245,7 +222,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	public function fresh(): static|null
 	{
-		$result = $this->getQueryBuilder()->select()->find($this->getId(), $this->getPrimaryKey());
+		$result = $this->getQueryBuilder()->select()->find($this->getId(), $this->config->primary_key);
 		return $result instanceof static ? $result : null;
 	}
 
@@ -319,13 +296,13 @@ abstract class Model implements ModelInterface, JsonSerializable
 					$this->attributes[self::CREATED_COLUMN] = now();
 				}
 
-				if (empty($this->attributes[$this->getPrimaryKey()]) && !$this->config->auto_increment) {
+				if (empty($this->attributes[$this->config->primary_key]) && !$this->config->auto_increment) {
 					throw new TypeError("A primary key must be defined when auto_increment is disabled.");
 				}
 
 				if ($this->getQueryBuilder()->insert()->data($this->attributes)->submit()) {
 					$this->config->is_stored = true;
-					$this->attributes[$this->getPrimaryKey()] = $this->getConnection()->getHandler()->getLastId();
+					$this->attributes[$this->config->primary_key] = $this->connection->handler->getLastId();
 					$this->attributes_modified = [];
 
 					ModelCreated::dispatch($this);
@@ -619,7 +596,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected static function getQueryBuilderFromStaticModel(): Query
 	{
 		$model = new static();
-		return $model->getConnection()->query(['model' => $model]);
+		return $model->connection->query(['model' => $model]);
 	}
 
 	/**
@@ -627,7 +604,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getQueryBuilder(): Query
 	{
-		return ConnectionManager::instance()->get($this->config->connection)->query([
+		return $this->connection->query([
 			'model' => $this
 		]);
 	}
@@ -637,7 +614,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getUpdateQuery(): UpdateQuery
 	{
-		return $this->getQueryBuilder()->update()->where($this->getPrimaryKey(), $this->getId());
+		return $this->getQueryBuilder()->update()->where($this->config->primary_key, $this->getId());
 	}
 
 	/**
@@ -645,7 +622,14 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getDeleteQuery(): DeleteQuery
 	{
-		return $this->getQueryBuilder()->delete()->where($this->getPrimaryKey(), $this->getId());
+		return $this->getQueryBuilder()->delete()->where($this->config->primary_key, $this->getId());
+	}
+
+	// -----------------
+
+	protected function getId(): string|int|null
+	{
+		return $this->getAttribute($this->config->primary_key);
 	}
 
 	// -----------------

@@ -13,17 +13,6 @@ use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 
-/**
- * @property string $table
- * @property string $connection
- * @property string $primary_key
- *
- * @property bool $is_stored
- * @property bool $auto_increment
- * @property bool $manage_timestamps
- *
- * @property string $query_order_column
- */
 final class ModelConfig extends Config
 {
 
@@ -38,90 +27,61 @@ final class ModelConfig extends Config
 
 	// -----------------
 
-	protected function getTable(): string
-	{
-		return $this->string('table', $this->getTableNameFromClass());
+	public string $connection {
+		get => $this->string('connection', ConnectionManager::instance()->getDefault());
+		set {
+			if (ConnectionManager::instance()->has($value)) {
+				$this->set('connection', trim($value));
+			}
+		}
 	}
 
-	protected function setTable(string $name): void
-	{
-		if (DB::connection($this->connection)->getHandler()->hasTable($name)) {
-			$this->set('table', $name);
+	public string $table {
+		get => $this->string('table', $this->getTableNameFromClass());
+		set {
+			if (DB::connection($this->connection)->handler->hasTable($value)) {
+				$this->set('table', trim($value));
+			}
+		}
+	}
+	
+	public string $primary_key {
+		get => $this->string('primary_key', 'id');
+		set {
+			$this->set('primary_key', trim($value));
 		}
 	}
 
 	// -----------------
 
-	protected function getConnection(): string
-	{
-		return $this->string('connection', ConnectionManager::instance()->getDefault());
+	public bool $is_stored {
+		get => $this->bool('is_stored');
+		set {
+			$this->set('is_stored', $value);
+		}
 	}
 
-	protected function setConnection(string $name): void
-	{
-		if (ConnectionManager::instance()->has($name)) {
-			$this->set('connection', $name);
+	public bool $auto_increment {
+		get => $this->bool('auto_increment', true);
+		set {
+			$this->set('auto_increment', $value);
+		}
+	}
+
+	public bool $manage_timestamps {
+		get => $this->bool('manage_timestamps', true);
+		set {
+			$this->set('manage_timestamps', $value);
 		}
 	}
 
 	// -----------------
 
-	protected function getPrimaryKey(): string
-	{
-		return $this->string('primary_key', 'id');
-	}
-
-	protected function setPrimaryKey(string $key): void
-	{
-		$this->set('primary_key', trim($key));
-	}
-
-	// -----------------
-
-	protected function getIsStored(): bool
-	{
-		return $this->bool('is_stored');
-	}
-
-	protected function setIsStored(bool $value): void
-	{
-		$this->set('is_stored', $value);
-	}
-
-	// -----------------
-
-	protected function getAutoIncrement(): bool
-	{
-		return $this->bool('auto_increment', true);
-	}
-
-	protected function setAutoIncrement(bool $value): void
-	{
-		$this->set('auto_increment', $value);
-	}
-
-	// -----------------
-
-	protected function getManageTimestamps(): bool
-	{
-		return $this->bool('manage_timestamps', true);
-	}
-
-	protected function setManageTimestamps(bool $value): void
-	{
-		$this->set('manage_timestamps', $value);
-	}
-
-	// -----------------
-
-	protected function getQueryOrderColumn(): string
-	{
-		return $this->string('query_order_column', $this->model::CREATED_COLUMN);
-	}
-
-	protected function setQueryOrderColumn(string $value): void
-	{
-		$this->set('query_order_column', $value);
+	public string $query_order_column {
+		get => $this->string('query_order_column', $this->model::CREATED_COLUMN);
+		set {
+			$this->set('query_order_column', trim($value));
+		}
 	}
 
 	// -----------------

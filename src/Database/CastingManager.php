@@ -53,7 +53,7 @@ final class CastingManager extends ServiceProvider
 			$options = [$options];
 		}
 
-		$cast = $this->getCast(array_shift($options));
+		$cast = $this->get(array_shift($options));
 
 		if ($cast instanceof CastInterface && $cast->supports($value, $options)) {
 			return $cast->toRaw($value, $options);
@@ -79,7 +79,7 @@ final class CastingManager extends ServiceProvider
 			$options = [$options];
 		}
 
-		$cast = $this->getCast(array_shift($options));
+		$cast = $this->get(array_shift($options));
 
 		if ($cast instanceof CastInterface) {
 			return $cast->fromRaw($value, $options);
@@ -96,7 +96,7 @@ final class CastingManager extends ServiceProvider
 			$options = [$options];
 		}
 
-		$cast = $this->getCast(array_shift($options));
+		$cast = $this->get(array_shift($options));
 		if ($cast instanceof CastInterface && $cast->supports($value, $options)) {
 			return true;
 		}
@@ -106,24 +106,24 @@ final class CastingManager extends ServiceProvider
 
 	// -----------------
 
-	public function hasCast(string $name): bool
+	public function has(string $name): bool
 	{
 		return isset($this->casts[$name]);
 	}
 
-	public function addCast(CastInterface $cast, string|null $name = null): void
+	public function add(CastInterface $cast, string|null $name = null): void
 	{
 		$this->casts[$name ?? Str::random(20)] = $cast;
 	}
 
-	public function getCast(string $name): CastInterface|null
+	public function get(string $name): CastInterface|null
 	{
 		return $this->casts[$name] ?? null;
 	}
 
 	// -----------------
 
-	public function getCasts(): Map
+	public function all(): Map
 	{
 		return $this->casts;
 	}
@@ -132,21 +132,21 @@ final class CastingManager extends ServiceProvider
 
 	protected function registerDefaultCasts(): void
 	{
-		$this->addCast(new ArrayCast(), 'array');
-		$this->addCast(new BooleanCast(), 'bool');
-		$this->addCast(new DateTimeCast(), 'datetime');
-		$this->addCast(new EnumCast(), 'enum');
-		$this->addCast(new FloatCast(), 'float');
-		$this->addCast(new IntegerCast(), 'int');
-		$this->addCast(new StringCast(), 'string');
-		$this->addCast(new ObjectCast(), 'object');
+		$this->add(new ArrayCast(), 'array');
+		$this->add(new BooleanCast(), 'bool');
+		$this->add(new DateTimeCast(), 'datetime');
+		$this->add(new EnumCast(), 'enum');
+		$this->add(new FloatCast(), 'float');
+		$this->add(new IntegerCast(), 'int');
+		$this->add(new StringCast(), 'string');
+		$this->add(new ObjectCast(), 'object');
 
-		$this->addCast(new TextCast(), 'text');
-		$this->addCast(new MomentCast(), 'moment');
+		$this->add(new TextCast(), 'text');
+		$this->add(new MomentCast(), 'moment');
 
-		$this->addCast(new JsonCast(), 'json');
-		$this->addCast(new EncryptionCast(), 'encrypted');
-		$this->addCast(new SerialCast(), 'serial');
+		$this->add(new JsonCast(), 'json');
+		$this->add(new EncryptionCast(), 'encrypted');
+		$this->add(new SerialCast(), 'serial');
 	}
 
 }
