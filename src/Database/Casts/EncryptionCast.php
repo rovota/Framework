@@ -25,7 +25,7 @@ final class EncryptionCast implements CastInterface
 	public function toRaw(mixed $value, array $options): string|null
 	{
 		try {
-			return EncryptionManager::instance()->getAgent()->encryptString($value);
+			return EncryptionManager::instance()->agent->encryptString($value);
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
 		}
@@ -35,7 +35,7 @@ final class EncryptionCast implements CastInterface
 	public function fromRaw(mixed $value, array $options): string|null
 	{
 		try {
-			return EncryptionManager::instance()->getAgent()->decryptString($value);
+			return EncryptionManager::instance()->agent->decryptString($value);
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
 		}

@@ -17,11 +17,17 @@ abstract class Mailer implements MailerInterface
 
 	// -----------------
 
-	protected string $name;
+	public string $name {
+		get => $this->name;
+	}
 
-	protected MailerConfig $config;
+	public MailerConfig $config {
+		get => $this->config;
+	}
 
-	protected MailHandlerInterface $handler;
+	public MailHandlerInterface $handler {
+		get => $this->handler;
+	}
 
 	// -----------------
 
@@ -44,23 +50,6 @@ abstract class Mailer implements MailerInterface
 	public function isDefault(): bool
 	{
 		return MailManager::instance()->getDefault() === $this->name;
-	}
-
-	// -----------------
-
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-	public function getConfig(): MailerConfig
-	{
-		return $this->config;
-	}
-
-	public function getHandler(): MailHandlerInterface
-	{
-		return $this->handler;
 	}
 
 }

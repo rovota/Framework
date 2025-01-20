@@ -22,7 +22,7 @@ class DetermineLanguage
 
 	public function handle(RequestObject $request): void
 	{
-		$manager = LocalizationManager::instance()->getLanguageManager();
+		$manager = LocalizationManager::instance()->language_manager;
 
 		// Attempt to get a value from a cookie
 		if ($request->cookies->has('locale')) {

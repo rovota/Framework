@@ -53,7 +53,7 @@ final class LanguageManager
 		return $this->languages[$locale] ?? null;
 	}
 
-	public function current(): LanguageObject
+	public function active(): LanguageObject
 	{
 		return $this->languages[$this->locale_active];
 	}

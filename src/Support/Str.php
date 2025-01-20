@@ -29,7 +29,7 @@ final class Str
 			return '';
 		}
 
-		$translation = Language::current()->findTranslation($string);
+		$translation = Language::active()->findTranslation($string);
 		if ($translation === null) {
 			$translation = $string;
 		}

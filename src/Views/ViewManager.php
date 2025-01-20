@@ -40,7 +40,7 @@ final class ViewManager extends ServiceProvider
 		}
 
 		$this->attachMeta('*', 'og:locale', [
-			'name' => 'og:locale', 'content' => Language::current()->locale ?? 'en_US',
+			'name' => 'og:locale', 'content' => Language::active()->locale ?? 'en_US',
 		]);
 		$this->attachMeta('*', 'og:type', [
 			'name' => 'og:type', 'content' => 'website',
@@ -85,7 +85,9 @@ final class ViewManager extends ServiceProvider
 		}
 	}
 
-	public function getCurrent(): ViewInterface|null
+	// -----------------
+
+	public function current(): ViewInterface|null
 	{
 		return $this->current;
 	}

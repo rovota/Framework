@@ -30,7 +30,7 @@ class MailView extends DefaultView
 
 	protected function getTemplatePath(): string
 	{
-		$locale = $this->getVariables()->string('mail_template_locale', Language::current()->locale);
+		$locale = $this->getVariables()->string('mail_template_locale', Language::active()->locale);
 
 		$file = Str::replace($this->template, '.', '/');
 		$file = Str::start($file, 'resources/templates/mail/' . $locale . '/');

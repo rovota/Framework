@@ -48,13 +48,6 @@ class DefaultView implements Stringable, ViewInterface
 
 	// -----------------
 
-	public function getConfig(): ViewConfig
-	{
-		return $this->config;
-	}
-
-	// -----------------
-
 	public static function make(array $variables = []): ViewInterface|static
 	{
 		$view = ViewManager::instance()->createView(null, static::class);

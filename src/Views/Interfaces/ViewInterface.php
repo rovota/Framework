@@ -11,16 +11,11 @@ use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
-use Rovota\Framework\Views\ViewConfig;
 
 interface ViewInterface
 {
 
 	public function __toString(): string;
-
-	// -----------------
-
-	public function getConfig(): ViewConfig;
 
 	// -----------------
 

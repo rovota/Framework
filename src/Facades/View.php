@@ -51,7 +51,6 @@ final class View extends Facade
 	{
 		return match ($method) {
 			'create' => 'createView',
-			'current' => 'getCurrent',
 			default => $method,
 		};
 	}

@@ -91,7 +91,7 @@ final class MailManager extends ServiceProvider
 	public function getWithDriver(Driver $driver): MailerInterface|null
 	{
 		return $this->mailers->first(function (MailerInterface $store) use ($driver) {
-			return $store->getConfig()->driver === $driver;
+			return $store->config->driver === $driver;
 		});
 	}
 

@@ -26,7 +26,7 @@ class RequestCookies extends RequestData
 
 			if (CookieManager::instance()->hasEncryptionEnabled($name)) {
 				try {
-					$value = EncryptionManager::instance()->getAgent()->decrypt($value, false);
+					$value = EncryptionManager::instance()->agent->decrypt($value, false);
 				} catch (Throwable) {
 					continue;
 				}

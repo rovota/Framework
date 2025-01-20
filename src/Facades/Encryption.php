@@ -41,7 +41,7 @@ final class Encryption extends Facade
 		return match ($method) {
 			'agent' => 'getAgent',
 			default => function (EncryptionManager $instance, string $method, array $parameters = []) {
-				return $instance->getAgent()->$method(...$parameters);
+				return $instance->agent->$method(...$parameters);
 			},
 		};
 	}

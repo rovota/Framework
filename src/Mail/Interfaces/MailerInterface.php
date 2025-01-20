@@ -13,19 +13,25 @@ use Rovota\Framework\Mail\MailerConfig;
 interface MailerInterface
 {
 
+	public string $name {
+		get;
+	}
+
+	public MailerConfig $config {
+		get;
+	}
+
+	public MailHandlerInterface $handler {
+		get;
+	}
+
+	// -----------------
+
 	public function __toString(): string;
 
 	// -----------------
 
 	public function isDefault(): bool;
-
-	// -----------------
-
-	public function getName(): string;
-
-	public function getConfig(): MailerConfig;
-
-	public function getHandler(): MailHandlerInterface;
 
 	// -----------------
 

@@ -10,29 +10,32 @@ namespace Rovota\Framework\Mail;
 use Rovota\Framework\Mail\Enums\Driver;
 use Rovota\Framework\Support\Config;
 
-/**
- * @property Driver|null $driver
- * @property string $label
- * @property Config $parameters
- */
 final class MailerConfig extends Config
 {
 
-	protected function getDriver(): Driver|null
-	{
-		return Driver::tryFrom($this->string('driver'));
+	public Driver|null $driver {
+		get => Driver::tryFrom($this->string('driver'));
+		set {
+			if ($value instanceof Driver) {
+				$this->set('driver', $value->name);
+			}
+		}
 	}
 
-	protected function getLabel(): string
-	{
-		return $this->string('label', 'Unnamed Transporter');
+	public string $label {
+		get => $this->string('label', 'Unnamed Mailer');
+		set {
+			$this->set('label', trim($value));
+		}
 	}
 
 	// -----------------
 
-	protected function getParameters(): Config
-	{
-		return new Config($this->array('parameters'));
+	public Config $parameters {
+		get => new Config($this->array('parameters'));
+		set {
+			$this->set('parameters', $value->toArray());
+		}
 	}
 
 	// -----------------

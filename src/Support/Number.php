@@ -91,7 +91,7 @@ final class Number
 
 	protected static function getLocale(string|null $locale): string
 	{
-		return $locale ?? Language::current()->locale ?? 'en_US';
+		return $locale ?? Language::active()->locale ?? 'en_US';
 	}
 
 }

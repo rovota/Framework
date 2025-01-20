@@ -21,7 +21,7 @@ class Mailable
 
 	protected MailerInterface $mailer;
 
-	protected array $attributes = [];
+	public array $attributes = [];
 
 	// -----------------
 
@@ -58,7 +58,7 @@ class Mailable
 			'address' => $entity->address,
 		];
 
-		$this->mailer->getHandler()->addRecipient($entity->name, $entity->address);
+		$this->mailer->handler->addRecipient($entity->name, $entity->address);
 		return $this;
 	}
 
@@ -68,7 +68,7 @@ class Mailable
 	{
 		$entity = MailManager::getNormalizedEntity($name, $address);
 
-		$this->mailer->getHandler()->setFrom($entity->name, $entity->address);
+		$this->mailer->handler->setFrom($entity->name, $entity->address);
 		return $this;
 	}
 
@@ -76,7 +76,7 @@ class Mailable
 	{
 		$entity = MailManager::getNormalizedEntity($name, $address);
 
-		$this->mailer->getHandler()->setReplyTo($entity->name, $entity->address);
+		$this->mailer->handler->setReplyTo($entity->name, $entity->address);
 		return $this;
 	}
 
@@ -84,7 +84,7 @@ class Mailable
 
 	public function priority(Priority|int $level): static
 	{
-		$this->mailer->getHandler()->setPriority($level);
+		$this->mailer->handler->setPriority($level);
 		return $this;
 	}
 
@@ -94,19 +94,19 @@ class Mailable
 	{
 		$this->attributes['subject'] = trim($subject);
 
-		$this->mailer->getHandler()->setSubject($subject);
+		$this->mailer->handler->setSubject($subject);
 		return $this;
 	}
 
 	public function text(string $text): static
 	{
-		$this->mailer->getHandler()->setPlainText($text);
+		$this->mailer->handler->setPlainText($text);
 		return $this;
 	}
 
 	public function html(string $data): static
 	{
-		$this->mailer->getHandler()->setHtml($data);
+		$this->mailer->handler->setHtml($data);
 		return $this;
 	}
 
@@ -114,21 +114,21 @@ class Mailable
 
 	public function withHeader(string $name, string $value): static
 	{
-		$this->mailer->getHandler()->addHeader($name, $value);
+		$this->mailer->handler->addHeader($name, $value);
 		return $this;
 	}
 
 	public function withHeaders(array $headers): static
 	{
 		foreach ($headers as $name => $value) {
-			$this->mailer->getHandler()->addHeader($name, $value);
+			$this->mailer->handler->addHeader($name, $value);
 		}
 		return $this;
 	}
 
 	public function withoutHeader(string $name): static
 	{
-		$this->mailer->getHandler()->removeHeader($name);
+		$this->mailer->handler->removeHeader($name);
 		return $this;
 	}
 
@@ -151,13 +151,6 @@ class Mailable
 
 	// -----------------
 
-	public function getAttributes(): array
-	{
-		return $this->attributes;
-	}
-
-	// -----------------
-
 	public function deliver(): bool
 	{
 		$content = $this->render();
@@ -166,7 +159,7 @@ class Mailable
 			$this->html($content);
 		}
 
-		if ($this->mailer->getHandler()->send()) {
+		if ($this->mailer->handler->send()) {
 			MailableDelivered::dispatch($this);
 			return true;
 		}

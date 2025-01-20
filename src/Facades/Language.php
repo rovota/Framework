@@ -17,7 +17,7 @@ use Rovota\Framework\Support\Str;
 /**
  * @method static bool exists(string $locale)
  * @method static LanguageObject|null get(string $locale)
- * @method static LanguageObject current()
+ * @method static LanguageObject active()
  * @method static array all()
  * @method static array allWithPrefix(string $prefix)
  *
@@ -44,7 +44,7 @@ final class Language extends Facade
 	{
 		return function (LocalizationManager $instance, string $method, array $parameters = []) {
 			if (Str::containsAny($method, ['textDirection', 'units', 'about'])) {
-				return $instance->getLanguageManager()->current()->$method(...$parameters);
+				return $instance->language_manager->active()->$method(...$parameters);
 			}
 
 			$method = match ($method) {
@@ -52,7 +52,7 @@ final class Language extends Facade
 				default => $method,
 			};
 
-			return $instance->getLanguageManager()->$method(...$parameters);
+			return $instance->language_manager->$method(...$parameters);
 		};
 	}
 

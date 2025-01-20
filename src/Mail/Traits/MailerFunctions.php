@@ -21,13 +21,13 @@ trait MailerFunctions
 
 	public function attachHeader(string $name, string $value): void
 	{
-		$this->getHandler()->addHeader($name, $value);
+		$this->handler->addHeader($name, $value);
 	}
 
 	public function attachHeaders(array $headers): void
 	{
 		foreach ($headers as $name => $value) {
-			$this->getHandler()->addHeader($name, $value);
+			$this->handler->addHeader($name, $value);
 		}
 	}
 
@@ -35,12 +35,12 @@ trait MailerFunctions
 
 	public function clear(): void
 	{
-		$this->getHandler()->clear();
+		$this->handler->clear();
 	}
 
 	public function reset(): void
 	{
-		$this->getHandler()->reset();
+		$this->handler->reset();
 	}
 
 }

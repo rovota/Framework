@@ -19,7 +19,11 @@ final class LocalizationManager extends ServiceProvider
 
 	protected LocalizationConfig $config;
 
-	protected LanguageManager $language_manager;
+	public LanguageManager $language_manager {
+		get {
+			return $this->language_manager;
+		}
+	}
 
 	protected string $timezone_active;
 	protected string $timezone_default;
@@ -34,20 +38,6 @@ final class LocalizationManager extends ServiceProvider
 
 		$this->timezone_default = $this->config->default['timezone'];
 		$this->setCurrentTimezone($this->config->default['timezone']);
-	}
-
-	// -----------------
-
-	public function getConfig(): LocalizationConfig
-	{
-		return $this->config;
-	}
-
-	// -----------------
-
-	public function getLanguageManager(): LanguageManager
-	{
-		return $this->language_manager;
 	}
 
 	// -----------------
