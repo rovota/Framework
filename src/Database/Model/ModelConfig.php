@@ -54,10 +54,10 @@ final class ModelConfig extends Config
 
 	// -----------------
 
-	public bool $is_stored {
-		get => $this->bool('is_stored');
+	public bool $stored {
+		get => $this->bool('stored');
 		set {
-			$this->set('is_stored', $value);
+			$this->set('stored', $value);
 		}
 	}
 
@@ -72,6 +72,13 @@ final class ModelConfig extends Config
 		get => $this->bool('manage_timestamps', true);
 		set {
 			$this->set('manage_timestamps', $value);
+		}
+	}
+
+	public bool $composites {
+		get => $this->bool('composites', true);
+		set {
+			$this->set('composites', $value);
 		}
 	}
 

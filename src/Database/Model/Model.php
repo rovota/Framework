@@ -26,6 +26,7 @@ use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
+use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Conditionable;
 use Rovota\Framework\Support\Traits\Macroable;
 use Rovota\Framework\Support\Traits\MagicMethods;
@@ -156,7 +157,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	public function isStored(): bool
 	{
-		return $this->config->is_stored;
+		return $this->config->stored;
 	}
 
 	public function isTrashed(): bool
@@ -267,7 +268,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	public function save(): bool
 	{
-		if ($this->config->is_stored) {
+		if ($this->config->stored) {
 			if (empty($this->attributes_modified) === false) {
 				if (!isset($this->attributes_modified[self::EDITED_COLUMN]) && $this->config->manage_timestamps) {
 					$this->attributes_modified[self::EDITED_COLUMN] = now();
@@ -301,7 +302,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 				}
 
 				if ($this->getQueryBuilder()->insert()->data($this->attributes)->submit()) {
-					$this->config->is_stored = true;
+					$this->config->stored = true;
 					$this->attributes[$this->config->primary_key] = $this->connection->handler->getLastId();
 					$this->attributes_modified = [];
 
@@ -463,6 +464,14 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected function setAttribute(string $name, mixed $value): void
 	{
 		if ($this->isAllowedAttributeValue($name, $value)) {
+			if ($this->config->composites) {
+				$accessor = sprintf('set%sAttribute', Str::pascal($name));
+				if (method_exists($this, $accessor)) {
+					$this->{$accessor}($value);
+					return;
+				}
+			}
+
 			if ($this->isStored() === false) {
 				$this->attributes[$name] = $value;
 			} else {
@@ -498,7 +507,16 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function getAttribute(string $name): mixed
 	{
-		return $this->attributes_modified[$name] ?? $this->attributes[$name] ?? null;
+		$value = $this->attributes_modified[$name] ?? $this->attributes[$name] ?? null;
+
+		if ($this->config->composites) {
+			$accessor = sprintf('get%sAttribute', Str::pascal($name));
+			if (method_exists($this, $accessor)) {
+				return $this->{$accessor}();
+			}
+		}
+
+		return $value;
 	}
 
 	/**
@@ -548,7 +566,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 				}
 			} else {
 				if (Arr::contains($allowed, $value) === false) {
-					return false;
+					throw new TypeError('Value must be one of the specified values.');
 				}
 			}
 		}
@@ -583,7 +601,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	protected static function newInstance(array $attributes = [], bool $stored = false): static
 	{
 		$instance = new static($attributes);
-		$instance->config->is_stored = $stored;
+		$instance->config->stored = $stored;
 
 		return $instance;
 	}
@@ -639,7 +657,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	 */
 	protected function cleanAfterDestroyed(): void
 	{
-		$this->config->is_stored = false;
+		$this->config->stored = false;
 	}
 
 	/**
