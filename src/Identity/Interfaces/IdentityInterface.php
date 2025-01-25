@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Identity\Traits;
+namespace Rovota\Framework\Identity\Interfaces;
 
 interface IdentityInterface
 {
