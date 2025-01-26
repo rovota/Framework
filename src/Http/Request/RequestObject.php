@@ -8,6 +8,8 @@
 namespace Rovota\Framework\Http\Request;
 
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Rovota\Framework\Facades\Http;
+use Rovota\Framework\Facades\Log;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Kernel\Framework;
@@ -20,6 +22,7 @@ use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
+use Throwable;
 
 final class RequestObject
 {
@@ -212,10 +215,32 @@ final class RequestObject
 		return false;
 	}
 
-	public function isBot(string|null $useragent = null): bool
+	public function isCrawler(string|null $useragent = null): bool
 	{
 		$detection = new CrawlerDetect();
 		return $detection->isCrawler($useragent);
+	}
+
+	/**
+	 * Requires the implementation Cloudflare Turnstile.
+	 *
+	 * @param string|null $secret Provide a secret key for authentication with the Turnstile API. When left empty, the `TURNSTILE_SECRET` environment variable will be used.
+	 *
+	 * @link https://developers.cloudflare.com/turnstile Turnstile Documentation
+	 */
+	public function isHuman(string|null $secret = null): bool
+	{
+		try {
+			$response = Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify')->withJson([
+				'secret' => $secret ?? getenv('TURNSTILE_SECRET'),
+				'response' => $this->get('cf-turnstile-response'),
+			])->execute();
+		} catch (Throwable $throwable) {
+			Log::notice('There was a problem with reaching the Turnstile API', [$throwable->getMessage()]);
+			return false;
+		}
+
+		return $response->jsonAsArray()[0]?->success ?? false;
 	}
 
 	public function isXmlHttp(): bool
