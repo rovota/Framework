@@ -129,7 +129,9 @@ final class UrlObject implements Stringable, JsonSerializable
 		if (count($this->config->parameters) === 0) {
 			return null;
 		}
-		return '?'.Url::arrayToQuery($this->config->parameters);
+
+		$query = Url::arrayToQuery($this->config->parameters);
+		return strlen($query) > 0 ? '?'.$query : '';
 	}
 
 	protected function getFragmentString(): string|null

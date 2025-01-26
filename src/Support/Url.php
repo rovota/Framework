@@ -12,6 +12,7 @@ use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\UrlObject;
+use Stringable;
 
 final class Url
 {
@@ -98,6 +99,11 @@ final class Url
 
 	public static function arrayToQuery(array $data): string
 	{
+		foreach ($data as $key => $value) {
+			if ($value instanceof Stringable) {
+				$data[$key] = (string) $value;
+			}
+		}
 		return http_build_query($data);
 	}
 
