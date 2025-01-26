@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Identity\Interfaces;
 
-interface IdentityInterface
+interface Identity
 {
 
 

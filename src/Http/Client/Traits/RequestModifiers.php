@@ -28,7 +28,7 @@ trait RequestModifiers
 
 	public function withParameter(string $name, mixed $value): static
 	{
-		$this->config->set('query.'.$name, $value);
+		$this->parameters['query'][$name] = $value;
 		return $this;
 	}
 

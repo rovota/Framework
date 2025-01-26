@@ -22,6 +22,8 @@ final class Request
 
 	protected Config $config;
 
+	protected array $parameters;
+
 	protected Guzzle $guzzle;
 
 	protected string $method;
@@ -33,6 +35,7 @@ final class Request
 	public function __construct(Guzzle $guzzle, string $method, UrlObject|string $target)
 	{
 		$this->config = new Config();
+		$this->parameters = [];
 
 		$this->guzzle = $guzzle;
 		$this->method = $this->getSanitizedMethod($method);
@@ -46,7 +49,14 @@ final class Request
 	 */
 	public function execute(): Response
 	{
-		return new Response($this->guzzle->request($this->method, $this->target, $this->config->toArray()));
+		return new Response($this->guzzle->request($this->method, $this->target, array_merge($this->config->toArray(), $this->parameters)));
+	}
+
+	// -----------------
+
+	public function getRaw(): Guzzle
+	{
+		return $this->guzzle;
 	}
 
 	// -----------------
