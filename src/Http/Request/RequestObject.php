@@ -116,7 +116,7 @@ final class RequestObject
 
 	public function queryString(): string
 	{
-		return Url::arrayToQuery($this->url()->parameters);
+		return Url::arrayToQuery($this->url()->config->parameters);
 	}
 
 	// -----------------

@@ -75,8 +75,8 @@ final class Request
 			$target = UrlObject::from($target);
 		}
 
-		if (count($target->parameters) > 0) {
-			$this->withParameters($target->parameters);
+		if (count($target->config->parameters) > 0) {
+			$this->withParameters($target->config->parameters);
 			$target->stripParameters();
 		}
 

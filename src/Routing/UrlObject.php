@@ -19,7 +19,7 @@ final class UrlObject implements Stringable, JsonSerializable
 
 	// -----------------
 
-	protected UrlObjectConfig $config;
+	public readonly UrlObjectConfig $config;
 
 	// -----------------
 
