@@ -7,8 +7,8 @@
 
 namespace Rovota\Framework\Storage\Traits;
 
-use Rovota\Framework\Storage\Interfaces\DirectoryInterface;
-use Rovota\Framework\Storage\Interfaces\FileInterface;
+use Rovota\Framework\Storage\Contents\Directory;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Str;
 
 trait FileFunctions
@@ -48,12 +48,12 @@ trait FileFunctions
 
 	// -----------------
 
-	public function compress(string|null $target = null): FileInterface|null
+	public function compress(string|null $target = null): File|null
 	{
 		return $this->properties->disk->compress($this->location(), $target);
 	}
 
-	public function extract(string|null $target = null): DirectoryInterface|null
+	public function extract(string|null $target = null): Directory|null
 	{
 		return $this->properties->disk->extract($this->location(), $target);
 	}

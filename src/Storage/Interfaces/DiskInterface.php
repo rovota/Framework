@@ -10,6 +10,8 @@ namespace Rovota\Framework\Storage\Interfaces;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Storage\Contents\Directory;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Storage\DiskConfig;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Moment;
@@ -71,9 +73,9 @@ interface DiskInterface
 
 	// -----------------
 
-	public function file(string $location, array $without = []): FileInterface|null;
+	public function file(string $location, array $without = []): File|null;
 
-	public function directory(string $location): DirectoryInterface|null;
+	public function directory(string $location): Directory|null;
 
 	// -----------------
 
@@ -111,9 +113,9 @@ interface DiskInterface
 
 	// -----------------
 
-	public function compress(string $source, string|null $target = null): FileInterface|null;
+	public function compress(string $source, string|null $target = null): File|null;
 
-	public function extract(string $source, string|null $target = null): DirectoryInterface|null;
+	public function extract(string $source, string|null $target = null): Directory|null;
 
 	// -----------------
 

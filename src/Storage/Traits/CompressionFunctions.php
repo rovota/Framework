@@ -10,8 +10,8 @@ namespace Rovota\Framework\Storage\Traits;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Rovota\Framework\Kernel\ExceptionHandler;
-use Rovota\Framework\Storage\Interfaces\DirectoryInterface;
-use Rovota\Framework\Storage\Interfaces\FileInterface;
+use Rovota\Framework\Storage\Contents\Directory;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Str;
 use SplFileInfo;
 use Throwable;
@@ -20,7 +20,7 @@ use ZipArchive;
 trait CompressionFunctions
 {
 
-	public function compress(string $source, string|null $target = null): FileInterface|null
+	public function compress(string $source, string|null $target = null): File|null
 	{
 		$archive = new ZipArchive();
 		$archive_name = Str::random(60).'.zip';
@@ -67,7 +67,7 @@ trait CompressionFunctions
 		return null;
 	}
 
-	public function extract(string $source, string|null $target = null): DirectoryInterface|null
+	public function extract(string $source, string|null $target = null): Directory|null
 	{
 		$archive = new ZipArchive();
 

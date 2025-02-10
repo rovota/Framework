@@ -8,11 +8,10 @@
 namespace Rovota\Framework\Storage\Contents;
 
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Storage\Interfaces\DirectoryInterface;
 use Rovota\Framework\Storage\Traits\DirectoryFunctions;
 use Stringable;
 
-class Directory implements DirectoryInterface, Stringable
+class Directory implements Stringable
 {
 	use DirectoryFunctions;
 

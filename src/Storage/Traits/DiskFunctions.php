@@ -12,8 +12,6 @@ use League\Flysystem\FileAttributes;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Storage\Contents\Directory;
 use Rovota\Framework\Storage\Contents\File;
-use Rovota\Framework\Storage\Interfaces\DirectoryInterface;
-use Rovota\Framework\Storage\Interfaces\FileInterface;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Validation\ValidationTools;
@@ -93,7 +91,7 @@ trait DiskFunctions
 
 	// -----------------
 
-	public function file(string $location, array $without = []): FileInterface|null
+	public function file(string $location, array $without = []): File|null
 	{
 		$fields = ['size', 'mime_type', 'last_modified'];
 
@@ -106,7 +104,7 @@ trait DiskFunctions
 		return $this->retrieveFileWithData($location, $fields);
 	}
 
-	public function directory(string $location): DirectoryInterface|null
+	public function directory(string $location): Directory|null
 	{
 		return $this->retrieveDirectoryWithData($location);
 	}
@@ -327,7 +325,7 @@ trait DiskFunctions
 
 	// -----------------
 
-	protected function retrieveFileWithData(string $location, array $data = []): FileInterface|null
+	protected function retrieveFileWithData(string $location, array $data = []): File|null
 	{
 		if ($this->missing($location)) {
 			return null;
@@ -354,7 +352,7 @@ trait DiskFunctions
 		return new File($contents, $properties);
 	}
 
-	protected function retrieveDirectoryWithData(string $location): DirectoryInterface|null
+	protected function retrieveDirectoryWithData(string $location): Directory|null
 	{
 		if ($this->missing($location)) {
 			return null;

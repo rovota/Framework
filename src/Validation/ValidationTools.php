@@ -10,7 +10,7 @@ namespace Rovota\Framework\Validation;
 use Rovota\Framework\Database\ConnectionManager;
 use Rovota\Framework\Facades\DB;
 use Rovota\Framework\Kernel\ExceptionHandler;
-use Rovota\Framework\Storage\Interfaces\FileInterface;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 use Throwable;
@@ -84,7 +84,7 @@ final class ValidationTools
 	public static function getSize(mixed $data): int|float
 	{
 		return match(true) {
-			$data instanceof FileInterface => round($data->properties->size / 1024), // Bytes to Kilobytes
+			$data instanceof File => round($data->properties->size / 1024), // Bytes to Kilobytes
 //			$data instanceof UploadedFile => round($data->variant('original')->properties()->size / 1024), // Bytes to Kilobytes
 			is_int($data), is_float($data) => $data,
 			is_numeric($data), is_string($data) => Str::length($data),

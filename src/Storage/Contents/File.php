@@ -8,11 +8,10 @@
 namespace Rovota\Framework\Storage\Contents;
 
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Storage\Interfaces\FileInterface;
 use Rovota\Framework\Storage\Traits\FileFunctions;
 use Stringable;
 
-class File implements FileInterface, Stringable
+class File implements Stringable
 {
 	use FileFunctions;
 
