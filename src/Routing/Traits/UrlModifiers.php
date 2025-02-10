@@ -12,15 +12,6 @@ namespace Rovota\Framework\Routing\Traits;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\Enums\Scheme;
 
-/**
- * @property Scheme|string $scheme
- * @property string|null $subdomain
- * @property string $domain
- * @property int $port
- * @property string $path
- * @property array $parameters
- * @property string|null $fragment
- */
 trait UrlModifiers
 {
 
