@@ -49,12 +49,6 @@ interface DiskInterface
 
 	// -----------------
 
-	public function asHash(string $location, string $algo = 'sha256', bool $binary = false): string|null;
-
-	public function asString(string $location): string;
-
-	// -----------------
-
 	public function contents(string $location = '/'): Sequence;
 
 	public function files(string $location = '/'): Sequence;

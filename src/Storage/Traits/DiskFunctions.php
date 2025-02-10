@@ -20,18 +20,6 @@ use Throwable;
 trait DiskFunctions
 {
 
-	public function asHash(string $location, string $algo = 'sha256', bool $binary = false): string|null
-	{
-		return $this->retrieveFileWithData($location)?->asHash($algo, $binary);
-	}
-
-	public function asString(string $location): string
-	{
-		return $this->retrieveFileWithData($location)?->asString() ?? '';
-	}
-
-	// -----------------
-
 	public function contents(string $location = '/'): Sequence
 	{
 		try {
