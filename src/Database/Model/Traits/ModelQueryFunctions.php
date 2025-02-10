@@ -11,6 +11,7 @@ use Rovota\Framework\Database\Enums\Sort;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
+use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Structures\Basket;
 
 /**
@@ -103,7 +104,7 @@ trait ModelQueryFunctions
 		return static::getQueryBuilderFromStaticModel()->select();
 	}
 
-	public static function find(string|int $identifier, string|null $column = null): static|null
+	public static function find(string|int|null $identifier, string|null $column = null): static|null
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->find($identifier, $column);
 	}
@@ -129,6 +130,43 @@ trait ModelQueryFunctions
 		}
 
 		return $query;
+	}
+
+	// -----------------
+
+	/**
+	 * @internal
+	 */
+	protected static function getQueryBuilderFromStaticModel(): Query
+	{
+		$model = new static();
+		return $model->connection->query(['model' => $model]);
+	}
+
+	/**
+	 * @internal
+	 */
+	protected function getQueryBuilder(): Query
+	{
+		return $this->connection->query([
+			'model' => $this
+		]);
+	}
+
+	/**
+	 * @internal
+	 */
+	protected function getUpdateQuery(): UpdateQuery
+	{
+		return $this->getQueryBuilder()->update()->where($this->config->primary_key, $this->getId());
+	}
+
+	/**
+	 * @internal
+	 */
+	protected function getDeleteQuery(): DeleteQuery
+	{
+		return $this->getQueryBuilder()->delete()->where($this->config->primary_key, $this->getId());
 	}
 
 }

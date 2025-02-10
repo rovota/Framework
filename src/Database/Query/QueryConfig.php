@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Database\Query;
 
+use Rovota\Framework\Database\Enums\TrashMode;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Support\Config;
 
@@ -38,6 +39,15 @@ final class QueryConfig extends Config
 				$this->set('model', $value);
 				$this->set('table', $value->config->table);
 			}
+		}
+	}
+
+	// -----------------
+
+	public TrashMode $trash_mode {
+		get => TrashMode::tryFrom($this->int('trash_mode'));
+		set {
+			$this->set('trash_mode', $value->value);
 		}
 	}
 

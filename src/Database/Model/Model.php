@@ -11,19 +11,16 @@ use BackedEnum;
 use JsonSerializable;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\ConnectionManager;
-use Rovota\Framework\Database\Events\ModelCreated;
 use Rovota\Framework\Database\Events\ModelPopulated;
 use Rovota\Framework\Database\Events\ModelPopulatedFromResult;
 use Rovota\Framework\Database\Events\ModelReloaded;
 use Rovota\Framework\Database\Events\ModelReverted;
 use Rovota\Framework\Database\Events\ModelRevertedAttribute;
+use Rovota\Framework\Database\Events\ModelSaved;
 use Rovota\Framework\Database\Events\ModelUpdated;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Model\Traits\ModelQueryFunctions;
-use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
-use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
-use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
@@ -40,7 +37,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	const string CREATED_COLUMN = 'created';
 	const string EDITED_COLUMN = 'edited';
-	const string TRASHED_COLUMN = 'deleted';
 
 	// -----------------
 
@@ -67,23 +63,26 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	public function __construct(array $attributes = [])
 	{
-		$this->setDefaultConfig();
-		$this->configuration();
+		$this->config = new ModelConfig();
+		$this->config->attachModelReference($this);
 
 		if ($this->config->manage_timestamps) {
 			$this->casts = array_merge($this->casts, [
 				static::CREATED_COLUMN => 'moment',
 				static::EDITED_COLUMN => 'moment',
+			]);
+		}
+
+		if (defined($this::class . '::TRASHED_COLUMN')) {
+			$this->casts = array_merge($this->casts, [
 				static::TRASHED_COLUMN => 'moment',
 			]);
 		}
 
+		$this->configuration();
 		$this->setAttributes($attributes);
 
 		ModelPopulated::dispatch($this);
-		if (method_exists($this, 'finishAfterLoading')) {
-			$this->finishAfterLoading();
-		}
 	}
 
 	// -----------------
@@ -122,9 +121,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 		}
 
 		ModelPopulatedFromResult::dispatch($instance);
-		if (method_exists($instance, 'finishAfterLoadingFromResult')) {
-			$instance->finishAfterLoadingFromResult();
-		}
 
 		return $instance;
 	}
@@ -158,11 +154,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 	public function isStored(): bool
 	{
 		return $this->config->stored;
-	}
-
-	public function isTrashed(): bool
-	{
-		return $this->getAttribute(static::TRASHED_COLUMN) !== null;
 	}
 
 	public function isRestricted(string $attribute): bool
@@ -230,15 +221,15 @@ abstract class Model implements ModelInterface, JsonSerializable
 	public function reload(): void
 	{
 		$new = $this->fresh();
+
 		$this->attributes = [];
 		$this->attributes_modified = [];
+
 		foreach ($new->original() as $name => $value) {
 			$this->attributes[$name] = $value;
 		}
+
 		ModelReloaded::dispatch($this);
-		if (method_exists($this, 'finishAfterReloading')) {
-			$this->finishAfterReloading();
-		}
 	}
 
 	public function revert(string|array|null $attribute = null): void
@@ -251,15 +242,9 @@ abstract class Model implements ModelInterface, JsonSerializable
 			if ($attribute !== null) {
 				unset($this->attributes_modified[$attribute]);
 				ModelRevertedAttribute::dispatch($this, $attribute);
-				if (method_exists($this, 'finishAfterRevertingAttribute')) {
-					$this->finishAfterRevertingAttribute($attribute);
-				}
 			} else {
 				$this->attributes_modified = [];
 				ModelReverted::dispatch($this);
-				if (method_exists($this, 'finishAfterReverting')) {
-					$this->finishAfterReverting();
-				}
 			}
 		}
 	}
@@ -270,17 +255,16 @@ abstract class Model implements ModelInterface, JsonSerializable
 	{
 		if ($this->config->stored) {
 			if (empty($this->attributes_modified) === false) {
+
 				if (!isset($this->attributes_modified[self::EDITED_COLUMN]) && $this->config->manage_timestamps) {
 					$this->attributes_modified[self::EDITED_COLUMN] = now();
 				}
+
 				if ($this->getUpdateQuery()->set($this->attributes_modified)->submit()) {
 					$this->attributes = array_merge($this->attributes, $this->attributes_modified);
 					$this->attributes_modified = [];
 
 					ModelUpdated::dispatch($this);
-					if (method_exists($this, 'finishAfterUpdating')) {
-						$this->finishAfterUpdating();
-					}
 				}
 			}
 		} else {
@@ -306,10 +290,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 					$this->attributes[$this->config->primary_key] = $this->connection->handler->getLastId();
 					$this->attributes_modified = [];
 
-					ModelCreated::dispatch($this);
-					if (method_exists($this, 'finishAfterSaving')) {
-						$this->finishAfterSaving();
-					}
+					ModelSaved::dispatch($this);
 				}
 			}
 		}
@@ -324,31 +305,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 		$result = $this->getDeleteQuery()->submit();
 
 		if ($result) {
-			$this->cleanAfterDestroyed();
-			return true;
-		}
-
-		return false;
-	}
-
-	public function trash(): bool
-	{
-		$result = $this->getUpdateQuery()->trash(static::TRASHED_COLUMN)->submit();
-
-		if ($result) {
-			$this->cleanAfterTrashed();
-			return true;
-		}
-
-		return false;
-	}
-
-	public function recover(): bool
-	{
-		$result = $this->getUpdateQuery()->recover(static::TRASHED_COLUMN)->submit();
-
-		if ($result) {
-			$this->cleanAfterRecovered();
+			$this->config->stored = false;
 			return true;
 		}
 
@@ -519,6 +476,8 @@ abstract class Model implements ModelInterface, JsonSerializable
 		return $value;
 	}
 
+	// -----------------
+
 	/**
 	 * @internal
 	 */
@@ -587,17 +546,6 @@ abstract class Model implements ModelInterface, JsonSerializable
 	/**
 	 * @internal
 	 */
-	protected function setDefaultConfig(): void
-	{
-		$this->config = new ModelConfig();
-		$this->config->attachModelReference($this);
-	}
-
-	// -----------------
-
-	/**
-	 * @internal
-	 */
 	protected static function newInstance(array $attributes = [], bool $stored = false): static
 	{
 		$instance = new static($attributes);
@@ -608,72 +556,9 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
-	protected static function getQueryBuilderFromStaticModel(): Query
-	{
-		$model = new static();
-		return $model->connection->query(['model' => $model]);
-	}
-
-	/**
-	 * @internal
-	 */
-	protected function getQueryBuilder(): Query
-	{
-		return $this->connection->query([
-			'model' => $this
-		]);
-	}
-
-	/**
-	 * @internal
-	 */
-	protected function getUpdateQuery(): UpdateQuery
-	{
-		return $this->getQueryBuilder()->update()->where($this->config->primary_key, $this->getId());
-	}
-
-	/**
-	 * @internal
-	 */
-	protected function getDeleteQuery(): DeleteQuery
-	{
-		return $this->getQueryBuilder()->delete()->where($this->config->primary_key, $this->getId());
-	}
-
-	// -----------------
-
 	protected function getId(): string|int|null
 	{
 		return $this->getAttribute($this->config->primary_key);
-	}
-
-	// -----------------
-
-	/**
-	 * @internal
-	 */
-	protected function cleanAfterDestroyed(): void
-	{
-		$this->config->stored = false;
-	}
-
-	/**
-	 * @internal
-	 */
-	protected function cleanAfterTrashed(): void
-	{
-		$this->attributes[static::TRASHED_COLUMN] = now();
-	}
-
-	/**
-	 * @internal
-	 */
-	protected function cleanAfterRecovered(): void
-	{
-		$this->attributes[static::TRASHED_COLUMN] = null;
 	}
 
 }

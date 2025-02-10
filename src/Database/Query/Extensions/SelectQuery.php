@@ -18,13 +18,14 @@ use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
 use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
+use Rovota\Framework\Database\Traits\TrashQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
 use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Support\Traits\Conditionable;
 
 final class SelectQuery extends QueryExtension
 {
-	use WhereQueryConstraints, OrWhereQueryConstraints, Conditionable;
+	use TrashQueryConstraints, WhereQueryConstraints, OrWhereQueryConstraints, Conditionable;
 
 	// -----------------
 
@@ -134,8 +135,12 @@ final class SelectQuery extends QueryExtension
 
 	// -----------------
 
-	public function find(string|int $identifier, string|null $column = null): ModelInterface|array|null
+	public function find(string|int|null $identifier, string|null $column = null): ModelInterface|array|null
 	{
+		if ($identifier === null) {
+			return null;
+		}
+
 		if ($column === null) {
 			if ($this->config->model instanceof ModelInterface) {
 				$column = $this->config->model->config->primary_key;
@@ -154,6 +159,8 @@ final class SelectQuery extends QueryExtension
 
 	public function get(): Basket
 	{
+		$this->applyTrashConstraints();
+
 		$results = $this->fetchResult($this->select);
 		$basket = new Basket();
 
@@ -171,6 +178,8 @@ final class SelectQuery extends QueryExtension
 
 	public function count(): int
 	{
+		$this->applyTrashConstraints();
+
 		$this->config->model = null;
 		$this->columns(['count' => new Expression('COUNT(*)')]);
 		$results = $this->fetchResult($this->select);

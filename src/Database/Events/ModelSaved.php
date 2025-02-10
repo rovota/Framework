@@ -11,7 +11,7 @@ use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Kernel\Events\Interfaces\Event;
 use Rovota\Framework\Kernel\Events\Traits\Dispatchable;
 
-class ModelCreated implements Event
+class ModelSaved implements Event
 {
 	use Dispatchable;
 

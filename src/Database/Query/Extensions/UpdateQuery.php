@@ -12,6 +12,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Update;
+use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
@@ -68,19 +69,27 @@ final class UpdateQuery extends QueryExtension
 	}
 
 	/**
-	 * Requires the presence of a `deleted` column, unless a different column is specified.
+	 * Requires the presence of a `deleted` column, unless otherwise specified by a model.
 	 */
-	public function recover(string $column = 'deleted'): UpdateQuery
+	public function recover(): UpdateQuery
 	{
-		return $this->set([$column => null]);
+		if ($this->config->model instanceof ModelInterface && defined($this->config->model::class . '::TRASHED_COLUMN')) {
+			return $this->set([$this->config->model::TRASHED_COLUMN => null]);
+		}
+
+		return $this->set(['deleted' => null]);
 	}
 
 	/**
-	 * Requires the presence of a `deleted` column, unless a different column is specified.
+	 * Requires the presence of a `deleted` column, unless otherwise specified by a model.
 	 */
-	public function trash(string $column = 'deleted'): UpdateQuery
+	public function trash(): UpdateQuery
 	{
-		return $this->set([$column => now()]);
+		if ($this->config->model instanceof ModelInterface && defined($this->config->model::class . '::TRASHED_COLUMN')) {
+			return $this->set([$this->config->model::TRASHED_COLUMN => now()]);
+		}
+
+		return $this->set(['deleted' => now()]);
 	}
 
 	// -----------------
