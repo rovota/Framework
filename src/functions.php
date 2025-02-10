@@ -14,6 +14,8 @@ use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Storage\Interfaces\FileInterface;
+use Rovota\Framework\Storage\StorageManager;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
@@ -104,19 +106,12 @@ if (!function_exists('route')) {
 	}
 }
 
-// -----------------
-
-// -----------------
-
-// -----------------
-
-// -----------------
-
-// -----------------
-
-// -----------------
-
-// -----------------
+if (!function_exists('file')) {
+	function file(string $location, string|null $disk = null): FileInterface|null
+	{
+		return StorageManager::instance()->get($disk)->file($location);
+	}
+}
 
 // -----------------
 

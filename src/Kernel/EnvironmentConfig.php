@@ -21,6 +21,7 @@ use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Mail\MailManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\EncryptionManager;
+use Rovota\Framework\Storage\StorageManager;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Views\ViewManager;
 use RuntimeException;
@@ -46,6 +47,7 @@ class EnvironmentConfig extends Config
 				'cache' => CacheManager::class,
 				'events' => EventManager::class,
 				'database' => ConnectionManager::class,
+				'storage' => StorageManager::class,
 				'client' => ClientManager::class,
 				'encryption' => EncryptionManager::class,
 				'casting' => CastingManager::class,
