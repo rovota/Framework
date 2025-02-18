@@ -12,12 +12,14 @@ use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
+use Rovota\Framework\Http\Response\Extensions\FileResponse;
 use Rovota\Framework\Http\Response\Extensions\JsonResponse;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
 use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Http\Response\Extensions\ViewResponse;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Views\DefaultView;
@@ -50,6 +52,9 @@ final class ResponseManager extends ServiceProvider
 		// TODO: Return different response classes based on detected content.
 
 		// FileResponse
+		if ($content instanceof File) {
+			return self::createFileResponse($content, $status);
+		}
 
 		// ImageResponse
 
@@ -82,6 +87,11 @@ final class ResponseManager extends ServiceProvider
 	}
 
 	// -----------------
+
+	public function createFileResponse(File|null $location = null, StatusCode|int $status = StatusCode::Found): FileResponse
+	{
+		return new FileResponse($location, $status, $this->config);
+	}
 
 	public function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse
 	{

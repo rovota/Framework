@@ -11,6 +11,7 @@ use JsonSerializable;
 use Laminas\Db\Metadata\Object\ViewObject;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Support\Str;
 
@@ -158,17 +159,20 @@ trait ResponseModifiers
 
 	protected function getFileNameForContent(string|null $name = null): string
 	{
-		if ($name === null) {
-			$name = 'download-'.Str::random(15);
-		}
-		
 		if (str_contains($name, '.')) {
 			return $name;
 		}
 
+		if ($this->content instanceof File) {
+			return sprintf('%s.%s', $name ?? $this->content->properties->name, $this->content->properties->extension);
+		}
+
+		if ($name === null) {
+			$name = 'download-'.Str::random(15);
+		}
+
 		return match(true) {
 			$this->content instanceof ViewObject => sprintf('%s.%s', $name, 'html'),
-//			$this->content instanceof FileInterface => sprintf('%s.%s', $name, $this->content->properties()->extension),
 			$this->content instanceof JsonSerializable, is_array($this->content) => sprintf('%s.%s', $name, 'json'),
 			default => sprintf('%s.%s', $name, 'txt')
 		};
