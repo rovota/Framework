@@ -57,7 +57,9 @@ trait UrlModifiers
 
 	public function withParameters(array $parameters): static
 	{
-		$this->config->parameters = $parameters;
+		foreach ($parameters as $name => $value) {
+			$this->config->set('parameters.'.$name, $value);
+		}
 		return $this;
 	}
 
