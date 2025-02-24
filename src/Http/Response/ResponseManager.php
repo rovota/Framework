@@ -88,9 +88,9 @@ final class ResponseManager extends ServiceProvider
 
 	// -----------------
 
-	public function createFileResponse(File|null $location = null, StatusCode|int $status = StatusCode::Found): FileResponse
+	public function createFileResponse(File $content, StatusCode|int $status = StatusCode::Found): FileResponse
 	{
-		return new FileResponse($location, $status, $this->config);
+		return new FileResponse($content, $status, $this->config);
 	}
 
 	public function createRedirectResponse(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found): RedirectResponse

@@ -149,11 +149,24 @@ trait ResponseModifiers
 
 	// -----------------
 
-	// -----------------
+	public function requireAuth(string $scheme, array $options, StatusCode $code = StatusCode::Unauthorized): static
+	{
+		$header = trim($scheme);
+		foreach ($options as $name => $value) {
+			$header .= sprintf(' %s="%s"', $name, $value);
+		}
 
-	// -----------------
+		$this->withHeader('WWW-Authenticate', $header);
+		$this->withStatus($code);
 
-	// -----------------
+		return $this;
+	}
+
+	public function requireBasicAuth(string|null $realm = null, StatusCode $code = StatusCode::Unauthorized): static
+	{
+		$this->requireAuth('Basic', $realm === null ? [] : ['realm' => $realm], $code);
+		return $this;
+	}
 
 	// -----------------
 

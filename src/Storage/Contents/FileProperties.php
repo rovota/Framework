@@ -7,10 +7,12 @@
 
 namespace Rovota\Framework\Storage\Contents;
 
+use Rovota\Framework\Facades\Storage;
 use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
+use Rovota\Framework\Validation\ValidationTools;
 
 final class FileProperties extends Config
 {
@@ -39,7 +41,7 @@ final class FileProperties extends Config
 	// -----------------
 
 	public DiskInterface $disk {
-		get => $this->get('disk');
+		get => $this->get('disk', Storage::disk());
 		set {
 			$this->set('disk', $value);
 		}
@@ -57,7 +59,10 @@ final class FileProperties extends Config
 	public string|null $mime_type {
 		get => $this->get('mime_type');
 		set {
-			$this->set('mime_type', trim($value));
+			$value = trim($value);
+			if (ValidationTools::mimeTypeExists($value)) {
+				$this->set('mime_type', $value);
+			}
 		}
 	}
 

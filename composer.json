@@ -25,6 +25,7 @@
       "ext-zip": "*",
       "ext-intl": "*",
       "ext-ctype": "*",
+      "ext-gd": "*",
       "dflydev/dot-access-data": "^3.0",
       "guzzlehttp/guzzle": "^7.9",
       "league/commonmark": "2.6",

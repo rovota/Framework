@@ -20,6 +20,8 @@ namespace Rovota\Framework\Support;
 final class QrCodeConfig extends Config
 {
 
+	// TODO: Convert this to modern get/set functions.
+
 	protected function getData(): string
 	{
 		return $this->string('data', '-');

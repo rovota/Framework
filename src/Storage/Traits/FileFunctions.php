@@ -27,7 +27,8 @@ trait FileFunctions
 		if (is_resource($this->contents)) {
 			return stream_get_contents($this->contents);
 		}
-		return $this->contents ?? '';
+
+		return (string) ($this->contents ?? '');
 	}
 
 	// -----------------

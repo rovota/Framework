@@ -12,6 +12,7 @@ use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Kernel\ServiceProvider;
+use Rovota\Framework\Storage\FilesArrayOrganizer;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
@@ -125,12 +126,9 @@ final class RequestManager extends ServiceProvider
 			}
 		});
 
-		// TODO: Implement request files processing
+		$files = FilesArrayOrganizer::organize($_FILES);
 
-//		$files = FilesArrayOrganizer::organize($_FILES);
-
-//		return array_merge($data, $files);
-		return $data;
+		return array_merge($data, $files);
 	}
 
 	protected function getRequestQueryData(): array

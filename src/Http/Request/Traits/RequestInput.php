@@ -14,6 +14,7 @@ use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Request\RequestData;
+use Rovota\Framework\Http\Request\UploadedFile;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Text;
 
@@ -176,7 +177,20 @@ trait RequestInput
 
 	// -----------------
 
-	// TODO: File methods
+	public function file(string $key): UploadedFile|null
+	{
+		$file = $this->post->get($key);
+		return $file instanceof UploadedFile ? $file : null;
+	}
+
+	public function files(string $key): array
+	{
+		$files = $this->post->get($key, []);
+
+		return array_filter(is_array($files) ? $files : [], function ($file) {
+			return $file instanceof UploadedFile;
+		});
+	}
 
 	// -----------------
 
