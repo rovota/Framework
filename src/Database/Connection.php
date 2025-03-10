@@ -106,4 +106,24 @@ abstract class Connection implements ConnectionInterface
 		return $this->handler->getLastId();
 	}
 
+	// -----------------
+
+	public function beginTransaction(): bool
+	{
+		$this->handler->adapter->getDriver()->getConnection()->beginTransaction();
+		return true;
+	}
+
+	public function commit(): bool
+	{
+		$this->handler->adapter->getDriver()->getConnection()->commit();
+		return true;
+	}
+
+	public function rollback(): bool
+	{
+		$this->handler->adapter->getDriver()->getConnection()->rollback();
+		return true;
+	}
+
 }

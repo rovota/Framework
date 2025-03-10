@@ -63,4 +63,12 @@ interface ConnectionInterface
 
 	public function lastId(): string|int;
 
+	// -----------------
+
+	public function beginTransaction(): bool;
+
+	public function commit(): bool;
+
+	public function rollback(): bool;
+
 }
