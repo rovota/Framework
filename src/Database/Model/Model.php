@@ -287,7 +287,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 				if ($this->getQueryBuilder()->insert()->data($this->attributes)->submit()) {
 					$this->config->stored = true;
-					$this->attributes[$this->config->primary_key] = $this->connection->handler->getLastId();
+					$this->attributes[$this->config->primary_key] = $this->connection->lastId();
 					$this->attributes_modified = [];
 
 					ModelSaved::dispatch($this);
