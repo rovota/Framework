@@ -21,6 +21,7 @@ use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
 use Rovota\Framework\Database\Traits\TrashQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
 use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Conditionable;
 
 final class SelectQuery extends QueryExtension
@@ -30,6 +31,8 @@ final class SelectQuery extends QueryExtension
 	// -----------------
 
 	protected Select $select;
+
+	protected array $columns = [];
 
 	// -----------------
 
@@ -60,7 +63,29 @@ final class SelectQuery extends QueryExtension
 
 	public function columns(array $columns): SelectQuery
 	{
-		$this->select->columns($columns);
+		foreach ($columns as $column => $value) {
+			if (is_numeric($column)) {
+				$this->column($value);
+				continue;
+			}
+
+			$this->column($value, $column);
+		}
+		return $this;
+	}
+
+	public function column(Expression|string $expression, string|null $name = null): SelectQuery
+	{
+		if (is_string($expression) && Str::containsAny($expression, ['(', ')'])) {
+			$expression = new Expression($expression);
+		}
+
+		if ($name === null) {
+			$this->columns[] = $expression;
+			return $this;
+		}
+
+		$this->columns[$name] = $expression;
 		return $this;
 	}
 
@@ -161,6 +186,10 @@ final class SelectQuery extends QueryExtension
 	{
 		$this->applyTrashConstraints();
 
+		if (empty($this->columns) === false) {
+			$this->select->columns($this->columns);
+		}
+
 		$results = $this->fetchResult($this->select);
 		$basket = new Basket();
 
@@ -179,9 +208,11 @@ final class SelectQuery extends QueryExtension
 	public function count(): int
 	{
 		$this->applyTrashConstraints();
+		$this->columns(['count' => new Expression('COUNT(*)')]);
 
 		$this->config->model = null;
-		$this->columns(['count' => new Expression('COUNT(*)')]);
+		$this->select->columns($this->columns);
+
 		$results = $this->fetchResult($this->select);
 		$basket = new Basket();
 
