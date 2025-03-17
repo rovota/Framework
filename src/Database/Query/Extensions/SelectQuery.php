@@ -187,6 +187,7 @@ final class SelectQuery extends QueryExtension
 		$this->applyTrashConstraints();
 
 		if (empty($this->columns) === false) {
+			$this->config->model = null;
 			$this->select->columns($this->columns);
 		}
 
