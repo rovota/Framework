@@ -25,8 +25,10 @@ use Rovota\Framework\Support\Str;
  * @method static Bucket findWithGroupName(string $name)
  *
  * @method static RouteGroup name(string $value)
- * @method static RouteGroup prefix(string $path)
+ * @method static RouteGroup path(string $path)
  * @method static RouteGroup controller(string $class)
+ * @method static RouteGroup middleware(string|array $identifiers)
+ * @method static RouteGroup withoutMiddleware(string|array $identifiers)
  * @method static RouteGroup where(array|string $parameter, string|null $pattern = null)
  * @method static RouteGroup whereHash(array|string $parameter, string|int $algorithm)
  * @method static RouteGroup whereNumber(array|string $parameter, int|null $length = null)
@@ -62,7 +64,7 @@ final class Route extends Facade
 			'router' => 'getRouter',
 
 			default => function (RouteManager $instance, string $method, array $parameters = []) {
-				$router = $instance->getRouter();
+				$router = $instance->router;
 
 				if (in_array($method, ['get', 'post', 'put', 'delete', 'options', 'patch', 'head'], true)) {
 					return $router->define(Str::upper($method), ...$parameters);
@@ -76,18 +78,20 @@ final class Route extends Facade
 					'findWithGroupName' => $router->findRoutesWithGroupName(...$parameters),
 
 					// Group
-					'name' => $instance->getRouteGroup()->name(...$parameters),
-					'prefix' => $instance->getRouteGroup()->prefix(...$parameters),
-					'controller' => $instance->getRouteGroup()->controller(...$parameters),
-					'where' => $instance->getRouteGroup()->where(...$parameters),
-					'whereHash' => $instance->getRouteGroup()->whereHash(...$parameters),
-					'whereNumber' => $instance->getRouteGroup()->whereNumber(...$parameters),
-					'whereSlug' => $instance->getRouteGroup()->whereSlug(...$parameters),
+					'name' => $instance->router->getGroup()->name(...$parameters),
+					'path' => $instance->router->getGroup()->path(...$parameters),
+					'controller' => $instance->router->getGroup()->controller(...$parameters),
+					'middleware' => $instance->router->getGroup()->middleware(...$parameters),
+					'withoutMiddleware' => $instance->router->getGroup()->withoutMiddleware(...$parameters),
+					'where' => $instance->router->getGroup()->where(...$parameters),
+					'whereHash' => $instance->router->getGroup()->whereHash(...$parameters),
+					'whereNumber' => $instance->router->getGroup()->whereNumber(...$parameters),
+					'whereSlug' => $instance->router->getGroup()->whereSlug(...$parameters),
 
 					// Definitions
 					'match' => $router->define(...$parameters),
 
-					default => $instance->getRouter()->$method(...$parameters)
+					default => $instance->router->$method(...$parameters)
 				};
 			},
 		};

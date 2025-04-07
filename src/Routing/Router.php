@@ -16,7 +16,6 @@ use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Http\Request\RequestManager;
-use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Structures\Bucket;
@@ -35,13 +34,19 @@ final class Router
 	/**
 	 * @var Bucket<int, RouteInstance>
 	 */
-	protected Bucket $routes;
+	protected Bucket $routes {
+		get {
+			return $this->routes;
+		}
+	}
+
+	protected RouteGroup|null $parent = null;
+
+	// -----------------
 
 	protected RouteInstance|null $current = null;
 
 	protected RouteInstance|null $fallback = null;
-
-	protected RouteGroup|null $parent = null;
 
 	// -----------------
 
@@ -50,6 +55,30 @@ final class Router
 		$this->routes = new Bucket();
 
 		$this->setFallback(StatusCode::NotFound);
+	}
+
+	// -----------------
+
+	public function define(array|string $methods, string $path, mixed $target = null): RouteInstance
+	{
+		$route = new RouteInstance($this->parent);
+		$route->methods($methods);
+		$route->target($target);
+		$route->path($path);
+
+		$this->routes->append($route);
+
+		return $route;
+	}
+
+	public function group(Closure $routes, RouteGroup $parent): void
+	{
+		$original_parent = $this->parent;
+		$this->parent = $parent;
+
+		call_user_func($routes);
+
+		$this->parent = $original_parent;
 	}
 
 	// -----------------
@@ -67,26 +96,9 @@ final class Router
 
 	// -----------------
 
-	public function setParent(RouteGroup $parent): void
-	{
-		$this->parent = $parent;
-	}
-
-	public function removeParent(): void
-	{
-		$this->parent = null;
-	}
-
-	// -----------------
-
 	public function getGroup(): RouteGroup
 	{
 		return new RouteGroup($this->parent);
-	}
-
-	public function getRoutes(): Bucket
-	{
-		return $this->routes;
 	}
 
 	public function getCurrentRoute(): RouteInstance|null
@@ -110,20 +122,6 @@ final class Router
 
 	// -----------------
 
-	public function define(array|string $methods, string $path, mixed $target = null): RouteInstance
-	{
-		$route = new RouteInstance($this->parent);
-		$route->methods($methods);
-		$route->target($target);
-		$route->path($path);
-
-		$this->routes->append($route);
-
-		return $route;
-	}
-
-	// -----------------
-
 	public function run(): void
 	{
 		$response = $this->attemptRoutes();
@@ -134,7 +132,7 @@ final class Router
 
 		echo $response;
 
-		if ($this->getRequest()->realMethod() === RequestMethod::Head) {
+		if (RequestManager::instance()->current()->realMethod() === RequestMethod::Head) {
 			Buffer::end();
 		}
 	}
@@ -143,9 +141,10 @@ final class Router
 
 	protected function attemptRoutes(): DefaultResponse|null
 	{
-		$method = $this->getRequest()->method();
-		$path = $this->getRequest()->path();
+		$method = RequestManager::instance()->current()->method();
+		$path = RequestManager::instance()->current()->path();
 
+		/** @var RouteInstance $route */
 		foreach ($this->routes as $route) {
 			if ($route->listensTo($method)) {
 				if (preg_match_all('#^' . $route->getPattern() . '$#', $path, $matches, PREG_OFFSET_CAPTURE) === 1) {
@@ -161,20 +160,21 @@ final class Router
 	protected function executeRoute(RouteInstance $route, array $parameters): DefaultResponse|null
 	{
 		$this->current = $route;
-		$route->setContext($parameters);
-//
+		$route->config->context = $parameters;
+
 //		if ($route->hasLimiter()) {
 //			LimitManager::hitAndTryLimiter($route->getLimiter());
 //		}
-//
-//		MiddlewareManager::execute($route->getMiddleware(), $route->getWithoutMiddleware());
-		// TODO: Attach middleware added to routes.
-		MiddlewareManager::instance()->execute([]);
+
+		$middleware = $route->attributes->array('middleware');
+		$middleware_exceptions = $route->attributes->array('middleware_exceptions');
+
+		MiddlewareManager::instance()->execute($middleware, $middleware_exceptions);
 		
-		if ($route->getTarget() instanceof Closure || is_array($route->getTarget())) {
-			$response = Resolver::invoke($route->getTarget(), $parameters);
+		if ($route->config->target instanceof Closure || is_array($route->config->target)) {
+			$response = Resolver::invoke($route->config->target, $parameters);
 		} else {
-			$response = $route->getTarget();
+			$response = $route->config->target;
 		}
 
 		return ($response instanceof DefaultResponse) ? $response : response($response);
@@ -199,13 +199,6 @@ final class Router
 
 			return isset($match[0][0]) && $match[0][1] != -1 ? trim($match[0][0], '/') : null;
 		}, $matches, array_keys($matches));
-	}
-
-	// -----------------
-
-	protected function getRequest(): RequestObject
-	{
-		return RequestManager::instance()->current();
 	}
 
 }

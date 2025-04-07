@@ -47,13 +47,13 @@ final class Url
 
 	public static function route(string $name, array $context = [], array $parameters = []): UrlObject
 	{
-		$route = RouteManager::instance()->getRouter()->findRouteByName($name);
+		$route = RouteManager::instance()->router->findRouteByName($name);
 
 		if ($route === null) {
 			return self::local('/');
 		}
 		
-		$path = Path::buildUsingContext($route->getPath(), $context);
+		$path = Path::buildUsingContext($route->config->path, $context);
 
 		return new UrlObject([
 			'path' => $path,

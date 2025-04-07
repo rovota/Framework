@@ -15,6 +15,7 @@ use Rovota\Framework\Security\Exceptions\IncorrectKeyException;
  */
 final class EncryptionManager extends ServiceProvider
 {
+
 	public EncryptionAgent $agent {
 		get {
 			return $this->agent;

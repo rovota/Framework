@@ -14,13 +14,30 @@ use Rovota\Framework\Support\Str;
 abstract class RouteEntry
 {
 
-	protected Bucket $attributes;
+	public RouteConfig $config {
+		get {
+			return $this->config;
+		}
+	}
+
+	public Bucket $attributes {
+		get {
+			return $this->attributes;
+		}
+	}
+
+	// -----------------
+
+	public RouteEntry|null $parent = null;
 
 	// -----------------
 
 	public function __construct(RouteEntry|null $parent = null)
 	{
+		$this->config = new RouteConfig();
 		$this->attributes = new Bucket();
+
+		$this->parent = $parent;
 
 		if ($parent !== null) {
 			$this->setAttributesFromParent($parent);
@@ -29,22 +46,9 @@ abstract class RouteEntry
 
 	// -----------------
 
-	/**
-	 * @internal
-	 */
-	public function getAttributes(): Bucket
-	{
-		return $this->attributes;
-	}
-
 	public function getName(): string
 	{
 		return $this->attributes->string('name', Str::random(20));
-	}
-
-	public function getPrefix(): string
-	{
-		return $this->attributes->string('prefix');
 	}
 
 	// -----------------
@@ -61,7 +65,15 @@ abstract class RouteEntry
 		return $this;
 	}
 
-	// -----------------
+	public function path(string $path): static
+	{
+		if ($this->parent !== null) {
+			$path = implode('/', [$this->parent->config->path, trim($path, '/')]);
+		}
+
+		$this->config->path = Str::start(trim($path, '/'), '/');
+		return $this;
+	}
 
 	// -----------------
 
@@ -94,17 +106,29 @@ abstract class RouteEntry
 
 	// -----------------
 
-	// -----------------
+	public function middleware(string|array $identifiers): static
+	{
+		foreach (is_array($identifiers) ? $identifiers : [$identifiers] as $identifier) {
+			$this->attributes->set('middleware', array_merge($this->attributes->array('middleware'), [trim($identifier)]));
+		}
 
-	// -----------------
+		return $this;
+	}
 
-	// -----------------
+	public function withoutMiddleware(string|array $identifiers): static
+	{
+		foreach (is_array($identifiers) ? $identifiers : [$identifiers] as $identifier) {
+			$this->attributes->set('middleware_exceptions', array_merge($this->attributes->array('middleware_exceptions'), [trim($identifier)]));
+		}
+
+		return $this;
+	}
 
 	// -----------------
 
 	protected function setAttributesFromParent(RouteEntry $parent): void
 	{
-		foreach ($parent->getAttributes() as $name => $value) {
+		foreach ($parent->attributes as $name => $value) {
 			$this->attributes->set($name, $value);
 		}
 	}

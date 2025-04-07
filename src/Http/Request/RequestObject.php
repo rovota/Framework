@@ -123,7 +123,7 @@ final class RequestObject
 
 	public function route(): RouteInstance|null
 	{
-		return RouteManager::instance()->getRouter()->getCurrentRoute();
+		return RouteManager::instance()->router->getCurrentRoute();
 	}
 
 	public function routeIsNamed(string $name): bool

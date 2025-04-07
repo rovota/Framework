@@ -22,6 +22,7 @@ use Rovota\Framework\Support\Text;
  */
 final class RequestManager extends ServiceProvider
 {
+
 	protected RequestObject $current;
 
 	// -----------------

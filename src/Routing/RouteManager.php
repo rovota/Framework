@@ -16,7 +16,11 @@ use Rovota\Framework\Support\Path;
 final class RouteManager extends ServiceProvider
 {
 
-	protected Router $router;
+	public Router $router {
+		get {
+			return $this->router;
+		}
+	}
 
 	// -----------------
 
@@ -38,18 +42,6 @@ final class RouteManager extends ServiceProvider
 		foreach ($file['sources'] as $source) {
 			require $source;
 		}
-	}
-
-	// -----------------
-
-	public function getRouter(): Router
-	{
-		return $this->router;
-	}
-
-	public function getRouteGroup(): RouteGroup
-	{
-		return $this->router->getGroup();
 	}
 
 }
