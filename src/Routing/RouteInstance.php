@@ -25,13 +25,6 @@ final class RouteInstance extends RouteEntry
 
 	// -----------------
 
-	public function getPattern(): string
-	{
-		return $this->buildPattern();
-	}
-
-	// -----------------
-
 	public function methods(array|string $methods): RouteInstance
 	{
 		if (is_string($methods)) {
@@ -60,6 +53,14 @@ final class RouteInstance extends RouteEntry
 	public function listensTo(RequestMethod $method): bool
 	{
 		return in_array($method->value, $this->config->methods);
+	}
+
+	/**
+	 * @internal
+	 */
+	public function getPattern(): string
+	{
+		return $this->buildPattern();
 	}
 
 	// -----------------
