@@ -7,6 +7,8 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Http\Throttling\Limiter;
+use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Security\Hash;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Str;
@@ -121,6 +123,23 @@ abstract class RouteEntry
 			$this->attributes->set('middleware_exceptions', array_merge($this->attributes->array('middleware_exceptions'), [trim($identifier)]));
 		}
 
+		return $this;
+	}
+
+	// -----------------
+
+	public function throttle(string $name): static
+	{
+		if (LimitManager::instance()->has($name)) {
+			$this->attributes->set('limiter', $name);
+		}
+
+		return $this;
+	}
+
+	public function withoutThrottling(): static
+	{
+		$this->attributes->remove('limiter');
 		return $this;
 	}
 

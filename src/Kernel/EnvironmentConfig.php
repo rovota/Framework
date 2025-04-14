@@ -15,6 +15,7 @@ use Rovota\Framework\Http\Cookie\CookieManager;
 use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\ResponseManager;
+use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Kernel\Events\EventManager;
 use Rovota\Framework\Localization\LocalizationManager;
 use Rovota\Framework\Logging\LoggingManager;
@@ -57,6 +58,7 @@ class EnvironmentConfig extends Config
 				'mail' => MailManager::class,
 				'response' => ResponseManager::class,
 				'views' => ViewManager::class,
+				'throttling' => LimitManager::class,
 				'middleware' => MiddlewareManager::class,
 				'routing' => RouteManager::class,
 			];

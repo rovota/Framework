@@ -17,6 +17,7 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\MiddlewareManager;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\DefaultResponse;
+use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Buffer;
@@ -162,9 +163,9 @@ final class Router
 		$this->current = $route;
 		$route->config->context = $parameters;
 
-//		if ($route->hasLimiter()) {
-//			LimitManager::hitAndTryLimiter($route->getLimiter());
-//		}
+		if ($route->attributes->has('limiter')) {
+			LimitManager::instance()->get($route->attributes->string('limiter'))->hitAndTry();
+		}
 
 		$middleware = $route->attributes->array('middleware');
 		$middleware_exceptions = $route->attributes->array('middleware_exceptions');
