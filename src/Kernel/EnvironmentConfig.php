@@ -42,7 +42,6 @@ class EnvironmentConfig extends Config
 	public array $services {
 		get {
 			$services = [
-				// Foundation
 				'registry' => RegistryManager::class,
 				'logging' => LoggingManager::class,
 				'cache' => CacheManager::class,
@@ -74,6 +73,15 @@ class EnvironmentConfig extends Config
 		}
 		set {
 			$this->set('services', $value);
+		}
+	}
+
+	// -----------------
+
+	public array $limiters {
+		get => $this->array('limiters');
+		set {
+			$this->set('limiters', $value);
 		}
 	}
 

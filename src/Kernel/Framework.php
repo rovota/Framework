@@ -10,6 +10,7 @@ namespace Rovota\Framework\Kernel;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Kernel\Exceptions\SystemRequirementException;
 use Rovota\Framework\Routing\RouteManager;
 
@@ -45,6 +46,7 @@ final class Framework
 		self::serverCompatCheck();
 		self::createEnvironment();
 		self::configureServices();
+		self::configureLimiters();
 
 		// Additional
 		TextConverter::initialize();
@@ -110,6 +112,8 @@ final class Framework
 		self::$environment = new Environment();
 	}
 
+	// -----------------
+
 	protected static function configureServices(): void
 	{
 		self::$services = new ServiceContainer();
@@ -118,6 +122,15 @@ final class Framework
 			self::$services->register($class, $name);
 		}
 	}
+
+	protected static function configureLimiters(): void
+	{
+		foreach (self::$environment->config->limiters as $name => $closure) {
+			LimitManager::instance()->define($name, $closure);
+		}
+	}
+
+	// -----------------
 
 	/**
 	 * @throws SystemRequirementException
