@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Caching\Adapters;
 
 use Redis;
-use RedisException;
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Support\Config;
@@ -24,9 +23,6 @@ class RedisAdapter implements CacheAdapterInterface
 
 	// -----------------
 
-	/**
-	 * @throws RedisException
-	 */
 	public function __construct(Config $parameters)
 	{
 		$this->redis = new Redis();
@@ -46,36 +42,24 @@ class RedisAdapter implements CacheAdapterInterface
 
 	// -----------------
 
-	/**
-	 * @throws RedisException
-	 */
 	public function has(string $key): bool
 	{
 		$result = $this->redis->exists($this->getScopedKey($key));
 		return $result === 1 || $result === true;
 	}
 
-	/**
-	 * @throws RedisException
-	 */
 	public function set(string $key, mixed $value, int $retention): void
 	{
 		$this->last_modified = $key;
 		$this->redis->set($this->getScopedKey($key), Resolver::serialize($value), $retention);
 	}
 
-	/**
-	 * @throws RedisException
-	 */
 	public function get(string $key): mixed
 	{
 		$key = $this->getScopedKey($key);
 		return $this->redis->exists($key) ? Resolver::deserialize($this->redis->get($key)) : null;
 	}
 
-	/**
-	 * @throws RedisException
-	 */
 	public function remove(string $key): void
 	{
 		$this->last_modified = $key;
@@ -84,18 +68,12 @@ class RedisAdapter implements CacheAdapterInterface
 
 	// -----------------
 
-	/**
-	 * @throws RedisException
-	 */
 	public function increment(string $key, int $step = 1): void
 	{
 		$this->last_modified = $key;
 		$this->redis->incrBy($this->getScopedKey($key), max($step, 0));
 	}
 
-	/**
-	 * @throws RedisException
-	 */
 	public function decrement(string $key, int $step = 1): void
 	{
 		$this->last_modified = $key;
@@ -104,9 +82,6 @@ class RedisAdapter implements CacheAdapterInterface
 
 	// -----------------
 
-	/**
-	 * @throws RedisException
-	 */
 	public function flush(): void
 	{
 		$this->redis->flushDB();
