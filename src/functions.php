@@ -12,6 +12,7 @@ use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
+use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Storage\Contents\File;
@@ -208,6 +209,37 @@ if (!function_exists('throw_unless')) {
 	{
 		if ($bool === false) {
 			throw (is_string($throwable) ? new $throwable($message) : $throwable);
+		}
+	}
+}
+
+if (!function_exists('retry')) {
+	function retry(int $attempts, callable $action, callable|int $delay = 100, callable|null $filter = null, mixed $fallback = null): mixed
+	{
+		$throwable = null;
+		$value = null;
+
+		for ($tries = 1; $tries < $attempts + 1; $tries++) {
+			try {
+				$value = $action();
+			} catch (Throwable $e) {
+				if ($filter === null || (is_callable($filter) && $filter($e))) {
+					if ($tries === $attempts) {
+						$throwable = $e;
+					}
+					$delay = is_callable($delay) ? $delay($tries) : $delay;
+					usleep($delay * 1000);
+					continue;
+				}
+			}
+			break;
+		}
+
+		if ($throwable instanceof Throwable) {
+			ExceptionHandler::logThrowable($throwable);
+			return $fallback;
+		} else {
+			return $value;
 		}
 	}
 }
