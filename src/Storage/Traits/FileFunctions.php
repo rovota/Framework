@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Storage\Traits;
 
 use Rovota\Framework\Storage\Contents\Directory;
+use Rovota\Framework\Storage\Contents\Extensions\Text\Text;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Str;
 
@@ -24,10 +25,6 @@ trait FileFunctions
 
 	public function asString(): string
 	{
-		if (is_resource($this->contents)) {
-			return stream_get_contents($this->contents);
-		}
-
 		return (string) ($this->contents ?? '');
 	}
 
@@ -42,7 +39,7 @@ trait FileFunctions
 
 	public function write(mixed $content): static
 	{
-		$this->contents = $content;
+		$this->contents = $this->createContentInstance($content);;
 		$this->modified = true;
 		return $this;
 	}
@@ -101,7 +98,7 @@ trait FileFunctions
 
 	public function clear(): static
 	{
-		$this->contents = '';
+		$this->contents = null;
 		$this->modified = true;
 		return $this;
 	}
@@ -111,7 +108,7 @@ trait FileFunctions
 	public function prepend(string $content, bool $new_line = true): static
 	{
 		$new_line = empty($this->asString()) === false && $new_line === true;
-		$this->contents = Str::finish($content, $new_line ? "\n" : '').$this->asString();
+		$this->contents = new Text(Str::finish($content, $new_line ? "\n" : '').$this->asString());
 		$this->modified = true;
 		return $this;
 	}
@@ -119,14 +116,14 @@ trait FileFunctions
 	public function append(string $content, bool $new_line = true): static
 	{
 		$new_line = empty($this->asString()) === false && $new_line === true;
-		$this->contents = Str::finish($this->asString(), $new_line ? "\n" : '').$content;
+		$this->contents = new Text(Str::finish($this->asString(), $new_line ? "\n" : '').$content);
 		$this->modified = true;
 		return $this;
 	}
 
 	public function findAndReplace(array|string $search, array|string $replace, bool $count = false): static|int
 	{
-		$this->contents = str_replace($search, $replace, $this->asString(), $count);
+		$this->contents = new Text(str_replace($search, $replace, $this->asString(), $count));
 		$this->modified = true;
 		return $count ?: $this;
 	}
@@ -160,10 +157,6 @@ trait FileFunctions
 	public function save(): static
 	{
 		if ($this->modified) {
-			if (is_resource($this->contents)) {
-				$this->properties->disk->writeStream($this->location(), $this->contents);
-				return $this;
-			}
 			$this->properties->disk->write($this->location(), $this->asString());
 		}
 		return $this;
