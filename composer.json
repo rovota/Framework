@@ -15,6 +15,7 @@
 
    "require": {
       "php-64bit": "^8.3.0",
+      "ext-apcu": "*",
       "ext-curl": "*",
       "ext-exif": "*",
       "ext-fileinfo": "*",
@@ -54,7 +55,6 @@
       "league/flysystem-async-aws-s3": "Allows usage of S3 compatible services as file storage.",
       "league/flysystem-sftp-v3": "Allows usage of SFTP file storage.",
       "ext-redis": "Allows you to use Redis-based caching.",
-      "ext-apcu": "Allows you to use APCu-based caching.",
       "ext-imagick": "Required for being able to process/modify images."
    },
 
