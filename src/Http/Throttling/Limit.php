@@ -12,7 +12,6 @@ use Closure;
 use Rovota\Framework\Facades\Response;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Throttling\Enums\IdentifierType;
-use Rovota\Framework\Http\Throttling\Enums\PeriodType;
 use Rovota\Framework\Http\Throttling\Traits\LimitStarters;
 use Rovota\Framework\Support\Traits\Conditionable;
 

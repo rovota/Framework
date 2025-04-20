@@ -39,7 +39,7 @@ trait FileFunctions
 
 	public function write(mixed $content): static
 	{
-		$this->contents = $this->createContentInstance($content);;
+		$this->contents = $this->createContentInstance($content);
 		$this->modified = true;
 		return $this;
 	}

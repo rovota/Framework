@@ -9,6 +9,11 @@ namespace Rovota\Framework\Database\Model\Traits;
 
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 
+/**
+ * @property array $attributes
+ *
+ * @method mixed getAttribute(string $name)
+ */
 trait Trashable
 {
 	const string TRASHED_COLUMN = 'deleted';

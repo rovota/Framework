@@ -29,7 +29,7 @@ abstract class Unit implements Stringable, JsonSerializable
 		return (string) $this->value;
 	}
 
-	public static function __callStatic(string $name, array $parameters = []): mixed
+	public static function __callStatic(string $name, array $parameters = []): static|null
 	{
 		if (Str::startsWith($name, 'from')) {
 			$unit = Str::lower(Str::after($name, 'from'));
@@ -39,7 +39,7 @@ abstract class Unit implements Stringable, JsonSerializable
 		return null;
 	}
 
-	public function __call(string $name, array $parameters = []): mixed
+	public function __call(string $name, array $parameters = []): Unit|static
 	{
 		if (Str::startsWith($name, 'to')) {
 			$unit = Str::lower(Str::after($name, 'to'));

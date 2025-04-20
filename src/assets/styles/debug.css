@@ -251,7 +251,7 @@ nav > ul > li a {
     background: rgba(170, 79, 225, 1);
 }
 
-.stack > traces > content > trace > span badge.non-static {
+.stack > traces > content > trace > span badge.dynamic {
     background: rgba(246, 144, 45, 1);
 }
 

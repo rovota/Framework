@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Routing;
 
-use Rovota\Framework\Http\Throttling\Limiter;
 use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Security\Hash;
 use Rovota\Framework\Structures\Bucket;

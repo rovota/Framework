@@ -7,12 +7,12 @@
 
 namespace Rovota\Framework\Caching\Drivers;
 
-use RedisException;
 use Rovota\Framework\Caching\Adapters\RedisAdapter;
 use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\CacheStoreConfig;
 use Rovota\Framework\Caching\Exceptions\CacheMisconfigurationException;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Throwable;
 
 class RedisDriver extends CacheStore
 {
@@ -26,7 +26,7 @@ class RedisDriver extends CacheStore
 
 		try {
 			$adapter = new RedisAdapter($config->parameters);
-		} catch (RedisException $throwable) {
+		} catch (Throwable $throwable) {
 			ExceptionHandler::handleThrowable($throwable);
 			quit();
 		}

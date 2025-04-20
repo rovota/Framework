@@ -158,7 +158,7 @@ final class ExceptionHandler
 				'class' => $trace['class'] ?? null,
 				'type' => match ($trace['type'] ?? null) {
 					'::' => '<badge class="static">Static</badge>',
-					'->' => '<badge class="non-static">Non-Static</badge>',
+					'->' => '<badge class="dynamic">Non-Static</badge>',
 					default => '',
 				},];
 		}
