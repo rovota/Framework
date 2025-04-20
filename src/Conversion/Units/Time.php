@@ -10,6 +10,7 @@ namespace Rovota\Framework\Conversion\Units;
 use Rovota\Framework\Conversion\Enums\UnitType;
 use Rovota\Framework\Conversion\Units\Time\Day;
 use Rovota\Framework\Conversion\Units\Time\Hour;
+use Rovota\Framework\Conversion\Units\Time\MicroSecond;
 use Rovota\Framework\Conversion\Units\Time\MilliSecond;
 use Rovota\Framework\Conversion\Units\Time\Minute;
 use Rovota\Framework\Conversion\Units\Time\Second;
@@ -23,7 +24,7 @@ use Rovota\Framework\Conversion\Units\Time\Year;
  * @method static self fromHours(float|int $value)
  * @method static self fromMinutes(float|int $value)
  * @method static self fromSeconds(float|int $value)
- * @method static self fromMilliseconds(float|int $value)
+ * @method static self fromMicroseconds(float|int $value)
  *
  * @method self toYears()
  * @method self toWeeks()
@@ -32,6 +33,7 @@ use Rovota\Framework\Conversion\Units\Time\Year;
  * @method self toMinutes()
  * @method self toSeconds()
  * @method self toMilliseconds()
+ * @method self toMicroseconds()
  */
 abstract class Time extends Unit
 {
@@ -51,6 +53,7 @@ abstract class Time extends Unit
 			'm', 'minute', 'minutes' => Minute::class,
 			's', 'second', 'seconds' => Second::class,
 			'ms', 'millisecond', 'milliseconds' => MilliSecond::class,
+			'μs', 'microsecond', 'microseconds' => MicroSecond::class,
 			default => null,
 		};
 	}
