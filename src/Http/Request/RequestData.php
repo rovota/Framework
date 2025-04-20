@@ -46,6 +46,26 @@ class RequestData extends Bucket
 
 	// -----------------
 
+	public function merge(array $data): static
+	{
+		foreach ($data as $key => $value) {
+			$this->set($key, $value);
+		}
+		return $this;
+	}
+
+	public function mergeIfMissing(array $data): static
+	{
+		foreach ($data as $key => $value) {
+			if ($this->missing($key)) {
+				$this->set($key, $value);
+			}
+		}
+		return $this;
+	}
+
+	// -----------------
+
 	/**
 	 * @internal
 	 */
