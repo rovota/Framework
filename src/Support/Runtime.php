@@ -8,6 +8,8 @@
 namespace Rovota\Framework\Support;
 
 use Rovota\Framework\Conversion\Units\Time;
+use Rovota\Framework\Kernel\ExceptionHandler;
+use Throwable;
 
 final class Runtime
 {
@@ -30,6 +32,29 @@ final class Runtime
 		$this->duration = (int) $time->getValue();
 
 		return $this;
+	}
+
+	// -----------------
+
+	public function execute(callable $callback): mixed
+	{
+		$result = null;
+
+		$start = microtime(true);
+
+		try {
+			$result = $callback($this);
+		} catch (Throwable $throwable) {
+			ExceptionHandler::handleThrowable($throwable);
+		}
+
+		$remainder = intval($this->duration - ((microtime(true) - $start) * 1000000));
+
+		if ($remainder > 0) {
+			usleep($remainder);
+		}
+
+		return $result;
 	}
 
 }
