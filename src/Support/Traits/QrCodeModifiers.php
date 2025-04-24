@@ -11,16 +11,6 @@ namespace Rovota\Framework\Support\Traits;
 
 use Rovota\Framework\Support\QrCode;
 
-/**
- * @property-read string $data
- * @property-read string $format
- * @property int $margin
- * @property int $height
- * @property int $width
- * @property-read string $size
- * @property string $background
- * @property string $foreground
- */
 trait QrCodeModifiers
 {
 

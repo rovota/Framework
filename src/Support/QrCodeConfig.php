@@ -7,91 +7,60 @@
 
 namespace Rovota\Framework\Support;
 
-/**
- * @property-read string $data
- * @property-read string $format
- * @property int $margin
- * @property int $height
- * @property int $width
- * @property-read string $size
- * @property string $background
- * @property string $foreground
- */
 final class QrCodeConfig extends Config
 {
 
-	// TODO: Convert this to modern get/set functions.
-
-	protected function getData(): string
-	{
-		return $this->string('data', '-');
+	public string $data {
+		get => $this->string('data', '-');
 	}
 
-	protected function getFormat(): string
-	{
-		// PNG, GIF, JPEG, SVG, EPS
-		return $this->string('format', 'svg');
+	public string $format {
+		get => $this->string('format', 'svg'); // PNG, GIF, JPEG, SVG, EPS
 	}
 
 	// -----------------
 
-	protected function getMargin(): int
-	{
-		return $this->int('margin', 4);
-	}
-
-	protected function setMargin(int $margin): void
-	{
-		$this->set('margin', limit(abs($margin), 0, 100));
+	public string $margin {
+		get => $this->int('margin', 4);
+		set {
+			$this->set('margin', limit(abs($value), 0, 100));
+		}
 	}
 
 	// -----------------
 
-	protected function getHeight(): int
-	{
-		return $this->int('height', 200);
+	public string $height {
+		get => $this->int('height', 200);
+		set {
+			$this->set('height', abs($value));
+		}
 	}
 
-	protected function setHeight(int $height): void
-	{
-		$this->set('height', abs($height));
+	public string $width {
+		get => $this->int('width', 200);
+		set {
+			$this->set('width', abs($value));
+		}
 	}
 
-	protected function getWidth(): int
-	{
-		return $this->int('width', 200);
-	}
-
-	protected function setWidth(int $width): void
-	{
-		$this->set('width', abs($width));
-	}
-
-	protected function getSize(): string
-	{
-		return $this->getHeight().'x'.$this->getWidth();
+	public string $size {
+		get => $this->height.'x'.$this->width;
 	}
 
 	// -----------------
 
-	protected function getBackground(): string
-	{
-		return $this->string('background', 'FFFFFF');
+	public string $background {
+		get => $this->string('background', 'FFFFFF');
+		set {
+			$this->set('background', Str::remove($value, '#'));
+		}
 	}
 
-	protected function setBackground(string $color): void
-	{
-		$this->set('background', Str::remove($color, '#'));
-	}
-
-	protected function getForeground(): string
-	{
-		return $this->string('foreground', '000000');
-	}
-
-	protected function setForeground(string $color): void
-	{
-		$this->set('foreground', Str::remove($color, '#'));
+	public string $foreground {
+		get => $this->string('foreground', '000000');
+		set {
+			$this->set('foreground', Str::remove($value, '#'));
+		}
 	}
 
 }

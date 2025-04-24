@@ -63,12 +63,12 @@ final class QrCode implements Stringable, JsonSerializable
 	public function url(): UrlObject
 	{
 		return Url::foreign('api.qrserver.com/v1/create-qr-code')->withParameters([
-			'size' => $this->size,
-			'bgcolor' => $this->background,
-			'color' => $this->foreground,
-			'qzone' => $this->margin,
-			'format' => $this->format,
-			'data' => $this->data,
+			'size' => $this->config->size,
+			'bgcolor' => $this->config->background,
+			'color' => $this->config->foreground,
+			'qzone' => $this->config->margin,
+			'format' => $this->config->format,
+			'data' => $this->config->data,
 		]);
 	}
 
