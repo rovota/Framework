@@ -49,14 +49,10 @@ final class ResponseManager extends ServiceProvider
 
 	public function createResponse(mixed $content, StatusCode|int $status = StatusCode::Ok): DefaultResponse
 	{
-		// TODO: Return different response classes based on detected content.
-
 		// FileResponse
 		if ($content instanceof File) {
 			return self::createFileResponse($content, $status);
 		}
-
-		// ImageResponse
 
 		// RedirectResponse
 		if ($content instanceof UrlObject) {
