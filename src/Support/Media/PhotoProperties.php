@@ -5,8 +5,9 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support;
+namespace Rovota\Framework\Support\Media;
 
+use Rovota\Framework\Support\Config;
 use Rovota\Framework\Validation\ValidationTools;
 
 final class PhotoProperties extends Config

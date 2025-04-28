@@ -11,7 +11,7 @@ use OTPHP\TOTP;
 use OTPHP\TOTPInterface;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Support\Clock;
-use Rovota\Framework\Support\QrCode;
+use Rovota\Framework\Support\Media\QrCode;
 
 final class OneTimePassword
 {

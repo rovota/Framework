@@ -10,7 +10,7 @@ namespace Rovota\Framework\Storage\Contents\Extensions\Image;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Storage\Contents\FileProperties;
 use Rovota\Framework\Storage\Interfaces\FileContent;
-use Rovota\Framework\Support\Photo;
+use Rovota\Framework\Support\Media\Photo;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Validation\ValidationTools;
 use Stringable;

@@ -5,11 +5,12 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support;
+namespace Rovota\Framework\Support\Media;
 
 use JsonSerializable;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Traits\QrCodeModifiers;
+use Rovota\Framework\Support\Url;
 use Stringable;
 
 final class QrCode implements Stringable, JsonSerializable

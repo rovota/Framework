@@ -9,7 +9,7 @@
 
 namespace Rovota\Framework\Support\Traits;
 
-use Rovota\Framework\Support\QrCode;
+use Rovota\Framework\Support\Media\QrCode;
 
 trait QrCodeModifiers
 {

@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support;
+namespace Rovota\Framework\Support\Media;
 
 use GdImage;
 use Rovota\Framework\Support\Traits\PhotoModifiers;
