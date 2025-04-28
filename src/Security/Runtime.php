@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support;
+namespace Rovota\Framework\Security;
 
 use Rovota\Framework\Conversion\Units\Time;
 use Rovota\Framework\Kernel\ExceptionHandler;
