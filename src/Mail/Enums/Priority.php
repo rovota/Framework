@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Mail\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Priority: int
 {
-	use EnumHelpers;
 
 	case High = 1;
 	case Normal = 3;

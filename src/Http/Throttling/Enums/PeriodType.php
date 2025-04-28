@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Http\Throttling\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum PeriodType: string
 {
-	use EnumHelpers;
 
 	case Second = 'second';
 	case Minute = 'minute';

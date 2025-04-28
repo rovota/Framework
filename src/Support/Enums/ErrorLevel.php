@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Support\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum ErrorLevel: string
 {
-	use EnumHelpers;
 
 	case Log = 'log';
 	case Debug = 'debug';

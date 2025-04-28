@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Storage\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Driver: string
 {
-	use EnumHelpers;
 
 	case Custom = 'custom';
 	case Local = 'local';

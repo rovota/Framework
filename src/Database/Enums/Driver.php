@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Database\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Driver: string
 {
-	use EnumHelpers;
 
 	case MySql = 'mysql';
 	case PostgreSql = 'postgresql';

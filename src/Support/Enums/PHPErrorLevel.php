@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Support\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum PHPErrorLevel: int
 {
-	use EnumHelpers;
 
 	case Error = 1;
 	case Warning = 2;

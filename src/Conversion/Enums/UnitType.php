@@ -16,11 +16,9 @@ use Rovota\Framework\Conversion\Units\Speed;
 use Rovota\Framework\Conversion\Units\Temperature;
 use Rovota\Framework\Conversion\Units\Time;
 use Rovota\Framework\Conversion\Units\Volume;
-use Rovota\Framework\Support\Traits\EnumHelpers;
 
 enum UnitType: int
 {
-	use EnumHelpers;
 
 //	case Area = 1;
 //	case DataTransferRate = 2;

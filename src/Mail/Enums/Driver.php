@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Mail\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Driver: string
 {
-	use EnumHelpers;
 
 	case SMTP = 'smtp';
 	case Basic = 'mail';

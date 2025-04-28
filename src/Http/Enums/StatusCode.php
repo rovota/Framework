@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Http\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum StatusCode: int
 {
-	use EnumHelpers;
 
 	// 1xx
 	case Continue = 100;

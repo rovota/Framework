@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Caching\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Driver: string
 {
-	use EnumHelpers;
 
 	case APCu = 'apcu';
 	case Array = 'array';

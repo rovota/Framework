@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Kernel\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum EnvironmentType: string
 {
-	use EnumHelpers;
 
 	case Development = 'development';
 	case Testing = 'testing';

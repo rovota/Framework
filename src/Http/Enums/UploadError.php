@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Http\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum UploadError: int
 {
-	use EnumHelpers;
 
 	case ExceedsIniSize = 1;
 	case ExceedsFormSize = 2;

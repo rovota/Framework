@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Logging\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Driver: string
 {
-	use EnumHelpers;
 
 	case Discord = 'discord';
 	case Monolog = 'monolog';

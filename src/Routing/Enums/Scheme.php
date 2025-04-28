@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Routing\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum Scheme: string
 {
-	use EnumHelpers;
 
 	case Chrome = 'chrome';
 	case ChromeExtension = 'chrome-extension';

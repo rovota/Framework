@@ -7,11 +7,8 @@
 
 namespace Rovota\Framework\Http\Enums;
 
-use Rovota\Framework\Support\Traits\EnumHelpers;
-
 enum RequestMethod: string
 {
-	use EnumHelpers;
 
 	case Get = 'GET';
 	case Head = 'HEAD';

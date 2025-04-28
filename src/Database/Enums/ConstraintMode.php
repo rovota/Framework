@@ -8,11 +8,9 @@
 namespace Rovota\Framework\Database\Enums;
 
 use Laminas\Db\Sql\Predicate\PredicateSet;
-use Rovota\Framework\Support\Traits\EnumHelpers;
 
 enum ConstraintMode: string
 {
-	use EnumHelpers;
 
 	case And = 'AND';
 	case Or = 'OR';
