@@ -24,6 +24,7 @@ use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Security\EncryptionManager;
 use Rovota\Framework\Storage\StorageManager;
 use Rovota\Framework\Support\Config;
+use Rovota\Framework\Validation\ValidationManager;
 use Rovota\Framework\Views\ViewManager;
 use RuntimeException;
 
@@ -50,6 +51,7 @@ class EnvironmentConfig extends Config
 				'storage' => StorageManager::class,
 				'client' => ClientManager::class,
 				'encryption' => EncryptionManager::class,
+				'validation' => ValidationManager::class,
 				'casting' => CastingManager::class,
 				'cookie' => CookieManager::class,
 				'request' => RequestManager::class,

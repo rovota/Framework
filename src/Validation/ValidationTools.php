@@ -153,14 +153,14 @@ final class ValidationTools
 	protected static function loadMimeTypes(): void
 	{
 		if (empty(self::$mime_types)) {
-			self::$mime_types = include 'mime_types.php';
+			self::$mime_types = include 'sources/mime_types.php';
 		}
 	}
 
 	protected static function loadMimeTypesReversed(): void
 	{
 		if (empty(self::$mime_types_reverse)) {
-			self::$mime_types_reverse = include 'mime_types_reverse.php';
+			self::$mime_types_reverse = include 'sources/mime_types_reverse.php';
 		}
 	}
 

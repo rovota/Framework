@@ -26,4 +26,5 @@ class SystemRequirementSolution implements Solution
 	{
 		return ['System Requirements' => 'https://docs.rovota.com'];
 	}
+
 }
