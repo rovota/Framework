@@ -8,7 +8,9 @@
 namespace Rovota\Framework\Validation;
 
 use Rovota\Framework\Database\ConnectionManager;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Facades\DB;
+use Rovota\Framework\Http\Request\UploadedFile;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Arr;
@@ -32,19 +34,19 @@ final class ValidationTools
 	/**
 	 * @internal
 	 */
-	public static function processDatabaseOptions(string $field, array $options): array
+	public static function processDatabaseOptions(array $options): array
 	{
 		$config = [
 			'connection' => ConnectionManager::instance()->getDefault(),
-			'column' => $field,
-			'model' => null,
+			'column' => 'id',
 		];
 
 		if (str_contains($options[0],'\\')) {
+			/** @var Model $model */
 			$model = new $options[0]();
 			$config['connection'] = $model->config->connection;
 			$config['table'] = $model->config->table;
-			$config['model'] = $model::class;
+			$config['column'] = $model->config->primary_key;
 		} else if (str_contains($options[0],'.')) {
 			$location = explode('.', $options[0]);
 			$config['connection'] = $location[0];
@@ -65,18 +67,11 @@ final class ValidationTools
 	 */
 	public static function getOccurrences(array $config, mixed $data): int
 	{
-		try {
-			if ($config['model'] === null) {
-				$occurrences = DB::connection($config['connection'])->select()->from($config['table'])->where($config['column'], $data)->count();
-			} else {
-				$occurrences = $config['model']::where($config['column'], $data)->count();
-			}
-		} catch (Throwable $throwable) {
-			ExceptionHandler::handleThrowable($throwable);
-			return 0;
-		}
-
-		return $occurrences ?? 0;
+		return DB::connection($config['connection'])
+			->select()
+			->from($config['table'])
+			->where($config['column'], $data)
+			->count();
 	}
 
 	// -----------------
@@ -85,7 +80,7 @@ final class ValidationTools
 	{
 		return match(true) {
 			$data instanceof File => round($data->properties->size / 1024), // Bytes to Kilobytes
-//			$data instanceof UploadedFile => round($data->variant('original')->properties()->size / 1024), // Bytes to Kilobytes
+			$data instanceof UploadedFile => round($data->properties->size / 1024), // Bytes to Kilobytes
 			is_int($data), is_float($data) => $data,
 			is_numeric($data), is_string($data) => Str::length($data),
 			is_array($data) => count($data),

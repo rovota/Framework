@@ -13,10 +13,14 @@ use Rovota\Framework\Validation\Rules\Advanced\DeclinedRule;
 use Rovota\Framework\Validation\Rules\Advanced\DifferentRule;
 use Rovota\Framework\Validation\Rules\Advanced\EmailRule;
 use Rovota\Framework\Validation\Rules\Advanced\EqualRule;
+use Rovota\Framework\Validation\Rules\Advanced\ExistsRule;
+use Rovota\Framework\Validation\Rules\Advanced\HashRule;
+use Rovota\Framework\Validation\Rules\Advanced\HibpRule;
 use Rovota\Framework\Validation\Rules\Advanced\NotRegexRule;
 use Rovota\Framework\Validation\Rules\Advanced\RegexRule;
 use Rovota\Framework\Validation\Rules\Advanced\RequiredIfAccepted;
 use Rovota\Framework\Validation\Rules\Advanced\RequiredIfDeclined;
+use Rovota\Framework\Validation\Rules\Advanced\UniqueRule;
 use Rovota\Framework\Validation\Rules\DateTime\AfterOrEqualRule;
 use Rovota\Framework\Validation\Rules\DateTime\AfterRule;
 use Rovota\Framework\Validation\Rules\DateTime\BeforeOrEqualRule;
@@ -43,6 +47,9 @@ use Rovota\Framework\Validation\Rules\Standard\NotInRule;
 use Rovota\Framework\Validation\Rules\Standard\RangeRule;
 use Rovota\Framework\Validation\Rules\Standard\SizeRule;
 use Rovota\Framework\Validation\Rules\Standard\StartsWithRule;
+use Rovota\Framework\Validation\Rules\Storage\ExtensionsRule;
+use Rovota\Framework\Validation\Rules\Storage\MimesRule;
+use Rovota\Framework\Validation\Rules\Storage\MimeTypesRule;
 use Rovota\Framework\Validation\Rules\Typing\ArrayRule;
 use Rovota\Framework\Validation\Rules\Typing\BooleanRule;
 use Rovota\Framework\Validation\Rules\Typing\EnumRule;
@@ -72,6 +79,7 @@ final class RuleManager
 		self::registerAdvancedRules();
 		self::registerDateTimeRules();
 		self::registerStandardRules();
+		self::registerStorageRules();
 		self::registerTypingRules();
 	}
 
@@ -96,15 +104,14 @@ final class RuleManager
 		self::register('different', DifferentRule::class);
 		self::register('email', EmailRule::class);
 		self::register('equal', EqualRule::class);
-//		self::register('exists', ExistsRule::class);
-//		self::register('filter', FilterRule::class);
-//		self::register('hash', HashRule::class);
-//		self::register('hibp', HibpRule::class);
+		self::register('exists', ExistsRule::class);
+		self::register('hash', HashRule::class);
+		self::register('hibp', HibpRule::class);
 		self::register('not_regex', NotRegexRule::class);
 		self::register('regex', RegexRule::class);
 		self::register('required_if_accepted', RequiredIfAccepted::class);
 		self::register('required_if_declined', RequiredIfDeclined::class);
-//		self::register('unique', UniqueRule::class);
+		self::register('unique', UniqueRule::class);
 	}
 
 	protected static function registerDateTimeRules(): void
@@ -142,6 +149,13 @@ final class RuleManager
 		self::register('not_in', NotInRule::class);
 	}
 
+	protected static function registerStorageRules(): void
+	{
+		self::register('extensions', ExtensionsRule::class);
+		self::register('mimes', MimesRule::class);
+		self::register('mime_types', MimeTypesRule::class);
+	}
+
 	protected static function registerTypingRules(): void
 	{
 		self::register('array', ArrayRule::class);
@@ -154,15 +168,6 @@ final class RuleManager
 		self::register('moment', MomentRule::class);
 		self::register('numeric', NumericRule::class);
 		self::register('string', StringRule::class);
-	}
-
-	// -----------------
-
-	protected static function registerDefaultRules(): void
-	{
-//		self::register('extensions', ExtensionsRule::class);
-//		self::register('mime_types', MimeTypesRule::class);
-//		self::register('mimes', MimesRule::class);
 	}
 
 }
