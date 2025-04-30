@@ -168,8 +168,8 @@ class RuleSet
 
 	public function addError(string $type, string $identifier, string $message, array $data = []): void
 	{
-		if (isset($this->message_overrides[$type][$identifier])) {
-			$message = $this->message_overrides[$type][$identifier];
+		if (isset($this->message_overrides[$identifier])) {
+			$message = $this->message_overrides[$identifier];
 		}
 
 		$this->errors->set($identifier, $message, $data);
