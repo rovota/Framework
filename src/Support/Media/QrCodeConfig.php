@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support\Media;
 
 use Rovota\Framework\Support\Config;
+use Rovota\Framework\Support\Str;
 
 final class QrCodeConfig extends Config
 {
