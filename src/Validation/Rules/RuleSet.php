@@ -38,10 +38,11 @@ class RuleSet
 
 	public function __construct(string $attribute)
 	{
-		$this->attribute = $attribute;
-
-		$this->data = new Bucket();
 		$this->errors = new MessageBag();
+		$this->error_messages = new Bucket();
+
+		$this->attribute = $attribute;
+		$this->data = new Bucket();
 	}
 
 	// -----------------
@@ -149,7 +150,9 @@ class RuleSet
 	protected function failureCallback(string $identifier): Closure
 	{
 		return function (string $message, array $data = []) use ($identifier) {
-			$this->addError($this->attribute, $identifier, $message, $data);
+			$this->addError($this->attribute, $identifier, $message, array_merge($data, [
+				'attribute' => $this->attribute,
+			]));
 		};
 	}
 
@@ -168,8 +171,8 @@ class RuleSet
 
 	public function addError(string $type, string $identifier, string $message, array $data = []): void
 	{
-		if (isset($this->message_overrides[$identifier])) {
-			$message = $this->message_overrides[$identifier];
+		if ($this->error_messages->has($identifier)) {
+			$message = $this->error_messages->string($identifier);
 		}
 
 		$this->errors->set($identifier, $message, $data);

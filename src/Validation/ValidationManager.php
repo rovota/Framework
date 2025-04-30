@@ -31,14 +31,4 @@ final class ValidationManager extends ServiceProvider
 		RuleManager::initialize();
 	}
 
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
-	// -----------------
-
 }

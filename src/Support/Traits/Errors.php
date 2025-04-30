@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Support\Traits;
 
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Validation\Validator;
 
@@ -15,14 +16,14 @@ trait Errors
 
 	public MessageBag $errors;
 
-	protected array $message_overrides = [];
+	protected Bucket $error_messages;
 
 	// -----------------
 
 	public function addError(string $type, string $identifier, string $message, array $data = []): void
 	{
-		if (isset($this->message_overrides[$type][$identifier])) {
-			$message = $this->message_overrides[$type][$identifier];
+		if ($this->error_messages->has($type)) {
+			$message = $this->error_messages->array($type)[$identifier];
 		}
 
 		$this->errors->set($type.'.'.$identifier, $message, $data);
@@ -41,15 +42,9 @@ trait Errors
 
 	// -----------------
 
-	public function setErrorMessage(string $type, string $identifier, string $message): static
+	public function withErrorMessages(array $messages): static
 	{
-		$this->message_overrides[$type][$identifier] = trim($message);
-		return $this;
-	}
-
-	public function setErrorMessages(array $messages): static
-	{
-		$this->message_overrides = array_replace_recursive($this->message_overrides, $messages);
+		$this->error_messages->import($messages);
 		return $this;
 	}
 
@@ -62,7 +57,7 @@ trait Errors
 
 	public function clearErrorMessages(): void
 	{
-		$this->message_overrides = [];
+		$this->error_messages->flush();
 	}
 
 }

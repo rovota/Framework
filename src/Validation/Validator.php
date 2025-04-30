@@ -32,6 +32,7 @@ class Validator implements ValidatorInterface
 	public function __construct(mixed $data, array $rules = [], array $messages = [])
 	{
 		$this->errors = new MessageBag();
+		$this->error_messages = new Bucket();
 
 		$this->unsafe = new Bucket($data);
 		$this->safe = new Bucket();
@@ -135,7 +136,16 @@ class Validator implements ValidatorInterface
 			$entries = array_replace_recursive($this->messages(), $entries);
 
 			foreach ($entries as $attribute => $messages) {
-				$this->rules[$attribute]->setErrorMessages($messages);
+				if (is_array($messages) === false) {
+					foreach ($this->rules as $rule) {
+						$rule->withErrorMessages([$attribute => $messages]);
+					}
+					continue;
+				}
+
+				if (isset($this->rules[$attribute])) {
+					$this->rules[$attribute]->withErrorMessages($messages);
+				}
 			}
 		}
 	}
