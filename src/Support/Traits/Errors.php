@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support\Traits;
 
 use Rovota\Framework\Support\MessageBag;
+use Rovota\Framework\Validation\Validator;
 
 trait Errors
 {
@@ -29,8 +30,11 @@ trait Errors
 
 	// -----------------
 
-	public function withErrors(MessageBag|array $errors): static
+	public function withErrors(Validator|MessageBag|array $errors): static
 	{
+		if ($errors instanceof Validator) {
+			$errors = $errors->errors;
+		}
 		$this->errors->import($errors);
 		return $this;
 	}
@@ -50,6 +54,11 @@ trait Errors
 	}
 
 	// -----------------
+
+	public function clearErrors(): void
+	{
+		$this->errors->flush();
+	}
 
 	public function clearErrorMessages(): void
 	{
