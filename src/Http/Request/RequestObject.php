@@ -12,6 +12,7 @@ use Rovota\Framework\Facades\Http;
 use Rovota\Framework\Facades\Log;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
+use Rovota\Framework\Http\Request\Traits\RequestValidation;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Localization\LocalizationConfig;
 use Rovota\Framework\Routing\Enums\Scheme;
@@ -19,6 +20,7 @@ use Rovota\Framework\Routing\RouteInstance;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Arr;
+use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
@@ -26,7 +28,7 @@ use Throwable;
 
 final class RequestObject
 {
-	use RequestInput;
+	use RequestInput, RequestValidation;
 
 	public readonly RequestHeaders $headers;
 
@@ -42,6 +44,9 @@ final class RequestObject
 
 	public function __construct(mixed $data = [])
 	{
+		$this->errors = new MessageBag();
+		$this->safe = new RequestData();
+
 		$this->headers = new RequestHeaders(array_change_key_case($data['headers']));
 		$this->cookies = new RequestCookies();
 		$this->url = UrlObject::from($this->getFullUrlString());
@@ -51,6 +56,7 @@ final class RequestObject
 		$this->query = new RequestData($data['query']);
 
 		$this->loadRequestDataFromSession();
+		$this->loadErrorDataFromSession();
 	}
 
 	// -----------------

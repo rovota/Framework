@@ -9,11 +9,16 @@ namespace Rovota\Framework\Http\Response\Traits;
 
 use JsonSerializable;
 use Laminas\Db\Metadata\Object\ViewObject;
+use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\Enums\Driver;
+use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Str;
+use Rovota\Framework\Validation\Validator;
 
 trait ResponseModifiers
 {
@@ -86,6 +91,23 @@ trait ResponseModifiers
 	public function withoutCookies(): static
 	{
 		$this->config->remove('cookies');
+		return $this;
+	}
+
+	// -----------------
+
+	public function withErrors(Validator|MessageBag|array $errors): static
+	{
+		$store = CacheManager::instance()->getWithDriver(Driver::Session);
+
+		if ($store instanceof CacheInterface) {
+			if ($errors instanceof Validator) {
+				$errors = $errors->errors;
+			}
+
+			$store->set('error_messages', $errors);
+		}
+
 		return $this;
 	}
 
