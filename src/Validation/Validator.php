@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @copyright   Léandro Tijink
+ * @license     MIT
+ */
+
+namespace Rovota\Framework\Validation;
+
+use Rovota\Framework\Structures\Bucket;
+use Rovota\Framework\Support\MessageBag;
+use Rovota\Framework\Support\Traits\Errors;
+use Rovota\Framework\Validation\Interfaces\ValidatorInterface;
+use Rovota\Framework\Validation\Rules\RuleSet;
+
+class Validator implements ValidatorInterface
+{
+	use Errors;
+
+	// -----------------
+
+	protected Bucket $unsafe;
+	protected Bucket $safe;
+
+	/**
+	 * @var array<int, RuleSet>
+	 */
+	protected array $rules = [];
+
+	// -----------------
+
+	public function __construct(mixed $data, array $rules = [], array $messages = [])
+	{
+		$this->errors = new MessageBag();
+
+		$this->unsafe = new Bucket($data);
+		$this->safe = new Bucket();
+
+		$this->configureRuleSets($rules);
+		$this->configureMessages($messages);
+	}
+
+	// -----------------
+
+	public static function create(mixed $data, array $rules, array $messages = []): static
+	{
+		return new static($data, $rules, $messages);
+	}
+
+	// -----------------
+
+	protected function rules(): array
+	{
+		return [];
+	}
+
+	protected function messages(): array
+	{
+		return [];
+	}
+
+	// -----------------
+
+	protected function beforeValidation(): void
+	{
+
+	}
+
+	protected function afterValidation(): void
+	{
+
+	}
+
+	// -----------------
+
+	public function validate(): void
+	{
+		$this->beforeValidation();
+
+		foreach ($this->rules as $attribute => $set) {
+			$set->withData($this->unsafe)->validate();
+
+			if ($set->errors->count() > 0) {
+				foreach ($set->errors as $identifier => $error) {
+					$this->errors->set($attribute.'.'.$identifier, $error);
+				}
+			} else {
+				$this->safe->set($attribute, $this->unsafe->get($attribute));
+			}
+		}
+
+		$this->afterValidation();
+	}
+
+	public function clear(): static
+	{
+		$this->clearErrors();
+		$this->clearErrorMessages();
+
+		$this->unsafe->flush();
+		$this->safe->flush();
+		$this->rules = [];
+
+		return $this;
+	}
+
+	public function safe(): Bucket
+	{
+		return $this->safe;
+	}
+
+	// -----------------
+
+	public function succeeds(): bool
+	{
+		$this->validate();
+
+		return $this->errors->isEmpty();
+	}
+
+	public function fails(): bool
+	{
+		return $this->succeeds() === false;
+	}
+
+	// -----------------
+
+	private function configureRuleSets(array $entries): void
+	{
+		$entries = array_replace_recursive($this->rules(), $entries);
+
+		foreach ($entries as $attribute => $rules) {
+			$this->rules[$attribute] = RuleSet::build($attribute, $rules);
+		}
+	}
+
+	private function configureMessages(array $entries): void
+	{
+		if (empty($entries) === false || empty($this->messages()) === false) {
+			$entries = array_replace_recursive($this->messages(), $entries);
+
+			foreach ($entries as $attribute => $messages) {
+				$this->rules[$attribute]->setErrorMessages($messages);
+			}
+		}
+	}
+
+}
