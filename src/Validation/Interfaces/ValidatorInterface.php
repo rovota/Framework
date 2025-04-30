@@ -13,6 +13,14 @@ use Rovota\Framework\Support\MessageBag;
 interface ValidatorInterface
 {
 
+	public Bucket $unsafe {
+		get; set;
+	}
+
+	public Bucket $safe {
+		get; set;
+	}
+
 	public MessageBag $errors {
 		get; set;
 	}
@@ -26,8 +34,6 @@ interface ValidatorInterface
 	public function validate(): void;
 
 	public function clear(): static;
-
-	public function safe(): Bucket;
 
 	// -----------------
 

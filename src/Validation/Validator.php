@@ -19,8 +19,8 @@ class Validator implements ValidatorInterface
 
 	// -----------------
 
-	protected Bucket $unsafe;
-	protected Bucket $safe;
+	public Bucket $unsafe;
+	public Bucket $safe;
 
 	/**
 	 * @var array<int, RuleSet>
@@ -102,11 +102,6 @@ class Validator implements ValidatorInterface
 		$this->rules = [];
 
 		return $this;
-	}
-
-	public function safe(): Bucket
-	{
-		return $this->safe;
 	}
 
 	// -----------------
