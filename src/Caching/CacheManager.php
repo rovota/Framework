@@ -7,10 +7,10 @@
 
 namespace Rovota\Framework\Caching;
 
-use Rovota\Framework\Caching\Drivers\APCuDriver;
-use Rovota\Framework\Caching\Drivers\ArrayDriver;
-use Rovota\Framework\Caching\Drivers\RedisDriver;
-use Rovota\Framework\Caching\Drivers\SessionDriver;
+use Rovota\Framework\Caching\Drivers\APCu;
+use Rovota\Framework\Caching\Drivers\Memory;
+use Rovota\Framework\Caching\Drivers\Redis;
+use Rovota\Framework\Caching\Drivers\Session;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Caching\Exceptions\CacheMisconfigurationException;
 use Rovota\Framework\Caching\Exceptions\MissingCacheStoreException;
@@ -138,10 +138,10 @@ final class CacheManager extends ServiceProvider
 		}
 
 		return match($config->driver) {
-			Driver::APCu => new APCuDriver($name, $config),
-			Driver::Array => new ArrayDriver($name, $config),
-			Driver::Redis => new RedisDriver($name, $config),
-			Driver::Session => new SessionDriver($name, $config),
+			Driver::APCu => new APCu($name, $config),
+			Driver::Memory => new Memory($name, $config),
+			Driver::Redis => new Redis($name, $config),
+			Driver::Session => new Session($name, $config),
 			default => null,
 		};
 	}

@@ -11,7 +11,7 @@ enum Driver: string
 {
 
 	case APCu = 'apcu';
-	case Array = 'array';
+	case Memory = 'array';
 	case Redis = 'redis';
 	case Session = 'session';
 
@@ -46,7 +46,7 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::APCu => 'APCu',
-			Driver::Array => 'Array',
+			Driver::Memory => 'Array',
 			Driver::Redis => 'Redis',
 			Driver::Session => 'Session',
 		};
@@ -56,7 +56,7 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::APCu => 'Use the APCu extension with a built-in server.',
-			Driver::Array => 'Use a regular array that does not remember data.',
+			Driver::Memory => 'Use a regular array that does not remember data.',
 			Driver::Redis => 'Use a configured Redis server.',
 			Driver::Session => 'Use the built-in PHP session.',
 		};
