@@ -432,19 +432,47 @@ abstract class Model implements ModelInterface, JsonSerializable
 			if ($this->isStored() === false) {
 				$this->attributes[$name] = $value;
 			} else {
-				if (is_scalar($value) && $this->attributes[$name] !== $value) {
-					$this->attributes_modified[$name] = $value;
-				}
 
-				if ($value instanceof BackedEnum && ($value->value !== $this->attributes[$name]?->value)) {
-					$this->attributes_modified[$name] = $value;
-				}
+				if (isset($this->attributes[$name])) {
+					$current_value = $this->getNormalizedAttributeValue($name);
 
-				if ($value === null && $this->attributes[$name] !== null) {
+					if ($value instanceof BackedEnum && ($value->value !== $current_value)) {
+						$this->attributes_modified[$name] = $value;
+						return;
+					}
+
+					if (is_object($value) && (spl_object_hash($value) !== $current_value)) {
+						$this->attributes_modified[$name] = $value;
+						return;
+					}
+
+					if (is_scalar($value) && $this->attributes[$name] !== $value) {
+						$this->attributes_modified[$name] = $value;
+						return;
+					}
+
+					if ($value === null && $this->attributes[$name] !== null) {
+						$this->attributes_modified[$name] = $value;
+					}
+
+				} else {
 					$this->attributes_modified[$name] = $value;
 				}
 			}
 		}
+	}
+
+	protected function getNormalizedAttributeValue(string $name): mixed
+	{
+		if (isset($this->attributes[$name]) === false) {
+			return null;
+		}
+
+		return match (true) {
+			$this->attributes[$name] instanceof BackedEnum => $this->attributes[$name]->value,
+			is_object($this->attributes[$name]) => spl_object_hash($this->attributes[$name]),
+			default => $this->attributes[$name],
+		};
 	}
 
 	/**
@@ -504,12 +532,10 @@ abstract class Model implements ModelInterface, JsonSerializable
 		}
 
 		if (isset($this->casts[$attribute])) {
-			if (is_string($this->casts[$attribute])) {
-				$this->casts[$attribute] = [$this->casts[$attribute]];
-			}
-			if (CastingManager::instance()->isAllowedValueForCast($value, $this->casts[$attribute]) === false) {
+			$cast = convert_to_array($this->casts[$attribute]);
+			if (CastingManager::instance()->isAllowedValueForCast($value, $cast) === false) {
 				throw new TypeError(
-					sprintf("Value must be supported by the '%s' cast, %s given", $this->casts[$attribute][0], is_object($value) ? $value::class : gettype($value))
+					sprintf("Value must be supported by the '%s' cast, %s given", $cast[0], is_object($value) ? $value::class : gettype($value))
 				);
 			}
 		}
