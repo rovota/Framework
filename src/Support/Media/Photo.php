@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Support\Media;
 
 use GdImage;
-use Rovota\Framework\Support\Traits\PhotoModifiers;
+use Rovota\Framework\Support\Media\Traits\PhotoModifiers;
 use Stringable;
 
 final class Photo implements Stringable

@@ -15,9 +15,9 @@ use Dflydev\DotAccessData\Data;
 use Dflydev\DotAccessData\DataInterface;
 use IteratorAggregate;
 use JsonSerializable;
+use Rovota\Framework\Structures\Traits\TypeAccessors;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
-use Rovota\Framework\Support\Traits\TypeAccessors;
 use Traversable;
 
 class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, JsonSerializable

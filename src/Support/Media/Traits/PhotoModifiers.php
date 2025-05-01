@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Support\Traits;
+namespace Rovota\Framework\Support\Media\Traits;
 
 use GdImage;
 

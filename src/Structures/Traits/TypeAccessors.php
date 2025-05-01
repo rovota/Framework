@@ -7,7 +7,7 @@
  * Inspired by the Laravel/Conditionable trait.
  */
 
-namespace Rovota\Framework\Support\Traits;
+namespace Rovota\Framework\Structures\Traits;
 
 use BackedEnum;
 use DateTime;
