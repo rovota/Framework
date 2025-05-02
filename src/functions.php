@@ -6,12 +6,14 @@
  */
 
 use Dflydev\DotAccessData\Data;
+use Rovota\Framework\Auth\AuthManager;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
 use Rovota\Framework\Http\Response\ResponseManager;
+use Rovota\Framework\Identity\Models\User;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
@@ -96,6 +98,13 @@ if (!function_exists('view')) {
 	function view(string $template, string|null $class = null): ViewInterface
 	{
 		return ViewManager::instance()->createView($template, $class);
+	}
+}
+
+if (!function_exists('user')) {
+	function user(): User|null
+	{
+		return AuthManager::instance()->get()?->user();
 	}
 }
 
