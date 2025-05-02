@@ -9,6 +9,7 @@ namespace Rovota\Framework\Support;
 
 use NumberFormatter;
 use Rovota\Framework\Facades\Language;
+use Throwable;
 
 final class Number
 {
@@ -75,6 +76,22 @@ final class Number
 		$value = self::format($data['value'], $precision, $locale);
 
 		return sprintf('%s%s', $value, Str::prepend($data['suffix'], $format === 'long' ? ' ' : ''));
+	}
+
+	// -----------------
+
+	public static function random(int $length): string
+	{
+		$iteration = 0;
+		$code = '';
+		while ($iteration < $length) {
+			try {
+				$code .= random_int(0, 9);
+			} catch (Throwable) { }
+			$iteration++;
+		}
+
+		return strlen($code) < $length ? '458676' : $code;
 	}
 
 	// -----------------

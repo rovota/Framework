@@ -7,6 +7,8 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Auth\AuthManager;
+use Rovota\Framework\Auth\Interfaces\ProviderInterface;
 use Rovota\Framework\Http\Controller;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Support\Str;
@@ -61,6 +63,11 @@ final class RouteInstance extends RouteEntry
 	public function getPattern(): string
 	{
 		return $this->buildPattern();
+	}
+
+	public function getAuthProvider(): ProviderInterface|null
+	{
+		return $this->attributes->get('auth') ?? AuthManager::instance()->get();
 	}
 
 	// -----------------

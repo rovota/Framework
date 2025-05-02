@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Kernel;
 
+use Rovota\Framework\Auth\AuthManager;
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\ConnectionManager;
@@ -60,6 +61,7 @@ class EnvironmentConfig extends Config
 				'response' => ResponseManager::class,
 				'views' => ViewManager::class,
 				'throttling' => LimitManager::class,
+				'auth' => AuthManager::class,
 				'middleware' => MiddlewareManager::class,
 				'routing' => RouteManager::class,
 			];
@@ -86,10 +88,5 @@ class EnvironmentConfig extends Config
 			$this->set('limiters', $value);
 		}
 	}
-
-	// -----------------
-
-	// TODO: method authProviders()
-	// For example, Environment::authProviders() returns an array with auth provider classes/config.
 
 }

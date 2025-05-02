@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Routing;
 
+use Rovota\Framework\Auth\AuthManager;
 use Rovota\Framework\Http\Throttling\LimitManager;
 use Rovota\Framework\Security\Hash;
 use Rovota\Framework\Structures\Bucket;
@@ -139,6 +140,16 @@ abstract class RouteEntry
 	public function withoutThrottling(): static
 	{
 		$this->attributes->remove('limiter');
+		return $this;
+	}
+
+	// -----------------
+
+	public function auth(string $provider): static
+	{
+		if (AuthManager::instance()->has($provider)) {
+			$this->attributes->set('auth', $provider);
+		}
 		return $this;
 	}
 

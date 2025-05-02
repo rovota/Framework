@@ -7,10 +7,12 @@
 
 namespace Rovota\Framework\Http;
 
+use Rovota\Framework\Auth\Middleware\AttemptAuthentication;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Localization\Middleware\DetermineLanguage;
+use Rovota\Framework\Security\Middleware\CsrfProtection;
 
 /**
  * @internal
@@ -82,9 +84,9 @@ final class MiddlewareManager extends ServiceProvider
 
 	protected function registerDefaultMiddleware(): void
 	{
-		// TODO: AttemptAuthentication
+		$this->add('auth', AttemptAuthentication::class, true);
 		$this->add('determine_language', DetermineLanguage::class, true);
-		// TODO: CsrfProtection
+		$this->add('csrf', CsrfProtection::class, true);
 	}
 
 }

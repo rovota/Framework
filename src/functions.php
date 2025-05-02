@@ -10,11 +10,12 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\DefaultResponse;
-use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Http\Response\Extensions\RedirectResponse;
+use Rovota\Framework\Http\Response\ResponseManager;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Security\CsrfManager;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Storage\StorageManager;
 use Rovota\Framework\Support\Interfaces\Arrayable;
@@ -115,14 +116,21 @@ if (!function_exists('file')) {
 }
 
 // -----------------
+// Security
 
-// -----------------
+if (!function_exists('csrf_token')) {
+	function csrf_token(): string
+	{
+		return CsrfManager::getToken();
+	}
+}
 
-// -----------------
-
-// -----------------
-
-// -----------------
+if (!function_exists('csrf_token_name')) {
+	function csrf_token_name(): string
+	{
+		return CsrfManager::getTokenName();
+	}
+}
 
 // -----------------
 // Data Conversion
