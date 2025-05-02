@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Localization\Middleware;
 
+use Rovota\Framework\Auth\AuthManager;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\ResponseManager;
@@ -43,17 +44,16 @@ class DetermineLanguage
 			}
 		}
 
-		// TODO: Attempt to get a value from an identity
-//		if (AuthManager::activeProvider()->check()) {
-//			$identity = AuthManager::activeProvider()->identity();
-//			if (LocalizationManager::hasLanguage($identity->getLanguage()->id)) {
-//				$this->locale = $identity->getLanguage()->locale;
-//			}
-//			$identity_timezone = $identity->meta('timezone');
-//			if ($identity_timezone !== null) {
-//				LocalizationManager::setActiveTimezone($identity_timezone);
-//			}
-//		}
+		if (AuthManager::instance()->get()?->check()) {
+			$user = AuthManager::instance()->get()->user();
+			if ($manager->has($user->language->locale)) {
+				$this->locale = $user->language->locale;
+			}
+			$identity_timezone = $user->meta('timezone');
+			if ($identity_timezone !== null) {
+				LocalizationManager::instance()->setCurrentTimezone($identity_timezone);
+			}
+		}
 
 		if ($this->locale !== null) {
 			$manager->setActiveLocale($this->locale);
