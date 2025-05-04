@@ -64,7 +64,9 @@ class User extends Model
 	public LanguageObject|null $language {
 		get => Language::get($this->locale_id);
 		set (LanguageObject|null $language) {
-			$this->locale_id = $language->locale;
+			if ($language instanceof LanguageObject) {
+				$this->locale_id = $language->locale;
+			}
 			$this->language = $language;
 		}
 	}
