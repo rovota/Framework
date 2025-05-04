@@ -15,8 +15,10 @@ use Rovota\Framework\Identity\Traits\UserActivity;
 use Rovota\Framework\Identity\Traits\UserGuards;
 use Rovota\Framework\Identity\Traits\UserPermissions;
 use Rovota\Framework\Localization\LanguageObject;
+use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Traits\Metadata;
+use Rovota\Framework\Support\Url;
 
 /**
  * @property int $id
@@ -91,6 +93,16 @@ class User extends Model
 			}
 			return null;
 		});
+	}
+
+	public UrlObject $avatar {
+		get {
+			if ($this->metadata->has('avatar')) {
+				return Url::local('/storage/public/avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
+			}
+
+			return Url::local('/storage/public/avatars/default.svg');
+		}
 	}
 
 }
