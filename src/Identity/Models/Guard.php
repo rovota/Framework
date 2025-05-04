@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Identity\Models;
 
 use Rovota\Framework\Database\Model\Model;
+use Rovota\Framework\Database\Model\Traits\Trashable;
 use Rovota\Framework\Facades\Cache;
 use Rovota\Framework\Facades\Encryption;
 use Rovota\Framework\Identity\Enums\GuardType;
@@ -32,6 +33,9 @@ use Throwable;
  */
 class Guard extends Model
 {
+	use Trashable;
+
+	// -----------------
 
 	protected array $casts = [
 		'type' => ['enum', GuardType::class],
