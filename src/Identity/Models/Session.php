@@ -77,11 +77,11 @@ class Session extends Model
 		get => Cache::store('array')->remember('user:'.$this->parent_id, function() {
 			return User::find($this->parent_id);
 		});
-		set (User|null $user) {
-			if ($user instanceof User) {
-				$this->parent_id = $user->id;
+		set (User|null $parent) {
+			if ($parent instanceof User) {
+				$this->parent_id = $parent->id;
 			}
-			$this->user = $user;
+			$this->parent = $parent;
 		}
 	}
 
