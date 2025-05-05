@@ -16,6 +16,7 @@ use Rovota\Framework\Support\Str;
 
 /**
  * @method static bool exists(string $locale)
+ * @method static void set(string $locale)
  * @method static LanguageObject|null get(string $locale)
  * @method static LanguageObject active()
  * @method static array all()
@@ -49,6 +50,7 @@ final class Language extends Facade
 
 			$method = match ($method) {
 				'exists' => 'has',
+				'set' => 'setActiveLocale',
 				default => $method,
 			};
 
