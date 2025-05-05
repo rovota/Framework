@@ -31,12 +31,13 @@ trait Errors
 
 	// -----------------
 
-	public function withErrors(Validator|MessageBag|array $errors): static
+	public function withErrors(Validator|MessageBag $errors): static
 	{
 		if ($errors instanceof Validator) {
 			$errors = $errors->errors;
 		}
 		$this->errors->import($errors);
+
 		return $this;
 	}
 

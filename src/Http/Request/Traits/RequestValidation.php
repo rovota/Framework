@@ -23,6 +23,13 @@ trait RequestValidation
 
 	// -----------------
 
+	public function addError(string $type, string $identifier, string $message, array $data = []): void
+	{
+		$this->errors->set($type.'.'.$identifier, $message, $data);
+	}
+
+	// -----------------
+
 	public function validate(array $rules = [], array $messages = []): bool
 	{
 		$validator = Validator::create($this->all(), $rules, $messages);
