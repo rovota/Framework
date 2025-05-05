@@ -141,6 +141,27 @@ if (!function_exists('csrf_token_name')) {
 	}
 }
 
+if (!function_exists('form_submit_time')) {
+	function form_submit_time(): float
+	{
+		if (request()->missing('submit_timestamp')) {
+			return 0.0;
+		}
+		return microtime(true) - request()->float('submit_timestamp');
+	}
+}
+
+if (!function_exists('form_submit_time_allowed')) {
+	function form_submit_time_allowed(): bool
+	{
+		$submit_time = form_submit_time();
+		$submit_time_min = Registry::float('security.form.submit_time_min', 0.3);
+		$submit_time_max = Registry::float('security.form.submit_time_max', 1800);
+
+		return $submit_time > $submit_time_min && $submit_time < $submit_time_max;
+	}
+}
+
 // -----------------
 // Data Conversion
 
