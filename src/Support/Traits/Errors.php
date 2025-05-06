@@ -36,6 +36,7 @@ trait Errors
 		if ($errors instanceof Validator) {
 			$errors = $errors->errors;
 		}
+
 		$this->errors->import($errors);
 
 		return $this;

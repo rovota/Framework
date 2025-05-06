@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Localization\Middleware;
 
 use Rovota\Framework\Auth\AuthManager;
+use Rovota\Framework\Facades\Cookie;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Request\RequestObject;
 use Rovota\Framework\Http\Response\ResponseManager;
@@ -39,7 +40,7 @@ class DetermineLanguage
 			if (strlen($query) > 0 && $manager->has($query)) {
 				$this->locale = $query;
 				ResponseManager::instance()->attachCookie(
-					CookieObject::create('locale', $query, ['expires' => now()->addYear()])
+					Cookie::create('locale', $query, ['expires' => now()->addYear()])
 				);
 			}
 		}
