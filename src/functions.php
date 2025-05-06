@@ -7,6 +7,7 @@
 
 use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Auth\AuthManager;
+use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Request\RequestObject;
