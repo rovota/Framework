@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Mail;
 
+use Rovota\Framework\Identity\Models\User;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
@@ -149,6 +150,10 @@ final class MailManager extends ServiceProvider
 	{
 		if ($name instanceof Entity) {
 			return $name;
+		}
+
+		if ($name instanceof User) {
+			return new Entity($name->nickname, $name->email);
 		}
 
 		if (is_array($name)) {

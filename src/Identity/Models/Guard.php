@@ -25,6 +25,7 @@ use Throwable;
  * @property int $user_id
  * @property GuardType $type
  * @property bool $encrypted
+ * @property bool $preferred
  * @property mixed $content
  *
  * @property Moment|null $created
@@ -40,6 +41,7 @@ class Guard extends Model
 	protected array $casts = [
 		'type' => ['enum', GuardType::class],
 		'encrypted' => 'bool',
+		'preferred' => 'bool',
 	];
 
 	protected array $guarded = [
@@ -151,7 +153,7 @@ class Guard extends Model
 			 * @var Mailable&MailSupportsCode $mailable
 			 */
 			$email = new $mailable();
-			$email->to($this->user);
+			$email->to($this->user->nickname, $this->user->email);
 			$email->code($code);
 
 			return $email->deliver();
