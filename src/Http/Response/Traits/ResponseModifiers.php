@@ -96,7 +96,7 @@ trait ResponseModifiers
 
 	// -----------------
 
-	public function withErrors(Validator|MessageBag|array $errors): static
+	public function withErrors(Validator|MessageBag $errors): static
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
@@ -105,10 +105,19 @@ trait ResponseModifiers
 				$errors = $errors->errors;
 			}
 
-			$store->set('error_messages', $errors);
+			$bag = $store->get('error_messages') ?? new MessageBag();
+			$store->set('error_messages', $bag->import($errors));
 		}
 
 		return $this;
+	}
+
+	public function withError(string $type, string $identifier, string $message, array $data = []): static
+	{
+		$bag = new MessageBag();
+		$bag->set($type.'.'.$identifier, $message, $data);
+
+		return $this->withErrors($bag);
 	}
 
 	// -----------------
