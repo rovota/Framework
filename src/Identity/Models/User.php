@@ -31,6 +31,7 @@ use Rovota\Framework\Support\Url;
  * @property int $role_id
  * @property array $permission_list
  * @property array $permissions_denied
+ * @property bool $enabled
  *
  * @property Moment|null $created
  * @property Moment|null $edited
@@ -47,6 +48,7 @@ class User extends Model
 		'permission_list' => 'array',
 		'permissions_denied' => 'array',
 		'last_active' => 'moment',
+		'enabled' => 'bool',
 	];
 
 	protected array $guarded = [
