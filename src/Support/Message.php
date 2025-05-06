@@ -32,6 +32,13 @@ class Message implements Stringable
 
 	// -----------------
 
+	public static function make(string $name, string $message, array $data = []): static
+	{
+		return new static($name, $message, $data);
+	}
+
+	// -----------------
+
 	public function __toString(): string
 	{
 		return $this->formatted();
