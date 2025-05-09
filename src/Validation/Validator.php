@@ -43,7 +43,7 @@ class Validator implements ValidatorInterface
 
 	// -----------------
 
-	public static function create(mixed $data, array $rules, array $messages = []): static
+	public static function create(mixed $data, array $rules = [], array $messages = []): static
 	{
 		return new static($data, $rules, $messages);
 	}
