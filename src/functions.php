@@ -145,10 +145,10 @@ if (!function_exists('csrf_token_name')) {
 if (!function_exists('form_submit_time')) {
 	function form_submit_time(): float
 	{
-		if (request()->missing('submit_timestamp')) {
+		if (request()->missing('render_timestamp')) {
 			return 0.0;
 		}
-		return microtime(true) - request()->float('submit_timestamp');
+		return microtime(true) - request()->float('render_timestamp');
 	}
 }
 
