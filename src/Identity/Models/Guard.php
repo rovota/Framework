@@ -153,7 +153,7 @@ class Guard extends Model
 			 * @var Mailable&MailSupportsCode $mailable
 			 */
 			$email = new $mailable();
-			$email->to($this->user->nickname, $this->user->email);
+			$email->to($this->user->email, $this->user->nickname);
 			$email->code($code);
 
 			return $email->deliver();

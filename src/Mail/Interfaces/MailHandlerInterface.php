@@ -12,13 +12,13 @@ use Rovota\Framework\Mail\Enums\Priority;
 interface MailHandlerInterface
 {
 
-	public function addRecipient(string $name, string $address): bool;
+	public function addRecipient(string $address, string|null $name = null): bool;
 
 	// -----------------
 
-	public function setFrom(string $name, string $address): bool;
+	public function setFrom(string $address, string|null $name = null): bool;
 
-	public function setReplyTo(string $name, string $address): bool;
+	public function setReplyTo(string $address, string|null $name = null): bool;
 
 	// -----------------
 

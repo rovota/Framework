@@ -32,10 +32,10 @@ class SmtpHandler implements MailHandlerInterface
 
 	// -----------------
 
-	public function addRecipient(string $name, string $address): bool
+	public function addRecipient(string $address, string|null $name = null): bool
 	{
 		try {
-			$this->mailer->addAddress($address, $name);
+			$this->mailer->addAddress($address, $name ?? '');
 		} catch (Throwable $throwable) {
 			ExceptionHandler::handleThrowable($throwable);
 			return false;
@@ -45,10 +45,10 @@ class SmtpHandler implements MailHandlerInterface
 
 	// -----------------
 
-	public function setFrom(string $name, string $address): bool
+	public function setFrom(string $address, string|null $name = null): bool
 	{
 		try {
-			$this->mailer->setFrom($address, $name);
+			$this->mailer->setFrom($address, $name ?? '');
 		} catch (Throwable $throwable) {
 			ExceptionHandler::handleThrowable($throwable);
 			return false;
@@ -56,10 +56,10 @@ class SmtpHandler implements MailHandlerInterface
 		return true;
 	}
 
-	public function setReplyTo(string $name, string $address): bool
+	public function setReplyTo(string $address, string|null $name = null): bool
 	{
 		try {
-			$this->mailer->addReplyTo($address, $name);
+			$this->mailer->addReplyTo($address, $name ?? '');
 		} catch (Throwable $throwable) {
 			ExceptionHandler::handleThrowable($throwable);
 			return false;

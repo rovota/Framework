@@ -146,21 +146,21 @@ final class MailManager extends ServiceProvider
 
 	// -----------------
 
-	public static function getNormalizedEntity(mixed $name, string|null $address = null): Entity
+	public static function getNormalizedEntity(mixed $address, string|null $name = null): Entity
 	{
-		if ($name instanceof Entity) {
-			return $name;
+		if ($address instanceof Entity) {
+			return $address;
 		}
 
-		if ($name instanceof User) {
-			return new Entity($name->nickname, $name->email);
+		if ($address instanceof User) {
+			return new Entity($address->nickname, $address->email);
 		}
 
-		if (is_array($name)) {
-			return new Entity(...$name);
+		if (is_array($address)) {
+			return new Entity(...$address);
 		}
 
-		return new Entity($name, $address);
+		return new Entity($name ?? 'Unknown', $address);
 	}
 
 }

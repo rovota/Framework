@@ -46,9 +46,9 @@ class Mailable
 
 	// -----------------
 
-	public function to(mixed $name, string|null $address = null): static
+	public function to(mixed $address, string|null $name = null): static
 	{
-		$entity = MailManager::getNormalizedEntity($name, $address);
+		$entity = MailManager::getNormalizedEntity($address, $name);
 
 		$this->with('mail_receiver_name', $entity->name);
 		$this->with('mail_receiver_address', $entity->address);
@@ -58,23 +58,23 @@ class Mailable
 			'address' => $entity->address,
 		];
 
-		$this->mailer->handler->addRecipient($entity->name, $entity->address);
+		$this->mailer->handler->addRecipient($entity->address, $entity->name);
 		return $this;
 	}
 
 	// -----------------
 
-	public function from(mixed $name, string|null $address = null): static
+	public function from(mixed $address, string|null $name = null): static
 	{
-		$entity = MailManager::getNormalizedEntity($name, $address);
+		$entity = MailManager::getNormalizedEntity($address, $name);
 
 		$this->mailer->handler->setFrom($entity->name, $entity->address);
 		return $this;
 	}
 
-	public function replyTo(mixed $name, string|null $address = null): static
+	public function replyTo(mixed $address, string|null $name = null): static
 	{
-		$entity = MailManager::getNormalizedEntity($name, $address);
+		$entity = MailManager::getNormalizedEntity($address, $name);
 
 		$this->mailer->handler->setReplyTo($entity->name, $entity->address);
 		return $this;
