@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Support\Models;
 
 use Rovota\Framework\Database\Model\Model;
+use Rovota\Framework\Database\Model\Traits\Trashable;
 use Rovota\Framework\Facades\Cast;
 use Rovota\Framework\Kernel\Resolver;
 use Rovota\Framework\Support\Arr;
@@ -26,6 +27,9 @@ use TypeError;
  */
 class MetaEntity extends Model
 {
+	use Trashable;
+
+	// -----------------
 
 	protected array $restricted = [
 		'type' => [
