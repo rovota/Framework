@@ -17,11 +17,11 @@ use Rovota\Framework\Support\Str;
 /**
  * @property int $id
  * @property int $user_id
- * @property string|null $ip
+ * @property string $ip
+ * @property string $name
  * @property string|null $client
- * @property string $hash
- * @property string|null $code
  * @property int $uses
+ * @property string $hash
  *
  * @property Moment|null $expiration
  * @property Moment|null $created
