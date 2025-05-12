@@ -31,8 +31,7 @@ class File implements Stringable
 
 	public UrlObject $url {
 		get {
-			$path = sprintf('%s/%s.%s', $this->properties->path, $this->properties->name, $this->properties->extension);
-			return UrlObject::from($this->properties->disk->url . $path);
+			return UrlObject::from($this->properties->disk->url . '/' .$this->location());
 		}
 	}
 
