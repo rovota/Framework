@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Identity\Traits;
 
+use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Facades\Cache;
 use Rovota\Framework\Identity\Models\Permission;
 use Rovota\Framework\Structures\Extensions\PermissionBag;
@@ -39,7 +40,7 @@ trait UserPermissions
 
 		foreach ($this->permission_list ?? [] as $identifier) {
 			if (in_array($identifier, $this->permissions_denied ?? []) === false) {
-				$permission = Cache::store('array')->remember('permission:'.$identifier, function() use ($identifier) {
+				$permission = Cache::storeWithDriver(Driver::Memory)->remember('permission:'.$identifier, function() use ($identifier) {
 					return Permission::find($identifier);
 				});
 

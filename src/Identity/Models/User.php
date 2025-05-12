@@ -7,15 +7,18 @@
 
 namespace Rovota\Framework\Identity\Models;
 
+use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Model\Traits\Trashable;
 use Rovota\Framework\Facades\Cache;
 use Rovota\Framework\Facades\Language;
+use Rovota\Framework\Facades\Storage;
 use Rovota\Framework\Identity\Traits\UserActivity;
 use Rovota\Framework\Identity\Traits\UserGuards;
 use Rovota\Framework\Identity\Traits\UserPermissions;
 use Rovota\Framework\Localization\LanguageObject;
 use Rovota\Framework\Routing\UrlObject;
+use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Traits\Metadata;
 use Rovota\Framework\Support\Url;
@@ -76,7 +79,7 @@ class User extends Model
 	}
 
 	public Role|null $role {
-		get => Cache::store('array')->remember('role:'.$this->role_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('role:'.$this->role_id, function() {
 			return Role::find($this->role_id);
 		});
 		set (Role|null $role) {
@@ -88,7 +91,7 @@ class User extends Model
 	}
 
 	public Suspension|null $suspension {
-		get => Cache::store('array')->remember('suspension:'.$this->id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('suspension:'.$this->id, function() {
 			$suspension = Suspension::where(['user_id' => $this->id])->first();
 			if ($suspension instanceof Suspension && ($suspension->expiration === null || $suspension->expiration->isFuture())) {
 				return $suspension;
@@ -100,10 +103,15 @@ class User extends Model
 	public UrlObject $avatar {
 		get {
 			if ($this->metadata->has('avatar')) {
-				return Url::local('/storage/public/avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
+				$avatar = Storage::file('avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
+				if ($avatar instanceof File) {
+					return $avatar->url;
+				}
 			}
 
-			return Url::local('/storage/public/avatars/default.svg');
+			return Cache::remember('avatar:default', function() {
+				return Storage::file('avatars/default.svg')->url;
+			});
 		}
 	}
 

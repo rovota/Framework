@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Identity\Models;
 
+use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Model\Traits\Trashable;
 use Rovota\Framework\Facades\Cache;
@@ -51,7 +52,7 @@ class Suspension extends Model
 	// Properties
 
 	public User|null $user {
-		get => Cache::store('array')->remember('user:'.$this->user_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('user:'.$this->user_id, function() {
 			return User::find($this->user_id);
 		});
 		set (User|null $user) {
