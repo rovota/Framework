@@ -22,7 +22,7 @@ trait UserActivity
 			$moment = moment($value);
 
 			if (Cache::has($key) === false) {
-				Cache::set($key, $moment->toDateTimeString(), 300);
+				Cache::set($key, $moment, 300);
 
 				$this->setAttribute('last_active', $moment);
 				$this::class::update(['last_active' => $moment])->where($this->config->primary_key, $this->{$this->config->primary_key})->submit();
