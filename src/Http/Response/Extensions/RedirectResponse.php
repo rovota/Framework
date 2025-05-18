@@ -66,19 +66,18 @@ class RedirectResponse extends DefaultResponse
 
 	// -----------------
 
-	public function keep(): static
+	public function withInput(array $keys = []): static
 	{
-		RequestManager::instance()->current()->keep();
-		return $this;
-	}
+		if (empty($keys)) {
+			RequestManager::instance()->current()->keep();
+			return $this;
+		}
 
-	public function keepOnly(array $keys): static
-	{
 		RequestManager::instance()->current()->keepOnly($keys);
 		return $this;
 	}
 
-	public function keepExcept(array $keys): static
+	public function withInputExcept(array $keys): static
 	{
 		RequestManager::instance()->current()->keepExcept($keys);
 		return $this;
