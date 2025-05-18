@@ -79,9 +79,7 @@ class Session extends Model
 			return User::find($this->parent_id);
 		});
 		set (User|null $parent) {
-			if ($parent instanceof User) {
-				$this->parent_id = $parent->id;
-			}
+			$this->parent_id = $parent instanceof User ? $parent->id : null;
 			$this->parent = $parent;
 		}
 	}
