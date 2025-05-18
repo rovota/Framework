@@ -24,7 +24,9 @@ final class Path
 				$path = Str::replaceSequential($path, '{item}', $context);
 			} else {
 				foreach ($context as $key => $value) {
-					$path = str_replace(sprintf('{%s}', $key), $value, $path);
+					if ($value !== null) {
+						$path = str_replace(sprintf('{%s}', $key), $value, $path);
+					}
 				}
 			}
 		}
