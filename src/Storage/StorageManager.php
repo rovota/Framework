@@ -14,6 +14,7 @@ use Rovota\Framework\Storage\Drivers\AsyncS3;
 use Rovota\Framework\Storage\Drivers\Custom;
 use Rovota\Framework\Storage\Drivers\Local;
 use Rovota\Framework\Storage\Drivers\S3;
+use Rovota\Framework\Storage\Drivers\Sftp;
 use Rovota\Framework\Storage\Enums\Driver;
 use Rovota\Framework\Storage\Exceptions\DiskMisconfigurationException;
 use Rovota\Framework\Storage\Exceptions\MissingDiskException;
@@ -174,7 +175,7 @@ final class StorageManager extends ServiceProvider
 			Driver::Local => new Local($name, $config),
 			Driver::AsyncS3 => new AsyncS3($name, $config),
 			Driver::S3 => new S3($name, $config),
-//			Driver::Sftp => new Sftp($name, $config),
+			Driver::Sftp => new Sftp($name, $config),
 			default => null,
 		};
 	}
