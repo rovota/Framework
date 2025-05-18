@@ -13,6 +13,7 @@ use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Errors;
 use Rovota\Framework\Validation\Interfaces\ContextAware;
+use Rovota\Framework\Validation\Interfaces\LastRuleIfNoErrors;
 use Rovota\Framework\Validation\Interfaces\RuleInterface;
 
 class RuleSet
@@ -119,6 +120,10 @@ class RuleSet
 					$rule->context->import($this->data);
 				}
 				$rule->validate($value, $this->failureCallback($rule->name));
+
+				if ($rule instanceof LastRuleIfNoErrors && $this->errors->isEmpty()) {
+					return;
+				}
 			}
 		}
 	}

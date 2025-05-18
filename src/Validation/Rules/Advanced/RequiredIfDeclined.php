@@ -9,9 +9,10 @@ namespace Rovota\Framework\Validation\Rules\Advanced;
 
 use Closure;
 use Rovota\Framework\Validation\Interfaces\ContextAware;
+use Rovota\Framework\Validation\Interfaces\LastRuleIfNoErrors;
 use Rovota\Framework\Validation\Rules\Rule;
 
-class RequiredIfDeclined extends Rule implements ContextAware
+class RequiredIfDeclined extends Rule implements ContextAware, LastRuleIfNoErrors
 {
 
 	protected string $target = '-';
