@@ -21,7 +21,7 @@ class NotInRule extends Rule
 	public function validate(mixed $value, Closure $fail): void
 	{
 		if (count($this->items) === 1 && str_contains($this->items[0], '\\')) {
-			if ($this->items[0]::tryFrom($value) !== null) {
+			if ($this->items[0]::tryFrom($value ?? '-') !== null) {
 				$fail('The value may not be one of the specified items.');
 			}
 		}
