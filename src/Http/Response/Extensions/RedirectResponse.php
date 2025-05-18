@@ -66,6 +66,26 @@ class RedirectResponse extends DefaultResponse
 
 	// -----------------
 
+	public function keep(): static
+	{
+		RequestManager::instance()->current()->keep();
+		return $this;
+	}
+
+	public function keepOnly(array $keys): static
+	{
+		RequestManager::instance()->current()->keepOnly($keys);
+		return $this;
+	}
+
+	public function keepExcept(array $keys): static
+	{
+		RequestManager::instance()->current()->keepExcept($keys);
+		return $this;
+	}
+
+	// -----------------
+
 	public function toRoute(string $name, array $context = [], array $parameters = []): static
 	{
 		$this->location = Url::route($name, $context, $parameters);
