@@ -22,7 +22,7 @@ enum GuardType: string
 		return match ($this) {
 			GuardType::App => 'Authenticator app',
 			GuardType::Email => 'Email',
-			GuardType::Recovery => 'Recovery code',
+			GuardType::Recovery => 'Recovery codes',
 			GuardType::PhysicalKey => 'Physical key',
 		};
 	}
