@@ -44,6 +44,10 @@ abstract class RouteEntry
 		if ($parent !== null) {
 			$this->setAttributesFromParent($parent);
 		}
+
+		if ($parent !== null) {
+			$this->setPathFromParent($parent);
+		}
 	}
 
 	// -----------------
@@ -159,6 +163,13 @@ abstract class RouteEntry
 	{
 		foreach ($parent->attributes as $name => $value) {
 			$this->attributes->set($name, $value);
+		}
+	}
+
+	protected function setPathFromParent(RouteEntry $parent): void
+	{
+		if ($parent->config->has('path')) {
+			$this->config->path = $parent->config->path;
 		}
 	}
 
