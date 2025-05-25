@@ -29,6 +29,8 @@ use Rovota\Framework\Support\Str;
  * @method static RouteGroup controller(string $class)
  * @method static RouteGroup middleware(string|array $identifiers)
  * @method static RouteGroup withoutMiddleware(string|array $identifiers)
+ * @method static RouteGroup throttle(string $name)
+ * @method static RouteGroup withoutThrottling()
  * @method static RouteGroup where(array|string $parameter, string|null $pattern = null)
  * @method static RouteGroup whereHash(array|string $parameter, string|int $algorithm)
  * @method static RouteGroup whereNumber(array|string $parameter, int|null $length = null)
@@ -83,6 +85,8 @@ final class Route extends Facade
 					'controller' => $instance->router->getGroup()->controller(...$parameters),
 					'middleware' => $instance->router->getGroup()->middleware(...$parameters),
 					'withoutMiddleware' => $instance->router->getGroup()->withoutMiddleware(...$parameters),
+					'throttle' => $instance->router->getGroup()->throttle(...$parameters),
+					'withoutThrottling' => $instance->router->getGroup()->withoutThrottling(),
 					'where' => $instance->router->getGroup()->where(...$parameters),
 					'whereHash' => $instance->router->getGroup()->whereHash(...$parameters),
 					'whereNumber' => $instance->router->getGroup()->whereNumber(...$parameters),
