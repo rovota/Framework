@@ -163,14 +163,8 @@ final class Router
 		$this->current = $route;
 		$route->config->context = $parameters;
 
-		if ($route->attributes->has('limiter')) {
-			LimitManager::instance()->get($route->attributes->string('limiter'))->hitAndTry();
-		}
-
-		$middleware = $route->attributes->array('middleware');
-		$middleware_exceptions = $route->attributes->array('middleware_exceptions');
-
-		MiddlewareManager::instance()->execute($middleware, $middleware_exceptions);
+		$this->triggerLimiterForRoute($route);
+		$this->triggerMiddlewareForRoute($route);
 		
 		if ($route->config->target instanceof Closure || is_array($route->config->target)) {
 			$response = Resolver::invoke($route->config->target, $parameters);
@@ -183,6 +177,23 @@ final class Router
 
 	// -----------------
 
+	protected function triggerLimiterForRoute(RouteInstance $route): void
+	{
+		if ($route->attributes->has('limiter')) {
+			LimitManager::instance()->get($route->attributes->string('limiter'))->hitAndTry();
+		}
+	}
+
+	protected function triggerMiddlewareForRoute(RouteInstance $route): void
+	{
+		$middleware = $route->attributes->array('middleware');
+		$middleware_exceptions = $route->attributes->array('middleware_exceptions');
+
+		MiddlewareManager::instance()->execute($middleware, $middleware_exceptions);
+	}
+
+	// -----------------
+
 	protected function getExtractedParameters(array $matches): array
 	{
 		// Rework matches to only contain the matches, not the original string
@@ -191,7 +202,7 @@ final class Router
 		// Extract the matched URL parameters (and only the parameters)
 		return array_map(function ($match, $index) use ($matches) {
 
-			// We have a following parameter: take the substring from the current param position until the next one's position (thank you PREG_OFFSET_CAPTURE)
+			// We have the following parameter: take the substring from the current param position until the next one's position (thank you PREG_OFFSET_CAPTURE)
 			if (isset($matches[$index + 1][0]) && is_array($matches[$index + 1][0])) {
 				if ($matches[$index + 1][0][1] > -1) {
 					return trim(substr($match[0][0], 0, $matches[$index + 1][0][1] - $match[0][1]), '/');
