@@ -199,17 +199,17 @@ final class Router
 		// Rework matches to only contain the matches, not the original string
 		$matches = array_slice($matches, 1);
 
-		// Extract the matched URL parameters (and only the parameters)
+		// Extract the matched URL parameters
 		return array_map(function ($match, $index) use ($matches) {
 
-			// We have the following parameter: take the substring from the current param position until the next one's position (thank you PREG_OFFSET_CAPTURE)
+			// We have the following parameter: take the substring from the current param position until the next position
 			if (isset($matches[$index + 1][0]) && is_array($matches[$index + 1][0])) {
 				if ($matches[$index + 1][0][1] > -1) {
 					return trim(substr($match[0][0], 0, $matches[$index + 1][0][1] - $match[0][1]), '/');
 				}
-			} // We have no following parameters: return the lot
+			} // We have no further parameters: return the lot
 
-			return isset($match[0][0]) && $match[0][1] != -1 ? trim($match[0][0], '/') : null;
+			return isset($match[0][0]) && $match[0][1] != -1 ? urldecode(trim($match[0][0], '/')) : null;
 		}, $matches, array_keys($matches));
 	}
 
