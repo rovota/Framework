@@ -46,26 +46,26 @@ class UrlObjectConfig extends Config
 		return $this->get('subdomain');
 	}
 
-	protected function setSubdomain(string|null $subdomain): void
+	protected function setSubdomain(string|null $subdomain, bool $resolve_domain = true): void
 	{
 		if ($subdomain === null) {
 			$this->remove('subdomain');
 			return;
 		}
 
-		if ($this->get('domain') === null) {
+		if ($this->get('domain') === null && $resolve_domain === true) {
 			$this->setDomain(Framework::environment()->server->get('HTTP_HOST'));
 		}
 
 		$subdomain = trim($subdomain);
 
-		// Set to null when unusable value is given.
+		// Set to null when an unusable value is given.
 		if (mb_strlen($subdomain) === 0) {
 			$this->remove('subdomain');
 			return;
 		}
 
-		// Set to null when useless value is given.
+		// Set to null when a useless value is given.
 		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
 			$this->remove('subdomain');
 			return;
@@ -88,8 +88,9 @@ class UrlObjectConfig extends Config
 			return;
 		}
 
+		// TODO: Fix this implementation for situations like 'domain.co.uk'
 		if (Str::occurrences($domain, '.') > 1) {
-			$this->setSubdomain(Str::before($domain, '.'));
+			$this->setSubdomain(Str::before($domain, '.'), false);
 			$domain = Str::after($domain, '.');
 		}
 
