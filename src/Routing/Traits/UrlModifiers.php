@@ -17,6 +17,10 @@ trait UrlModifiers
 
 	public function withScheme(Scheme|string $scheme): static
 	{
+		if (is_string($scheme)) {
+			$scheme = Scheme::tryFrom($scheme) ?? Scheme::Https;
+		}
+
 		$this->config->scheme = $scheme;
 		return $this;
 	}
@@ -81,7 +85,7 @@ trait UrlModifiers
 
 	public function stripSubdomain(): static
 	{
-		$this->config->remove('subdomain');
+		$this->withSubdomain(null);
 		return $this;
 	}
 

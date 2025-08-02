@@ -7,16 +7,12 @@
 
 namespace Rovota\Framework\Routing;
 
-use BackedEnum;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 
 /**
- * @property Scheme $scheme
- * @property string|null $subdomain
- * @property string $domain
  * @property int $port
  * @property string $path
  * @property array $parameters
@@ -25,146 +21,120 @@ use Rovota\Framework\Support\Str;
 class UrlObjectConfig extends Config
 {
 
-	protected function getScheme(): BackedEnum
-	{
-		return $this->enum('scheme', Scheme::class, Scheme::Https);
-	}
-
-	protected function setScheme(Scheme|string $scheme): void
-	{
-		if (is_string($scheme)) {
-			$scheme = Scheme::tryFrom($scheme) ?? Scheme::Https;
+	public Scheme $scheme {
+		get => $this->get('scheme') ?? Scheme::Https;
+		set {
+			$this->set('scheme', $value);
 		}
-
-		$this->set('scheme', $scheme);
 	}
 
 	// -----------------
 
-	protected function getSubdomain(): string|null
-	{
-		return $this->get('subdomain');
-	}
+	public string|null $subdomain {
+		get {
+			$domain = $this->domain;
 
-	protected function setSubdomain(string|null $subdomain, bool $resolve_domain = true): void
-	{
-		if ($subdomain === null) {
-			$this->remove('subdomain');
-			return;
-		}
-
-		if ($this->get('domain') === null && $resolve_domain === true) {
-			$this->setDomain(Framework::environment()->server->get('HTTP_HOST'));
-		}
-
-		$subdomain = trim($subdomain);
-
-		// Set to null when an unusable value is given.
-		if (mb_strlen($subdomain) === 0) {
-			$this->remove('subdomain');
-			return;
-		}
-
-		// Set to null when a useless value is given.
-		if ($subdomain === 'www' || $subdomain === '.' || $subdomain === '-') {
-			$this->remove('subdomain');
-			return;
-		}
-
-		$this->set('subdomain', $subdomain);
-	}
-
-	protected function getDomain(): string
-	{
-		return $this->string('domain', Framework::environment()->server->get('HTTP_HOST'));
-	}
-
-	protected function setDomain(string $domain): void
-	{
-		$domain = trim($domain);
-
-		if (mb_strlen($domain) === 0 || $domain === '-') {
-			$this->setDomain(Framework::environment()->server->get('HTTP_HOST'));
-			return;
-		}
-
-		// TODO: Fix this implementation for situations like 'domain.co.uk'
-		if (Str::occurrences($domain, '.') > 1) {
-			$this->setSubdomain(Str::before($domain, '.'), false);
-			$domain = Str::after($domain, '.');
-		}
-
-		$this->set('domain', $domain);
-	}
-
-	protected function getPort(): int
-	{
-		return $this->int('port', (int) Framework::environment()->server->get('SERVER_PORT'));
-	}
-
-	// -----------------
-
-	protected function getPath(): string
-	{
-		return Str::start($this->string('path'), '/');
-	}
-
-	protected function setPath(string $path): void
-	{
-		$path = trim($path, ' /');
-
-		// Set to null when unusable value is given.
-		if (mb_strlen($path) === 0 || $path === '-') {
-			$this->remove('path');
-			return;
-		}
-
-		$this->set('path', $path);
-	}
-
-	protected function getParameters(): array
-	{
-		return $this->array('parameters');
-	}
-
-	protected function setParameters(array $parameters): void
-	{
-		if (empty($parameters)) {
-			$this->remove('parameters');
-			return;
-		}
-
-		foreach ($parameters as $name => $value) {
-			$name = 'parameters.'.strtolower(trim($name));
-			if ($value === null) {
-				$this->remove($name);
-				continue;
+			if (Str::occurrences($domain, '.') > 1) {
+				return Str::after($domain, '.');
 			}
-			$this->set($name, $value);
+
+			return null;
+		}
+		set {
+			if ($this->get('domain') === null) {
+				$this->domain = $this->getSanitizedHost();
+			}
+
+			if ($value === null && Str::occurrences($this->domain, '.') > 1) {
+				$this->domain = Str::after($this->domain, '.');
+				return;
+			}
+
+			$value = trim($value);
+
+			if (mb_strlen($value) > 0 ) {
+				if (Str::occurrences($this->domain, '.') > 1) {
+					$this->domain = Str::after($this->domain, '.');
+				}
+				$this->domain = sprintf('%s.%s', $value, $this->domain);
+			}
 		}
 	}
 
-	protected function getFragment(): string|null
-	{
-		return $this->get('fragment');
+	public string $domain {
+		get => $this->string('domain', $this->getSanitizedHost());
+		set {
+			$value = Str::after(trim($value), 'www.');
+
+			if (mb_strlen($value) === 0 || $value === '-') {
+				$this->set('domain', $this->getSanitizedHost());
+				return;
+			}
+
+			$this->set('domain', $value);
+		}
 	}
 
-	protected function setFragment(string|null $fragment): void
+	public int $port {
+		get => $this->int('port', (int) Framework::environment()->server->get('SERVER_PORT'));
+		set {
+			$this->set('port', $value);
+		}
+	}
+
+	// -----------------
+
+	public string $path {
+		get => Str::start($this->string('path'), '/');
+		set {
+			$value = trim($value, ' /');
+
+			if (mb_strlen($value) > 0) {
+				$this->set('path', $value);
+			}
+		}
+	}
+
+	public array $parameters {
+		get => $this->array('parameters');
+		set {
+			if (empty($value)) {
+				$this->remove('parameters');
+				return;
+			}
+
+			foreach ($value as $name => $data) {
+				$name = 'parameters.'.strtolower(trim($name));
+				if ($data === null) {
+					$this->remove($name);
+					continue;
+				}
+				$this->set($name, $data);
+			}
+		}
+	}
+
+	public string|null $fragment {
+		get => $this->get('fragment');
+		set {
+			if ($value === null) {
+				$this->remove('fragment');
+				return;
+			}
+
+			$value = trim($value);
+
+			if (mb_strlen($value) > 0) {
+				$this->set('fragment', $value);
+			}
+		}
+	}
+
+	// -----------------
+
+	protected function getSanitizedHost(): string
 	{
-		if ($fragment === null) {
-			$this->remove('fragment');
-			return;
-		}
-
-		$fragment = trim($fragment);
-
-		// Set to null when unusable value is given.
-		if (mb_strlen($fragment) === 0 || $fragment === '-') {
-			$this->remove('fragment');
-			return;
-		}
-
-		$this->set('fragment', $fragment);
+		return Str::after(Framework::environment()->server->get('HTTP_HOST'), 'www.');
 	}
 
 }

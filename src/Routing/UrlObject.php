@@ -145,12 +145,7 @@ final class UrlObject implements Stringable, JsonSerializable
 	protected function getHostString(): string
 	{
 		$scheme = $this->config->scheme->value;
-
-		if ($this->config->has('subdomain')) {
-			$domain = $this->config->subdomain.'.'.$this->config->domain;
-		} else {
-			$domain = $this->config->domain;
-		}
+		$domain = $this->config->domain;
 
 		$result = sprintf('%s://%s', $scheme, $domain);
 

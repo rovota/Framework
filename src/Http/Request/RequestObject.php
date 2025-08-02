@@ -34,7 +34,7 @@ final class RequestObject
 
 	public readonly RequestCookies $cookies;
 
-	public readonly UrlObject $url;
+	protected readonly UrlObject $url;
 
 	protected array|null $acceptable_content_types = null;
 	protected array|null $acceptable_encodings = null;
@@ -122,7 +122,7 @@ final class RequestObject
 
 	public function queryString(): string
 	{
-		return Url::arrayToQuery($this->url()->config->parameters);
+		return Url::arrayToQuery($this->url->config->parameters);
 	}
 
 	// -----------------
