@@ -12,12 +12,6 @@ use Rovota\Framework\Routing\Enums\Scheme;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 
-/**
- * @property int $port
- * @property string $path
- * @property array $parameters
- * @property string|null $fragment
- */
 class UrlObjectConfig extends Config
 {
 
