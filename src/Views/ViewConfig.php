@@ -12,36 +12,34 @@ use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
 
-/**
- * @property-read array<int, Link> $links
- * @property-read array<int, Meta> $meta
- * @property-read array<int, Script> $scripts
- *
- * @property-read array $variables
- */
 class ViewConfig extends Config
 {
 
-	protected function getLinks(): array
-	{
-		return $this->array('links');
+	/**
+	 * @var array<int, Link>
+	 */
+	public array $links {
+		get => $this->array('links');
 	}
 
-	protected function getMeta(): array
-	{
-		return $this->array('meta');
+	/**
+	 * @var array<int, Meta>
+	 */
+	public array $meta {
+		get => $this->array('meta');
 	}
 
-	protected function getScripts(): array
-	{
-		return $this->array('scripts');
+	/**
+	 * @var array<int, Script>
+	 */
+	public array $scripts {
+		get => $this->array('scripts');
 	}
 
 	// -----------------
 
-	protected function getVariables(): array
-	{
-		return $this->array('variables');
+	public array $variables {
+		get => $this->array('variables');
 	}
 
 }

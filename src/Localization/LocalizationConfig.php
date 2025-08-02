@@ -16,17 +16,15 @@ use Rovota\Framework\Support\Config;
 class LocalizationConfig extends Config
 {
 
-	protected function getDefault(): array
-	{
-		return $this->array('default', [
+	public array $default {
+		get => $this->array('default', [
 			'locale' => 'en_US',
 			'timezone' => 'UTC',
 		]);
 	}
 
-	protected function getLocales(): array
-	{
-		return $this->array('locales', [
+	public array $locales {
+		get => $this->array('locales', [
 			'en_US', // English (United States)
 		]);
 	}

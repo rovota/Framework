@@ -9,10 +9,6 @@ namespace Rovota\Framework\Security;
 
 use Rovota\Framework\Support\Config;
 
-/**
- * @property-read string $key
- * @property-read string $cipher
- */
 class EncryptionConfig extends Config
 {
 
@@ -20,17 +16,15 @@ class EncryptionConfig extends Config
 
 	// -----------------
 
-	protected function getKey(): string
-	{
-		return $this->get('key', getenv('CRYPT_KEY'));
+	public string $key {
+		get => $this->get('key', getenv('CRYPT_KEY'));
 	}
 
 	/**
 	 * Supports `AES-128-CBC`, `AES-256-CBC`, `AES-128-GCM` and `AES-256-GCM`.
 	 */
-	protected function getCipher(): string
-	{
-		return $this->get('cipher', getenv('CRYPT_CIPHER'));
+	public string $cipher {
+		get => $this->get('cipher', getenv('CRYPT_CIPHER'));
 	}
 
 }
