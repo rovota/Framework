@@ -103,18 +103,9 @@ class User extends Model
 	public UrlObject $avatar {
 		get {
 			if ($this->metadata->has('avatar')) {
-				$url = Cache::remember('avatar:'.md5($this->id), function() {
-					return Storage::file('avatars/'. md5($this->id) .'/'. $this->meta('avatar'))?->url;
-				});
-
-				if ($url instanceof UrlObject) {
-					return $url;
-				}
+				return Url::file('avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
 			}
-
-			return Cache::remember('avatar:default', function() {
-				return Storage::file('avatars/default.svg')->url;
-			});
+			return Url::file('avatars/default.svg');
 		}
 	}
 
