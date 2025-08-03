@@ -9,6 +9,7 @@ namespace Rovota\Framework\Support;
 
 use Rovota\Framework\Caching\CacheManager;
 use Rovota\Framework\Caching\Enums\Driver;
+use Rovota\Framework\Facades\Storage;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Routing\RouteManager;
 use Rovota\Framework\Routing\UrlObject;
@@ -87,6 +88,13 @@ final class Url
 	{
 		$location = CacheManager::instance()->getWithDriver(Driver::Session)?->pull('location.intended') ?? $default;
 		return UrlObject::from($location);
+	}
+
+	// -----------------
+
+	public static function file(string $location, array $parameters = [], string|null $disk = null): UrlObject
+	{
+		return UrlObject::from(Storage::disk($disk)->url . '/' . Str::trim($location, '/'))->withParameters($parameters);
 	}
 
 	// -----------------
