@@ -9,9 +9,17 @@ namespace Rovota\Framework\Database\Traits;
 
 use Closure;
 use Rovota\Framework\Database\Enums\ConstraintMode;
+use Rovota\Framework\Database\Query\NestedQuery;
 
 trait OrWhereQueryConstraints
 {
+
+	public function or(Closure $callback): static
+	{
+		return $this->nest($callback, ConstraintMode::Or);
+	}
+
+	// -----------------
 
 	public function orWhereExpression(string $expression, array $parameters): static
 	{
@@ -121,9 +129,27 @@ trait OrWhereQueryConstraints
 		return $this->whereBetween($column, $start, $end, ConstraintMode::Or);
 	}
 
+	public function orWhereBetweenColumns(string $value, array $columns): static
+	{
+		$this->or(function (NestedQuery $query) use ($value, $columns) {
+			$query->whereLessThan($columns[0], $value)->whereGreaterThan($columns[1], $value);
+		});
+
+		return $this;
+	}
+
 	public function orWhereNotBetween(string $column, mixed $start, mixed $end): static
 	{
 		return $this->whereNotBetween($column, $start, $end, ConstraintMode::Or);
+	}
+
+	public function orWhereNotBetweenColumns(string $value, array $columns): static
+	{
+		$this->or(function (NestedQuery $query) use ($value, $columns) {
+			$query->whereGreaterThan($columns[0], $value)->orWhereLessThan($columns[1], $value);
+		});
+
+		return $this;
 	}
 
 	// -----------------

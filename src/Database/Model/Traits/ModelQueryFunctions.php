@@ -31,7 +31,9 @@ use Rovota\Framework\Structures\Basket;
  * @method static SelectQuery whereIn(string $column, array $values)
  * @method static SelectQuery whereNotIn(string $column, array $values)
  * @method static SelectQuery whereBetween(string $column, mixed $start, mixed $end)
+ * @method static SelectQuery whereBetweenColumns(string $value, array $columns)
  * @method static SelectQuery whereNotBetween(string $column, mixed $start, mixed $end)
+ * @method static SelectQuery whereNotBetweenColumns(string $value, array $columns)
  * @method static SelectQuery whereListHas(string $column, mixed $value)
  */
 trait ModelQueryFunctions

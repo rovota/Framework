@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Database\Traits;
 
+use Closure;
 use Laminas\Db\Sql\Predicate\Between;
 use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Predicate\In;
@@ -19,10 +20,18 @@ use Laminas\Db\Sql\Predicate\NotLike;
 use Laminas\Db\Sql\Predicate\Operator;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\Enums\ConstraintMode;
+use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Support\Str;
 
 trait WhereQueryConstraints
 {
+
+	public function and(Closure $callback): static
+	{
+		return $this->nest($callback, ConstraintMode::And);
+	}
+
+	// -----------------
 
 	public function whereExpression(string $expression, array $parameters, ConstraintMode $mode = ConstraintMode::And): static
 	{
@@ -218,6 +227,15 @@ trait WhereQueryConstraints
 		return $this;
 	}
 
+	public function whereBetweenColumns(string $value, array $columns, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		$this->nest(function (NestedQuery $query) use ($value, $columns) {
+			$query->whereLessThan($columns[0], $value)->whereGreaterThan($columns[1], $value);
+		}, $mode);
+
+		return $this;
+	}
+
 	public function whereNotBetween(string $column, mixed $start, mixed $end, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		$start = $this->normalizeValueForColumn($start, $column);
@@ -226,6 +244,15 @@ trait WhereQueryConstraints
 		$this->getWherePredicate()->addPredicate(
 			new NotBetween($column, $start, $end), $mode->realType()
 		);
+
+		return $this;
+	}
+
+	public function whereNotBetweenColumns(string $value, array $columns, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		$this->nest(function (NestedQuery $query) use ($value, $columns) {
+			$query->whereGreaterThan($columns[0], $value)->orWhereLessThan($columns[1], $value);
+		}, $mode);
 
 		return $this;
 	}
