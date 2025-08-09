@@ -100,7 +100,14 @@ class User extends Model
 		});
 	}
 
+	/**
+	 * @deprecated Use $this->avatar_url instead.
+	 */
 	public UrlObject $avatar {
+		get => $this->avatar_url;
+	}
+
+	public UrlObject $avatar_url {
 		get {
 			if ($this->metadata->has('avatar')) {
 				return Url::file('avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
