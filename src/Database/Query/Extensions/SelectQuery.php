@@ -12,6 +12,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Select;
+use Rovota\Framework\Database\Enums\ConstraintMode;
 use Rovota\Framework\Database\Enums\Sort;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Query\NestedQuery;
@@ -228,9 +229,9 @@ final class SelectQuery extends QueryExtension
 
 	// -----------------
 
-	public function nest(Closure $callback): SelectQuery
+	public function nest(Closure $callback, ConstraintMode $mode): SelectQuery
 	{
-		$nested = new NestedQuery($this->getWherePredicate(), $this->config);
+		$nested = new NestedQuery($this->getWherePredicate(), $this->config, $mode);
 
 		$callback($nested);
 		$this->select->where($nested->unnest());

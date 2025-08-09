@@ -9,6 +9,7 @@ namespace Rovota\Framework\Database\Query;
 
 use Laminas\Db\Sql\Predicate\Predicate;
 use Rovota\Framework\Database\CastingManager;
+use Rovota\Framework\Database\Enums\ConstraintMode;
 use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
 use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
@@ -24,9 +25,9 @@ final class NestedQuery
 
 	// -----------------
 
-	public function __construct(Predicate $predicate, QueryConfig $config)
+	public function __construct(Predicate $predicate, QueryConfig $config, ConstraintMode $mode = ConstraintMode::And)
 	{
-		$this->predicate = $predicate->nest();
+		$this->predicate = $predicate->{$mode->realType()}->nest();
 		$this->config = $config;
 	}
 

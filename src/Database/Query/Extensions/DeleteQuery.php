@@ -12,6 +12,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Predicate\Predicate;
+use Rovota\Framework\Database\Enums\ConstraintMode;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
@@ -61,9 +62,9 @@ final class DeleteQuery extends QueryExtension
 
 	// -----------------
 
-	public function nest(Closure $callback): DeleteQuery
+	public function nest(Closure $callback, ConstraintMode $mode): DeleteQuery
 	{
-		$nested = new NestedQuery($this->getWherePredicate(), $this->config);
+		$nested = new NestedQuery($this->getWherePredicate(), $this->config, $mode);
 
 		$callback($nested);
 		$this->delete->where($nested->unnest());
