@@ -16,6 +16,7 @@ use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Validation\Validator;
@@ -140,7 +141,7 @@ trait ResponseModifiers
 
 	public function clearSiteData(string|array|null $value = null): static
 	{
-		$values = convert_to_array($value ?? '*');
+		$values = Arr::from($value ?? '*');
 
 		foreach ($values as $key => $item) {
 			$values[$key] = '"'.trim($item).'"';

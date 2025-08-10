@@ -80,7 +80,7 @@ class Basket extends Bucket
 
 	public function concat(mixed $data): static
 	{
-		foreach (convert_to_array($data) as $item) {
+		foreach (Arr::from($data) as $item) {
 			$this->append($item);
 		}
 		return $this;
@@ -298,13 +298,13 @@ class Basket extends Bucket
 
 	public function replace(mixed $replacements): static
 	{
-		$this->items = new Data(array_replace($this->toArray(), convert_to_array($replacements)));
+		$this->items = new Data(array_replace($this->toArray(), Arr::from($replacements)));
 		return $this;
 	}
 
 	public function replaceRecursive(mixed $replacements): static
 	{
-		$this->items = new Data(array_replace_recursive($this->toArray(), convert_to_array($replacements)));
+		$this->items = new Data(array_replace_recursive($this->toArray(), Arr::from($replacements)));
 		return $this;
 	}
 
@@ -401,13 +401,13 @@ class Basket extends Bucket
 
 	public function intersect(mixed $items): static
 	{
-		$this->items = new Data(array_intersect($this->toArray(), convert_to_array($items)));
+		$this->items = new Data(array_intersect($this->toArray(), Arr::from($items)));
 		return $this;
 	}
 
 	public function intersectByKeys(mixed $items): static
 	{
-		$this->items = new Data(array_intersect_key($this->toArray(), convert_to_array($items)));
+		$this->items = new Data(array_intersect_key($this->toArray(), Arr::from($items)));
 		return $this;
 	}
 
@@ -448,7 +448,7 @@ class Basket extends Bucket
 
 	public function combine(mixed $values): static
 	{
-		return new static(array_combine($this->toArray(), convert_to_array($values)));
+		return new static(array_combine($this->toArray(), Arr::from($values)));
 	}
 
 	public function flip(): static
@@ -540,17 +540,17 @@ class Basket extends Bucket
 
 	public function diff(mixed $items): static
 	{
-		return new static(array_diff($this->toArray(), convert_to_array($items)));
+		return new static(array_diff($this->toArray(), Arr::from($items)));
 	}
 
 	public function diffAssoc(mixed $items): static
 	{
-		return new static(array_diff_assoc($this->toArray(), convert_to_array($items)));
+		return new static(array_diff_assoc($this->toArray(), Arr::from($items)));
 	}
 
 	public function diffKeys(mixed $items): static
 	{
-		return new static(array_diff_key($this->toArray(), convert_to_array($items)));
+		return new static(array_diff_key($this->toArray(), Arr::from($items)));
 	}
 
 }

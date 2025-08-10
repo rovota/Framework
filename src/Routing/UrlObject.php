@@ -9,6 +9,7 @@ namespace Rovota\Framework\Routing;
 
 use JsonSerializable;
 use Rovota\Framework\Routing\Traits\UrlModifiers;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
 use Stringable;
@@ -27,7 +28,7 @@ final class UrlObject implements Stringable, JsonSerializable
 	{
 		$this->config = new UrlObjectConfig();
 
-		foreach (convert_to_array($data) as $key => $value) {
+		foreach (Arr::from($data) as $key => $value) {
 			$this->{$key} = $value;
 		}
 	}

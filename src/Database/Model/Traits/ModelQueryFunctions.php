@@ -13,6 +13,7 @@ use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Support\Arr;
 
 /**
  * @method static SelectQuery whereExpression(string $expression, array $parameters)
@@ -47,7 +48,7 @@ trait ModelQueryFunctions
 			return $query;
 		}
 
-		$identifiers = convert_to_array($identifier);
+		$identifiers = Arr::from($identifier);
 		$column = $column ?? new static()->config->primary_key;
 
 		return $query->whereIn($column, $identifiers)->submit();

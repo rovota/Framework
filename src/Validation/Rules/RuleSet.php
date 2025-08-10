@@ -9,6 +9,7 @@ namespace Rovota\Framework\Validation\Rules;
 
 use Closure;
 use Rovota\Framework\Structures\Bucket;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Errors;
@@ -166,7 +167,7 @@ class RuleSet
 	protected function attachRule(RuleInterface|string $rule, mixed $options = []): void
 	{
 		if (is_string($rule)) {
-			$rule = RuleManager::get($rule)->withOptions(convert_to_array($options));
+			$rule = RuleManager::get($rule)->withOptions(Arr::from($options));
 		}
 
 		$this->rules[$rule->name] = $rule;

@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Structures;
 
+use Rovota\Framework\Support\Arr;
 use TypeError;
 
 class Sequence extends Collection
@@ -14,7 +15,7 @@ class Sequence extends Collection
 
 	public function __construct(mixed $items = [])
 	{
-		parent::__construct(array_values(convert_to_array($items)));
+		parent::__construct(array_values(Arr::from($items)));
 	}
 
 	// -----------------

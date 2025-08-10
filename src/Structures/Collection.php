@@ -13,6 +13,7 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
+use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 use Rovota\Framework\Support\Math;
 use Traversable;
@@ -29,7 +30,7 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 
 	public function __construct(mixed $items = [])
 	{
-		$this->values = convert_to_array($items);
+		$this->values = Arr::from($items);
 		$this->keys = array_keys($this->values);
 	}
 

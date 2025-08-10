@@ -30,7 +30,7 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 
 	public function __construct(mixed $items = [])
 	{
-		$this->items = new Data(convert_to_array($items));
+		$this->items = new Data(Arr::from($items));
 	}
 
 	public static function from(mixed $items = []): static
@@ -41,7 +41,7 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 	public function import(mixed $data, bool $preserve = false): static
 	{
 		$mode = $preserve ? DataInterface::PRESERVE : DataInterface::MERGE;
-		$this->items->import(convert_to_array($data), $mode);
+		$this->items->import(Arr::from($data), $mode);
 		return $this;
 	}
 

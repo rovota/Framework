@@ -8,6 +8,8 @@
 namespace Rovota\Framework\Support;
 
 use Closure;
+use Dflydev\DotAccessData\Data;
+use JsonSerializable;
 use Rovota\Framework\Support\Interfaces\Arrayable;
 
 final class Arr
@@ -15,6 +17,20 @@ final class Arr
 
 	protected function __construct()
 	{
+	}
+
+	// -----------------
+
+	public static function from(mixed $value): array
+	{
+		return match(true) {
+			$value === null => [],
+			is_array($value) => $value,
+			$value instanceof Arrayable => $value->toArray(),
+			$value instanceof JsonSerializable => Arr::from($value->jsonSerialize()),
+			$value instanceof Data => $value->export(),
+			default => [$value],
+		};
 	}
 
 	// -----------------

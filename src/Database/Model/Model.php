@@ -532,7 +532,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 		}
 
 		if (isset($this->casts[$attribute])) {
-			$cast = convert_to_array($this->casts[$attribute]);
+			$cast = Arr::from($this->casts[$attribute]);
 			if (CastingManager::instance()->isAllowedValueForCast($value, $cast) === false) {
 				throw new TypeError(
 					sprintf("Value must be supported by the '%s' cast, %s given", $cast[0], is_object($value) ? $value::class : gettype($value))

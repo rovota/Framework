@@ -27,7 +27,7 @@ class MessageBag implements ArrayAccess, IteratorAggregate, Countable, Arrayable
 
 	public function __construct(mixed $items = [])
 	{
-		$this->items = new Data(convert_to_array($items));
+		$this->items = new Data(Arr::from($items));
 	}
 
 	// -----------------
@@ -81,7 +81,7 @@ class MessageBag implements ArrayAccess, IteratorAggregate, Countable, Arrayable
 	public function import(mixed $data, bool $preserve = false): static
 	{
 		$mode = $preserve ? DataInterface::PRESERVE : DataInterface::MERGE;
-		$this->items->import(convert_to_array($data), $mode);
+		$this->items->import(Arr::from($data), $mode);
 		return $this;
 	}
 
