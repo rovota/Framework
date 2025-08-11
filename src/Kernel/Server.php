@@ -113,7 +113,7 @@ final class Server
 
 	protected function loadDiskUsageData(): void
 	{
-		$path = ($this->platform === 'Windows') ? substr(getcwd(), 0, 3) : '/';
+		$path = ($this->platform === 'Windows') ? substr(getcwd(), 0, 3) : __DIR__;
 
 		$this->disk_capacity = disk_total_space($path);
 		$this->disk_usage = $this->disk_capacity - disk_free_space($path);

@@ -14,6 +14,7 @@ use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Path;
+use Rovota\Framework\Support\Text;
 use Throwable;
 
 final class ExceptionHandler
@@ -22,6 +23,10 @@ final class ExceptionHandler
 	private static bool $debug_enabled = false;
 
 	private static bool $log_enabled = false;
+
+	// -----------------
+
+	private static LoggingManager $logging_manager;
 
 	// -----------------
 
@@ -38,6 +43,12 @@ final class ExceptionHandler
 	{
 		self::$debug_enabled = getenv('ENABLE_DEBUG') === 'true';
 		self::$log_enabled = getenv('ENABLE_LOGGING') === 'true';
+
+		try {
+			self::$logging_manager = new LoggingManager();
+		} catch (Throwable $exception) {
+			echo $exception->getMessage();
+		}
 
 		self::setPhpIniConfiguration();
 	}
@@ -73,7 +84,7 @@ final class ExceptionHandler
 	public static function logThrowable(Throwable $throwable): void
 	{
 		if (self::$log_enabled) {
-			LoggingManager::instance()->get()->log(Level::Critical, $throwable->getMessage(), [
+			self::$logging_manager->get()->log(Level::Critical, $throwable->getMessage(), [
 				$throwable::class, $throwable->getFile(), $throwable->getLine(), self::getRequestInfo()['full_url']
 			]);
 		}
@@ -82,7 +93,7 @@ final class ExceptionHandler
 	public static function logError(int $number, string $message, string $file, int $line): void
 	{
 		if (self::$log_enabled) {
-			LoggingManager::instance()->get()->error($message, [
+			self::$logging_manager->get()->error($message, [
 				PHPErrorLevel::tryFrom($number)?->label() ?? 'Unknown Error', $file, $line
 			]);
 		}
