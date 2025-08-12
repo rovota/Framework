@@ -22,8 +22,8 @@ interface ModelInterface
 	}
 
 	const string CREATED_COLUMN = 'created';
-	const string EDITED_COLUMN = 'edited';
-	const string TRASHED_COLUMN = 'deleted';
+	const string MODIFIED_COLUMN = 'modified';
+	const string TRASHED_COLUMN = 'trashed';
 
 	// -----------------
 

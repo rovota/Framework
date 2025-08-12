@@ -36,7 +36,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 	// -----------------
 
 	const string CREATED_COLUMN = 'created';
-	const string EDITED_COLUMN = 'edited';
+	const string MODIFIED_COLUMN = 'modified';
 
 	// -----------------
 
@@ -69,7 +69,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 		if ($this->config->manage_timestamps) {
 			$this->casts = array_merge($this->casts, [
 				static::CREATED_COLUMN => 'moment',
-				static::EDITED_COLUMN => 'moment',
+				static::MODIFIED_COLUMN => 'moment',
 			]);
 		}
 
@@ -256,8 +256,8 @@ abstract class Model implements ModelInterface, JsonSerializable
 		if ($this->config->stored) {
 			if (empty($this->attributes_modified) === false) {
 
-				if (!isset($this->attributes_modified[self::EDITED_COLUMN]) && $this->config->manage_timestamps) {
-					$this->attributes_modified[self::EDITED_COLUMN] = now();
+				if (!isset($this->attributes_modified[self::MODIFIED_COLUMN]) && $this->config->manage_timestamps) {
+					$this->attributes_modified[self::MODIFIED_COLUMN] = now();
 				}
 
 				if ($this->getUpdateQuery()->set($this->attributes_modified)->submit()) {

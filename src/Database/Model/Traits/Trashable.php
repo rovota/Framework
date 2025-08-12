@@ -16,7 +16,7 @@ use Rovota\Framework\Database\Query\Extensions\SelectQuery;
  */
 trait Trashable
 {
-	const string TRASHED_COLUMN = 'deleted';
+	const string TRASHED_COLUMN = 'trashed';
 
 	// -----------------
 

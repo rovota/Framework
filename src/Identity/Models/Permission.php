@@ -19,8 +19,8 @@ use Rovota\Framework\Support\Moment;
  * @property string $section
  *
  * @property Moment|null $created
- * @property Moment|null $edited
- * @property Moment|null $deleted
+ * @property Moment|null $modified
+ * @property Moment|null $trashed
  */
 class Permission extends Model
 {

@@ -30,8 +30,8 @@ use Throwable;
  * @property mixed $content
  *
  * @property Moment|null $created
- * @property Moment|null $edited
- * @property Moment|null $deleted
+ * @property Moment|null $modified
+ * @property Moment|null $trashed
  */
 class Guard extends Model
 {

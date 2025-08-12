@@ -22,8 +22,8 @@ use TypeError;
  * @property mixed $value
  * @property string $type
  * @property Moment|null $created
- * @property Moment|null $edited
- * @property Moment|null $deleted
+ * @property Moment|null $modified
+ * @property Moment|null $trashed
  */
 class MetaEntity extends Model
 {

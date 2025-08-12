@@ -70,7 +70,7 @@ final class UpdateQuery extends QueryExtension
 	}
 
 	/**
-	 * Requires the presence of a `deleted` column, unless otherwise specified by a model.
+	 * Requires the presence of a `trashed` column, unless otherwise specified by a model.
 	 */
 	public function recover(): UpdateQuery
 	{
@@ -78,11 +78,11 @@ final class UpdateQuery extends QueryExtension
 			return $this->set([$this->config->model::TRASHED_COLUMN => null]);
 		}
 
-		return $this->set(['deleted' => null]);
+		return $this->set(['trashed' => null]);
 	}
 
 	/**
-	 * Requires the presence of a `deleted` column, unless otherwise specified by a model.
+	 * Requires the presence of a `trashed` column, unless otherwise specified by a model.
 	 */
 	public function trash(): UpdateQuery
 	{
@@ -90,7 +90,7 @@ final class UpdateQuery extends QueryExtension
 			return $this->set([$this->config->model::TRASHED_COLUMN => now()]);
 		}
 
-		return $this->set(['deleted' => now()]);
+		return $this->set(['trashed' => now()]);
 	}
 
 	// -----------------
