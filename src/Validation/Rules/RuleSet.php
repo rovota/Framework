@@ -92,6 +92,20 @@ class RuleSet
 
 	// -----------------
 
+	public function exclude(array|string $items): static
+	{
+		$items = is_array($items) ? $items : [$items];
+
+		foreach ($items as $item) {
+			if (isset($this->rules[$item])) {
+				unset($this->rules[$item]);
+			}
+		}
+		return $this;
+	}
+
+	// -----------------
+
 	public function validate(): void
 	{
 		if ($this->data->isEmpty() || in_array('sometimes', $this->flags) && $this->data->missing($this->attribute)) {

@@ -23,7 +23,7 @@ class Validator implements ValidatorInterface
 	public Bucket $safe;
 
 	/**
-	 * @var array<int, RuleSet>
+	 * @var array<string, RuleSet>
 	 */
 	protected array $rules = [];
 
@@ -70,6 +70,35 @@ class Validator implements ValidatorInterface
 	protected function afterValidation(): void
 	{
 
+	}
+
+	// -----------------
+
+	public function exclude(array|string $items): static
+	{
+		$items = is_array($items) ? $items : [$items];
+
+		foreach ($items as $item) {
+			if (str_starts_with($item, '*.')) {
+				foreach ($this->rules as $rule) {
+					$rule->exclude(substr($item, 2));
+				}
+				continue;
+			}
+			if (str_contains($item, '.')) {
+				foreach ($this->rules as $attribute => $rule) {
+					if (str_starts_with($attribute, $item)) {
+						$rule->exclude(substr($attribute, strlen($item) + 1));
+					}
+				}
+			}
+
+			if (isset($this->rules[$item])) {
+				unset($this->rules[$item]);
+			}
+		}
+
+		return $this;
 	}
 
 	// -----------------
