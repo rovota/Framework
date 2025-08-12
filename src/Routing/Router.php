@@ -72,6 +72,11 @@ final class Router
 		return $route;
 	}
 
+	public function generate(string $controller): RouteGenerator
+	{
+		return new RouteGenerator($controller);
+	}
+
 	public function group(Closure $routes, RouteGroup $parent): void
 	{
 		$original_parent = $this->parent;

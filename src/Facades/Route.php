@@ -8,6 +8,7 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
+use Rovota\Framework\Routing\RouteGenerator;
 use Rovota\Framework\Routing\RouteGroup;
 use Rovota\Framework\Routing\RouteInstance;
 use Rovota\Framework\Routing\RouteManager;
@@ -36,6 +37,7 @@ use Rovota\Framework\Support\Str;
  * @method static RouteGroup whereNumber(array|string $parameter, int|null $length = null)
  * @method static RouteGroup whereSlug(array|string $parameter, int|null $length = null)
  *
+ * @method static RouteInstance all(string $path, mixed $target = null)
  * @method static RouteInstance match(array|string $methods, string $path, mixed $target = null)
  * @method static RouteInstance get(string $path, mixed $target = null)
  * @method static RouteInstance post(string $path, mixed $target = null)
@@ -44,6 +46,8 @@ use Rovota\Framework\Support\Str;
  * @method static RouteInstance options(string $path, mixed $target = null)
  * @method static RouteInstance patch(string $path, mixed $target = null)
  * @method static RouteInstance head(string $path, mixed $target = null)
+ *
+ * @method static RouteGenerator generate(string $controller)
  */
 final class Route extends Facade
 {
@@ -93,7 +97,10 @@ final class Route extends Facade
 					'whereSlug' => $instance->router->getGroup()->whereSlug(...$parameters),
 
 					// Definitions
+					'all' => $router->define(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'], ...$parameters),
 					'match' => $router->define(...$parameters),
+
+					'generate' => $router->generate(...$parameters),
 
 					default => $instance->router->$method(...$parameters)
 				};
