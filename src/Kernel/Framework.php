@@ -19,7 +19,7 @@ final class Framework
 
 	protected const string APP_VERSION = '1.0.0';
 
-	protected const string PHP_MINIMUM_VERSION = '8.3.0';
+	protected const string PHP_MINIMUM_VERSION = '8.4.0';
 
 	// -----------------
 

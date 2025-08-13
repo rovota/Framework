@@ -9,7 +9,7 @@ A modern framework written in PHP designed to be reliable, fast and accessible. 
 
 ## System Requirements
 
-* PHP 8.3 or newer.
+* PHP 8.4 or newer.
 * MySQL 8+ with InnoDB, MariaDB 10.6+ or PostgreSQL 15+.
 
 ## Dependencies
