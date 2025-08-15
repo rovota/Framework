@@ -16,7 +16,7 @@ use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Support\Arr;
 
 /**
- * @method static SelectQuery whereExpression(string $expression, array $parameters)
+ * @method static SelectQuery whereExpression(string $expression, mixed $parameters = null)
  * @method static SelectQuery where(string|array $column, mixed $value = null)
  * @method static SelectQuery whereEqual(string $column, mixed $value)
  * @method static SelectQuery whereNotEqual(string $column, mixed $value)
@@ -68,7 +68,7 @@ trait ModelQueryFunctions
 
 	// -----------------
 
-	public static function orderBy(string|array $column, Sort $order = Sort::Asc): SelectQuery
+	public static function orderBy(string|array $column, Sort|string $order = Sort::Asc): SelectQuery
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->orderBy($column, $order);
 	}

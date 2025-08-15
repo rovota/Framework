@@ -21,7 +21,7 @@ trait OrWhereQueryConstraints
 
 	// -----------------
 
-	public function orWhereExpression(string $expression, array $parameters): static
+	public function orWhereExpression(string $expression, mixed $parameters = null): static
 	{
 		return $this->whereExpression($expression, $parameters, ConstraintMode::Or);
 	}

@@ -33,10 +33,16 @@ trait WhereQueryConstraints
 
 	// -----------------
 
-	public function whereExpression(string $expression, array $parameters, ConstraintMode $mode = ConstraintMode::And): static
+	public function whereExpression(string $expression, mixed $parameters = null, ConstraintMode $mode = ConstraintMode::And): static
 	{
-		foreach ($parameters as $key => $value) {
-			$parameters[$key] = CastingManager::instance()->castToRawAutomatic($value);
+		if (is_array($parameters)) {
+			foreach ($parameters as $key => $value) {
+				$parameters[$key] = CastingManager::instance()->castToRawAutomatic($value);
+			}
+		}
+
+		if ($parameters !== null) {
+			$parameters = CastingManager::instance()->castToRawAutomatic($parameters);
 		}
 
 		$this->getWherePredicate()->addPredicate(

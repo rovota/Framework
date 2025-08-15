@@ -100,8 +100,10 @@ final class SelectQuery extends QueryExtension
 
 	// -----------------
 
-	public function orderBy(string|array $column, Sort $order = Sort::Asc): SelectQuery
+	public function orderBy(string|array $column, Sort|string $order = Sort::Asc): SelectQuery
 	{
+		$order = $order instanceof Sort ? $order : Sort::tryFrom($order) ?? Sort::Asc;
+
 		if (is_string($column)) {
 			$this->select->order(sprintf('%s %s', $column, $order->value));
 		}
