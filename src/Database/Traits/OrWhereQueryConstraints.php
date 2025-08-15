@@ -100,12 +100,12 @@ trait OrWhereQueryConstraints
 
 	// -----------------
 
-	public function orWhereNull(string $column): static
+	public function orWhereNull(string|array $column): static
 	{
 		return $this->whereNull($column, ConstraintMode::Or);
 	}
 
-	public function orWhereNotNull(string $column): static
+	public function orWhereNotNull(string|array $column): static
 	{
 		return $this->whereNotNull($column, ConstraintMode::Or);
 	}

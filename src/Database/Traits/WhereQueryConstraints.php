@@ -167,8 +167,15 @@ trait WhereQueryConstraints
 
 	// -----------------
 
-	public function whereNull(string $column, ConstraintMode $mode = ConstraintMode::And): static
+	public function whereNull(string|array $column, ConstraintMode $mode = ConstraintMode::And): static
 	{
+		if (is_array($column)) {
+			foreach ($column as $col) {
+				$this->whereNull($col, $mode);
+			}
+			return $this;
+		}
+
 		$this->getWherePredicate()->addPredicate(
 			new IsNull($column), $mode->realType()
 		);
@@ -176,8 +183,15 @@ trait WhereQueryConstraints
 		return $this;
 	}
 
-	public function whereNotNull(string $column, ConstraintMode $mode = ConstraintMode::And): static
+	public function whereNotNull(string|array $column, ConstraintMode $mode = ConstraintMode::And): static
 	{
+		if (is_array($column)) {
+			foreach ($column as $col) {
+				$this->whereNotNull($col, $mode);
+			}
+			return $this;
+		}
+
 		$this->getWherePredicate()->addPredicate(
 			new IsNotNull($column), $mode->realType()
 		);
