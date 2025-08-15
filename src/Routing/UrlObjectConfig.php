@@ -128,7 +128,7 @@ class UrlObjectConfig extends Config
 
 	protected function getSanitizedHost(): string
 	{
-		return Str::after(Framework::environment()->server->get('HTTP_HOST'), 'www.');
+		return Str::after(Framework::environment()->server->get('HTTP_HOST') ?? '', 'www.');
 	}
 
 }
