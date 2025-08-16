@@ -58,11 +58,11 @@ trait FileFunctions
 
 	// -----------------
 
-	public function move(string $to): bool
+	public function move(string $to, array $options = []): bool
 	{
 		$target = trim($to, '/') .'/'. $this->properties->name . '.' . $this->properties->extension;
 
-		if ($this->properties->disk->move($this->location(), $target)) {
+		if ($this->properties->disk->move($this->location(), $target, $options)) {
 			$this->properties->path = Str::before($target, '/');
 			return true;
 		}
@@ -70,13 +70,13 @@ trait FileFunctions
 		return false;
 	}
 
-	public function rename(string $name): bool
+	public function rename(string $name, array $options = []): bool
 	{
 		if (Str::containsNone($name, ['.'])) {
 			$name = sprintf('%s.%s', $name, $this->properties->extension);
 		}
 
-		if ($this->properties->disk->rename($this->location(), $this->properties->path .'/'. $name)) {
+		if ($this->properties->disk->rename($this->location(), $this->properties->path .'/'. $name, $options)) {
 			$this->properties->name = Str::beforeLast($name, '.');
 			$this->properties->extension = Str::afterLast($name, '.');
 		}
@@ -84,9 +84,9 @@ trait FileFunctions
 		return false;
 	}
 
-	public function copy(string $to): bool
+	public function copy(string $to, array $options = []): bool
 	{
-		return $this->properties->disk->copy($this->location(), $to);
+		return $this->properties->disk->copy($this->location(), $to, $options);
 	}
 
 	// -----------------
@@ -154,10 +154,10 @@ trait FileFunctions
 
 	// -----------------
 
-	public function save(): static
+	public function save(array $options = []): static
 	{
 		if ($this->modified) {
-			$this->properties->disk->write($this->location(), $this->asString());
+			$this->properties->disk->write($this->location(), $this->asString(), $options);
 		}
 		return $this;
 	}

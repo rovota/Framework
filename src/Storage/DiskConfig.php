@@ -63,6 +63,13 @@ final class DiskConfig extends Config
 		}
 	}
 
+	public string $visibility {
+		get => $this->get('visibility', 'private');
+		set {
+			$this->set('visibility', $value);
+		}
+	}
+
 	public Config $parameters {
 		get => new Config($this->array('parameters'));
 		set {

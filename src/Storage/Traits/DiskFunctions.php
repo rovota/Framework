@@ -110,10 +110,10 @@ trait DiskFunctions
 		return null;
 	}
 
-	public function write(string $location, string $contents): bool
+	public function write(string $location, string $contents, array $options = []): bool
 	{
 		try {
-			$this->flysystem->write($location, $contents);
+			$this->flysystem->write($location, $contents, $options);
 			return true;
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
@@ -121,10 +121,10 @@ trait DiskFunctions
 		return false;
 	}
 
-	public function writeStream(string $location, mixed $contents): bool
+	public function writeStream(string $location, mixed $contents, array $options = []): bool
 	{
 		try {
-			$this->flysystem->writeStream($location, $contents);
+			$this->flysystem->writeStream($location, $contents, $options);
 			return true;
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
@@ -134,10 +134,10 @@ trait DiskFunctions
 
 	// -----------------
 
-	public function move(string $from, string $to): bool
+	public function move(string $from, string $to, array $options = []): bool
 	{
 		try {
-			$this->flysystem->move($from, $to);
+			$this->flysystem->move($from, $to, $options);
 			return true;
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
@@ -145,11 +145,11 @@ trait DiskFunctions
 		return false;
 	}
 
-	public function rename(string $location, string $name): bool
+	public function rename(string $location, string $name, array $options = []): bool
 	{
 		try {
 			$target = str_replace(basename($location), $name, $location);
-			$this->flysystem->move($location, $target);
+			$this->flysystem->move($location, $target, $options);
 			return true;
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
@@ -157,10 +157,10 @@ trait DiskFunctions
 		return false;
 	}
 
-	public function copy(string $from, string $to): bool
+	public function copy(string $from, string $to, array $options = []): bool
 	{
 		try {
-			$this->flysystem->copy($from, $to);
+			$this->flysystem->copy($from, $to, $options);
 			return true;
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);

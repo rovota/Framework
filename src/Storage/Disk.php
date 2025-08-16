@@ -49,7 +49,9 @@ abstract class Disk implements DiskInterface
 		$this->config = $config;
 
 		$this->adapter = $this->config->read_only ? new ReadOnlyFilesystemAdapter($adapter) : $adapter;
-		$this->flysystem = new Filesystem($this->adapter);
+		$this->flysystem = new Filesystem($this->adapter, [
+			'visibility' => $config->visibility,
+		]);
 	}
 
 	// -----------------
