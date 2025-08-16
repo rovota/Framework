@@ -26,10 +26,12 @@ return [
 
 	'units' => [
 		'numbers' => [
+			'hidden' => ['', '', '', '', '', ''],
 			'short' => ['', 'K', 'M', 'B', 'T', 'Q'],
 			'long' => ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion']
 		],
 		'storage' => [
+			'hidden' => ['', '', '', '', '', '', '', '', ''],
 			'short' => ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
 			'long' => ['bytes', 'kilobytes', 'megabytes', 'gigabytes', 'terabytes', 'petabytes', 'exabytes', 'zettabytes', 'yottabytes']
 		],
