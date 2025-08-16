@@ -40,7 +40,7 @@ final class Photo implements Stringable
 
 		$this->properties->assign($properties);
 
-		if ($this->properties->mime_type = 'image/png') {
+		if ($this->properties->mime_type === 'image/png') {
 			imagealphablending($this->data, false);
 			imagesavealpha($this->data, true);
 		}
