@@ -36,7 +36,7 @@ final class FilesArrayOrganizer
 
 		foreach ($output as $name => $attributes) {
 			if ($attributes['error'] === UPLOAD_ERR_OK) {
-				$output[$name] = new UploadedFile($attributes['name'], $attributes['tmp_name'], $attributes['error']);
+				$output[$name] = new UploadedFile($attributes['name'], $attributes['tmp_name']);
 			} else {
 				unset($output[$name]);
 			}

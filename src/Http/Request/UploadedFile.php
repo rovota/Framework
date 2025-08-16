@@ -20,7 +20,6 @@ class UploadedFile
 {
 
 	protected int $size;
-	protected int $error;
 	protected string $original_name;
 	protected string $provisional_name;
 
@@ -36,17 +35,16 @@ class UploadedFile
 
 	// -----------------
 
-	public function __construct(string $name, string $temp_name, int $error)
+	public function __construct(string $name, string $temp_name)
 	{
 		$source = new SplFileInfo($temp_name);
 
 		$this->size = $source->getSize();
-		$this->error = $error;
 
 		$this->provisional_name = trim($temp_name);
 		$this->original_name = basename(trim($name));
 
-		if ($error === UPLOAD_ERR_OK && is_uploaded_file($source->getPathname()) && $source->getSize() > 0) {
+		if (is_uploaded_file($source->getPathname()) && $source->getSize() > 0) {
 			$file = $this->getFileInstanceFromResource();
 			if ($file instanceof File) {
 				$this->source = $file;
@@ -56,7 +54,7 @@ class UploadedFile
 
 	// -----------------
 
-	public function store(string $path, string|null $name = null, DiskInterface|string|null $disk = null): bool
+	public function store(string $path, string|null $name = null, DiskInterface|string|null $disk = null, array $options = []): bool
 	{
 		if ($this->source === null) {
 			return false;
@@ -69,7 +67,7 @@ class UploadedFile
 			$this->withName($name);
 		}
 
-		if ($this->source->save()) {
+		if ($this->source->save($options)) {
 			return true;
 		}
 
