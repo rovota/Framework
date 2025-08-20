@@ -57,6 +57,7 @@ final class Moment extends Carbon
 			$this->isMorning() => 1,
 			$this->isAfternoon() => 2,
 			$this->isEvening() => 3,
+			default => 0
 		};
 	}
 

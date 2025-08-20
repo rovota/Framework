@@ -21,36 +21,41 @@ trait MomentValidation
 
 	public function isNight(): bool
 	{
-		return $this->isBetweenTimes('21:00:00', '5:00:00');
+		return $this->isTimeBetween('21:00:00', '5:00:00');
 	}
 
 	public function isMorning(): bool
 	{
-		return $this->isBetweenTimes('5:00:00', '12:00:00');
+		return $this->isTimeBetween('5:00:00', '12:00:00');
 	}
 
 	public function isAfternoon(): bool
 	{
-		return $this->isBetweenTimes('12:00:00', '17:00:00');
+		return $this->isTimeBetween('12:00:00', '17:00:00');
 	}
 
 	public function isEvening(): bool
 	{
-		return $this->isBetweenTimes('17:00:00', '21:00:00');
+		return $this->isTimeBetween('17:00:00', '21:00:00');
 	}
 
 	// -----------------
 
-	public function isBetweenTimes(string $start, string $end): bool
+	public function isTimeBefore(mixed $target): bool
 	{
-		$start = $this->copy()->setTimeFrom($start);
-		$end = $this->copy()->setTimeFrom($end);
+		return $this->format('Gis.u') < moment($target)->format('Gis.u');
+	}
 
-		if ($start > $end) {
-			$end->addDay();
-		}
+	public function isTimeAfter(mixed $target): bool
+	{
+		return $this->format('Gis.u') > moment($target)->format('Gis.u');
+	}
 
-		return $this->between($start, $end);
+	// -----------------
+
+	public function isTimeBetween(string $start, string $end): bool
+	{
+		return $this->isTimeAfter($start) || $this->isTimeBefore($end);
 	}
 
 }
