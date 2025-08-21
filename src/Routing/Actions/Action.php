@@ -14,6 +14,11 @@ abstract class Action
 
 	// -----------------
 
+	public static function name(): string
+	{
+		return static::$name;
+	}
+
 	public static function export(): array
 	{
 		return [
