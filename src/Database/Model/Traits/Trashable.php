@@ -7,6 +7,8 @@
 
 namespace Rovota\Framework\Database\Model\Traits;
 
+use Rovota\Framework\Database\Events\ModelRestored;
+use Rovota\Framework\Database\Events\ModelTrashed;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 
 /**
@@ -33,18 +35,20 @@ trait Trashable
 
 		if ($result) {
 			$this->attributes[static::TRASHED_COLUMN] = now();
+			ModelTrashed::dispatch($this);
 			return true;
 		}
 
 		return false;
 	}
 
-	public function recover(): bool
+	public function restore(): bool
 	{
-		$result = $this->getUpdateQuery()->recover()->submit();
+		$result = $this->getUpdateQuery()->restore()->submit();
 
 		if ($result) {
 			$this->attributes[static::TRASHED_COLUMN] = null;
+			ModelRestored::dispatch($this);
 			return true;
 		}
 

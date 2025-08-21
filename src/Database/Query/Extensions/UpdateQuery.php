@@ -72,7 +72,7 @@ final class UpdateQuery extends QueryExtension
 	/**
 	 * Requires the presence of a `trashed` column, unless otherwise specified by a model.
 	 */
-	public function recover(): UpdateQuery
+	public function restore(): UpdateQuery
 	{
 		if ($this->config->model instanceof ModelInterface && defined($this->config->model::class . '::TRASHED_COLUMN')) {
 			return $this->set([$this->config->model::TRASHED_COLUMN => null]);

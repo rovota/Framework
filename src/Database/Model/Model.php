@@ -11,6 +11,7 @@ use BackedEnum;
 use JsonSerializable;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\ConnectionManager;
+use Rovota\Framework\Database\Events\ModelDestroyed;
 use Rovota\Framework\Database\Events\ModelPopulated;
 use Rovota\Framework\Database\Events\ModelPopulatedFromResult;
 use Rovota\Framework\Database\Events\ModelReloaded;
@@ -306,6 +307,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 		if ($result) {
 			$this->config->stored = false;
+			ModelDestroyed::dispatch($this);
 			return true;
 		}
 
