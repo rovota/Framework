@@ -19,12 +19,12 @@ final class Fahrenheit extends Temperature implements Imperial
 
 	protected function toBaseValue(float|int $value): float|int
 	{
-		return ($value - 32) * (5/9) + 273.15;
+		return ($value - 32) * (5 / 9) + 273.15;
 	}
 
 	protected function fromBaseValue(float|int $value): float|int
 	{
-		return ($value - 273.15) * (9/5) + 32;
+		return ($value - 273.15) * (9 / 5) + 32;
 	}
 
 }

@@ -24,7 +24,8 @@ class CsrfProtection
 		$token_value = CsrfManager::getToken();
 
 		if ($request->isPost() && $request->get($token_name) !== $token_value) {
-			echo response(StatusCode::Forbidden); exit;
+			echo response(StatusCode::Forbidden);
+			exit;
 		}
 
 		if (request()->cookies->missing($token_name)) {

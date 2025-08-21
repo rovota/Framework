@@ -137,7 +137,7 @@ final class CacheManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::APCu => new APCu($name, $config),
 			Driver::Memory => new Memory($name, $config),
 			Driver::Redis => new Redis($name, $config),

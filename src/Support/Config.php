@@ -18,12 +18,12 @@ class Config extends Bucket
 
 	public function __get(string $name)
 	{
-		return $this->{'get'.Str::pascal($name)}();
+		return $this->{'get' . Str::pascal($name)}();
 	}
-	
+
 	public function __set(string $name, $value): void
 	{
-		$method = 'set'.Str::pascal($name);
+		$method = 'set' . Str::pascal($name);
 		if (method_exists($this, $method)) {
 			$this->$method($value);
 		} else {

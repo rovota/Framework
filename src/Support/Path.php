@@ -48,11 +48,11 @@ final class Path
 	 */
 	public static function toProjectFile(string $path, string|null $base = null): string
 	{
-		return ($base ?? self::getProjectRootPath()).'/'.ltrim($path, '/');
+		return ($base ?? self::getProjectRootPath()) . '/' . ltrim($path, '/');
 	}
 
 	// -----------------
-	
+
 	protected static function getFrameworkRootPath(): string
 	{
 		return str_replace(['\Support', '/Support'], ['', ''], dirname(__FILE__));

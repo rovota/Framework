@@ -44,7 +44,7 @@ class RouteGenerator
 	{
 		foreach ($this->config->actions as $name => $options) {
 			if ($options['method'] === 'PATCH' || $options['method'] === 'DELETE') {
-				$this->config->set('actions.'.$name.'.method', 'POST');
+				$this->config->set('actions.' . $name . '.method', 'POST');
 			}
 		}
 		return $this;
@@ -58,7 +58,7 @@ class RouteGenerator
 
 		foreach ($this->config->actions as $name => $options) {
 			if (in_array($name, $actions) === false) {
-				$this->config->remove('actions.'.$name);
+				$this->config->remove('actions.' . $name);
 			}
 		}
 		return $this;
@@ -70,7 +70,7 @@ class RouteGenerator
 
 		foreach ($this->config->actions as $name => $options) {
 			if (in_array($name, $actions)) {
-				$this->config->remove('actions.'.$name);
+				$this->config->remove('actions.' . $name);
 			}
 		}
 		return $this;
@@ -86,7 +86,7 @@ class RouteGenerator
 			if (is_int($name)) {
 				$name = is_array($action) ? $action['name'] : $action::name();
 			}
-			$this->config->set('actions.'.$name, is_array($action) ? $action : $action::export());
+			$this->config->set('actions.' . $name, is_array($action) ? $action : $action::export());
 		}
 
 		$this->config->set('actions.show', $show);
@@ -100,9 +100,9 @@ class RouteGenerator
 		$actions = is_array($actions) ? $actions : [$actions => $limiter];
 
 		foreach ($actions as $name => $limiter) {
-			if ($this->config->has('actions.'.$name)) {
+			if ($this->config->has('actions.' . $name)) {
 				if ($limiter === false || (is_string($limiter) && LimitManager::instance()->has($limiter))) {
-					$this->config->set('actions.'.$name.'.limiter', $limiter);
+					$this->config->set('actions.' . $name . '.limiter', $limiter);
 				}
 			}
 		}

@@ -64,7 +64,7 @@ class LimitConfig extends Config
 	}
 
 	public int $period_in_seconds {
-		get => match($this->period_type) {
+		get => match ($this->period_type) {
 			PeriodType::Second => $this->period,
 			PeriodType::Minute => $this->period * 60,
 			PeriodType::Hour => $this->period * 3600,
@@ -87,7 +87,7 @@ class LimitConfig extends Config
 	public Closure $response {
 		get {
 			if ($this->missing('response')) {
-				return fn () => 429;
+				return fn() => 429;
 			}
 			return $this->get('response');
 		}

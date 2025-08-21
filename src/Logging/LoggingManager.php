@@ -139,7 +139,7 @@ final class LoggingManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::Discord => new Discord($name, $config),
 			Driver::Monolog => new Monolog($name, $config),
 			Driver::Stack => new Stack($name, $config),

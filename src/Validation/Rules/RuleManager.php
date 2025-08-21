@@ -126,7 +126,7 @@ final class RuleManager
 		self::register('date_format', DateFormatRule::class);
 		self::register('timezone', TimezoneRule::class);
 	}
-	
+
 	protected static function registerStandardRules(): void
 	{
 		self::register('max', MaxRule::class);

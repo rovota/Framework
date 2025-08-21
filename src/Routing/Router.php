@@ -170,7 +170,7 @@ final class Router
 
 		$this->triggerLimiterForRoute($route);
 		$this->triggerMiddlewareForRoute($route);
-		
+
 		if ($route->config->target instanceof Closure || is_array($route->config->target)) {
 			$response = Resolver::invoke($route->config->target, $parameters);
 		} else {

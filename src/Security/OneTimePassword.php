@@ -49,7 +49,7 @@ final class OneTimePassword
 		$result = $this->totp->verify($input, $timestamp, $leeway);
 
 		if ($result === true) {
-			$key = hash('sha256', $this->secret().'-'.$input);
+			$key = hash('sha256', $this->secret() . '-' . $input);
 			if (CacheManager::instance()->get()->has($key)) {
 				return false;
 			}

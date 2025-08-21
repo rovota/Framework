@@ -18,7 +18,9 @@ class ModelRevertedAttribute implements Event
 	// -----------------
 
 	public function __construct(
-		public Model $model,
+		public Model  $model,
 		public string $attribute
-	) {}
+	)
+	{
+	}
 }

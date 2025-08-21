@@ -14,11 +14,13 @@ interface ProviderAdapterInterface
 {
 
 	public Session|null $session {
-		get; set;
+		get;
+		set;
 	}
 
 	public User|null $user {
-		get; set;
+		get;
+		set;
 	}
 
 	// -----------------

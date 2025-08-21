@@ -13,7 +13,8 @@ interface ContextAware
 {
 
 	public Bucket $context {
-		get; set;
+		get;
+		set;
 	}
 
 }

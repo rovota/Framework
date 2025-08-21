@@ -46,7 +46,7 @@ class UrlObjectConfig extends Config
 
 			$value = trim($value);
 
-			if (mb_strlen($value) > 0 ) {
+			if (mb_strlen($value) > 0) {
 				if (Str::occurrences($this->domain, '.') > 1) {
 					$this->domain = Str::after($this->domain, '.');
 				}
@@ -70,7 +70,7 @@ class UrlObjectConfig extends Config
 	}
 
 	public int $port {
-		get => $this->int('port', (int) Framework::environment()->server->get('SERVER_PORT'));
+		get => $this->int('port', (int)Framework::environment()->server->get('SERVER_PORT'));
 		set {
 			$this->set('port', $value);
 		}
@@ -98,7 +98,7 @@ class UrlObjectConfig extends Config
 			}
 
 			foreach ($value as $name => $data) {
-				$name = 'parameters.'.strtolower(trim($name));
+				$name = 'parameters.' . strtolower(trim($name));
 				if ($data === null) {
 					$this->remove($name);
 					continue;

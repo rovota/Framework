@@ -36,6 +36,7 @@ final class Buffer
 			ob_clean();
 		}
 	}
+
 	// -----------------
 
 	public static function retrieve(): string|null

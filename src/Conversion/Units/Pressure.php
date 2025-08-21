@@ -31,7 +31,7 @@ abstract class Pressure extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'bar' => Bar::class,
 			'pascal', 'pa' => Pascal::class,
 			'psi', 'lbf/in2', 'pound per square inch' => PoundPerSquareInch::class,

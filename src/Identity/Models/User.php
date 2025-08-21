@@ -79,7 +79,7 @@ class User extends Model
 	}
 
 	public Role|null $role {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('role:'.$this->role_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('role:' . $this->role_id, function () {
 			return Role::find($this->role_id);
 		});
 		set (Role|null $role) {
@@ -91,7 +91,7 @@ class User extends Model
 	}
 
 	public Suspension|null $suspension {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('suspension:'.$this->id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('suspension:' . $this->id, function () {
 			$suspension = Suspension::where(['user_id' => $this->id])->first();
 			if ($suspension instanceof Suspension && ($suspension->expiration === null || $suspension->expiration->isFuture())) {
 				return $suspension;
@@ -103,7 +103,7 @@ class User extends Model
 	public UrlObject $avatar_url {
 		get {
 			if ($this->metadata->has('avatar')) {
-				return Url::file('avatars/'. md5($this->id) .'/'. $this->meta('avatar'));
+				return Url::file('avatars/' . md5($this->id) . '/' . $this->meta('avatar'));
 			}
 			return Url::file('avatars/default.svg');
 		}

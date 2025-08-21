@@ -176,7 +176,7 @@ if (!function_exists('json_encode_clean')) {
 if (!function_exists('convert_to_array')) {
 	function convert_to_array(mixed $value): array
 	{
-		return match(true) {
+		return match (true) {
 			$value === null => [],
 			is_array($value) => $value,
 			$value instanceof Arrayable => $value->toArray(),

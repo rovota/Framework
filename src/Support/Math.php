@@ -28,12 +28,12 @@ final class Math
 
 	public static function isEven(float|int $value): bool
 	{
-		return (int) $value % 2 === 0;
+		return (int)$value % 2 === 0;
 	}
 
 	public static function isOdd(float|int $value): bool
 	{
-		return (int) $value & 1;
+		return (int)$value & 1;
 	}
 
 	// -----------------
@@ -71,7 +71,7 @@ final class Math
 		sort($values);
 
 		$values = array_values($values);
-		$middle = (int) ($count / 2);
+		$middle = (int)($count / 2);
 
 		if ($count % 2) {
 			return round($values[$middle], $precision);

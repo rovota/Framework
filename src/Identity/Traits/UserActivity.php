@@ -15,10 +15,10 @@ trait UserActivity
 
 	public Moment|null $last_active {
 		get {
-			return Cache::get('last_active_hit:'.$this->id, $this->getAttribute('last_active') ?? $this->created);
+			return Cache::get('last_active_hit:' . $this->id, $this->getAttribute('last_active') ?? $this->created);
 		}
 		set {
-			$key = 'last_active_hit:'.$this->id;
+			$key = 'last_active_hit:' . $this->id;
 			$moment = moment($value);
 
 			if (Cache::has($key) === false) {

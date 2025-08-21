@@ -23,7 +23,7 @@ final class Arr
 
 	public static function from(mixed $value): array
 	{
-		return match(true) {
+		return match (true) {
 			$value === null => [],
 			is_array($value) => $value,
 			$value instanceof Arrayable => $value->toArray(),
@@ -89,7 +89,7 @@ final class Arr
 		if ($value instanceof Closure) {
 			$count = count(Arr::filter($array, $value));
 		} else {
-			$count = count(Arr::filter($array, fn ($data) => $data === $value));
+			$count = count(Arr::filter($array, fn($data) => $data === $value));
 		}
 
 		return round($count / count($array) * 100, $precision);
@@ -111,7 +111,7 @@ final class Arr
 			}
 		}
 
-		return array_find($array,$callback);
+		return array_find($array, $callback);
 	}
 
 	/**

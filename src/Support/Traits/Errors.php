@@ -26,7 +26,7 @@ trait Errors
 			$message = $this->error_messages->array($type)[$identifier];
 		}
 
-		$this->errors->set($type.'.'.$identifier, $message, $data);
+		$this->errors->set($type . '.' . $identifier, $message, $data);
 	}
 
 	// -----------------

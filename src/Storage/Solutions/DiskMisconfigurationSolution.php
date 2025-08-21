@@ -28,5 +28,5 @@ class DiskMisconfigurationSolution implements Solution
 			'Read documentation' => 'https://rovota.gitbook.io/core/getting-started/configuration/disks'
 		];
 	}
-	
+
 }

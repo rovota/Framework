@@ -76,7 +76,7 @@ final class Script extends Asset
 	protected function formatAsHtml(): string
 	{
 		$attributes = [];
-		
+
 		foreach ($this->config->array('attributes') as $name => $value) {
 			if ($name === 'src' && $this->config->has('version')) {
 				$version = $this->config->get('version', moment()->toEpochString());
@@ -93,7 +93,7 @@ final class Script extends Asset
 			$attributes[$name] = sprintf('%s="%s"', $name, $value);
 		}
 
-		return sprintf('<script %s>%s</script>', implode(' ', $attributes), $this->config->get('content')).PHP_EOL;
+		return sprintf('<script %s>%s</script>', implode(' ', $attributes), $this->config->get('content')) . PHP_EOL;
 	}
 
 	// -----------------

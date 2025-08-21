@@ -112,7 +112,7 @@ class Validator implements ValidatorInterface
 
 			if ($set->errors->count() > 0) {
 				foreach ($set->errors as $identifier => $error) {
-					$this->errors->set($attribute.'.'.$identifier, $error);
+					$this->errors->set($attribute . '.' . $identifier, $error);
 				}
 			} else {
 				$this->safe->set($attribute, $this->unsafe->get($attribute));

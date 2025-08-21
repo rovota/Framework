@@ -45,7 +45,7 @@ abstract class Time extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'y', 'year', 'years' => Year::class,
 			'w', 'week', 'weeks' => Week::class,
 			'd', 'day', 'days' => Day::class,

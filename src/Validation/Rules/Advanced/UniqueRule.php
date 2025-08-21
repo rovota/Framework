@@ -21,7 +21,7 @@ class UniqueRule extends Rule
 	public function validate(mixed $value, Closure $fail): void
 	{
 		if (!is_string($value) && !is_int($value)) {
-			$value = (string) $value;
+			$value = (string)$value;
 		}
 
 		$config = ValidationTools::processDatabaseOptions($this->config);

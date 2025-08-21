@@ -147,7 +147,8 @@ final class EncryptionAgent
 			throw new UnsupportedCipherException("The provided cipher is not supported.");
 		}
 
-		$iteration = 0; $bytes = '';
+		$iteration = 0;
+		$bytes = '';
 
 		while ($iteration < 1) {
 			try {
@@ -165,7 +166,7 @@ final class EncryptionAgent
 
 	protected function hash(string $iv, mixed $value): string
 	{
-		return hash_hmac('sha256', $iv.$value, $this->key);
+		return hash_hmac('sha256', $iv . $value, $this->key);
 	}
 
 	/**

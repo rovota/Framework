@@ -151,13 +151,13 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		}
 
 		if ($this->count() <= 1) {
-			return (string) $this->first() ?? '';
+			return (string)$this->first() ?? '';
 		}
 
 		$sequence = new Sequence($this->values);
-		$final_item = (string) $sequence->pop();
+		$final_item = (string)$sequence->pop();
 
-		return $sequence->join($glue).$final_glue.$final_item;
+		return $sequence->join($glue) . $final_glue . $final_item;
 	}
 
 	// -----------------

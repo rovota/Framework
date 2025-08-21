@@ -40,7 +40,7 @@ trait UserPermissions
 
 		foreach ($this->permission_list ?? [] as $identifier) {
 			if (in_array($identifier, $this->permissions_denied ?? []) === false) {
-				$permission = Cache::storeWithDriver(Driver::Memory)->remember('permission:'.$identifier, function() use ($identifier) {
+				$permission = Cache::storeWithDriver(Driver::Memory)->remember('permission:' . $identifier, function () use ($identifier) {
 					return Permission::find($identifier);
 				});
 

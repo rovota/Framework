@@ -70,7 +70,7 @@ trait MailableContent
 			}
 		}
 
-		return (string) $this->content;
+		return (string)$this->content;
 	}
 
 }

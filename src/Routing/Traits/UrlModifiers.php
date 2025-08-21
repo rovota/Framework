@@ -24,7 +24,7 @@ trait UrlModifiers
 		$this->config->scheme = $scheme;
 		return $this;
 	}
-	
+
 	// -----------------
 
 	public function withSubdomain(string|null $subdomain): static
@@ -55,14 +55,14 @@ trait UrlModifiers
 
 	public function withParameter(string $name, mixed $value): static
 	{
-		$this->config->set('parameters.'.$name, $value);
+		$this->config->set('parameters.' . $name, $value);
 		return $this;
 	}
 
 	public function withParameters(array $parameters): static
 	{
 		foreach ($parameters as $name => $value) {
-			$this->config->set('parameters.'.$name, $value);
+			$this->config->set('parameters.' . $name, $value);
 		}
 		return $this;
 	}

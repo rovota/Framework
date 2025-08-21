@@ -19,5 +19,7 @@ class ModelRestored implements Event
 
 	public function __construct(
 		public Model $model
-	) {}
+	)
+	{
+	}
 }

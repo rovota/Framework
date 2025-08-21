@@ -26,7 +26,7 @@ abstract class Unit implements Stringable, JsonSerializable
 
 	public function __toString(): string
 	{
-		return (string) $this->value;
+		return (string)$this->value;
 	}
 
 	public static function __callStatic(string $name, array $parameters = []): static|null
@@ -53,7 +53,7 @@ abstract class Unit implements Stringable, JsonSerializable
 
 	public function jsonSerialize(): string
 	{
-		return (string) $this->value;
+		return (string)$this->value;
 	}
 
 	// -----------------
@@ -100,7 +100,7 @@ abstract class Unit implements Stringable, JsonSerializable
 				return new $this(0);
 			}
 		}
-		
+
 		return new $unit($base->getValue(), true);
 	}
 

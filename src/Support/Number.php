@@ -59,7 +59,7 @@ final class Number
 	public static function storage(int|float $bytes, int $precision = 2, string $format = 'short', string|null $locale = null): string
 	{
 		$locale = self::getLocale($locale);
-		$suffixes = Language::get($locale)->units()->get('storage.'.$format);
+		$suffixes = Language::get($locale)->units()->get('storage.' . $format);
 
 		$data = self::getAbbreviationData($bytes, 1024, $suffixes);
 		$value = self::format($data['value'], $precision, $locale);
@@ -70,7 +70,7 @@ final class Number
 	public static function shorten(int|float $number, int $precision = 0, string $format = 'short', string|null $locale = null): string
 	{
 		$locale = self::getLocale($locale);
-		$suffixes = Language::get($locale)->units()->get('numbers.'.$format);
+		$suffixes = Language::get($locale)->units()->get('numbers.' . $format);
 
 		$data = self::getAbbreviationData($number, 1000, $suffixes);
 		$value = self::format($data['value'], $precision, $locale);
@@ -87,7 +87,8 @@ final class Number
 		while ($iteration < $length) {
 			try {
 				$code .= random_int(0, 9);
-			} catch (Throwable) { }
+			} catch (Throwable) {
+			}
 			$iteration++;
 		}
 
@@ -98,7 +99,7 @@ final class Number
 
 	protected static function getAbbreviationData(int|float $value, int $scale, array $suffixes): array
 	{
-		$class = min((int) log($value, $scale), count($suffixes) - 1);
+		$class = min((int)log($value, $scale), count($suffixes) - 1);
 
 		return [
 			'value' => $value / pow($scale, $class),

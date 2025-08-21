@@ -27,7 +27,7 @@ trait SharedModifiers
 
 	public function withHeader(string $name, string $value): static
 	{
-		$this->config->set('headers.'.$name, trim($value));
+		$this->config->set('headers.' . $name, trim($value));
 		return $this;
 	}
 
@@ -89,13 +89,13 @@ trait SharedModifiers
 
 	public function setConnectTimeout(int|float $seconds): static
 	{
-		$this->config->set('timeout', (float) $seconds);
+		$this->config->set('timeout', (float)$seconds);
 		return $this;
 	}
 
 	public function setResponseTimeout(int|float $seconds): static
 	{
-		$this->config->set('connect_timeout', (float) $seconds);
+		$this->config->set('connect_timeout', (float)$seconds);
 		return $this;
 	}
 

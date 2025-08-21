@@ -31,7 +31,7 @@ abstract class Temperature extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'K', 'Kelvin' => Kelvin::class,
 			'°F', 'F', 'fahrenheit' => Fahrenheit::class,
 			'°C', 'C', 'celsius' => Celsius::class,

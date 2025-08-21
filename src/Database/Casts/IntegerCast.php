@@ -21,12 +21,12 @@ final class IntegerCast implements CastInterface
 
 	public function toRaw(mixed $value, array $options): int
 	{
-		return (int) $value;
+		return (int)$value;
 	}
 
 	public function fromRaw(mixed $value, array $options): int
 	{
-		return (int) $value;
+		return (int)$value;
 	}
 
 }

@@ -120,7 +120,7 @@ class SessionAdapter implements CacheAdapterInterface
 
 	protected function initIfCookiePresent(): void
 	{
-		if (isset($_COOKIE['__Secure-'.$this->cookie_name])) {
+		if (isset($_COOKIE['__Secure-' . $this->cookie_name])) {
 			$this->initialize();
 		}
 	}
@@ -141,11 +141,11 @@ class SessionAdapter implements CacheAdapterInterface
 			]);
 
 			if ($this->createSessionDirectoryIfMissing()) {
-				set_error_handler(function(int $number, string $message, string $file, int $line) {
+				set_error_handler(function (int $number, string $message, string $file, int $line) {
 					SessionAdapter::handleSessionError($number, $message, $file, $line);
 				});
 
-				session_name('__Secure-'.$this->cookie_name);
+				session_name('__Secure-' . $this->cookie_name);
 				session_start();
 
 				restore_error_handler();

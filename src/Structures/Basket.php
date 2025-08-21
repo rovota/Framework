@@ -341,13 +341,13 @@ class Basket extends Bucket
 		}
 
 		if ($count === 1) {
-			return (string) $this->first();
+			return (string)$this->first();
 		}
 
 		$bucket = new static($this->items);
-		$final_item = (string) $bucket->pop();
+		$final_item = (string)$bucket->pop();
 
-		return $bucket->implode($glue).$final_glue.$final_item;
+		return $bucket->implode($glue) . $final_glue . $final_item;
 	}
 
 	public function groupBy(callable|string $group_by, bool $preserve_keys = false): static
@@ -365,8 +365,8 @@ class Basket extends Bucket
 
 			foreach ($group_keys as $group_key) {
 				$group_key = match (true) {
-					is_bool($group_key) => (int) $group_key,
-					$group_key instanceof Stringable => (string) $group_key,
+					is_bool($group_key) => (int)$group_key,
+					$group_key instanceof Stringable => (string)$group_key,
 					default => $group_key,
 				};
 
@@ -387,7 +387,7 @@ class Basket extends Bucket
 		$results = new static();
 
 		foreach ($this->toArray() as $key => $item) {
-			$results->set((string) $value($item, $key), $item);
+			$results->set((string)$value($item, $key), $item);
 		}
 
 		return $results;

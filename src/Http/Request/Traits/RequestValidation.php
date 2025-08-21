@@ -25,7 +25,7 @@ trait RequestValidation
 
 	public function addError(string $type, string $identifier, string $message, array $data = []): void
 	{
-		$this->errors->set($type.'.'.$identifier, $message, $data);
+		$this->errors->set($type . '.' . $identifier, $message, $data);
 	}
 
 	// -----------------

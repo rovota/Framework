@@ -39,7 +39,7 @@ trait RolePermissions
 		$this->permission_entities = new PermissionBag();
 
 		foreach ($this->permission_list ?? [] as $identifier) {
-			$permission = Cache::storeWithDriver(Driver::Memory)->remember('permission:'.$identifier, function() use ($identifier) {
+			$permission = Cache::storeWithDriver(Driver::Memory)->remember('permission:' . $identifier, function () use ($identifier) {
 				return Permission::find($identifier);
 			});
 

@@ -40,7 +40,7 @@ abstract class Mass extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			't', 'tonne', 'tonnes' => Tonne::class,
 			'kg', 'kilogram', 'kilograms' => KiloGram::class,
 			'g', 'gram', 'grams' => Gram::class,

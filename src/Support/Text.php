@@ -484,7 +484,7 @@ final class Text implements Stringable, JsonSerializable
 		$this->string = Str::replaceLast($this->string, $target, $value);
 		return $this;
 	}
-	
+
 	// -----------------
 
 	public function scan(string $format): array

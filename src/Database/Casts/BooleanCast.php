@@ -26,7 +26,7 @@ final class BooleanCast implements CastInterface
 
 	public function fromRaw(mixed $value, array $options): bool
 	{
-		return (int) $value === 1;
+		return (int)$value === 1;
 	}
 
 }

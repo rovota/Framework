@@ -241,7 +241,7 @@ trait DiskFunctions
 		try {
 			$contents = $this->flysystem->listContents($location);
 			foreach ($contents as $item) {
-				match($item['type']) {
+				match ($item['type']) {
 					'file' => $this->flysystem->delete($item['path']),
 					'dir' => $this->flysystem->deleteDirectory($item['path']),
 				};
@@ -330,7 +330,7 @@ trait DiskFunctions
 		];
 
 		foreach ($data as $name) {
-			$properties[$name] = match($name) {
+			$properties[$name] = match ($name) {
 				'size' => $this->size($location),
 				'mime_type' => $this->mimeType($location),
 				'last_modified' => $this->lastModified($location),

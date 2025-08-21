@@ -13,7 +13,8 @@ interface RuleInterface
 {
 
 	public string $name {
-		get; set;
+		get;
+		set;
 	}
 
 	// -----------------

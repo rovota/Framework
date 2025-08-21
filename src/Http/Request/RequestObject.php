@@ -105,7 +105,7 @@ final class RequestObject
 
 	public function port(): int
 	{
-		return (int) Framework::environment()->server->get('SERVER_PORT');
+		return (int)Framework::environment()->server->get('SERVER_PORT');
 	}
 
 	public function path(): string
@@ -355,7 +355,7 @@ final class RequestObject
 					$brand = Str::remove(Str::beforeLast($element, ';'), '"');
 					$version = str_contains($element, ';v=') ? Str::afterLast($element, ';v=') : '';
 					if (Str::containsNone($brand, ['Brand', 'Chromium'])) {
-						$carry[trim($brand)] = (int) Str::remove($version, '"');
+						$carry[trim($brand)] = (int)Str::remove($version, '"');
 					}
 					return $carry;
 				}, []

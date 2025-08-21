@@ -35,7 +35,7 @@ final class RequestManager extends ServiceProvider
 			'post' => $this->getRequestPostData(),
 			'query' => $this->getRequestQueryData(),
 		]);
-		
+
 		$continue = $this->current->query->string('continue');
 
 		if (mb_strlen($continue) > 0) {
@@ -121,7 +121,7 @@ final class RequestManager extends ServiceProvider
 	protected function getRequestPostData(): array
 	{
 		$data = $_POST;
-		array_walk_recursive($data, function(&$item) {
+		array_walk_recursive($data, function (&$item) {
 			if (is_string($item)) {
 				$item = mb_strlen(trim($item)) > 0 ? trim($item) : null;
 			}

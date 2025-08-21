@@ -26,7 +26,7 @@ trait ClientModifiers
 
 	public function setVersion(int|float $version): static
 	{
-		$this->config->set('version', (float) $version);
+		$this->config->set('version', (float)$version);
 		return $this;
 	}
 

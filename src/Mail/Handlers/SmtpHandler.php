@@ -93,7 +93,7 @@ class SmtpHandler implements MailHandlerInterface
 	}
 
 	// -----------------
-	
+
 	public function addHeader(string $name, string $value): bool
 	{
 		try {

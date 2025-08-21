@@ -111,7 +111,8 @@ final class SelectQuery extends QueryExtension
 		if (is_array($column)) {
 			foreach ($column as $key => $sorting) {
 				if (is_numeric($key)) {
-					$key = $sorting; $sorting = Sort::Asc;
+					$key = $sorting;
+					$sorting = Sort::Asc;
 				}
 				$this->select->order(sprintf('%s %s', $key, $sorting->value));
 			}
@@ -226,7 +227,7 @@ final class SelectQuery extends QueryExtension
 			}
 		}
 
-		return (int) $basket->sum('count');
+		return (int)$basket->sum('count');
 	}
 
 	// -----------------

@@ -47,7 +47,7 @@ final class TextConverter
 			$count = count($count);
 		}
 
-		if ((int) abs($count) === 1) {
+		if ((int)abs($count) === 1) {
 			return $word;
 		}
 
@@ -73,7 +73,7 @@ final class TextConverter
 		$max = match (true) {
 			str_starts_with($max, '0x') => intval($max, 16),
 			str_starts_with($max, '0') => intval($max, 8),
-			default => (int) $max
+			default => (int)$max
 		};
 
 		switch (substr($size, -1)) {

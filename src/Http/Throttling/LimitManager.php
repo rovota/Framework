@@ -56,9 +56,7 @@ final class LimitManager extends ServiceProvider
 			return null;
 		}
 
-		return $this->limiters[
-			$route->attributes->string('limiter')
-		];
+		return $this->limiters[$route->attributes->string('limiter')];
 	}
 
 	// -----------------

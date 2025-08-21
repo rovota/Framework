@@ -208,13 +208,13 @@ class Bucket implements ArrayAccess, IteratorAggregate, Countable, Arrayable, Js
 
 	public function increment(mixed $key, int $step = 1): static
 	{
-		$this->set($key, (int) $this->get($key, 0) + abs($step));
+		$this->set($key, (int)$this->get($key, 0) + abs($step));
 		return $this;
 	}
 
 	public function decrement(mixed $key, int $step = 1): static
 	{
-		$this->set($key, (int) $this->get($key, 0) - abs($step));
+		$this->set($key, (int)$this->get($key, 0) - abs($step));
 		return $this;
 	}
 

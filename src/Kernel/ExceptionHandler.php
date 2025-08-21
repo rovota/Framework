@@ -137,7 +137,7 @@ final class ExceptionHandler
 			'server' => $server,
 			'port' => $port,
 			'url' => $url,
-			'full_url' => trim($scheme.'://'.$server.':'.$port.$url, '/')
+			'full_url' => trim($scheme . '://' . $server . ':' . $port . $url, '/')
 		];
 	}
 

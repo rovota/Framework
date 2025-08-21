@@ -26,7 +26,7 @@ final class ObjectCast implements CastInterface
 
 	public function toRaw(mixed $value, array $options): string
 	{
-		return (string) $value;
+		return (string)$value;
 	}
 
 	public function fromRaw(mixed $value, array $options): object

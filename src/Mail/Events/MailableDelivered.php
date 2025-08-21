@@ -19,5 +19,7 @@ class MailableDelivered implements Event
 
 	public function __construct(
 		public Mailable $mailable
-	) {}
+	)
+	{
+	}
 }

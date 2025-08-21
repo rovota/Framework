@@ -19,5 +19,7 @@ class IdentityAuthenticated implements Event
 
 	public function __construct(
 		public User $user
-	) {}
+	)
+	{
+	}
 }

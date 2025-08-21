@@ -39,13 +39,13 @@ final class ValidationTools
 			'column' => 'id',
 		];
 
-		if (str_contains($options[0],'\\')) {
+		if (str_contains($options[0], '\\')) {
 			/** @var Model $model */
 			$model = new $options[0]();
 			$config['connection'] = $model->config->connection;
 			$config['table'] = $model->config->table;
 			$config['column'] = $model->config->primary_key;
-		} else if (str_contains($options[0],'.')) {
+		} else if (str_contains($options[0], '.')) {
 			$location = explode('.', $options[0]);
 			$config['connection'] = $location[0];
 			$config['table'] = $location[1];
@@ -76,7 +76,7 @@ final class ValidationTools
 
 	public static function getSize(mixed $data): int|float
 	{
-		return match(true) {
+		return match (true) {
 			$data instanceof File => round($data->properties->size / 1024), // Bytes to Kilobytes
 			$data instanceof UploadedFile => round($data->properties->size / 1024), // Bytes to Kilobytes
 			is_int($data), is_float($data) => $data,

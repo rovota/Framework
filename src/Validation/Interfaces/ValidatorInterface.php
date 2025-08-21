@@ -14,15 +14,18 @@ interface ValidatorInterface
 {
 
 	public Bucket $unsafe {
-		get; set;
+		get;
+		set;
 	}
 
 	public Bucket $safe {
-		get; set;
+		get;
+		set;
 	}
 
 	public MessageBag $errors {
-		get; set;
+		get;
+		set;
 	}
 
 	// -----------------

@@ -33,19 +33,19 @@ trait DirectoryFunctions
 
 	public function exists(string $location): bool
 	{
-		return $this->properties->disk->exists($this->location().'/'.$location);
+		return $this->properties->disk->exists($this->location() . '/' . $location);
 	}
 
 	public function missing(string $location): bool
 	{
-		return $this->properties->disk->missing($this->location().'/'.$location);
+		return $this->properties->disk->missing($this->location() . '/' . $location);
 	}
 
 	// -----------------
 
 	public function checksum(string $location, array $config = []): string
 	{
-		return $this->properties->disk->checksum($this->location().'/'.$location, $config);
+		return $this->properties->disk->checksum($this->location() . '/' . $location, $config);
 	}
 
 	// -----------------
@@ -59,7 +59,7 @@ trait DirectoryFunctions
 
 	public function move(string $to): bool
 	{
-		$target = trim($to, '/') .'/'. $this->properties->name;
+		$target = trim($to, '/') . '/' . $this->properties->name;
 
 		if ($this->properties->disk->move($this->location(), $target)) {
 			$this->properties->path = Str::before($target, '/');
@@ -71,7 +71,7 @@ trait DirectoryFunctions
 
 	public function rename(string $name): bool
 	{
-		if ($this->properties->disk->rename($this->location(), $this->properties->path .'/'. $name)) {
+		if ($this->properties->disk->rename($this->location(), $this->properties->path . '/' . $name)) {
 			$this->properties->name = $name;
 		}
 

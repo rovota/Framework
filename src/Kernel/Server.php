@@ -71,15 +71,15 @@ final class Server
 	// -----------------
 
 	public float $memory_allocated {
-		get => (float) memory_get_usage(true);
+		get => (float)memory_get_usage(true);
 	}
 
 	public float $memory_usage {
-		get => (float) memory_get_usage();
+		get => (float)memory_get_usage();
 	}
 
 	public float $memory_peak_usage {
-		get => (float) memory_get_peak_usage();
+		get => (float)memory_get_peak_usage();
 	}
 
 	// -----------------

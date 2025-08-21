@@ -25,7 +25,7 @@ trait FileFunctions
 
 	public function asString(): string
 	{
-		return (string) ($this->contents ?? '');
+		return (string)($this->contents ?? '');
 	}
 
 	// -----------------
@@ -60,7 +60,7 @@ trait FileFunctions
 
 	public function move(string $to, array $options = []): bool
 	{
-		$target = trim($to, '/') .'/'. $this->properties->name . '.' . $this->properties->extension;
+		$target = trim($to, '/') . '/' . $this->properties->name . '.' . $this->properties->extension;
 
 		if ($this->properties->disk->move($this->location(), $target, $options)) {
 			$this->properties->path = Str::before($target, '/');
@@ -76,7 +76,7 @@ trait FileFunctions
 			$name = sprintf('%s.%s', $name, $this->properties->extension);
 		}
 
-		if ($this->properties->disk->rename($this->location(), $this->properties->path .'/'. $name, $options)) {
+		if ($this->properties->disk->rename($this->location(), $this->properties->path . '/' . $name, $options)) {
 			$this->properties->name = Str::beforeLast($name, '.');
 			$this->properties->extension = Str::afterLast($name, '.');
 		}
@@ -108,7 +108,7 @@ trait FileFunctions
 	public function prepend(string $content, bool $new_line = true): static
 	{
 		$new_line = empty($this->asString()) === false && $new_line === true;
-		$this->contents = new Text(Str::finish($content, $new_line ? "\n" : '').$this->asString());
+		$this->contents = new Text(Str::finish($content, $new_line ? "\n" : '') . $this->asString());
 		$this->modified = true;
 		return $this;
 	}
@@ -116,7 +116,7 @@ trait FileFunctions
 	public function append(string $content, bool $new_line = true): static
 	{
 		$new_line = empty($this->asString()) === false && $new_line === true;
-		$this->contents = new Text(Str::finish($this->asString(), $new_line ? "\n" : '').$content);
+		$this->contents = new Text(Str::finish($this->asString(), $new_line ? "\n" : '') . $content);
 		$this->modified = true;
 		return $this;
 	}

@@ -27,7 +27,7 @@ final class Request
 	protected Guzzle $guzzle;
 
 	protected string $method;
-	
+
 	protected string $target;
 
 	// -----------------

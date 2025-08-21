@@ -88,7 +88,7 @@ final class UrlObject implements Stringable, JsonSerializable
 
 		// Extract port number
 		if (Str::contains($url, ':')) {
-			$object->withPort((int) Str::after($url, ':'));
+			$object->withPort((int)Str::after($url, ':'));
 			$url = Str::before($url, ':');
 		}
 
@@ -113,14 +113,14 @@ final class UrlObject implements Stringable, JsonSerializable
 		$fragment = $this->getFragmentString();
 
 		if ($relative === true) {
-			return $path.$parameters.$fragment;
+			return $path . $parameters . $fragment;
 		}
 
 		if (Str::endsWith($path, '/')) {
 			$path = Str::trimEnd($path, '/');
 		}
 
-		return $this->getHostString().$path.$parameters.$fragment;
+		return $this->getHostString() . $path . $parameters . $fragment;
 	}
 
 	// -----------------
@@ -132,7 +132,7 @@ final class UrlObject implements Stringable, JsonSerializable
 		}
 
 		$query = Url::arrayToQuery($this->config->parameters);
-		return strlen($query) > 0 ? '?'.$query : '';
+		return strlen($query) > 0 ? '?' . $query : '';
 	}
 
 	protected function getFragmentString(): string|null
@@ -140,7 +140,7 @@ final class UrlObject implements Stringable, JsonSerializable
 		if ($this->config->fragment === null) {
 			return null;
 		}
-		return '#'.$this->config->fragment;
+		return '#' . $this->config->fragment;
 	}
 
 	protected function getHostString(): string
@@ -151,7 +151,7 @@ final class UrlObject implements Stringable, JsonSerializable
 		$result = sprintf('%s://%s', $scheme, $domain);
 
 		if ($this->config->port !== 80 && $this->config->port !== 443) {
-			$result .= ':'.$this->config->port;
+			$result .= ':' . $this->config->port;
 		}
 
 		return $result;

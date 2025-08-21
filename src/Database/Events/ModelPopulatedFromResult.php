@@ -19,5 +19,7 @@ class ModelPopulatedFromResult implements Event
 
 	public function __construct(
 		public Model $model
-	) {}
+	)
+	{
+	}
 }

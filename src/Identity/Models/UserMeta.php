@@ -30,7 +30,7 @@ class UserMeta extends MetaEntity
 	// Properties
 
 	public User|null $user {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('user:'.$this->user_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('user:' . $this->user_id, function () {
 			return User::find($this->user_id);
 		});
 		set (User|null $user) {

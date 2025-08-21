@@ -21,11 +21,11 @@ trait Metadata
 	protected Basket|null $meta_entities = null;
 
 	protected MetaEntity|string $meta_model {
-		get => Str::singular($this::class).'Meta';
+		get => Str::singular($this::class) . 'Meta';
 	}
 
 	protected string $meta_foreign_key {
-		get => Str::singular($this->config->table).'_id';
+		get => Str::singular($this->config->table) . '_id';
 	}
 
 	// -----------------

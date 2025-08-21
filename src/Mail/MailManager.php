@@ -137,7 +137,7 @@ final class MailManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::SMTP => new Smtp($name, $config),
 //			Driver::Basic => new Basic($name, $config),
 			default => null,

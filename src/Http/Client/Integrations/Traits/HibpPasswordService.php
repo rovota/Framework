@@ -83,8 +83,8 @@ trait HibpPasswordService
 		if ($response !== null) {
 			foreach (preg_split("/((\r?\n)|(\r\n?))/", $response) as $line) {
 				[$suffix, $count] = explode(':', $line);
-				if ((int) $count > 0) {
-					$entries[$prefix.$suffix] = (int) $count;
+				if ((int)$count > 0) {
+					$entries[$prefix . $suffix] = (int)$count;
 				}
 			}
 		}
@@ -96,7 +96,7 @@ trait HibpPasswordService
 
 	private function executeRequest(string $prefix): string|null
 	{
-		$url = 'api.pwnedpasswords.com/range/'.$prefix;
+		$url = 'api.pwnedpasswords.com/range/' . $prefix;
 
 		try {
 			$response = $this->get($url)

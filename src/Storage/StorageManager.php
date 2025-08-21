@@ -170,7 +170,7 @@ final class StorageManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::Custom => new Custom($name, $config),
 			Driver::Local => new Local($name, $config),
 			Driver::AsyncS3 => new AsyncS3($name, $config),

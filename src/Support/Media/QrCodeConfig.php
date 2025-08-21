@@ -47,7 +47,7 @@ final class QrCodeConfig extends Config
 	}
 
 	public string $size {
-		get => $this->height.'x'.$this->width;
+		get => $this->height . 'x' . $this->width;
 	}
 
 	// -----------------

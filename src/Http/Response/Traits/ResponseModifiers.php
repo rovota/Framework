@@ -30,7 +30,7 @@ trait ResponseModifiers
 		$value = trim($value);
 
 		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			$this->config->set('headers.'.$name, $value);
+			$this->config->set('headers.' . $name, $value);
 		}
 
 		return $this;
@@ -47,7 +47,7 @@ trait ResponseModifiers
 
 	public function withoutHeader(string $name): static
 	{
-		$this->config->remove('headers.'.trim($name));
+		$this->config->remove('headers.' . trim($name));
 
 		return $this;
 	}
@@ -69,7 +69,7 @@ trait ResponseModifiers
 
 	public function withCookie(CookieObject $cookie): static
 	{
-		$this->config->set('cookies.'.$cookie->name, $cookie);
+		$this->config->set('cookies.' . $cookie->name, $cookie);
 		return $this;
 	}
 
@@ -77,7 +77,7 @@ trait ResponseModifiers
 	{
 		foreach ($cookies as $cookie) {
 			if ($cookie instanceof CookieObject) {
-				$this->config->set('cookies.'.$cookie->name, $cookie);
+				$this->config->set('cookies.' . $cookie->name, $cookie);
 			}
 		}
 		return $this;
@@ -85,7 +85,7 @@ trait ResponseModifiers
 
 	public function withoutCookie(string $name): static
 	{
-		$this->config->remove('cookies.'.trim($name));
+		$this->config->remove('cookies.' . trim($name));
 		return $this;
 	}
 
@@ -116,7 +116,7 @@ trait ResponseModifiers
 	public function withError(string $type, string $identifier, string $message, array $data = []): static
 	{
 		$bag = new MessageBag();
-		$bag->set($type.'.'.$identifier, $message, $data);
+		$bag->set($type . '.' . $identifier, $message, $data);
 
 		return $this->withErrors($bag);
 	}
@@ -144,7 +144,7 @@ trait ResponseModifiers
 		$values = Arr::from($value ?? '*');
 
 		foreach ($values as $key => $item) {
-			$values[$key] = '"'.trim($item).'"';
+			$values[$key] = '"' . trim($item) . '"';
 		}
 
 		$this->withHeader('Clear-Site-Data', Basket::from($values)->join(', '));
@@ -213,10 +213,10 @@ trait ResponseModifiers
 		}
 
 		if ($name === null) {
-			$name = 'download-'.Str::random(15);
+			$name = 'download-' . Str::random(15);
 		}
 
-		return match(true) {
+		return match (true) {
 			$this->content instanceof ViewObject => sprintf('%s.%s', $name, 'html'),
 			$this->content instanceof JsonSerializable, is_array($this->content) => sprintf('%s.%s', $name, 'json'),
 			default => sprintf('%s.%s', $name, 'txt')

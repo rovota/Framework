@@ -49,7 +49,7 @@ final class Resolver
 
 	public static function getValueType(mixed $value): string
 	{
-		return match(true) {
+		return match (true) {
 			$value instanceof BackedEnum => 'enum',
 			$value instanceof Basket => 'basket',
 			$value instanceof Bucket => 'bucket',
@@ -71,7 +71,7 @@ final class Resolver
 
 	public static function serialize($value): string
 	{
-		return is_numeric($value) && ! in_array($value, [INF, -INF]) && ! is_nan($value) ? $value : serialize($value);
+		return is_numeric($value) && !in_array($value, [INF, -INF]) && !is_nan($value) ? $value : serialize($value);
 	}
 
 	public static function deserialize($value): mixed

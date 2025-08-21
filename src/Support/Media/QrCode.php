@@ -32,7 +32,7 @@ final class QrCode implements Stringable, JsonSerializable
 
 	public function __toString(): string
 	{
-		return (string) $this->url();
+		return (string)$this->url();
 	}
 
 	public function __get(string $name)

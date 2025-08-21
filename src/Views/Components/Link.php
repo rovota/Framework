@@ -107,7 +107,7 @@ final class Link extends Asset
 	protected function formatAsHtml(): string
 	{
 		$attributes = [];
-		
+
 		foreach ($this->config->array('attributes') as $name => $value) {
 			if ($name === 'href' && $this->config->has('version')) {
 				$version = $this->config->get('version', moment()->toEpochString());
@@ -121,7 +121,7 @@ final class Link extends Asset
 			$attributes[$name] = sprintf('%s="%s"', $name, $value);
 		}
 
-		return sprintf('<link %s />', implode(' ', $attributes)).PHP_EOL;
+		return sprintf('<link %s />', implode(' ', $attributes)) . PHP_EOL;
 	}
 
 	// -----------------

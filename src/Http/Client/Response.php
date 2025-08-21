@@ -39,8 +39,8 @@ final class Response
 
 	public function version(): int|float
 	{
-		$raw = (float) $this->response->getProtocolVersion();
-		return floor($raw) == $raw ? (int) $raw : $raw;
+		$raw = (float)$this->response->getProtocolVersion();
+		return floor($raw) == $raw ? (int)$raw : $raw;
 	}
 
 	// -----------------

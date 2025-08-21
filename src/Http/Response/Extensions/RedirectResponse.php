@@ -23,7 +23,7 @@ class RedirectResponse extends DefaultResponse
 
 	public function __construct(UrlObject|string|null $content, StatusCode|int $status, Config $config)
 	{
-		$this->location = match(true) {
+		$this->location = match (true) {
 			$content instanceof UrlObject => $content,
 			is_string($content) => UrlObject::from($content),
 			default => RequestManager::instance()->current()->url()->stripParameters()

@@ -37,7 +37,7 @@ class PermissionBag extends Basket
 			return false;
 		}
 
-		return array_any(is_array($key) ? $key : [$key], function($identifier) {
+		return array_any(is_array($key) ? $key : [$key], function ($identifier) {
 			return $this->retrieve($identifier) !== null;
 		});
 	}

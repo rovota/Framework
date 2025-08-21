@@ -41,7 +41,7 @@ class StandardAdapter implements ProviderAdapterInterface
 	public function initialize(): void
 	{
 		$cookie = request()->cookies->get(Registry::string('security.auth.cookie_name', 'account'));
-		
+
 		if ($cookie instanceof CookieObject) {
 			if (Str::length($cookie->value) !== 80) {
 				$cookie->expire();

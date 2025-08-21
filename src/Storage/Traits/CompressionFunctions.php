@@ -23,7 +23,7 @@ trait CompressionFunctions
 	public function compress(string $source, string|null $target = null): File|null
 	{
 		$archive = new ZipArchive();
-		$archive_name = Str::random(60).'.zip';
+		$archive_name = Str::random(60) . '.zip';
 
 		$source_type = $this->getCompressionSourceType($source);
 		$source = $this->getCompressionSource($source);
@@ -32,11 +32,11 @@ trait CompressionFunctions
 			return null;
 		}
 
-		if ($archive->open($this->config->root.'/'.$archive_name, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+		if ($archive->open($this->config->root . '/' . $archive_name, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
 
 			if ($source_type === 'directory') {
 				/** @var SplFileInfo[] $files */
-				$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source),RecursiveIteratorIterator::LEAVES_ONLY);
+				$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::LEAVES_ONLY);
 
 				foreach ($files as $file) {
 					if ($file->isDir() === false) {
@@ -92,18 +92,18 @@ trait CompressionFunctions
 
 	protected function getCompressionTarget(string|null $target, string $source): string
 	{
-		return $target !== null ? getcwd().'/'.$this->config->root.'/'.$target : str_replace(basename($source), '', $source);
+		return $target !== null ? getcwd() . '/' . $this->config->root . '/' . $target : str_replace(basename($source), '', $source);
 	}
 
 	protected function getCompressionSource(string $source): string
 	{
-		return trim(getcwd().'/'.$this->config->root.'/'.$source, '/');
+		return trim(getcwd() . '/' . $this->config->root . '/' . $source, '/');
 	}
 
 	protected function getCompressionSourceType(string $source): string|null
 	{
 		try {
-			return match(true) {
+			return match (true) {
 				$this->flysystem->directoryExists($source) => 'directory',
 				$this->flysystem->fileExists($source) => 'file',
 				default => null,

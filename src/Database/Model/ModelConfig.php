@@ -44,7 +44,7 @@ final class ModelConfig extends Config
 			}
 		}
 	}
-	
+
 	public string $primary_key {
 		get => $this->string('primary_key', 'id');
 		set {

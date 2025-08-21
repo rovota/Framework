@@ -49,7 +49,7 @@ class Sequence extends Collection
 
 	public function insert(int $index, array $values): void
 	{
-		array_splice( $this->values, $index, 0, $values);
+		array_splice($this->values, $index, 0, $values);
 		$this->keys = array_keys($this->values);
 	}
 

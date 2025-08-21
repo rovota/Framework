@@ -480,7 +480,7 @@ final class Str
 
 		for ($i = 0; $i < strlen($number); $i++) {
 			$current = $number[$i];
-			$current_type = match(true) {
+			$current_type = match (true) {
 				ctype_alpha($current) => 'alpha',
 				ctype_digit($current) => 'digit',
 				default => 'other'

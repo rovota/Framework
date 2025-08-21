@@ -37,7 +37,7 @@ class Image implements FileContent, Stringable
 
 	public function __toString(): string
 	{
-		return (string) $this->photo;
+		return (string)$this->photo;
 	}
 
 	// -----------------

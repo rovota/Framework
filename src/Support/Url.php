@@ -53,7 +53,7 @@ final class Url
 		if ($route === null) {
 			return self::local('/');
 		}
-		
+
 		$path = Path::buildUsingContext($route->config->path, $context);
 
 		return new UrlObject([
@@ -109,7 +109,7 @@ final class Url
 	{
 		foreach ($data as $key => $value) {
 			if ($value instanceof Stringable) {
-				$data[$key] = (string) $value;
+				$data[$key] = (string)$value;
 			}
 		}
 		return http_build_query($data);

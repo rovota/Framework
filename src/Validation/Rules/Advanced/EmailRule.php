@@ -19,5 +19,5 @@ class EmailRule extends Rule
 			$fail('The value must be a valid email address.');
 		}
 	}
-	
+
 }

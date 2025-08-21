@@ -49,7 +49,7 @@ final class Meta extends Asset
 			$attributes[$name] = sprintf('%s="%s"', $name, $value);
 		}
 
-		return sprintf('<meta %s />', implode(' ', $attributes)).PHP_EOL;
+		return sprintf('<meta %s />', implode(' ', $attributes)) . PHP_EOL;
 	}
 
 }

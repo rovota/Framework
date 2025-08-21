@@ -89,7 +89,7 @@ final class CookieObject
 			if ($key === 'expires') {
 				$value = ceil(match (true) {
 					$value instanceof Moment => $value->toEpochString(),
-					$value instanceof DateTime => (int) $value->format('U'),
+					$value instanceof DateTime => (int)$value->format('U'),
 					default => time() + ($value * 60),
 				});
 			}

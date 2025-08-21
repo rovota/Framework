@@ -122,7 +122,7 @@ final class ResponseManager extends ServiceProvider
 		$value = trim($value);
 
 		if (Str::length($name) > 0 && Str::length($value) > 0) {
-			$this->config->set('headers.'.$name, $value);
+			$this->config->set('headers.' . $name, $value);
 		}
 	}
 
@@ -135,7 +135,7 @@ final class ResponseManager extends ServiceProvider
 
 	public function withoutHeader(string $name): void
 	{
-		$this->config->remove('headers.'.trim($name));
+		$this->config->remove('headers.' . trim($name));
 	}
 
 	public function withoutHeaders(array $names = []): void
@@ -153,21 +153,21 @@ final class ResponseManager extends ServiceProvider
 
 	public function attachCookie(CookieObject $cookie): void
 	{
-		$this->config->set('cookies.'.$cookie->name, $cookie);
+		$this->config->set('cookies.' . $cookie->name, $cookie);
 	}
 
 	public function attachCookies(array $cookies): void
 	{
 		foreach ($cookies as $cookie) {
 			if ($cookie instanceof CookieObject) {
-				$this->config->set('cookies.'.$cookie->name, $cookie);
+				$this->config->set('cookies.' . $cookie->name, $cookie);
 			}
 		}
 	}
 
 	public function withoutCookie(string $name): void
 	{
-		$this->config->remove('cookies.'.trim($name));
+		$this->config->remove('cookies.' . trim($name));
 	}
 
 	public function withoutCookies(): void

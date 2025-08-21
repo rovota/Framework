@@ -16,7 +16,7 @@ use Rovota\Framework\Support\Arr;
  */
 final class CookieManager extends ServiceProvider
 {
-	
+
 	protected array $plain_text = [];
 
 	// -----------------

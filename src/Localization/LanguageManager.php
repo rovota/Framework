@@ -101,7 +101,7 @@ final class LanguageManager
 
 	protected function loadLanguageUsingLocale(string $locale): void
 	{
-		$file = Path::toProjectFile('/config/locales/'.$locale.'.php');
+		$file = Path::toProjectFile('/config/locales/' . $locale . '.php');
 
 		if (file_exists($file)) {
 			$this->languages[$locale] = new LanguageObject($locale);

@@ -37,7 +37,7 @@ abstract class Speed extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'ms', 'm/s', 'meter per second', 'meterspersecond' => MeterPerSecond::class,
 			'kmh', 'km/h', 'kilometer per hour', 'kilometersperhour' => KiloMeterPerHour::class,
 

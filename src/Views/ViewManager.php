@@ -106,7 +106,7 @@ final class ViewManager extends ServiceProvider
 		if (is_string($templates)) {
 			$templates = [$templates];
 		}
-		
+
 		foreach ($templates as $template) {
 			$key = sprintf('links.%s.%s', $template, $identifier);
 			$this->config->set($key, $link);
@@ -211,7 +211,7 @@ final class ViewManager extends ServiceProvider
 
 			foreach ($levels as $level) {
 				if (Str::endsWith($name, $level) === false) {
-					$level = Str::before($name, Str::after($name, $level. '.')) . '*';
+					$level = Str::before($name, Str::after($name, $level . '.')) . '*';
 				} else {
 					$level = $name;
 				}

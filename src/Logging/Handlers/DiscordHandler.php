@@ -71,7 +71,7 @@ class DiscordHandler extends AbstractProcessingHandler
 				'text' => Str::pascal(Framework::environment()->type->label()),
 			],
 		];
-		
+
 		foreach ($record->context as $key => $value) {
 			$parameters['fields'][] = [
 				'name' => $key,
@@ -85,7 +85,7 @@ class DiscordHandler extends AbstractProcessingHandler
 
 	private function getColorForLevel(Level $level): string
 	{
-		return match($level->name) {
+		return match ($level->name) {
 			'Debug' => '666666',
 			'Info' => '37B8E1',
 			'Notice' => '0D89CF',

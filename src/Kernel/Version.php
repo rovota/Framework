@@ -96,7 +96,7 @@ final class Version implements JsonSerializable
 	{
 		$version = implode('.', [$this->version->major, $this->version->minor, $this->version->patch]);
 		if (empty($this->preRelease) === false) {
-			$version .= '-'.$this->preRelease;
+			$version .= '-' . $this->preRelease;
 		}
 		return $version;
 	}
@@ -105,7 +105,7 @@ final class Version implements JsonSerializable
 	{
 		$version = $this->basic();
 		if (empty($this->build) === false) {
-			$version .= '+'.$this->build;
+			$version .= '+' . $this->build;
 		}
 		return $version;
 	}
@@ -116,7 +116,7 @@ final class Version implements JsonSerializable
 		if (preg_match_all('#\{([a-z\d_]*)}#m', $format, $matches) > 0) {
 			foreach ($matches[1] as $element) {
 				if (method_exists($this, $element)) {
-					$format = str_replace('{'.$element.'}', $this->{$element}(), $format);
+					$format = str_replace('{' . $element . '}', $this->{$element}(), $format);
 				}
 			}
 		}
@@ -194,7 +194,7 @@ final class Version implements JsonSerializable
 	{
 		try {
 			$version = is_string($version) ? new Version($version) : $version;
-		} catch(InvalidVersionException) {
+		} catch (InvalidVersionException) {
 			return null;
 		}
 		return $version;

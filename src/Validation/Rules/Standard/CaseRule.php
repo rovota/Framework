@@ -24,7 +24,7 @@ class CaseRule extends Rule
 			return;
 		}
 
-		$matches = match($this->casing) {
+		$matches = match ($this->casing) {
 			'camel' => Str::camel($value) === $value,
 			'kebab' => Str::kebab($value) === $value,
 			'lower' => Str::lower($value) === $value,

@@ -34,7 +34,7 @@ abstract class Frequency extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'hz', 'hertz' => Hertz::class,
 			'khz', 'kilohertz' => KiloHertz::class,
 			'mhz', 'megahertz' => MegaHertz::class,

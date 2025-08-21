@@ -33,7 +33,7 @@ final class Limiter
 		$limits = $limits instanceof Limit ? [$limits] : $limits;
 
 		foreach ($limits as $number => $limit) {
-			$this->limits[$name.'-'.$number] = $limit;
+			$this->limits[$name . '-' . $number] = $limit;
 		}
 	}
 

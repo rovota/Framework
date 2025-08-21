@@ -33,7 +33,7 @@ class MySqlHandler implements ConnectionHandlerInterface
 				'charset' => 'utf8mb4',
 			], $this->getFilteredParameters($parameters))
 		);
-		
+
 		if ($this->hasTimezoneData()) {
 			$this->setTimezone('UTC');
 		}

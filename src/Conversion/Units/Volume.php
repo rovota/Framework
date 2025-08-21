@@ -52,7 +52,7 @@ abstract class Volume extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'm3', 'cubicmeters' => CubicMeter::class,
 			'cm3', 'cubiccentimeters' => CubicCentiMeter::class,
 			'dm3', 'cubicdecimeters' => CubicDeciMeter::class,

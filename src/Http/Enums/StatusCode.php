@@ -103,7 +103,7 @@ enum StatusCode: int
 			default => 'item'
 		};
 
-		return match($this) {
+		return match ($this) {
 			// 1xx
 			StatusCode::Continue => ['label' => 'Continue', 'message' => null],
 			StatusCode::SwitchingProtocols => ['label' => 'Switching Protocols', 'message' => null],

@@ -137,7 +137,7 @@ final class AuthManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::Standard => new Standard($name, $config),
 			default => null,
 		};

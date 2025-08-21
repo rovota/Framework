@@ -63,7 +63,7 @@ class Session extends Model
 	// Properties
 
 	public User|null $user {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('user:'.$this->user_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('user:' . $this->user_id, function () {
 			return User::find($this->user_id);
 		});
 		set (User|null $user) {
@@ -75,7 +75,7 @@ class Session extends Model
 	}
 
 	public User|null $parent {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('user:'.$this->parent_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('user:' . $this->parent_id, function () {
 			return User::find($this->parent_id);
 		});
 		set (User|null $parent) {

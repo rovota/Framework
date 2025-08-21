@@ -62,7 +62,8 @@ final class Stack implements ChannelInterface
 	{
 		foreach ($this->config->channels as $channel) {
 			if ($channel instanceof ChannelInterface) {
-				$channel->log($level, $message, $context); continue;
+				$channel->log($level, $message, $context);
+				continue;
 			}
 			LoggingManager::instance()->get($channel)->log($level, $message, $context);
 		}
@@ -114,7 +115,8 @@ final class Stack implements ChannelInterface
 	{
 		foreach ($this->config->channels as $channel) {
 			if ($channel instanceof ChannelInterface) {
-				$channel->{$type}($message, $context); continue;
+				$channel->{$type}($message, $context);
+				continue;
 			}
 			LoggingManager::instance()->get($channel)->{$type}($message, $context);
 		}

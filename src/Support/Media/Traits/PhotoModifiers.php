@@ -47,7 +47,7 @@ trait PhotoModifiers
 		$height = min($height, $this->properties->height);
 
 		$result = imagecrop($this->data, [
-			'x' => (int) $x, 'y' => (int) $y, 'width' => $width, 'height' => $height,
+			'x' => (int)$x, 'y' => (int)$y, 'width' => $width, 'height' => $height,
 		]);
 
 		if ($result instanceof GdImage) {

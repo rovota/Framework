@@ -135,7 +135,7 @@ final class ConnectionManager extends ServiceProvider
 			return null;
 		}
 
-		return match($config->driver) {
+		return match ($config->driver) {
 			Driver::MySql => new MySql($name, $config),
 			default => null,
 		};

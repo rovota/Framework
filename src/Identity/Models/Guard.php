@@ -60,7 +60,7 @@ class Guard extends Model
 	// Properties
 
 	public User|null $user {
-		get => Cache::storeWithDriver(Driver::Memory)->remember('user:'.$this->user_id, function() {
+		get => Cache::storeWithDriver(Driver::Memory)->remember('user:' . $this->user_id, function () {
 			return User::find($this->user_id);
 		});
 		set (User|null $user) {
@@ -102,7 +102,7 @@ class Guard extends Model
 
 	public function prepare(array $data = []): bool
 	{
-		return match($this->type) {
+		return match ($this->type) {
 			GuardType::Email => $this->prepareEmail($data['mailable']),
 			default => true,
 		};
@@ -110,7 +110,7 @@ class Guard extends Model
 
 	public function verify(mixed $input): bool
 	{
-		return match($this->type) {
+		return match ($this->type) {
 			GuardType::App => $this->verifyApp($input),
 			GuardType::Recovery => $this->verifyRecovery($input),
 			GuardType::Email => $this->verifyEmail($input),

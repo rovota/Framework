@@ -25,7 +25,7 @@ final class Moment extends Carbon
 	public function __construct(float|DateTimeInterface|int|string|WeekDay|Month|null $time = null, int|DateTimeZone|string|null $timezone = null)
 	{
 		if (is_numeric($time)) {
-			$time = (int) $time;
+			$time = (int)$time;
 		}
 
 		parent::__construct($time, $timezone);

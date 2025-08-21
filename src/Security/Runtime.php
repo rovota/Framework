@@ -29,7 +29,7 @@ final class Runtime
 	public function duration(int $value, string $unit = 'microseconds'): Runtime
 	{
 		$time = Time::from($value, $unit)->to('microseconds');
-		$this->duration = (int) $time->getValue();
+		$this->duration = (int)$time->getValue();
 
 		return $this;
 	}

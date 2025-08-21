@@ -88,7 +88,7 @@ class DefaultResponse implements Stringable
 			return $this->content->__toString();
 		}
 
-		return (string) $this->content;
+		return (string)$this->content;
 	}
 
 	protected function prepareForPrinting(): void

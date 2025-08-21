@@ -62,7 +62,7 @@ abstract class Asset implements Stringable
 
 	protected function setAttribute(string $name, mixed $value): void
 	{
-		$this->config->set('attributes.'.$name, $value);
+		$this->config->set('attributes.' . $name, $value);
 	}
 
 	// -----------------

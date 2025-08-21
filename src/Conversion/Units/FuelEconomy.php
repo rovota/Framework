@@ -34,7 +34,7 @@ abstract class FuelEconomy extends Unit
 
 	public static function classFromIdentifier(string $identifier): string|null
 	{
-		return match($identifier) {
+		return match ($identifier) {
 			'km/l', 'kilometer per liter', 'kilometerperliter' => KiloMeterPerLiter::class,
 			'l/100km', 'liter per 100 kilometers', 'literperhundredkilometers' => LiterPerHundredKiloMeters::class,
 			'mpg', 'miles per gallon', 'milespergallon' => MilesPerGallon::class,

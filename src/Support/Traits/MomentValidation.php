@@ -14,7 +14,7 @@ trait MomentValidation
 
 	public function isDayOfMonth(int $day): bool
 	{
-		return (int) $this->format('d') === $day;
+		return (int)$this->format('d') === $day;
 	}
 
 	// -----------------
