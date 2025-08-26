@@ -43,6 +43,7 @@ final class Framework
 	{
 		self::$version = new Version(self::APP_VERSION);
 
+		self::reliabilityCheck();
 		self::serverCompatCheck();
 		self::createEnvironment();
 		self::configureServices();
@@ -131,6 +132,14 @@ final class Framework
 	}
 
 	// -----------------
+
+	protected static function reliabilityCheck(): void
+	{
+		if (isset($_SERVER['HTTP_HOST']) === false || $_SERVER['HTTP_HOST'] === '' || $_SERVER['HTTP_HOST'] === null) {
+			http_response_code(400);
+			exit;
+		}
+	}
 
 	/**
 	 * @throws SystemRequirementException
