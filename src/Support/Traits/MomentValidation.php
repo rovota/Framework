@@ -55,7 +55,10 @@ trait MomentValidation
 
 	public function isTimeBetween(string $start, string $end): bool
 	{
-		return $this->isTimeAfter($start) || $this->isTimeBefore($end);
+		if (moment($end)->isTimeBefore($start)) {
+			return $this->isTimeAfter($start) || $this->isTimeBefore($end);
+		}
+		return $this->isTimeAfter($start) && $this->isTimeBefore($end);
 	}
 
 }
