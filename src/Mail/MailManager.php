@@ -9,13 +9,13 @@ namespace Rovota\Framework\Mail;
 
 use Rovota\Framework\Identity\Models\User;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Mail\Components\Entity;
 use Rovota\Framework\Mail\Drivers\Smtp;
 use Rovota\Framework\Mail\Enums\Driver;
-use Rovota\Framework\Mail\Exceptions\MissingMailerException;
-use Rovota\Framework\Mail\Exceptions\MailerMisconfigurationException;
 use Rovota\Framework\Mail\Interfaces\MailerInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Str;
@@ -83,7 +83,7 @@ final class MailManager extends ServiceProvider
 		}
 
 		if (isset($this->mailers[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingMailerException("The specified mailer could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified mailer could not be found: '$name'."));
 		}
 
 		return $this->mailers[$name];
@@ -111,7 +111,7 @@ final class MailManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->mailers[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingMailerException("Undefined mailers cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined mailers cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -133,7 +133,7 @@ final class MailManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new MailerMisconfigurationException("The cache '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The cache '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 

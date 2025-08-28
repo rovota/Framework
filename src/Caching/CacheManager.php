@@ -12,10 +12,10 @@ use Rovota\Framework\Caching\Drivers\Memory;
 use Rovota\Framework\Caching\Drivers\Redis;
 use Rovota\Framework\Caching\Drivers\Session;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Exceptions\CacheMisconfigurationException;
-use Rovota\Framework\Caching\Exceptions\MissingCacheStoreException;
 use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
@@ -83,7 +83,7 @@ final class CacheManager extends ServiceProvider
 		}
 
 		if (isset($this->stores[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingCacheStoreException("The specified cache could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified cache could not be found: '$name'."));
 		}
 
 		return $this->stores[$name];
@@ -111,7 +111,7 @@ final class CacheManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->stores[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingCacheStoreException("Undefined caches cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined caches cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -133,7 +133,7 @@ final class CacheManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new CacheMisconfigurationException("The cache '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The cache '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 

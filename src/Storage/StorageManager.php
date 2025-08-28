@@ -8,6 +8,8 @@
 namespace Rovota\Framework\Storage;
 
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Storage\Drivers\AsyncS3;
@@ -16,8 +18,6 @@ use Rovota\Framework\Storage\Drivers\Local;
 use Rovota\Framework\Storage\Drivers\S3;
 use Rovota\Framework\Storage\Drivers\Sftp;
 use Rovota\Framework\Storage\Enums\Driver;
-use Rovota\Framework\Storage\Exceptions\DiskMisconfigurationException;
-use Rovota\Framework\Storage\Exceptions\MissingDiskException;
 use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Path;
@@ -104,7 +104,7 @@ final class StorageManager extends ServiceProvider
 		}
 
 		if (isset($this->disks[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingDiskException("The specified disk could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified disk could not be found: '$name'."));
 		}
 
 		return $this->disks[$name];
@@ -132,7 +132,7 @@ final class StorageManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->disks[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingDiskException("Undefined disks cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined disks cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -166,7 +166,7 @@ final class StorageManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new DiskMisconfigurationException("The disk '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The disk '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 

@@ -9,10 +9,10 @@ namespace Rovota\Framework\Auth;
 
 use Rovota\Framework\Auth\Drivers\Standard;
 use Rovota\Framework\Auth\Enums\Driver;
-use Rovota\Framework\Auth\Exceptions\MissingProviderException;
-use Rovota\Framework\Auth\Exceptions\ProviderMisconfigurationException;
 use Rovota\Framework\Auth\Interfaces\ProviderInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Security\CsrfManager;
@@ -83,7 +83,7 @@ final class AuthManager extends ServiceProvider
 		}
 
 		if (isset($this->providers[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingProviderException("The specified provider could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified provider could not be found: '$name'."));
 		}
 
 		return $this->providers[$name];
@@ -111,7 +111,7 @@ final class AuthManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->providers[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingProviderException("Undefined providers cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined providers cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -133,7 +133,7 @@ final class AuthManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new ProviderMisconfigurationException("The provider '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The provider '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 

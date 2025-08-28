@@ -8,6 +8,8 @@
 namespace Rovota\Framework\Logging;
 
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Logging\Drivers\Discord;
@@ -15,8 +17,6 @@ use Rovota\Framework\Logging\Drivers\Monolog;
 use Rovota\Framework\Logging\Drivers\Stack;
 use Rovota\Framework\Logging\Drivers\Stream;
 use Rovota\Framework\Logging\Enums\Driver;
-use Rovota\Framework\Logging\Exceptions\ChannelMisconfigurationException;
-use Rovota\Framework\Logging\Exceptions\MissingChannelException;
 use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Path;
@@ -92,7 +92,7 @@ final class LoggingManager extends ServiceProvider
 		}
 
 		if (isset($this->channels[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingChannelException("The specified channel could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified channel could not be found: '$name'."));
 		}
 
 		return $this->channels[$name];
@@ -113,7 +113,7 @@ final class LoggingManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->channels[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingChannelException("Undefined channels cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined channels cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -135,7 +135,7 @@ final class LoggingManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new ChannelMisconfigurationException("The channel '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The channel '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 

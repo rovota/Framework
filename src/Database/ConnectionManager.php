@@ -9,10 +9,10 @@ namespace Rovota\Framework\Database;
 
 use Rovota\Framework\Database\Drivers\MySql;
 use Rovota\Framework\Database\Enums\Driver;
-use Rovota\Framework\Database\Exceptions\ConnectionMisconfigurationException;
-use Rovota\Framework\Database\Exceptions\MissingConnectionException;
 use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
+use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
+use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
@@ -81,7 +81,7 @@ final class ConnectionManager extends ServiceProvider
 		}
 
 		if (isset($this->connections[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingConnectionException("The specified connection could not be found: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("The specified connection could not be found: '$name'."));
 		}
 
 		return $this->connections[$name];
@@ -109,7 +109,7 @@ final class ConnectionManager extends ServiceProvider
 	public function setDefault(string $name): void
 	{
 		if (isset($this->connections[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingConnectionException("Undefined connections cannot be set as default: '$name'."));
+			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined connections cannot be set as default: '$name'."));
 		}
 		$this->default = $name;
 	}
@@ -131,7 +131,7 @@ final class ConnectionManager extends ServiceProvider
 		}
 
 		if ($config->isValid() === false) {
-			ExceptionHandler::handleThrowable(new ConnectionMisconfigurationException("The connection '$name' cannot be used due to a configuration issue."));
+			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The connection '$name' cannot be used due to a configuration issue."));
 			return null;
 		}
 
