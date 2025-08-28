@@ -71,7 +71,7 @@ final class ViewManager extends ServiceProvider
 		return $this->current;
 	}
 
-	public function createMailView(string|null $template, string|null $class = null): View
+	public function createMailView(string|null $template, string|null $class = null): MailView
 	{
 		$config = new ViewConfig([
 			'variables' => $this->getDataForType('variables', $template),
