@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Http\Request;
 
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Rovota\Framework\Facades\Http;
 use Rovota\Framework\Facades\Log;
 use Rovota\Framework\Http\Enums\RequestMethod;
@@ -219,12 +218,6 @@ final class RequestObject
 		}
 
 		return false;
-	}
-
-	public function isCrawler(string|null $useragent = null): bool
-	{
-		$detection = new CrawlerDetect();
-		return $detection->isCrawler($useragent);
 	}
 
 	/**
