@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Mail\Traits;
 
-use Rovota\Framework\Views\Interfaces\ViewInterface;
+use Rovota\Framework\Views\View;
 use Rovota\Framework\Views\ViewManager;
 
 trait MailableContent
@@ -60,7 +60,7 @@ trait MailableContent
 			return null;
 		}
 
-		if ($this->content instanceof ViewInterface) {
+		if ($this->content instanceof View) {
 			$this->content->with($this->variables);
 		}
 

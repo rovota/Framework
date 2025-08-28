@@ -10,12 +10,11 @@ namespace Rovota\Framework\Views;
 use Rovota\Framework\Facades\Language;
 use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
-use Rovota\Framework\Views\Interfaces\ViewInterface;
 
-class MailView extends DefaultView
+class MailView extends View
 {
 
-	public static function make(array $variables = []): ViewInterface|static
+	public static function make(array $variables = []): static
 	{
 		$view = ViewManager::instance()->createMailView(null, static::class);
 

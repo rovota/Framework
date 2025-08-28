@@ -22,7 +22,7 @@ use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
-use Rovota\Framework\Views\DefaultView;
+use Rovota\Framework\Views\View;
 use Throwable;
 
 /**
@@ -70,7 +70,7 @@ final class ResponseManager extends ServiceProvider
 		}
 
 		// ViewResponse
-		if ($content instanceof DefaultView) {
+		if ($content instanceof View) {
 			return self::createViewResponse($content, $status);
 		}
 
@@ -104,7 +104,7 @@ final class ResponseManager extends ServiceProvider
 		return new JsonResponse($content, $status, $this->config);
 	}
 
-	public function createViewResponse(DefaultView $content, StatusCode|int $status = StatusCode::Ok): ViewResponse
+	public function createViewResponse(View $content, StatusCode|int $status = StatusCode::Ok): ViewResponse
 	{
 		return new ViewResponse($content, $status, $this->config);
 	}

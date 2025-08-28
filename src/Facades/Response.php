@@ -22,7 +22,7 @@ use Rovota\Framework\Http\Response\Extensions\StatusResponse;
 use Rovota\Framework\Routing\UrlObject;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Support\Facade;
-use Rovota\Framework\Views\DefaultView;
+use Rovota\Framework\Views\View;
 use Throwable;
 
 /**
@@ -31,7 +31,7 @@ use Throwable;
  * @method static RedirectResponse redirect(UrlObject|string|null $location = null, StatusCode|int $status = StatusCode::Found)
  * @method static ErrorResponse error(Throwable|Error|array $error, StatusCode|int $status = StatusCode::Ok)
  * @method static JsonResponse json(JsonSerializable|array $content, StatusCode|int $status = StatusCode::Ok)
- * @method static DefaultView view(DefaultView $content, StatusCode|int $status = StatusCode::Ok)
+ * @method static View view(View $content, StatusCode|int $status = StatusCode::Ok)
  * @method static StatusResponse status(StatusCode|int $content, StatusCode|int $status = StatusCode::Ok)
  *
  * @method static void attachHeader(string $name, string $value)

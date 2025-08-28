@@ -12,12 +12,11 @@ use Rovota\Framework\Support\Facade;
 use Rovota\Framework\Views\Components\Link;
 use Rovota\Framework\Views\Components\Meta;
 use Rovota\Framework\Views\Components\Script;
-use Rovota\Framework\Views\Interfaces\ViewInterface;
+use Rovota\Framework\Views\View;
 use Rovota\Framework\Views\ViewManager;
 
 /**
- * @method static ViewInterface create(string $template, string|null $class = null)
- * @method static ViewInterface|null current()
+ * @method static View|null current()
  *
  * @method static bool hasLink(string $template, string $identifier)
  * @method static Link attachLink(array|string $templates, string $identifier, Link|array $attributes)
@@ -32,7 +31,7 @@ use Rovota\Framework\Views\ViewManager;
  * @method static void attachVariable(array|string $templates, string $identifier, mixed $value)
  * @method static void updateVariable(array|string $templates, string $identifier, mixed $value)
  */
-final class View extends Facade
+final class Views extends Facade
 {
 
 	public static function service(): ViewManager
@@ -49,10 +48,7 @@ final class View extends Facade
 
 	protected static function getMethodTarget(string $method): Closure|string
 	{
-		return match ($method) {
-			'create' => 'createView',
-			default => $method,
-		};
+		return $method;
 	}
 
 }

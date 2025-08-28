@@ -26,7 +26,7 @@ use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
 use Rovota\Framework\Support\Url;
-use Rovota\Framework\Views\Interfaces\ViewInterface;
+use Rovota\Framework\Views\View;
 use Rovota\Framework\Views\ViewManager;
 
 // -----------------
@@ -95,7 +95,7 @@ if (!function_exists('redirect')) {
 }
 
 if (!function_exists('view')) {
-	function view(string $template, string|null $class = null): ViewInterface
+	function view(string $template, string|null $class = null): View
 	{
 		return ViewManager::instance()->createView($template, $class);
 	}

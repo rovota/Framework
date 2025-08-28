@@ -10,11 +10,10 @@ namespace Rovota\Framework\Views;
 use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
-use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\Traits\ViewFunctions;
 use Stringable;
 
-class DefaultView implements Stringable, ViewInterface
+class View implements Stringable
 {
 	use ViewFunctions;
 
@@ -48,7 +47,7 @@ class DefaultView implements Stringable, ViewInterface
 
 	// -----------------
 
-	public static function make(array $variables = []): ViewInterface|static
+	public static function make(array $variables = []): static
 	{
 		$view = ViewManager::instance()->createView(null, static::class);
 
