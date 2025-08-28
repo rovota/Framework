@@ -14,7 +14,6 @@ use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
 use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Path;
-use Rovota\Framework\Support\Text;
 use Throwable;
 
 final class ExceptionHandler

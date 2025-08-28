@@ -229,17 +229,21 @@ final class RequestObject
 	 */
 	public function isHuman(string|null $secret = null): bool
 	{
-		try {
-			$response = Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify')->withJson([
-				'secret' => $secret ?? getenv('TURNSTILE_SECRET'),
-				'response' => $this->get('cf-turnstile-response'),
-			])->execute();
-		} catch (Throwable $throwable) {
-			Log::notice('There was a problem with reaching the Turnstile API', [$throwable->getMessage()]);
-			return false;
+		$response = Http::json('https://challenges.cloudflare.com/turnstile/v0/siteverify')->with([
+			'secret' => $secret ?? getenv('TURNSTILE_SECRET'),
+			'response' => $this->get('cf-turnstile-response'),
+		])->send();
+
+		if ($response->failed()) {
+			Log::notice('There was a problem with reaching the Turnstile API', [$response->body()]);
 		}
 
-		return $response->jsonAsArray()[0]?->success ?? false;
+		try {
+			return $response->json()['success'] ?? false;
+		} catch (Throwable $throwable) {
+			Log::notice('There was a problem processing the Turnstile API response.', [$throwable->getMessage()]);
+			return false;
+		}
 	}
 
 	public function isXmlHttp(): bool

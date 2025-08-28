@@ -9,34 +9,69 @@
 
 namespace Rovota\Framework\Http\Client\Traits;
 
+use Saloon\Http\Auth\BasicAuthenticator;
+use Saloon\Http\Auth\HeaderAuthenticator;
+use Saloon\Http\Auth\QueryAuthenticator;
+use Saloon\Http\Auth\TokenAuthenticator;
+
 trait RequestModifiers
 {
 
-	public function withJson(array $data): static
+	public function useragent(string $useragent): static
 	{
-		$this->config->set('json', $data);
+		$this->headers()->add('User-Agent', $useragent);
 		return $this;
 	}
 
-	public function withBody(string $data): static
+	public function preferLocale(string $value): static
 	{
-		$this->config->set('body', trim($data));
+		$this->headers()->add('Accept-Language', $value);
+		return $this;
+	}
+
+	public function preferFresh(): static
+	{
+		$this->headers()->add('Cache-Control', 'no-cache');
 		return $this;
 	}
 
 	// -----------------
 
-	public function withParameter(string $name, mixed $value): static
+	public function withHeader(string $name, string $value): static
 	{
-		$this->parameters['query'][$name] = $value;
+		$this->headers()->add($name, $value);
 		return $this;
 	}
 
-	public function withParameters(array $parameters): static
+	public function withHeaders(array $headers): static
 	{
-		foreach ($parameters as $name => $value) {
-			$this->withParameter($name, $value);
-		}
+		$this->headers()->merge($headers);
+		return $this;
+	}
+
+	// -----------------
+
+	public function useTokenAuth(string $token): static
+	{
+		$this->authenticate(new TokenAuthenticator($token));
+		return $this;
+	}
+
+	public function useBasicAuth(string $username, string $password): static
+	{
+		$this->authenticate(new BasicAuthenticator($username, $password));
+		return $this;
+	}
+
+	public function useHeaderAuth(string $token, string $name = 'X-TOKEN'): static
+	{
+		$this->authenticate(new HeaderAuthenticator($token, $name));
+		return $this;
+	}
+
+	public function useQueryAuth(string $token, string $name = 'X-TOKEN'): static
+	{
+		$this->authenticate(new QueryAuthenticator($name, $token));
 		return $this;
 	}
 

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Validation\Rules\Advanced;
 
 use Closure;
-use Rovota\Framework\Http\Client\Integrations\HibpClient;
+use Rovota\Framework\Http\Client\Integrations\BreachedPasswords;
 use Rovota\Framework\Validation\Rules\Rule;
 
 class HibpRule extends Rule
@@ -24,8 +24,8 @@ class HibpRule extends Rule
 			$value = (string)$value;
 		}
 
-		$hibp = new HibpClient();
-		$matches = $hibp->getPasswordHashCount(sha1($value));
+		$hibp = new BreachedPasswords();
+		$matches = $hibp->appearances(sha1($value));
 
 		if ($matches > $this->threshold) {
 			$fail('The value has appeared in a data breach :count time(s) and should not be used.', data: [
