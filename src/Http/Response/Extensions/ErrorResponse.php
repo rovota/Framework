@@ -7,8 +7,8 @@
 
 namespace Rovota\Framework\Http\Response\Extensions;
 
-use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Errors\Error;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;

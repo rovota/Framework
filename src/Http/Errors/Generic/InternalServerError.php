@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http\Errors\Generic;
 
-use Rovota\Framework\Http\Error;
+use Rovota\Framework\Http\Errors\Error;
 
 class InternalServerError extends Error
 {

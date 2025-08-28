@@ -5,7 +5,7 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Http;
+namespace Rovota\Framework\Http\Errors;
 
 class Error
 {

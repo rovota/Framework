@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Http\Errors\Limits;
 
-use Rovota\Framework\Http\Error;
+use Rovota\Framework\Http\Errors\Error;
 
 class RateLimitExceeded extends Error
 {

@@ -8,9 +8,9 @@
 namespace Rovota\Framework\Http\Response;
 
 use JsonSerializable;
-use Rovota\Framework\Http\Error;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
+use Rovota\Framework\Http\Errors\Error;
 use Rovota\Framework\Http\Response\Extensions\ErrorResponse;
 use Rovota\Framework\Http\Response\Extensions\FileResponse;
 use Rovota\Framework\Http\Response\Extensions\JsonResponse;
