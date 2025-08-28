@@ -28,7 +28,6 @@ use Rovota\Framework\Support\Text;
 use Rovota\Framework\Support\Url;
 use Rovota\Framework\Views\Interfaces\ViewInterface;
 use Rovota\Framework\Views\ViewManager;
-use function DeepCopy\deep_copy;
 
 // -----------------
 // Strings
@@ -218,13 +217,6 @@ if (!function_exists('limit')) {
 	function limit(int|float $value, int|float $minimum, int|float $maximum): int|float
 	{
 		return min(max($minimum, $value), $maximum);
-	}
-}
-
-if (!function_exists('deep_clone')) {
-	function deep_clone(mixed $instance): mixed
-	{
-		return deep_copy($instance);
 	}
 }
 
