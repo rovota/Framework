@@ -54,17 +54,6 @@ final class MiddlewareManager extends ServiceProvider
 
 	// -----------------
 
-	public function setAsGlobal(array|string $names): void
-	{
-		foreach (is_array($names) ? $names : [$names] as $name) {
-			if (isset($this->middleware[$name])) {
-				$this->global[] = $name;
-			}
-		}
-	}
-
-	// -----------------
-
 	public function execute(array $names, array $without = []): void
 	{
 		foreach ($this->global as $name) {

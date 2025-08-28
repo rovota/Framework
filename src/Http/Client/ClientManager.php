@@ -29,7 +29,7 @@ final class ClientManager extends ServiceProvider
 	 */
 	protected Map $clients;
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -43,7 +43,9 @@ final class ClientManager extends ServiceProvider
 			$this->clients->set($name, $this->build($name, $config));
 		}
 
-		$this->setDefault($file['default']);
+		if (count($file['clients']) > 0 && isset($this->clients[$file['default']])) {
+			$this->default = $this->clients[$file['default']];
+		}
 	}
 
 	// -----------------
@@ -78,13 +80,6 @@ final class ClientManager extends ServiceProvider
 		return $this->clients[$name];
 	}
 
-	public function getWithDriver(Driver $driver): Client|null
-	{
-		return $this->clients->first(function (Client $store) use ($driver) {
-			return $store->config->driver === $driver;
-		});
-	}
-
 	// -----------------
 
 	/**
@@ -93,21 +88,6 @@ final class ClientManager extends ServiceProvider
 	public function all(): Map
 	{
 		return $this->clients;
-	}
-
-	// -----------------
-
-	public function setDefault(string $name): void
-	{
-		if (isset($this->clients[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined clients cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
 	}
 
 	// -----------------

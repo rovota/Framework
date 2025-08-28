@@ -48,7 +48,7 @@ abstract class Client
 
 	public function isDefault(): bool
 	{
-		return ClientManager::instance()->getDefault() === $this->name;
+		return ClientManager::instance()->default === $this->name;
 	}
 
 }

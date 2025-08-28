@@ -79,13 +79,6 @@ final class ConnectionManager extends ServiceProvider
 		return $this->connections[$name];
 	}
 
-	public function getWithDriver(Driver $driver): Connection|null
-	{
-		return $this->connections->first(function (Connection $connection) use ($driver) {
-			return $connection->config->driver === $driver;
-		});
-	}
-
 	// -----------------
 
 	/**

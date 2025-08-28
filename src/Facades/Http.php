@@ -10,7 +10,6 @@ namespace Rovota\Framework\Facades;
 use Closure;
 use Rovota\Framework\Http\Client\Client;
 use Rovota\Framework\Http\Client\ClientManager;
-use Rovota\Framework\Http\Client\Enums\Driver;
 use Rovota\Framework\Http\Client\Requests\BasicRequest;
 use Rovota\Framework\Http\Client\Requests\FormRequest;
 use Rovota\Framework\Http\Client\Requests\JsonRequest;
@@ -18,7 +17,6 @@ use Rovota\Framework\Support\Facade;
 
 /**
  * @method static Client client(string|null $name = null)
- * @method static Client|null clientWithDriver(Driver $driver)
  * @method static Client create(array $config, string|null $name = null)
  *
  * @method static BasicRequest request(string $endpoint, string $method)
@@ -53,7 +51,6 @@ final class Http extends Facade
 	{
 		return match ($method) {
 			'client' => 'get',
-			'clientWithDriver' => 'getWithDriver',
 			'create' => 'createClient',
 			default => function (ClientManager $instance, string $method, array $parameters = []) {
 				return $instance->get()->$method(...$parameters);
