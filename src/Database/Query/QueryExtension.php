@@ -12,7 +12,7 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\AbstractPreparableSql;
 use Laminas\Db\Sql\Sql;
 use Rovota\Framework\Database\CastingManager;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 
 abstract class QueryExtension
 {
@@ -52,7 +52,7 @@ abstract class QueryExtension
 	{
 		$model = $this->config->model ?? null;
 
-		if ($model instanceof ModelInterface && $model->hasCast($column)) {
+		if ($model instanceof Model && $model->hasCast($column)) {
 			return $model->castToRaw($column, $value);
 		}
 		return CastingManager::instance()->castToRawAutomatic($value);

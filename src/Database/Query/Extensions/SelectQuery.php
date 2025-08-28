@@ -14,7 +14,7 @@ use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Select;
 use Rovota\Framework\Database\Enums\ConstraintMode;
 use Rovota\Framework\Database\Enums\Sort;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
@@ -126,7 +126,7 @@ final class SelectQuery extends QueryExtension
 	 */
 	public function latestFirst(string|null $column = null): SelectQuery
 	{
-		if ($column === null && $this->config->model instanceof ModelInterface) {
+		if ($column === null && $this->config->model instanceof Model) {
 			$column = $this->config->model->config->query_order_column;
 		}
 		return $this->orderBy($column ?? 'created', Sort::Desc);
@@ -137,7 +137,7 @@ final class SelectQuery extends QueryExtension
 	 */
 	public function oldestFirst(string|null $column = null): SelectQuery
 	{
-		if ($column === null && $this->config->model instanceof ModelInterface) {
+		if ($column === null && $this->config->model instanceof Model) {
 			$column = $this->config->model->config->query_order_column;
 		}
 		return $this->orderBy($column ?? 'created');
@@ -164,14 +164,14 @@ final class SelectQuery extends QueryExtension
 
 	// -----------------
 
-	public function find(string|int|null $identifier, string|null $column = null): ModelInterface|array|null
+	public function find(string|int|null $identifier, string|null $column = null): Model|array|null
 	{
 		if ($identifier === null) {
 			return null;
 		}
 
 		if ($column === null) {
-			if ($this->config->model instanceof ModelInterface) {
+			if ($this->config->model instanceof Model) {
 				$column = $this->config->model->config->primary_key;
 			} else {
 				$column = 'id';
@@ -181,7 +181,7 @@ final class SelectQuery extends QueryExtension
 		return $this->where($column, $identifier)->first();
 	}
 
-	public function first(): ModelInterface|array|null
+	public function first(): Model|array|null
 	{
 		return $this->limit(1)->get()->first();
 	}
@@ -200,7 +200,7 @@ final class SelectQuery extends QueryExtension
 
 		if ($results->count() > 0) {
 			foreach ($results as $key => $result) {
-				if ($this->config->model instanceof ModelInterface) {
+				if ($this->config->model instanceof Model) {
 					$result = $this->config->model::newFromQueryResult($result);
 				}
 				$basket->set($key, $result);

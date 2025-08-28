@@ -60,7 +60,7 @@ final class Path
 
 	protected static function getProjectRootPath(): string
 	{
-		return defined('BASE_PATH') ? BASE_PATH : self::getFrameworkRootPath();
+		return defined('BASE_PATH') ? constant('BASE_PATH') : self::getFrameworkRootPath();
 	}
 
 }

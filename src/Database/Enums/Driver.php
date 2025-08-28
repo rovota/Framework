@@ -11,8 +11,8 @@ enum Driver: string
 {
 
 	case MySql = 'mysql';
-	case PostgreSql = 'postgresql';
-	case SqLite = 'sqlite';
+//	case PostgreSql = 'postgresql';
+//	case SqLite = 'sqlite';
 
 	// -----------------
 
@@ -33,8 +33,8 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::MySql => 'MySQL',
-			Driver::PostgreSql => 'PostgreSQL',
-			Driver::SqLite => 'SQLite',
+//			Driver::PostgreSql => 'PostgreSQL',
+//			Driver::SqLite => 'SQLite',
 		};
 	}
 
@@ -42,8 +42,8 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::MySql => 'Connect to a database using MySQL or MariaDB.',
-			Driver::PostgreSql => 'Connect to a database using PostgreSQL.',
-			Driver::SqLite => 'Connect to a database using SQLite.',
+//			Driver::PostgreSql => 'Connect to a database using PostgreSQL.',
+//			Driver::SqLite => 'Connect to a database using SQLite.',
 		};
 	}
 
@@ -53,8 +53,8 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::MySql => 'Pdo_Mysql',
-			Driver::PostgreSql => 'Pdo_Pgsql',
-			Driver::SqLite => 'Pdo_Sqlite',
+//			Driver::PostgreSql => 'Pdo_Pgsql',
+//			Driver::SqLite => 'Pdo_Sqlite',
 		};
 	}
 

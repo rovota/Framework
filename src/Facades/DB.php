@@ -8,8 +8,8 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
+use Rovota\Framework\Database\Connection;
 use Rovota\Framework\Database\ConnectionManager;
-use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\InsertQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
@@ -18,8 +18,8 @@ use Rovota\Framework\Database\Query\Query;
 use Rovota\Framework\Support\Facade;
 
 /**
- * @method static ConnectionInterface connection(string|null $name = null)
- * @method static ConnectionInterface create(array $config, string|null $name = null)
+ * @method static Connection connection(string|null $name = null)
+ * @method static Connection create(array $config, string|null $name = null)
  *
  * @method static Query query(mixed $options = [])
  * @method static Query queryForTable(string $table)
@@ -28,11 +28,6 @@ use Rovota\Framework\Support\Facade;
  * @method static UpdateQuery update()
  * @method static DeleteQuery delete()
  * @method static InsertQuery insert()
- *
- * @method static array tables()
- * @method static bool hasTable(string $name)
- *
- * @method static string|int lastId()
  */
 final class DB extends Facade
 {

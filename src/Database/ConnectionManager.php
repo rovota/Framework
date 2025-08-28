@@ -9,7 +9,6 @@ namespace Rovota\Framework\Database;
 
 use Rovota\Framework\Database\Drivers\MySql;
 use Rovota\Framework\Database\Enums\Driver;
-use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
 use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
@@ -25,11 +24,11 @@ final class ConnectionManager extends ServiceProvider
 {
 
 	/**
-	 * @var Map<string, ConnectionInterface>
+	 * @var Map<string, Connection>
 	 */
 	protected Map $connections;
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -40,20 +39,17 @@ final class ConnectionManager extends ServiceProvider
 		$file = DatabaseConfig::load('config/databases');
 
 		foreach ($file->connections as $name => $config) {
-			$connection = $this->build($name, $config);
-			if ($connection instanceof ConnectionInterface) {
-				$this->connections->set($name, $connection);
-			}
+			$this->connections->set($name, $this->build($name, $config));
 		}
 
-		if (count($file->connections) > 0) {
-			$this->setDefault($file['default']);
+		if (count($file->connections) > 0 && isset($this->connections[$file->default])) {
+			$this->default = $this->connections[$file->default];
 		}
 	}
 
 	// -----------------
 
-	public function createConnection(array $config, string|null $name = null): ConnectionInterface|null
+	public function createConnection(array $config, string|null $name = null): Connection
 	{
 		return self::build($name ?? Str::random(20), $config);
 	}
@@ -67,16 +63,12 @@ final class ConnectionManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$connection = self::build($name, $config);
-
-		if ($connection instanceof ConnectionInterface) {
-			$this->connections[$name] = $connection;
-		}
+		$this->connections[$name] = self::build($name, $config);
 	}
 
-	public function get(string|null $name = null): ConnectionInterface
+	public function get(string|null $name = null): Connection
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 
@@ -87,9 +79,9 @@ final class ConnectionManager extends ServiceProvider
 		return $this->connections[$name];
 	}
 
-	public function getWithDriver(Driver $driver): ConnectionInterface|null
+	public function getWithDriver(Driver $driver): Connection|null
 	{
-		return $this->connections->first(function (ConnectionInterface $connection) use ($driver) {
+		return $this->connections->first(function (Connection $connection) use ($driver) {
 			return $connection->config->driver === $driver;
 		});
 	}
@@ -97,7 +89,7 @@ final class ConnectionManager extends ServiceProvider
 	// -----------------
 
 	/**
-	 * @returns Map<string, ConnectionInterface>
+	 * @returns Map<string, Connection>
 	 */
 	public function all(): Map
 	{
@@ -106,38 +98,20 @@ final class ConnectionManager extends ServiceProvider
 
 	// -----------------
 
-	public function setDefault(string $name): void
-	{
-		if (isset($this->connections[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined connections cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
-	}
-
-	// -----------------
-
-	protected function build(string $name, array $config): ConnectionInterface|null
+	protected function build(string $name, array $config): Connection
 	{
 		$config = new ConnectionConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
 			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
-			return null;
 		}
 
 		if ($config->isValid() === false) {
 			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The connection '$name' cannot be used due to a configuration issue."));
-			return null;
 		}
 
 		return match ($config->driver) {
 			Driver::MySql => new MySql($name, $config),
-			default => null,
 		};
 	}
 

@@ -7,8 +7,8 @@
 
 namespace Rovota\Framework\Database\Model\Traits;
 
-use Rovota\Framework\Database\Events\ModelRestored;
-use Rovota\Framework\Database\Events\ModelTrashed;
+use Rovota\Framework\Database\Model\Events\ModelRestored;
+use Rovota\Framework\Database\Model\Events\ModelTrashed;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 
 /**

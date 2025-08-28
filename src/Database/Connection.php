@@ -8,14 +8,13 @@
 namespace Rovota\Framework\Database;
 
 use Rovota\Framework\Database\Interfaces\ConnectionHandlerInterface;
-use Rovota\Framework\Database\Interfaces\ConnectionInterface;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\InsertQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
 
-abstract class Connection implements ConnectionInterface
+abstract class Connection
 {
 
 	public string $name {
@@ -50,7 +49,7 @@ abstract class Connection implements ConnectionInterface
 
 	public function isDefault(): bool
 	{
-		return ConnectionManager::instance()->getDefault() === $this->name;
+		return ConnectionManager::instance()->default === $this->name;
 	}
 
 	// -----------------

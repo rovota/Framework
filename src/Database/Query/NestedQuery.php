@@ -10,7 +10,7 @@ namespace Rovota\Framework\Database\Query;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Rovota\Framework\Database\CastingManager;
 use Rovota\Framework\Database\Enums\ConstraintMode;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
 
@@ -51,7 +51,7 @@ final class NestedQuery
 	{
 		$model = $this->config->model ?? null;
 
-		if ($model instanceof ModelInterface && $model->hasCast($column)) {
+		if ($model instanceof Model && $model->hasCast($column)) {
 			return $model->castToRaw($column, $value);
 		}
 		return CastingManager::instance()->castToRawAutomatic($value);

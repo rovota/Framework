@@ -5,13 +5,13 @@
  * @license     MIT
  */
 
-namespace Rovota\Framework\Database\Events;
+namespace Rovota\Framework\Database\Model\Events;
 
 use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Kernel\Events\Interfaces\Event;
 use Rovota\Framework\Kernel\Events\Traits\Dispatchable;
 
-class ModelRestored implements Event
+class ModelTrashed implements Event
 {
 	use Dispatchable;
 

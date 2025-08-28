@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Database\Query;
 
 use Laminas\Db\Adapter\AdapterInterface;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\InsertQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
@@ -37,7 +37,7 @@ final class Query
 		return $this;
 	}
 
-	public function withModel(ModelInterface|string $model): Query
+	public function withModel(Model|string $model): Query
 	{
 		$this->config->model = $model;
 		return $this;
@@ -77,7 +77,7 @@ final class Query
 
 		$config = new QueryConfig();
 
-		if ($options instanceof ModelInterface) {
+		if ($options instanceof Model) {
 			$config->model = $options;
 		}
 

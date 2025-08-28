@@ -13,7 +13,7 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Update;
 use Rovota\Framework\Database\Enums\ConstraintMode;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Database\Query\NestedQuery;
 use Rovota\Framework\Database\Query\QueryConfig;
 use Rovota\Framework\Database\Query\QueryExtension;
@@ -74,8 +74,8 @@ final class UpdateQuery extends QueryExtension
 	 */
 	public function restore(): UpdateQuery
 	{
-		if ($this->config->model instanceof ModelInterface && defined($this->config->model::class . '::TRASHED_COLUMN')) {
-			return $this->set([$this->config->model::TRASHED_COLUMN => null]);
+		if ($this->config->model instanceof Model && defined($this->config->model::class . '::TRASHED_COLUMN')) {
+			return $this->set([constant($this->config->model::class . '::TRASHED_COLUMN') => null]);
 		}
 
 		return $this->set(['trashed' => null]);
@@ -86,8 +86,8 @@ final class UpdateQuery extends QueryExtension
 	 */
 	public function trash(): UpdateQuery
 	{
-		if ($this->config->model instanceof ModelInterface && defined($this->config->model::class . '::TRASHED_COLUMN')) {
-			return $this->set([$this->config->model::TRASHED_COLUMN => now()]);
+		if ($this->config->model instanceof Model && defined($this->config->model::class . '::TRASHED_COLUMN')) {
+			return $this->set([constant($this->config->model::class . '::TRASHED_COLUMN') => now()]);
 		}
 
 		return $this->set(['trashed' => now()]);

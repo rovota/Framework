@@ -35,7 +35,7 @@ final class ValidationTools
 	public static function processDatabaseOptions(array $options): array
 	{
 		$config = [
-			'connection' => ConnectionManager::instance()->getDefault(),
+			'connection' => ConnectionManager::instance()->default,
 			'column' => 'id',
 		];
 

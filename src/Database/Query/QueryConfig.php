@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Database\Query;
 
 use Rovota\Framework\Database\Enums\TrashMode;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Model;
 use Rovota\Framework\Support\Config;
 
 final class QueryConfig extends Config
@@ -26,7 +26,7 @@ final class QueryConfig extends Config
 
 	// -----------------
 
-	public ModelInterface|null $model {
+	public Model|null $model {
 		get => $this->get('model');
 		set {
 			if ($value === null) {

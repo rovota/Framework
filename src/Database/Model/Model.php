@@ -10,17 +10,16 @@ namespace Rovota\Framework\Database\Model;
 use BackedEnum;
 use JsonSerializable;
 use Rovota\Framework\Database\CastingManager;
+use Rovota\Framework\Database\Connection;
 use Rovota\Framework\Database\ConnectionManager;
-use Rovota\Framework\Database\Events\ModelDestroyed;
-use Rovota\Framework\Database\Events\ModelPopulated;
-use Rovota\Framework\Database\Events\ModelPopulatedFromResult;
-use Rovota\Framework\Database\Events\ModelReloaded;
-use Rovota\Framework\Database\Events\ModelReverted;
-use Rovota\Framework\Database\Events\ModelRevertedAttribute;
-use Rovota\Framework\Database\Events\ModelSaved;
-use Rovota\Framework\Database\Events\ModelUpdated;
-use Rovota\Framework\Database\Interfaces\ConnectionInterface;
-use Rovota\Framework\Database\Model\Interfaces\ModelInterface;
+use Rovota\Framework\Database\Model\Events\ModelDestroyed;
+use Rovota\Framework\Database\Model\Events\ModelPopulated;
+use Rovota\Framework\Database\Model\Events\ModelPopulatedFromResult;
+use Rovota\Framework\Database\Model\Events\ModelReloaded;
+use Rovota\Framework\Database\Model\Events\ModelReverted;
+use Rovota\Framework\Database\Model\Events\ModelRevertedAttribute;
+use Rovota\Framework\Database\Model\Events\ModelSaved;
+use Rovota\Framework\Database\Model\Events\ModelUpdated;
 use Rovota\Framework\Database\Model\Traits\ModelQueryFunctions;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
@@ -30,7 +29,7 @@ use Rovota\Framework\Support\Traits\Macroable;
 use Rovota\Framework\Support\Traits\MagicMethods;
 use TypeError;
 
-abstract class Model implements ModelInterface, JsonSerializable
+abstract class Model implements JsonSerializable
 {
 	use MagicMethods, Macroable, Conditionable, ModelQueryFunctions;
 
@@ -56,7 +55,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 		get => $this->config;
 	}
 
-	public ConnectionInterface $connection {
+	public Connection $connection {
 		get => ConnectionManager::instance()->get($this->config->connection);
 	}
 
@@ -76,7 +75,7 @@ abstract class Model implements ModelInterface, JsonSerializable
 
 		if (defined($this::class . '::TRASHED_COLUMN')) {
 			$this->casts = array_merge($this->casts, [
-				static::TRASHED_COLUMN => 'moment',
+				constant($this::class . '::TRASHED_COLUMN') => 'moment',
 			]);
 		}
 

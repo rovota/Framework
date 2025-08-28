@@ -28,7 +28,7 @@ final class ModelConfig extends Config
 	// -----------------
 
 	public string $connection {
-		get => $this->string('connection', ConnectionManager::instance()->getDefault());
+		get => $this->string('connection', ConnectionManager::instance()->default);
 		set {
 			if (ConnectionManager::instance()->has($value)) {
 				$this->set('connection', trim($value));
