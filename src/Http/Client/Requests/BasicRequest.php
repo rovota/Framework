@@ -60,6 +60,14 @@ class BasicRequest extends Request
 
 	// -----------------
 
+	public function with(array $data): BasicRequest
+	{
+		$this->query()->merge($data);
+		return $this;
+	}
+
+	// -----------------
+
 	protected function getSanitizedEndpoint(string $target): string
 	{
 		return Str::before($target, '?');
