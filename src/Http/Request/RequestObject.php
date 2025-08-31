@@ -7,8 +7,7 @@
 
 namespace Rovota\Framework\Http\Request;
 
-use Rovota\Framework\Facades\Http;
-use Rovota\Framework\Facades\Log;
+use Rovota\Framework\Http\Client\Integrations\Turnstile;
 use Rovota\Framework\Http\Enums\RequestMethod;
 use Rovota\Framework\Http\Request\Traits\RequestInput;
 use Rovota\Framework\Http\Request\Traits\RequestValidation;
@@ -23,7 +22,6 @@ use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Url;
-use Throwable;
 
 final class RequestObject
 {
@@ -78,7 +76,7 @@ final class RequestObject
 	}
 
 	/**
-	 * The Do Not Track specification has been discontinued. Clients amy remove it in the future.
+	 * The Do Not Track specification has been discontinued. Clients may remove it in the future.
 	 */
 	public function hasDoNotTrack(): bool
 	{
@@ -223,27 +221,11 @@ final class RequestObject
 	/**
 	 * Requires the implementation Cloudflare Turnstile.
 	 *
-	 * @param string|null $secret Provide a secret key for authentication with the Turnstile API. When left empty, the `TURNSTILE_SECRET` environment variable will be used.
-	 *
 	 * @link https://developers.cloudflare.com/turnstile Turnstile Documentation
 	 */
-	public function isHuman(string|null $secret = null): bool
+	public function isHuman(): bool
 	{
-		$response = Http::json('https://challenges.cloudflare.com/turnstile/v0/siteverify')->with([
-			'secret' => $secret ?? getenv('TURNSTILE_SECRET'),
-			'response' => $this->get('cf-turnstile-response'),
-		])->send();
-
-		if ($response->failed()) {
-			Log::notice('There was a problem with reaching the Turnstile API', [$response->body()]);
-		}
-
-		try {
-			return $response->json()['success'] ?? false;
-		} catch (Throwable $throwable) {
-			Log::notice('There was a problem processing the Turnstile API response.', [$throwable->getMessage()]);
-			return false;
-		}
+		return new Turnstile()->verify($this->get('cf-turnstile-response'));
 	}
 
 	public function isXmlHttp(): bool
