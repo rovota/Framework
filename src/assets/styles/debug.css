@@ -157,25 +157,6 @@ nav > ul > li a {
     margin-right: 15px;
 }
 
-.solution {
-    display: block;
-    padding: 30px;
-    flex: 0 0 350px;
-}
-
-.solution > p:first-of-type {
-    margin-top: 0;
-}
-
-.solution > p:last-of-type {
-    margin-bottom: 0;
-}
-
-.solution > p > a {
-    font-weight: bold;
-    color: rgba(var(--color-accent), 1);
-}
-
 /* ---------------------- */
 
 .stack {

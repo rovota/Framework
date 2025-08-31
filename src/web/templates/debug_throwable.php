@@ -12,7 +12,6 @@
 /** @var $snippet array **/
 
 use Rovota\Framework\Kernel\Framework;
-use Rovota\Framework\Support\Interfaces\Solution;
 
 ?>
 <!DOCTYPE html>
@@ -51,20 +50,6 @@ use Rovota\Framework\Support\Interfaces\Solution;
 				<span>Core <?= Framework::version()->basic() ?></span>
 			</p>
 		</card>
-
-		<?php
-		if (isset($solution) && $solution instanceof Solution) { ?>
-			<card class="solution">
-				<p><b><?= str_replace('\\', '\\<wbr>', htmlentities($solution->title())) ?></b></p>
-				<p><?= $solution->description() ?></p>
-				<?php
-				foreach ($solution->references() as $link_title => $link_url) {
-					echo sprintf('<p><a href="%s" class="accent-neutral">%s</a></p>', $link_url, $link_title);
-				}
-				?>
-			</card>
-		<?php
-		} ?>
 
 	</header>
 

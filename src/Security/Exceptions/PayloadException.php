@@ -8,16 +8,7 @@
 namespace Rovota\Framework\Security\Exceptions;
 
 use Exception;
-use Rovota\Framework\Support\Interfaces\ProvidesSolution;
-use Rovota\Framework\Support\Interfaces\Solution;
-use Rovota\Framework\Support\Solutions\DefaultSolution;
 
-class PayloadException extends Exception implements ProvidesSolution
+class PayloadException extends Exception
 {
-
-	public function solution(): Solution
-	{
-		return new DefaultSolution();
-	}
-
 }

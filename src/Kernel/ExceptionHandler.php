@@ -12,7 +12,6 @@ use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Enums\PHPErrorLevel;
-use Rovota\Framework\Support\Interfaces\ProvidesSolution;
 use Rovota\Framework\Support\Path;
 use Throwable;
 
@@ -104,7 +103,6 @@ final class ExceptionHandler
 	{
 		Buffer::erase();
 		$request = self::getRequestInfo();
-		$solution = $throwable instanceof ProvidesSolution ? $throwable->solution() : null;
 		$snippet = self::getSnippet($throwable->getFile());
 		$traces = self::getFilteredTrace($throwable);
 
