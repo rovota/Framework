@@ -12,7 +12,7 @@ use Rovota\Framework\Database\Query\Extensions\DeleteQuery;
 use Rovota\Framework\Database\Query\Extensions\SelectQuery;
 use Rovota\Framework\Database\Query\Extensions\UpdateQuery;
 use Rovota\Framework\Database\Query\Query;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
 
 /**
@@ -112,7 +112,7 @@ trait ModelQueryFunctions
 		return static::getQueryBuilderFromStaticModel()->select()->find($identifier, $column);
 	}
 
-	public static function all(): Basket
+	public static function all(): Bucket
 	{
 		return static::getQueryBuilderFromStaticModel()->select()->get();
 	}

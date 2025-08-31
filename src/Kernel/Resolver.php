@@ -11,7 +11,6 @@ use BackedEnum;
 use BadMethodCallException;
 use Closure;
 use DateTime;
-use Rovota\Framework\Structures\Basket;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Structures\Sequence;
@@ -51,7 +50,6 @@ final class Resolver
 	{
 		return match (true) {
 			$value instanceof BackedEnum => 'enum',
-			$value instanceof Basket => 'basket',
 			$value instanceof Bucket => 'bucket',
 			$value instanceof Map => 'map',
 			$value instanceof Sequence => 'sequence',

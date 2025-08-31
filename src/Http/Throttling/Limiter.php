@@ -11,7 +11,7 @@ use Closure;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Http\Response\DefaultResponse;
 use Rovota\Framework\Kernel\Resolver;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 
 final class Limiter
 {
@@ -53,9 +53,9 @@ final class Limiter
 		}
 	}
 
-	public function attempts(): Basket
+	public function attempts(): Bucket
 	{
-		$attempts = new Basket();
+		$attempts = new Bucket();
 		foreach ($this->limits as $name => $limit) {
 			$attempts->set($name, $limit->attempts());
 		}
@@ -63,9 +63,9 @@ final class Limiter
 		return $attempts;
 	}
 
-	public function remaining(): Basket
+	public function remaining(): Bucket
 	{
-		$remaining = new Basket();
+		$remaining = new Bucket();
 		foreach ($this->limits as $name => $limit) {
 			$remaining->set($name, $limit->remaining());
 		}

@@ -15,7 +15,7 @@ use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Storage\Contents\File;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Str;
@@ -147,7 +147,7 @@ trait ResponseModifiers
 			$values[$key] = '"' . trim($item) . '"';
 		}
 
-		$this->withHeader('Clear-Site-Data', Basket::from($values)->join(', '));
+		$this->withHeader('Clear-Site-Data', Bucket::from($values)->join(', '));
 
 		return $this;
 	}

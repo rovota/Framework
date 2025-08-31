@@ -8,9 +8,9 @@
 namespace Rovota\Framework\Structures\Extensions;
 
 use Rovota\Framework\Identity\Models\Guard;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 
-class GuardBag extends Basket
+class GuardBag extends Bucket
 {
 
 	public function retrieve(string $type): Guard|null

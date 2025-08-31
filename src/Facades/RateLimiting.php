@@ -11,7 +11,7 @@ use Closure;
 use Rovota\Framework\Http\Throttling\Limit;
 use Rovota\Framework\Http\Throttling\Limiter;
 use Rovota\Framework\Http\Throttling\LimitManager;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Facade;
 
 /**
@@ -20,8 +20,8 @@ use Rovota\Framework\Support\Facade;
  *
  * @method static void hit()
  * @method static void reset()
- * @method static Basket attempts()
- * @method static Basket remaining()
+ * @method static Bucket attempts()
+ * @method static Bucket remaining()
  * @method static bool tooManyAttempts()
  */
 final class RateLimiting extends Facade

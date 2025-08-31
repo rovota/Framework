@@ -8,9 +8,9 @@
 namespace Rovota\Framework\Structures\Extensions;
 
 use Rovota\Framework\Identity\Models\Permission;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 
-class PermissionBag extends Basket
+class PermissionBag extends Bucket
 {
 
 	public function retrieve(string|int $identifier): Permission|null

@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Support\Traits;
 
 use Rovota\Framework\Database\Model\ModelConfig;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Models\MetaEntity;
 use Rovota\Framework\Support\Str;
 
@@ -18,7 +18,7 @@ use Rovota\Framework\Support\Str;
 trait Metadata
 {
 
-	protected Basket|null $meta_entities = null;
+	protected Bucket|null $meta_entities = null;
 
 	protected MetaEntity|string $meta_model {
 		get => Str::singular($this::class) . 'Meta';
@@ -31,9 +31,9 @@ trait Metadata
 	// -----------------
 
 	/**
-	 * @var Basket<string, MetaEntity>
+	 * @var Bucket<string, MetaEntity>
 	 */
-	public Basket $metadata {
+	public Bucket $metadata {
 		get {
 			if ($this->meta_entities === null) {
 				$this->loadMetadata();

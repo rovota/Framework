@@ -11,7 +11,7 @@ use Closure;
 use Rovota\Framework\Conversion\MarkupConverter;
 use Rovota\Framework\Conversion\TextConverter;
 use Rovota\Framework\Facades\Language;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Throwable;
 
 final class Str
@@ -48,7 +48,7 @@ final class Str
 				if (array_is_list($data)) {
 					return sprintf($translation, ...$data);
 				}
-				$data = Basket::from($data)->sortBy(fn($variable, $key) => mb_strlen($key), descending: true);
+				$data = Bucket::from($data)->sortBy(fn($variable, $key) => mb_strlen($key), descending: true);
 				foreach ($data as $name => $replacement) {
 					if (is_array($replacement)) {
 						continue;

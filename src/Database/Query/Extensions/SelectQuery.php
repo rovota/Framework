@@ -21,7 +21,7 @@ use Rovota\Framework\Database\Query\QueryExtension;
 use Rovota\Framework\Database\Traits\OrWhereQueryConstraints;
 use Rovota\Framework\Database\Traits\TrashQueryConstraints;
 use Rovota\Framework\Database\Traits\WhereQueryConstraints;
-use Rovota\Framework\Structures\Basket;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Conditionable;
 
@@ -186,7 +186,7 @@ final class SelectQuery extends QueryExtension
 		return $this->limit(1)->get()->first();
 	}
 
-	public function get(): Basket
+	public function get(): Bucket
 	{
 		$this->applyTrashConstraints();
 
@@ -196,18 +196,18 @@ final class SelectQuery extends QueryExtension
 		}
 
 		$results = $this->fetchResult($this->select);
-		$basket = new Basket();
+		$bucket = new Bucket();
 
 		if ($results->count() > 0) {
 			foreach ($results as $key => $result) {
 				if ($this->config->model instanceof Model) {
 					$result = $this->config->model::newFromQueryResult($result);
 				}
-				$basket->set($key, $result);
+				$bucket->set($key, $result);
 			}
 		}
 
-		return $basket;
+		return $bucket;
 	}
 
 	public function count(): int
@@ -219,15 +219,15 @@ final class SelectQuery extends QueryExtension
 		$this->select->columns($this->columns);
 
 		$results = $this->fetchResult($this->select);
-		$basket = new Basket();
+		$bucket = new Bucket();
 
 		if ($results->count() > 0) {
 			foreach ($results as $key => $result) {
-				$basket->set($key, $result);
+				$bucket->set($key, $result);
 			}
 		}
 
-		return (int)$basket->sum('count');
+		return (int)$bucket->sum('count');
 	}
 
 	// -----------------
