@@ -20,6 +20,7 @@ use Rovota\Framework\Database\Casts\ObjectCast;
 use Rovota\Framework\Database\Casts\SerialCast;
 use Rovota\Framework\Database\Casts\StringCast;
 use Rovota\Framework\Database\Casts\TextCast;
+use Rovota\Framework\Database\Casts\UrlCast;
 use Rovota\Framework\Database\Interfaces\CastInterface;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
@@ -147,6 +148,7 @@ final class CastingManager extends ServiceProvider
 		$this->add(new JsonCast(), 'json');
 		$this->add(new EncryptionCast(), 'encrypted');
 		$this->add(new SerialCast(), 'serial');
+		$this->add(new UrlCast(), 'url');
 	}
 
 }
