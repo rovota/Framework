@@ -8,10 +8,9 @@
 namespace Rovota\Framework\Auth;
 
 use Rovota\Framework\Auth\Interfaces\ProviderAdapterInterface;
-use Rovota\Framework\Auth\Interfaces\ProviderInterface;
 use Rovota\Framework\Auth\Traits\ProviderFunctions;
 
-abstract class Provider implements ProviderInterface
+abstract class Provider
 {
 	use ProviderFunctions;
 
@@ -49,7 +48,7 @@ abstract class Provider implements ProviderInterface
 
 	public function isDefault(): bool
 	{
-		return AuthManager::instance()->getDefault() === $this->name;
+		return AuthManager::instance()->default === $this->name;
 	}
 
 }

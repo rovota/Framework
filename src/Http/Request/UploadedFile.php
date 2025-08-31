@@ -11,7 +11,6 @@ use Rovota\Framework\Facades\Storage;
 use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Storage\Contents\FileProperties;
 use Rovota\Framework\Storage\Disk;
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Validation\ValidationTools;
 use SplFileInfo;
@@ -54,7 +53,7 @@ class UploadedFile
 
 	// -----------------
 
-	public function store(string $path, string|null $name = null, DiskInterface|string|null $disk = null, array $options = []): bool
+	public function store(string $path, string|null $name = null, Disk|string|null $disk = null, array $options = []): bool
 	{
 		if ($this->source === null) {
 			return false;

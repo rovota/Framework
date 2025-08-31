@@ -17,9 +17,7 @@ use Rovota\Framework\Logging\Drivers\Monolog;
 use Rovota\Framework\Logging\Drivers\Stack;
 use Rovota\Framework\Logging\Drivers\Stream;
 use Rovota\Framework\Logging\Enums\Driver;
-use Rovota\Framework\Logging\Interfaces\ChannelInterface;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -29,11 +27,11 @@ final class LoggingManager extends ServiceProvider
 {
 
 	/**
-	 * @var Map<string, ChannelInterface>
+	 * @var Map<string, Channel>
 	 */
 	protected Map $channels;
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -41,28 +39,27 @@ final class LoggingManager extends ServiceProvider
 	{
 		$this->channels = new Map();
 
-		$file = require Path::toProjectFile('config/logging.php');
+		$file = LoggingConfig::load('config/logging');
 
-		foreach ($file['channels'] as $name => $config) {
-			$channel = $this->build($name, $config);
-			if ($channel instanceof ChannelInterface) {
-				$this->channels->set($name, $channel);
-			}
+		foreach ($file->channels as $name => $config) {
+			$this->channels->set($name, $this->build($name, $config));
 		}
 
-		$this->setDefault($file['default']);
+		if (count($file->channels) > 0 && isset($this->channels[$file->default])) {
+			$this->default = $this->channels[$file->default];
+		}
 	}
 
 	// -----------------
 
-	public function createChannel(array $config, string|null $name = null): ChannelInterface|null
+	public function createChannel(array $config, string|null $name = null): Channel|null
 	{
-		return self::build($name ?? Str::random(20), $config);
+		return $this->build($name ?? Str::random(20), $config);
 	}
 
-	public function createStack(array $channels, string|null $name = null): ChannelInterface|null
+	public function createStack(array $channels, string|null $name = null): Channel|null
 	{
-		return self::build($name ?? Str::random(20), [
+		return $this->build($name ?? Str::random(20), [
 			'driver' => 'stack',
 			'label' => 'Unnamed Channel',
 			'channels' => $channels,
@@ -78,16 +75,12 @@ final class LoggingManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$channel = self::build($name, $config);
-
-		if ($channel instanceof ChannelInterface) {
-			$this->channels[$name] = $channel;
-		}
+		$this->channels[$name] = $this->build($name, $config);
 	}
 
-	public function get(string|null $name = null): ChannelInterface
+	public function get(string|null $name = null): Channel
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 
@@ -101,7 +94,7 @@ final class LoggingManager extends ServiceProvider
 	// -----------------
 
 	/**
-	 * @returns Map<string, ChannelInterface>
+	 * @returns Map<string, Channel>
 	 */
 	public function all(): Map
 	{
@@ -110,33 +103,18 @@ final class LoggingManager extends ServiceProvider
 
 	// -----------------
 
-	public function setDefault(string $name): void
-	{
-		if (isset($this->channels[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined channels cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
-	}
-
-	// -----------------
-
-	protected function build(string $name, array $config): ChannelInterface|null
+	protected function build(string $name, array $config): Channel
 	{
 		$config = new ChannelConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
 			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
-			return null;
+			exit;
 		}
 
 		if ($config->isValid() === false) {
 			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The channel '$name' cannot be used due to a configuration issue."));
-			return null;
+			exit;
 		}
 
 		return match ($config->driver) {
@@ -144,7 +122,6 @@ final class LoggingManager extends ServiceProvider
 			Driver::Monolog => new Monolog($name, $config),
 			Driver::Stack => new Stack($name, $config),
 			Driver::Stream => new Stream($name, $config),
-			default => null,
 		};
 	}
 

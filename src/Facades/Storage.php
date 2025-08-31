@@ -10,17 +10,17 @@ namespace Rovota\Framework\Facades;
 use Closure;
 use Rovota\Framework\Storage\Contents\Directory;
 use Rovota\Framework\Storage\Contents\File;
+use Rovota\Framework\Storage\Disk;
 use Rovota\Framework\Storage\Enums\Driver;
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Storage\StorageManager;
 use Rovota\Framework\Structures\Sequence;
 use Rovota\Framework\Support\Facade;
 use Rovota\Framework\Support\Moment;
 
 /**
- * @method static DiskInterface disk(string|null $name = null)
- * @method static DiskInterface|null diskWithDriver(Driver $driver)
- * @method static DiskInterface create(array $config, string|null $name = null)
+ * @method static Disk disk(string|null $name = null)
+ * @method static Disk|null diskWithDriver(Driver $driver)
+ * @method static Disk create(array $config, string|null $name = null)
  *
  * @method static Sequence contents()
  * @method static Sequence files()

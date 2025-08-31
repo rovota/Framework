@@ -51,32 +51,32 @@ final class ResponseManager extends ServiceProvider
 	{
 		// FileResponse
 		if ($content instanceof File) {
-			return self::createFileResponse($content, $status);
+			return $this->createFileResponse($content, $status);
 		}
 
 		// RedirectResponse
 		if ($content instanceof UrlObject) {
-			return self::createRedirectResponse($content, $status);
+			return $this->createRedirectResponse($content, $status);
 		}
 
 		// ErrorResponse
 		if ($content instanceof Throwable || $content instanceof Error) {
-			return self::createErrorResponse($content, $status);
+			return $this->createErrorResponse($content, $status);
 		}
 
 		// JsonResponse
 		if ($content instanceof JsonSerializable || is_array($content)) {
-			return self::createJsonResponse($content, $status);
+			return $this->createJsonResponse($content, $status);
 		}
 
 		// ViewResponse
 		if ($content instanceof View) {
-			return self::createViewResponse($content, $status);
+			return $this->createViewResponse($content, $status);
 		}
 
 		// StatusResponse
 		if ($content instanceof StatusCode || is_int($content)) {
-			return self::createStatusResponse($content, $status);
+			return $this->createStatusResponse($content, $status);
 		}
 
 		return new DefaultResponse($content, $status, $this->config);
@@ -129,7 +129,7 @@ final class ResponseManager extends ServiceProvider
 	public function attachHeaders(array $headers): void
 	{
 		foreach ($headers as $name => $value) {
-			self::attachHeader($name, $value);
+			$this->attachHeader($name, $value);
 		}
 	}
 
@@ -144,7 +144,7 @@ final class ResponseManager extends ServiceProvider
 			$this->config->remove('headers');
 		} else {
 			foreach ($names as $name) {
-				self::withoutHeader($name);
+				$this->withoutHeader($name);
 			}
 		}
 	}

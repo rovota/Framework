@@ -29,6 +29,7 @@ final class TextConverter
 
 	public static function initialize(): void
 	{
+		// TODO: Add ability to-initialize with the user's preferred language.
 		self::$inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
 	}
 

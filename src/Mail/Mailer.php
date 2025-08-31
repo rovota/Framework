@@ -7,11 +7,10 @@
 
 namespace Rovota\Framework\Mail;
 
-use Rovota\Framework\Mail\Interfaces\MailerInterface;
 use Rovota\Framework\Mail\Interfaces\MailHandlerInterface;
 use Rovota\Framework\Mail\Traits\MailerFunctions;
 
-abstract class Mailer implements MailerInterface
+abstract class Mailer
 {
 	use MailerFunctions;
 
@@ -49,7 +48,7 @@ abstract class Mailer implements MailerInterface
 
 	public function isDefault(): bool
 	{
-		return MailManager::instance()->getDefault() === $this->name;
+		return MailManager::instance()->default === $this->name;
 	}
 
 }

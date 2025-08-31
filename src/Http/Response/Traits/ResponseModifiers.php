@@ -10,8 +10,8 @@ namespace Rovota\Framework\Http\Response\Traits;
 use JsonSerializable;
 use Laminas\Db\Metadata\Object\ViewObject;
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Cookie\CookieObject;
 use Rovota\Framework\Http\Enums\StatusCode;
 use Rovota\Framework\Storage\Contents\File;
@@ -101,7 +101,7 @@ trait ResponseModifiers
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			if ($errors instanceof Validator) {
 				$errors = $errors->errors;
 			}

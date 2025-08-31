@@ -15,7 +15,6 @@ use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Traits\Errors;
 use Rovota\Framework\Validation\Interfaces\ContextAware;
 use Rovota\Framework\Validation\Interfaces\LastRuleIfNoErrors;
-use Rovota\Framework\Validation\Interfaces\RuleInterface;
 
 class RuleSet
 {
@@ -64,7 +63,7 @@ class RuleSet
 					$this->rules[Str::random(12)] = $options;
 					continue;
 				}
-				if ($options instanceof RuleInterface) {
+				if ($options instanceof Rule) {
 					$this->attachRule($options);
 					continue;
 				}
@@ -178,7 +177,7 @@ class RuleSet
 
 	// -----------------
 
-	protected function attachRule(RuleInterface|string $rule, mixed $options = []): void
+	protected function attachRule(Rule|string $rule, mixed $options = []): void
 	{
 		if (is_string($rule)) {
 			$rule = RuleManager::get($rule)->withOptions(Arr::from($options));

@@ -11,11 +11,10 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\ReadOnly\ReadOnlyFilesystemAdapter;
 use Rovota\Framework\Routing\UrlObject;
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Storage\Traits\CompressionFunctions;
 use Rovota\Framework\Storage\Traits\DiskFunctions;
 
-abstract class Disk implements DiskInterface
+abstract class Disk
 {
 	use DiskFunctions, CompressionFunctions;
 
@@ -65,7 +64,7 @@ abstract class Disk implements DiskInterface
 
 	public function isDefault(): bool
 	{
-		return StorageManager::instance()->getDefault() === $this->name;
+		return StorageManager::instance()->default === $this->name;
 	}
 
 }

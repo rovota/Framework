@@ -9,7 +9,6 @@ namespace Rovota\Framework\Validation;
 
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Validation\Interfaces\ValidatorInterface;
 use Rovota\Framework\Validation\Rules\RuleManager;
 
 /**
@@ -18,7 +17,7 @@ use Rovota\Framework\Validation\Rules\RuleManager;
 final class ValidationManager extends ServiceProvider
 {
 	/**
-	 * @var Map<string, ValidatorInterface>
+	 * @var Map<string, Validator>
 	 */
 	protected Map $validators;
 

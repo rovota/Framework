@@ -8,8 +8,8 @@
 namespace Rovota\Framework\Http\Request\Traits;
 
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Request\RequestData;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Validation\Validator;
@@ -47,7 +47,7 @@ trait RequestValidation
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			$this->errors->import($store->pull('error_messages'));
 		}
 	}

@@ -10,10 +10,9 @@ namespace Rovota\Framework\Validation;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\MessageBag;
 use Rovota\Framework\Support\Traits\Errors;
-use Rovota\Framework\Validation\Interfaces\ValidatorInterface;
 use Rovota\Framework\Validation\Rules\RuleSet;
 
-class Validator implements ValidatorInterface
+class Validator
 {
 	use Errors;
 

@@ -7,47 +7,23 @@
 
 namespace Rovota\Framework\Logging\Drivers;
 
+use Rovota\Framework\Logging\Channel;
 use Rovota\Framework\Logging\ChannelConfig;
-use Rovota\Framework\Logging\Interfaces\ChannelInterface;
+use Rovota\Framework\Logging\Handlers\StackHandler;
 use Rovota\Framework\Logging\LoggingManager;
 use Stringable;
 
-final class Stack implements ChannelInterface
+final class Stack extends Channel
 {
-
-	public string $name {
-		get => $this->name;
-	}
-
-	public ChannelConfig $config {
-		get => $this->config;
-	}
-
-	// -----------------
 
 	public function __construct(string $name, ChannelConfig $config)
 	{
-		$this->name = $name;
-		$this->config = $config;
+		parent::__construct($name, new StackHandler(), $config);
 	}
 
 	// -----------------
 
-	public function __toString(): string
-	{
-		return $this->name;
-	}
-
-	// -----------------
-
-	public function isDefault(): bool
-	{
-		return LoggingManager::instance()->getDefault() === $this->name;
-	}
-
-	// -----------------
-
-	public function attach(ChannelInterface|string|array $channel): ChannelInterface
+	public function attach(Channel|string|array $channel): Channel
 	{
 		$current = $this->config->channels;
 		$new = is_array($channel) ? $channel : [$channel];
@@ -61,7 +37,7 @@ final class Stack implements ChannelInterface
 	public function log(mixed $level, string|Stringable $message, array $context = []): void
 	{
 		foreach ($this->config->channels as $channel) {
-			if ($channel instanceof ChannelInterface) {
+			if ($channel instanceof Channel) {
 				$channel->log($level, $message, $context);
 				continue;
 			}
@@ -114,7 +90,7 @@ final class Stack implements ChannelInterface
 	protected function dispatch(string $type, string|Stringable $message, array $context = []): void
 	{
 		foreach ($this->config->channels as $channel) {
-			if ($channel instanceof ChannelInterface) {
+			if ($channel instanceof Channel) {
 				$channel->{$type}($message, $context);
 				continue;
 			}

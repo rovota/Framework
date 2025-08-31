@@ -9,16 +9,14 @@ namespace Rovota\Framework\Facades;
 
 use Closure;
 use Rovota\Framework\Auth\AuthManager;
-use Rovota\Framework\Auth\Enums\Driver;
-use Rovota\Framework\Auth\Interfaces\ProviderInterface;
+use Rovota\Framework\Auth\Provider;
 use Rovota\Framework\Identity\Models\Session;
 use Rovota\Framework\Identity\Models\User;
 use Rovota\Framework\Support\Facade;
 
 /**
- * @method static ProviderInterface provider(string|null $name = null)
- * @method static ProviderInterface|null providerWithDriver(Driver $driver)
- * @method static ProviderInterface create(array $config, string|null $name = null)
+ * @method static Provider provider(string|null $name = null)
+ * @method static Provider create(array $config, string|null $name = null)
  *
  * @method static Session|null session()
  * @method static User|null user()
@@ -53,7 +51,6 @@ final class Auth extends Facade
 	{
 		return match ($method) {
 			'provider' => 'get',
-			'providerWithDriver' => 'getWithDriver',
 			'create' => 'createProvider',
 			default => function (AuthManager $instance, string $method, array $parameters = []) {
 				if ($instance->get() === null) {

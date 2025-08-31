@@ -8,10 +8,9 @@
 namespace Rovota\Framework\Caching;
 
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Caching\Traits\CacheFunctions;
 
-abstract class CacheStore implements CacheInterface
+abstract class CacheStore
 {
 	use CacheFunctions;
 
@@ -49,7 +48,7 @@ abstract class CacheStore implements CacheInterface
 
 	public function isDefault(): bool
 	{
-		return CacheManager::instance()->getDefault() === $this->name;
+		return CacheManager::instance()->default === $this->name;
 	}
 
 	// -----------------

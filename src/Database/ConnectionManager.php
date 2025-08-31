@@ -51,7 +51,7 @@ final class ConnectionManager extends ServiceProvider
 
 	public function createConnection(array $config, string|null $name = null): Connection
 	{
-		return self::build($name ?? Str::random(20), $config);
+		return $this->build($name ?? Str::random(20), $config);
 	}
 
 	// -----------------
@@ -63,7 +63,7 @@ final class ConnectionManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$this->connections[$name] = self::build($name, $config);
+		$this->connections[$name] = $this->build($name, $config);
 	}
 
 	public function get(string|null $name = null): Connection

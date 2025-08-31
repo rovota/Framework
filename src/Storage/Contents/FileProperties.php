@@ -8,7 +8,7 @@
 namespace Rovota\Framework\Storage\Contents;
 
 use Rovota\Framework\Facades\Storage;
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
+use Rovota\Framework\Storage\Disk;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Support\Str;
@@ -40,7 +40,7 @@ final class FileProperties extends Config
 
 	// -----------------
 
-	public DiskInterface $disk {
+	public Disk $disk {
 		get => $this->get('disk', Storage::disk());
 		set {
 			$this->set('disk', $value);

@@ -11,8 +11,8 @@ use BackedEnum;
 use DateTime;
 use DateTimeZone;
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Http\Request\RequestData;
 use Rovota\Framework\Http\Request\UploadedFile;
 use Rovota\Framework\Support\Moment;
@@ -124,7 +124,7 @@ trait RequestInput
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			$store->set('request.data.post', $this->post->all());
 			$store->set('request.data.query', $this->query->all());
 		}
@@ -137,7 +137,7 @@ trait RequestInput
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			$store->set('request.data.post', $this->post->only($keys)->all());
 			$store->set('request.data.query', $this->query->only($keys)->all());
 		}
@@ -150,7 +150,7 @@ trait RequestInput
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			$store->set('request.data.post', $this->post->except($keys)->all());
 			$store->set('request.data.query', $this->query->except($keys)->all());
 		}
@@ -198,7 +198,7 @@ trait RequestInput
 	{
 		$store = CacheManager::instance()->getWithDriver(Driver::Session);
 
-		if ($store instanceof CacheInterface) {
+		if ($store instanceof CacheStore) {
 			$this->post->import($store->pull('request.data.post'));
 			$this->query->import($store->pull('request.data.query'));
 		}

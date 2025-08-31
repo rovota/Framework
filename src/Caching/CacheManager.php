@@ -12,14 +12,12 @@ use Rovota\Framework\Caching\Drivers\Memory;
 use Rovota\Framework\Caching\Drivers\Redis;
 use Rovota\Framework\Caching\Drivers\Session;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Kernel\Exceptions\MisconfiguredServiceException;
 use Rovota\Framework\Kernel\Exceptions\MissingInstanceException;
 use Rovota\Framework\Kernel\Exceptions\UnsupportedDriverException;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -29,11 +27,11 @@ final class CacheManager extends ServiceProvider
 {
 
 	/**
-	 * @var Map<string, CacheInterface>
+	 * @var Map<string, CacheStore>
 	 */
 	protected Map $stores;
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -41,21 +39,20 @@ final class CacheManager extends ServiceProvider
 	{
 		$this->stores = new Map();
 
-		$file = require Path::toProjectFile('config/caching.php');
+		$file = CacheConfig::load('config/caching');
 
-		foreach ($file['stores'] as $name => $config) {
-			$store = $this->build($name, $config);
-			if ($store instanceof CacheInterface) {
-				$this->stores->set($name, $store);
-			}
+		foreach ($file->stores as $name => $config) {
+			$this->stores->set($name, $this->build($name, $config));
 		}
 
-		$this->setDefault($file['default']);
+		if (count($file->stores) > 0 && isset($this->stores[$file->default])) {
+			$this->default = $this->stores[$file->default];
+		}
 	}
 
 	// -----------------
 
-	public function createStore(array $config, string|null $name = null): CacheInterface|null
+	public function createStore(array $config, string|null $name = null): CacheStore
 	{
 		return $this->build($name ?? Str::random(20), $config);
 	}
@@ -69,16 +66,12 @@ final class CacheManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$store = $this->build($name, $config);
-
-		if ($store instanceof CacheInterface) {
-			$this->stores[$name] = $store;
-		}
+		$this->stores[$name] = $this->build($name, $config);
 	}
 
-	public function get(string|null $name = null): CacheInterface
+	public function get(string|null $name = null): CacheStore
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 
@@ -89,9 +82,9 @@ final class CacheManager extends ServiceProvider
 		return $this->stores[$name];
 	}
 
-	public function getWithDriver(Driver $driver): CacheInterface|null
+	public function getWithDriver(Driver $driver): CacheStore|null
 	{
-		return $this->stores->first(function (CacheInterface $store) use ($driver) {
+		return $this->stores->first(function (CacheStore $store) use ($driver) {
 			return $store->config->driver === $driver;
 		});
 	}
@@ -99,7 +92,7 @@ final class CacheManager extends ServiceProvider
 	// -----------------
 
 	/**
-	 * @returns Map<string, CacheInterface>
+	 * @returns Map<string, CacheStore>
 	 */
 	public function all(): Map
 	{
@@ -108,33 +101,18 @@ final class CacheManager extends ServiceProvider
 
 	// -----------------
 
-	public function setDefault(string $name): void
-	{
-		if (isset($this->stores[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined caches cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
-	}
-
-	// -----------------
-
-	protected function build(string $name, array $config): CacheInterface|null
+	protected function build(string $name, array $config): CacheStore
 	{
 		$config = new CacheStoreConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
 			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
-			return null;
+			exit;
 		}
 
 		if ($config->isValid() === false) {
 			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The cache '$name' cannot be used due to a configuration issue."));
-			return null;
+			exit;
 		}
 
 		return match ($config->driver) {
@@ -142,7 +120,6 @@ final class CacheManager extends ServiceProvider
 			Driver::Memory => new Memory($name, $config),
 			Driver::Redis => new Redis($name, $config),
 			Driver::Session => new Session($name, $config),
-			default => null,
 		};
 	}
 

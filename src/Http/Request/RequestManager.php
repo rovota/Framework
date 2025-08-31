@@ -8,8 +8,8 @@
 namespace Rovota\Framework\Http\Request;
 
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Storage\FilesArrayOrganizer;
@@ -40,7 +40,7 @@ final class RequestManager extends ServiceProvider
 
 		if (mb_strlen($continue) > 0) {
 			$store = CacheManager::instance()->getWithDriver(Driver::Session);
-			if ($store instanceof CacheInterface) {
+			if ($store instanceof CacheStore) {
 				$store->set('location.next', $continue);
 			}
 		}

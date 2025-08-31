@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Storage\Contents;
 
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
+use Rovota\Framework\Storage\Disk;
 use Rovota\Framework\Support\Config;
 use Rovota\Framework\Support\Str;
 
@@ -30,7 +30,7 @@ final class DirectoryProperties extends Config
 
 	// -----------------
 
-	public DiskInterface $disk {
+	public Disk $disk {
 		get => $this->get('disk');
 		set {
 			$this->set('disk', $value);

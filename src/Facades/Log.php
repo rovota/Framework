@@ -8,15 +8,15 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
-use Rovota\Framework\Logging\Interfaces\ChannelInterface;
+use Rovota\Framework\Logging\Channel;
 use Rovota\Framework\Logging\LoggingManager;
 use Rovota\Framework\Support\Facade;
 use Stringable;
 
 /**
- * @method static ChannelInterface channel(string|null $name = null)
- * @method static ChannelInterface create(array $config, string|null $name = null)
- * @method static ChannelInterface stack(array $channels, string|null $name = null)
+ * @method static Channel channel(string|null $name = null)
+ * @method static Channel create(array $config, string|null $name = null)
+ * @method static Channel stack(array $channels, string|null $name = null)
  *
  * @method static void debug(string|Stringable $message, array $context = [])
  * @method static void info(string|Stringable $message, array $context = [])

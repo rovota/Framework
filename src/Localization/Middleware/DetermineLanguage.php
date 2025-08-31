@@ -45,7 +45,8 @@ class DetermineLanguage
 			}
 		}
 
-		if (AuthManager::instance()->get()?->check()) {
+		// Attempt to get a value from the user's identity
+		if (AuthManager::instance()->all()->count() > 0 && AuthManager::instance()->get()->check()) {
 			$user = AuthManager::instance()->get()->user();
 			if ($manager->has($user->language->locale)) {
 				$this->locale = $user->language->locale;

@@ -9,15 +9,15 @@ namespace Rovota\Framework\Facades;
 
 use Closure;
 use Rovota\Framework\Caching\CacheManager;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Caching\Enums\Driver;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Facade;
 
 /**
- * @method static CacheInterface store(string|null $name = null)
- * @method static CacheInterface|null storeWithDriver(Driver $driver)
- * @method static CacheInterface create(array $config, string|null $name = null)
+ * @method static CacheStore store(string|null $name = null)
+ * @method static CacheStore|null storeWithDriver(Driver $driver)
+ * @method static CacheStore create(array $config, string|null $name = null)
  *
  * @method static Map all()
  * @method static bool has(string|array $key)

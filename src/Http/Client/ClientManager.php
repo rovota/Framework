@@ -69,7 +69,7 @@ final class ClientManager extends ServiceProvider
 
 	public function get(string|null $name = null): Client
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 

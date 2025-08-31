@@ -9,18 +9,15 @@ namespace Rovota\Framework\Http\Throttling;
 
 use Closure;
 use Rovota\Framework\Caching\CacheManager;
-use Rovota\Framework\Caching\Interfaces\CacheInterface;
+use Rovota\Framework\Caching\CacheStore;
 use Rovota\Framework\Http\Throttling\Enums\IdentifierType;
 use Rovota\Framework\Http\Throttling\Enums\PeriodType;
 use Rovota\Framework\Support\Config;
 
-/**
- * @property CacheInterface $cache
- */
 class LimitConfig extends Config
 {
 
-	public CacheInterface $cache {
+	public CacheStore $cache {
 		get => $this->get('cache', CacheManager::instance()->get());
 		set {
 			$this->set('cache', $value);

@@ -12,6 +12,9 @@ use Rovota\Framework\Structures\Map;
 trait CacheFunctions
 {
 
+	/**
+	 * Only available when using the `array` driver. Returns an empty Map otherwise.
+	 */
 	public function all(): Map
 	{
 		return new Map($this->adapter->all());
@@ -48,7 +51,7 @@ trait CacheFunctions
 	}
 
 	/**
-	 * Returns the cached value (or the default), and then removes it from cache if present.
+	 * Returns the cached value (or the default) and then removes it from cache if present.
 	 */
 	public function pull(string|array $key, mixed $default = null): mixed
 	{

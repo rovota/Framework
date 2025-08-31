@@ -16,7 +16,6 @@ use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Mail\Components\Entity;
 use Rovota\Framework\Mail\Drivers\Smtp;
 use Rovota\Framework\Mail\Enums\Driver;
-use Rovota\Framework\Mail\Interfaces\MailerInterface;
 use Rovota\Framework\Structures\Map;
 use Rovota\Framework\Support\Str;
 
@@ -27,11 +26,11 @@ final class MailManager extends ServiceProvider
 {
 
 	/**
-	 * @var Map<string, MailerInterface>
+	 * @var Map<string, Mailer>
 	 */
 	protected Map $mailers;
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -42,20 +41,17 @@ final class MailManager extends ServiceProvider
 		$file = MailConfig::load('config/mail');
 
 		foreach ($file->mailers as $name => $config) {
-			$mailer = $this->build($name, $config);
-			if ($mailer instanceof MailerInterface) {
-				$this->mailers->set($name, $mailer);
-			}
+			$this->mailers->set($name, $this->build($name, $config));
 		}
 
-		if (count($file->mailers) > 0) {
-			$this->setDefault($file->default);
+		if (count($file->mailers) > 0 && isset($this->mailers[$file->default])) {
+			$this->default = $this->mailers[$file->default];
 		}
 	}
 
 	// -----------------
 
-	public function createMailer(array $config, string|null $name = null): MailerInterface|null
+	public function createMailer(array $config, string|null $name = null): Mailer
 	{
 		return $this->build($name ?? Str::random(20), $config);
 	}
@@ -69,16 +65,12 @@ final class MailManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$store = $this->build($name, $config);
-
-		if ($store instanceof MailerInterface) {
-			$this->mailers[$name] = $store;
-		}
+		$this->mailers[$name] = $this->build($name, $config);
 	}
 
-	public function get(string|null $name = null): MailerInterface
+	public function get(string|null $name = null): Mailer
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 
@@ -89,17 +81,10 @@ final class MailManager extends ServiceProvider
 		return $this->mailers[$name];
 	}
 
-	public function getWithDriver(Driver $driver): MailerInterface|null
-	{
-		return $this->mailers->first(function (MailerInterface $store) use ($driver) {
-			return $store->config->driver === $driver;
-		});
-	}
-
 	// -----------------
 
 	/**
-	 * @returns Map<string, MailerInterface>
+	 * @returns Map<string, Mailer>
 	 */
 	public function all(): Map
 	{
@@ -108,39 +93,22 @@ final class MailManager extends ServiceProvider
 
 	// -----------------
 
-	public function setDefault(string $name): void
-	{
-		if (isset($this->mailers[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined mailers cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
-	}
-
-	// -----------------
-
-	protected function build(string $name, array $config): MailerInterface|null
+	protected function build(string $name, array $config): Mailer
 	{
 		$config = new MailerConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
 			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
-			return null;
+			exit;
 		}
 
 		if ($config->isValid() === false) {
 			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The cache '$name' cannot be used due to a configuration issue."));
-			return null;
+			exit;
 		}
 
 		return match ($config->driver) {
 			Driver::SMTP => new Smtp($name, $config),
-//			Driver::Basic => new Basic($name, $config),
-			default => null,
 		};
 	}
 

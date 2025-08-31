@@ -7,10 +7,10 @@
 
 namespace Rovota\Framework\Validation\Rules;
 
+use Closure;
 use Rovota\Framework\Structures\Bucket;
-use Rovota\Framework\Validation\Interfaces\RuleInterface;
 
-abstract class Rule implements RuleInterface
+abstract class Rule
 {
 
 	public string $name;
@@ -24,6 +24,10 @@ abstract class Rule implements RuleInterface
 		$this->name = $name;
 		$this->context = new Bucket();
 	}
+
+	// -----------------
+
+	abstract public function validate(mixed $value, Closure $fail): void;
 
 	// -----------------
 

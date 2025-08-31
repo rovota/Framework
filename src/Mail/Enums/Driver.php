@@ -11,7 +11,6 @@ enum Driver: string
 {
 
 	case SMTP = 'smtp';
-	case Basic = 'mail';
 
 	// -----------------
 
@@ -32,7 +31,6 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::SMTP => 'SMTP',
-			Driver::Basic => 'Mail',
 		};
 	}
 
@@ -40,7 +38,6 @@ enum Driver: string
 	{
 		return match ($this) {
 			Driver::SMTP => 'Use the SMTP protocol to send your email.',
-			Driver::Basic => 'Use the built-in PHP mail functionality.',
 		};
 	}
 

@@ -9,7 +9,6 @@ namespace Rovota\Framework\Mail;
 
 use Rovota\Framework\Mail\Enums\Priority;
 use Rovota\Framework\Mail\Events\MailableDelivered;
-use Rovota\Framework\Mail\Interfaces\MailerInterface;
 use Rovota\Framework\Mail\Traits\MailableContent;
 use Rovota\Framework\Mail\Traits\MailableEvents;
 
@@ -19,15 +18,15 @@ class Mailable
 
 	// -----------------
 
-	protected MailerInterface $mailer;
+	protected Mailer $mailer;
 
 	public array $attributes = [];
 
 	// -----------------
 
-	public function __construct(MailerInterface|string|null $mailer = null)
+	public function __construct(Mailer|string|null $mailer = null)
 	{
-		$this->mailer = $mailer instanceof MailerInterface ? $mailer : MailManager::instance()->get($mailer);
+		$this->mailer = $mailer instanceof Mailer ? $mailer : MailManager::instance()->get($mailer);
 
 		$this->configuration();
 	}
@@ -39,9 +38,9 @@ class Mailable
 
 	}
 
-	protected function use(MailerInterface|string $mailer): void
+	protected function use(Mailer|string $mailer): void
 	{
-		$this->mailer = $mailer instanceof MailerInterface ? $mailer : MailManager::instance()->get($mailer);
+		$this->mailer = $mailer instanceof Mailer ? $mailer : MailManager::instance()->get($mailer);
 	}
 
 	// -----------------

@@ -18,9 +18,7 @@ use Rovota\Framework\Storage\Drivers\Local;
 use Rovota\Framework\Storage\Drivers\S3;
 use Rovota\Framework\Storage\Drivers\Sftp;
 use Rovota\Framework\Storage\Enums\Driver;
-use Rovota\Framework\Storage\Interfaces\DiskInterface;
 use Rovota\Framework\Structures\Map;
-use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 
 /**
@@ -30,13 +28,13 @@ final class StorageManager extends ServiceProvider
 {
 
 	/**
-	 * @var Map<string, DiskInterface>
+	 * @var Map<string, Disk>
 	 */
 	protected Map $disks;
 
 	protected array $configs = [];
 
-	protected string $default;
+	public readonly string $default;
 
 	// -----------------
 
@@ -44,18 +42,20 @@ final class StorageManager extends ServiceProvider
 	{
 		$this->disks = new Map();
 
-		$file = require Path::toProjectFile('config/storage.php');
+		$file = StorageConfig::load('config/storage');
 
-		foreach ($file['disks'] as $name => $config) {
+		foreach ($file->disks as $name => $config) {
 			$this->define($name, $config);
 		}
 
-		$this->setDefault($file['default']);
+		if (count($file->disks) > 0 && isset($this->disks[$file->default])) {
+			$this->default = $this->disks[$file->default];
+		}
 	}
 
 	// -----------------
 
-	public function createDisk(array $config, string|null $name = null): DiskInterface|null
+	public function createDisk(array $config, string|null $name = null): Disk
 	{
 		return $this->build($name ?? Str::random(20), $config);
 	}
@@ -74,10 +74,7 @@ final class StorageManager extends ServiceProvider
 	public function connect(string $name): void
 	{
 		if (isset($this->configs[$name])) {
-			$disk = $this->build($name, $this->configs[$name]);
-			if ($disk instanceof DiskInterface) {
-				$this->disks->set($name, $disk);
-			}
+			$this->disks->set($name, $this->build($name, $this->configs[$name]));
 		}
 	}
 
@@ -90,16 +87,12 @@ final class StorageManager extends ServiceProvider
 
 	public function add(string $name, array $config): void
 	{
-		$disk = $this->build($name, $config);
-
-		if ($disk instanceof DiskInterface) {
-			$this->disks[$name] = $disk;
-		}
+		$this->disks[$name] = $this->build($name, $config);
 	}
 
-	public function get(string|null $name = null): DiskInterface
+	public function get(string|null $name = null): Disk
 	{
-		if ($name === null) {
+		if ($name === null && property_exists($this, 'default')) {
 			$name = $this->default;
 		}
 
@@ -110,9 +103,9 @@ final class StorageManager extends ServiceProvider
 		return $this->disks[$name];
 	}
 
-	public function getWithDriver(Driver $driver): DiskInterface|null
+	public function getWithDriver(Driver $driver): Disk|null
 	{
-		return $this->disks->first(function (DiskInterface $disk) use ($driver) {
+		return $this->disks->first(function (Disk $disk) use ($driver) {
 			return $disk->config->driver === $driver;
 		});
 	}
@@ -120,26 +113,11 @@ final class StorageManager extends ServiceProvider
 	// -----------------
 
 	/**
-	 * @returns Map<string, DiskInterface>
+	 * @returns Map<string, Disk>
 	 */
 	public function all(): Map
 	{
 		return $this->disks;
-	}
-
-	// -----------------
-
-	public function setDefault(string $name): void
-	{
-		if (isset($this->disks[$name]) === false) {
-			ExceptionHandler::handleThrowable(new MissingInstanceException("Undefined disks cannot be set as default: '$name'."));
-		}
-		$this->default = $name;
-	}
-
-	public function getDefault(): string
-	{
-		return $this->default;
 	}
 
 	// -----------------
@@ -156,18 +134,18 @@ final class StorageManager extends ServiceProvider
 
 	// -----------------
 
-	protected function build(string $name, array $config): DiskInterface|null
+	protected function build(string $name, array $config): Disk
 	{
 		$config = new DiskConfig($config);
 
 		if (Driver::isSupported($config->get('driver')) === false) {
 			ExceptionHandler::handleThrowable(new UnsupportedDriverException($config->get('driver')));
-			return null;
+			exit;
 		}
 
 		if ($config->isValid() === false) {
 			ExceptionHandler::handleThrowable(new MisconfiguredServiceException("The disk '$name' cannot be used due to a configuration issue."));
-			return null;
+			exit;
 		}
 
 		return match ($config->driver) {
@@ -176,7 +154,6 @@ final class StorageManager extends ServiceProvider
 			Driver::AsyncS3 => new AsyncS3($name, $config),
 			Driver::S3 => new S3($name, $config),
 			Driver::Sftp => new Sftp($name, $config),
-			default => null,
 		};
 	}
 

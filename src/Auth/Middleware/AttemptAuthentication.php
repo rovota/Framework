@@ -7,7 +7,7 @@
 
 namespace Rovota\Framework\Auth\Middleware;
 
-use Rovota\Framework\Auth\Interfaces\ProviderInterface;
+use Rovota\Framework\Auth\Provider;
 use Rovota\Framework\Http\Request\RequestObject;
 
 class AttemptAuthentication
@@ -19,7 +19,7 @@ class AttemptAuthentication
 
 			$provider = $request->route()->getAuthProvider();
 
-			if ($provider instanceof ProviderInterface) {
+			if ($provider instanceof Provider) {
 				$provider->adapter->initialize();
 			}
 		}

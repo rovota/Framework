@@ -7,7 +7,6 @@
 
 namespace Rovota\Framework\Validation\Rules;
 
-use Rovota\Framework\Validation\Interfaces\RuleInterface;
 use Rovota\Framework\Validation\Rules\Advanced\AcceptedRule;
 use Rovota\Framework\Validation\Rules\Advanced\DeclinedRule;
 use Rovota\Framework\Validation\Rules\Advanced\DifferentRule;
@@ -90,7 +89,7 @@ final class RuleManager
 		self::$rules[$name] = $class;
 	}
 
-	public static function get(string $name): RuleInterface|null
+	public static function get(string $name): Rule|null
 	{
 		return isset(self::$rules[$name]) ? new self::$rules[$name]($name) : null;
 	}

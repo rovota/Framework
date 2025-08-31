@@ -104,7 +104,7 @@ if (!function_exists('view')) {
 if (!function_exists('user')) {
 	function user(): User|null
 	{
-		return AuthManager::instance()->get()?->user();
+		return AuthManager::instance()->get()->user();
 	}
 }
 
