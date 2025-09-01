@@ -24,12 +24,12 @@ class ErrorResponse extends DefaultResponse
 
 	// -----------------
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		return json_encode_clean($this->content);
 	}
 
-	protected function prepareForPrinting(): void
+	protected function prepareRendering(): void
 	{
 		$this->setContentType('application/json; charset=UTF-8');
 

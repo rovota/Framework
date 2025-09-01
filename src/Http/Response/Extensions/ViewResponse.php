@@ -22,7 +22,7 @@ class ViewResponse extends DefaultResponse
 
 	// -----------------
 
-	protected function prepareForPrinting(): void
+	protected function prepareRendering(): void
 	{
 		$this->setContentType('text/html');
 	}

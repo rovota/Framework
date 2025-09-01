@@ -22,12 +22,12 @@ class FileResponse extends DefaultResponse
 
 	// -----------------
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		return (string)$this->content;
 	}
 
-	protected function prepareForPrinting(): void
+	protected function prepareRendering(): void
 	{
 		if ($this->content instanceof File) {
 			$this->setContentType($this->content->properties->mime_type);

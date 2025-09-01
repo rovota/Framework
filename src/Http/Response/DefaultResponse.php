@@ -40,13 +40,13 @@ class DefaultResponse implements Stringable
 	{
 		Buffer::end();
 
-		$this->prepareForPrinting();
+		$this->prepareRendering();
 
 		$this->applyStatusCode();
 		$this->applyHeaders();
 		$this->applyCookies();
 
-		return $this->getPrintableContent() ?? '';
+		return $this->render() ?? '';
 	}
 
 	// -----------------
@@ -82,7 +82,7 @@ class DefaultResponse implements Stringable
 		}
 	}
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		if ($this->content instanceof Stringable) {
 			return $this->content->__toString();
@@ -91,7 +91,7 @@ class DefaultResponse implements Stringable
 		return (string)$this->content;
 	}
 
-	protected function prepareForPrinting(): void
+	protected function prepareRendering(): void
 	{
 
 	}

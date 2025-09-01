@@ -21,7 +21,7 @@ class StatusResponse extends DefaultResponse
 
 	// -----------------
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		return null;
 	}

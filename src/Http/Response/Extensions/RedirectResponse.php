@@ -34,12 +34,12 @@ class RedirectResponse extends DefaultResponse
 
 	// -----------------
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		return null;
 	}
 
-	protected function prepareForPrinting(): void
+	protected function prepareRendering(): void
 	{
 		$this->withHeader('Location', $this->location);
 	}

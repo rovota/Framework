@@ -18,18 +18,10 @@ use Rovota\Framework\Views\ViewManager;
 /**
  * @method static View|null current()
  *
- * @method static bool hasLink(string $template, string $identifier)
- * @method static Link attachLink(array|string $templates, string $identifier, Link|array $attributes)
- *
- * @method static bool hasMeta(string $template, string $identifier)
- * @method static Meta attachMeta(array|string $templates, string $identifier, Meta|array $attributes)
- *
- * @method static bool hasScript(string $template, string $identifier)
- * @method static Script attachScript(array|string $templates, string $identifier, Script|array $attributes)
- *
- * @method static bool hasVariable(string $template, string $identifier)
- * @method static void attachVariable(array|string $templates, string $identifier, mixed $value)
- * @method static void updateVariable(array|string $templates, string $identifier, mixed $value)
+ * @method static Link attachLink(string $identifier, Link|array $attributes)
+ * @method static Meta attachMeta(string $identifier, Meta|array $attributes)
+ * @method static Script attachScript(string $identifier, Script|array $attributes)
+ * @method static void attachVariable(string $identifier, mixed $value)
  */
 final class Views extends Facade
 {

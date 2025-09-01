@@ -33,7 +33,7 @@ trait MailableContent
 	{
 		$this->attributes['view'] = $template;
 
-		$this->content = ViewManager::instance()->createMailView($template, $class);
+		$this->content = ViewManager::instance()->createView($template, $class);
 		return $this;
 	}
 

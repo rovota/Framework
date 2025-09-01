@@ -10,11 +10,10 @@ namespace Rovota\Framework\Mail;
 use Rovota\Framework\Mail\Enums\Priority;
 use Rovota\Framework\Mail\Events\MailableDelivered;
 use Rovota\Framework\Mail\Traits\MailableContent;
-use Rovota\Framework\Mail\Traits\MailableEvents;
 
 class Mailable
 {
-	use MailableContent, MailableEvents;
+	use MailableContent;
 
 	// -----------------
 

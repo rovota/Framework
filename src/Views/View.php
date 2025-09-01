@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Views;
 
+use Rovota\Framework\Facades\Language;
 use Rovota\Framework\Support\Buffer;
 use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
@@ -25,9 +26,9 @@ class View implements Stringable
 
 	// -----------------
 
-	public function __construct(string|null $template, ViewConfig $config)
+	public function __construct(string|null $template = null)
 	{
-		$this->config = $config;
+		$this->config = new ViewConfig();
 
 		if ($template !== null) {
 			$this->template = $template;
@@ -40,38 +41,34 @@ class View implements Stringable
 	{
 		Buffer::end();
 
-		$this->prepareForPrinting();
+		$this->prepareData();
+		$this->prepareRendering();
 
-		return $this->getPrintableContent() ?? '';
+		ViewManager::instance()->current = $this;
+
+		return $this->render() ?? '';
 	}
 
 	// -----------------
 
-	public static function make(array $variables = []): static
+	protected function prepareData(): void
 	{
-		$view = ViewManager::instance()->createView(null, static::class);
-
-		foreach ($variables as $name => $value) {
-			$view->with($name, $value);
-		}
-
-		return $view;
+		$this->config->merge(ViewManager::instance()->retrieveData());
 	}
 
-	// -----------------
-
-	protected function getTemplatePath(): string
+	protected function prepareRendering(): void
 	{
-		$file = Str::replace($this->template, '.', '/');
-		$file = Str::start($file, 'resources/templates/');
-		$file = Str::finish($file, '.php');
 
-		return Path::toProjectFile($file);
+	}
+
+	protected function configuration(): void
+	{
+
 	}
 
 	// -----------------
 
-	protected function getPrintableContent(): string|null
+	protected function render(): string|null
 	{
 		Buffer::start();
 
@@ -82,14 +79,28 @@ class View implements Stringable
 		return Buffer::retrieveAndErase();
 	}
 
-	protected function prepareForPrinting(): void
+	protected function getTemplatePath(): string
 	{
+		$locale = $this->config->string('variables.template_locale', Language::active()->locale);
 
-	}
+		$file = Str::replace($this->template, '.', '/');
 
-	protected function configuration(): void
-	{
+		if (str_contains($file, '{locale}')) {
+			$file = str_replace('{locale}', $locale, $file);
+		} else {
+			$file = Str::start($file, $locale . '/');
+		}
 
+		$file = Str::start($file, 'resources/templates/');
+		$file = Str::finish($file, '.php');
+
+		$path = Path::toProjectFile($file);
+
+		if (!file_exists($path)) {
+			$path = Str::replace($path, $locale . '/', '');
+		}
+
+		return $path;
 	}
 
 }
