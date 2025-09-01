@@ -8,7 +8,6 @@
 namespace Rovota\Framework\Facades;
 
 use Closure;
-use Rovota\Framework\Mail\Mailable;
 use Rovota\Framework\Mail\Mailer;
 use Rovota\Framework\Mail\MailManager;
 use Rovota\Framework\Support\Facade;
@@ -17,7 +16,6 @@ use Rovota\Framework\Support\Facade;
  * @method static Mailer using(string|null $name = null)
  * @method static Mailer create(array $config, string|null $name = null)
  *
- * @method static Mailable make()
  * @method static void attachHeader(string $name, string $value)
  * @method static void attachHeaders(array $headers)
  * @method static void clear()
