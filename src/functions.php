@@ -117,13 +117,6 @@ if (!function_exists('route')) {
 	}
 }
 
-if (!function_exists('file')) {
-	function file(string $location, string|null $disk = null): File|null
-	{
-		return StorageManager::instance()->get($disk)->file($location);
-	}
-}
-
 // -----------------
 // Security
 
