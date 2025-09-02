@@ -90,6 +90,11 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		return empty($this->keys);
 	}
 
+	public function isNotEmpty(): bool
+	{
+		return empty($this->keys) === false;
+	}
+
 	// -----------------
 
 	public function first(callable|null $callback = null): mixed
