@@ -126,6 +126,20 @@ trait WhereQueryConstraints
 
 	// -----------------
 
+	public function whereFuture(string $column, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		$this->whereGreaterThan($column, now(), $mode);
+		return $this;
+	}
+
+	public function wherePast(string $column, ConstraintMode $mode = ConstraintMode::And): static
+	{
+		$this->whereLessThan($column, now(), $mode);
+		return $this;
+	}
+
+	// -----------------
+
 	public function whereLike(string $column, mixed $value, ConstraintMode $mode = ConstraintMode::And): static
 	{
 		$value = $this->normalizeValueForColumn($value, $column);

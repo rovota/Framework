@@ -24,6 +24,8 @@ use Rovota\Framework\Support\Arr;
  * @method static SelectQuery whereGreaterThan(string $column, mixed $value)
  * @method static SelectQuery whereBefore(string $column, mixed $value)
  * @method static SelectQuery whereAfter(string $column, mixed $value)
+ * @method static SelectQuery whereFuture(string $column)
+ * @method static SelectQuery wherePast(string $column)
  * @method static SelectQuery whereLike(string $column, mixed $value)
  * @method static SelectQuery whereNotLike(string $column, mixed $value)
  * @method static SelectQuery whereFullText(string|array $column, string $value)

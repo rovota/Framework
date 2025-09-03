@@ -81,6 +81,18 @@ trait OrWhereQueryConstraints
 
 	// -----------------
 
+	public function orWhereFuture(string $column): static
+	{
+		return $this->orWhereGreaterThan($column, now());
+	}
+
+	public function orWherePast(string $column): static
+	{
+		return $this->orWhereLessThan($column, now());
+	}
+
+	// -----------------
+
 	public function orWhereLike(string $column, mixed $value): static
 	{
 		return $this->whereLike($column, $value, ConstraintMode::Or);
