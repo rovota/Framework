@@ -23,6 +23,7 @@ final class TextConverter
 
 	protected function __construct()
 	{
+		// TODO: Turn this into a serviceprovider, loaded as the first one in the list. Additionally, add a way to have multiple inflectors, one per locale.
 	}
 
 	// -----------------

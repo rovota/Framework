@@ -43,15 +43,14 @@ final class Framework
 	{
 		self::$version = new Version(self::APP_VERSION);
 
+		TextConverter::initialize();
+		MarkupConverter::initialize();
+
 		self::reliabilityCheck();
 		self::serverCompatCheck();
 		self::createEnvironment();
 		self::configureServices();
 		self::configureLimiters();
-
-		// Additional
-		TextConverter::initialize();
-		MarkupConverter::initialize();
 
 		// Finish
 		RouteManager::instance()->importRoutes();
