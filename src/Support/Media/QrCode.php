@@ -26,7 +26,7 @@ final class QrCode implements Stringable, JsonSerializable
 	public function __construct(string $data)
 	{
 		$this->config = new QrCodeConfig([
-			'data' => trim($data),
+			'data' => mb_trim($data),
 		]);
 	}
 

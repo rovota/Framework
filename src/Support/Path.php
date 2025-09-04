@@ -48,7 +48,7 @@ final class Path
 	 */
 	public static function toProjectFile(string $path, string|null $base = null): string
 	{
-		return ($base ?? self::getProjectRootPath()) . '/' . ltrim($path, '/');
+		return ($base ?? self::getProjectRootPath()) . '/' . mb_ltrim($path, '/');
 	}
 
 	// -----------------

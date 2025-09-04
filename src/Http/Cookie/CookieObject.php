@@ -61,7 +61,7 @@ final class CookieObject
 	public function apply(): bool
 	{
 		$name = $this->options['secure'] ? $this->prefixedName() : $this->name;
-		$value = trim($this->value);
+		$value = mb_trim($this->value);
 
 		try {
 			if (CookieManager::instance()->hasEncryptionEnabled($this->name)) {

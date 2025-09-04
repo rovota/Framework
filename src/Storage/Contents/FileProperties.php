@@ -20,14 +20,14 @@ final class FileProperties extends Config
 	public string $name {
 		get => $this->string('name');
 		set {
-			$this->set('name', trim($value));
+			$this->set('name', mb_trim($value));
 		}
 	}
 
 	public string $path {
 		get => $this->string('path');
 		set {
-			$this->set('path', trim($value, '/'));
+			$this->set('path', mb_trim($value, '/'));
 		}
 	}
 
@@ -90,7 +90,7 @@ final class FileProperties extends Config
 			}
 
 			if ($key === 'path') {
-				$this->set('path', Str::trim($value, '/'));
+				$this->set('path', mb_trim($value, '/'));
 				continue;
 			}
 

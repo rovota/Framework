@@ -59,7 +59,7 @@ trait DirectoryFunctions
 
 	public function move(string $to): bool
 	{
-		$target = trim($to, '/') . '/' . $this->properties->name;
+		$target = mb_trim($to, '/') . '/' . $this->properties->name;
 
 		if ($this->properties->disk->move($this->location(), $target)) {
 			$this->properties->path = Str::before($target, '/');

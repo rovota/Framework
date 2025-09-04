@@ -210,11 +210,11 @@ final class Router
 			// We have the following parameter: take the substring from the current param position until the next position
 			if (isset($matches[$index + 1][0]) && is_array($matches[$index + 1][0])) {
 				if ($matches[$index + 1][0][1] > -1) {
-					return trim(substr($match[0][0], 0, $matches[$index + 1][0][1] - $match[0][1]), '/');
+					return mb_trim(mb_substr($match[0][0], 0, $matches[$index + 1][0][1] - $match[0][1]), '/');
 				}
 			} // We have no further parameters: return the lot
 
-			return isset($match[0][0]) && $match[0][1] != -1 ? urldecode(trim($match[0][0], '/')) : null;
+			return isset($match[0][0]) && $match[0][1] != -1 ? urldecode(mb_trim($match[0][0], '/')) : null;
 		}, $matches, array_keys($matches));
 	}
 

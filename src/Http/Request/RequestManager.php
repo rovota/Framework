@@ -115,7 +115,7 @@ final class RequestManager extends ServiceProvider
 	protected function getRequestBody(): string|null
 	{
 		$body = file_get_contents('php://input');
-		return $body === false ? null : trim($body);
+		return $body === false ? null : mb_trim($body);
 	}
 
 	protected function getRequestPostData(): array
@@ -123,7 +123,7 @@ final class RequestManager extends ServiceProvider
 		$data = $_POST;
 		array_walk_recursive($data, function (&$item) {
 			if (is_string($item)) {
-				$item = mb_strlen(trim($item)) > 0 ? trim($item) : null;
+				$item = mb_strlen(mb_trim($item)) > 0 ? mb_trim($item) : null;
 			}
 		});
 
@@ -140,7 +140,7 @@ final class RequestManager extends ServiceProvider
 			parse_str(Str::after($url, '?'), $parameters);
 
 			return Arr::map($parameters, function ($value) {
-				return $value === null ? null : trim($value);
+				return $value === null ? null : mb_trim($value);
 			});
 		}
 

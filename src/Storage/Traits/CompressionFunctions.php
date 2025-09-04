@@ -78,7 +78,7 @@ trait CompressionFunctions
 				$archive->close();
 
 				try {
-					return $this->directory(trim($target ?? '/', '/'));
+					return $this->directory(mb_trim($target ?? '/', '/'));
 				} catch (Throwable $throwable) {
 					ExceptionHandler::logThrowable($throwable);
 				}
@@ -97,7 +97,7 @@ trait CompressionFunctions
 
 	protected function getCompressionSource(string $source): string
 	{
-		return trim(getcwd() . '/' . $this->config->root . '/' . $source, '/');
+		return mb_trim(getcwd() . '/' . $this->config->root . '/' . $source, '/');
 	}
 
 	protected function getCompressionSourceType(string $source): string|null

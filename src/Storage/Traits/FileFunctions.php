@@ -60,7 +60,7 @@ trait FileFunctions
 
 	public function move(string $to, array $options = []): bool
 	{
-		$target = trim($to, '/') . '/' . $this->properties->name . '.' . $this->properties->extension;
+		$target = mb_trim($to, '/') . '/' . $this->properties->name . '.' . $this->properties->extension;
 
 		if ($this->properties->disk->move($this->location(), $target, $options)) {
 			$this->properties->path = Str::before($target, '/');

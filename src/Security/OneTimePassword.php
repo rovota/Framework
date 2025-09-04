@@ -75,13 +75,13 @@ final class OneTimePassword
 
 	public function label(string $label): self
 	{
-		$this->totp->setLabel(trim($label));
+		$this->totp->setLabel(mb_trim($label));
 		return $this;
 	}
 
 	public function issuer(string $issuer): self
 	{
-		$this->totp->setIssuer(trim($issuer));
+		$this->totp->setIssuer(mb_trim($issuer));
 		return $this;
 	}
 

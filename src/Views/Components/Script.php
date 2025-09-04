@@ -30,7 +30,7 @@ final class Script extends Asset
 
 	public function source(string $url): Script
 	{
-		$this->setAttribute('src', trim($url));
+		$this->setAttribute('src', mb_trim($url));
 		return $this;
 	}
 

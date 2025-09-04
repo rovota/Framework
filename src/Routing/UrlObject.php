@@ -117,7 +117,7 @@ final class UrlObject implements Stringable, JsonSerializable
 		}
 
 		if (Str::endsWith($path, '/')) {
-			$path = Str::trimEnd($path, '/');
+			$path = mb_rtrim($path, '/');
 		}
 
 		return $this->getHostString() . $path . $parameters . $fragment;

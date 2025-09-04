@@ -22,7 +22,7 @@ final class Link extends Asset
 
 	public function source(string $url): Link
 	{
-		$this->setAttribute('href', trim($url));
+		$this->setAttribute('href', mb_trim($url));
 		return $this;
 	}
 

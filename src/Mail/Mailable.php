@@ -90,7 +90,7 @@ class Mailable
 
 	public function subject(string $subject): static
 	{
-		$this->attributes['subject'] = trim($subject);
+		$this->attributes['subject'] = mb_trim($subject);
 
 		$this->mailer->handler->setSubject($subject);
 		return $this;

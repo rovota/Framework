@@ -41,7 +41,7 @@ class UploadedFile
 		$this->size = $source->getSize();
 
 		$this->provisional_name = trim($temp_name);
-		$this->original_name = basename(trim($name));
+		$this->original_name = basename(mb_trim($name));
 
 		if (is_uploaded_file($source->getPathname()) && $source->getSize() > 0) {
 			$file = $this->getFileInstanceFromResource();
@@ -105,7 +105,7 @@ class UploadedFile
 			$extension = ValidationTools::sanitizeExtension($mime_type, $extension);
 
 			if ($extension !== null) {
-				$name = trim(Str::remove($this->original_name, $extension), '.');
+				$name = mb_trim(Str::remove($this->original_name, $extension), '.');
 
 				return new File($contents, [
 					'name' => $name,

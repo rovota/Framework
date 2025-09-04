@@ -119,7 +119,7 @@ final class ResponseManager extends ServiceProvider
 	public function attachHeader(string $name, string $value): void
 	{
 		$name = trim($name);
-		$value = trim($value);
+		$value = mb_trim($value);
 
 		if (Str::length($name) > 0 && Str::length($value) > 0) {
 			$this->config->set('headers.' . $name, $value);

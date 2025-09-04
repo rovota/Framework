@@ -74,10 +74,10 @@ abstract class RouteEntry
 	public function path(string $path): static
 	{
 		if ($this->parent !== null) {
-			$path = implode('/', [$this->parent->config->path, trim($path, '/')]);
+			$path = implode('/', [$this->parent->config->path, mb_trim($path, '/')]);
 		}
 
-		$this->config->path = Str::start(trim($path, '/'), '/');
+		$this->config->path = Str::start(mb_trim($path, '/'), '/');
 		return $this;
 	}
 

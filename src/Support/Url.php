@@ -94,7 +94,7 @@ final class Url
 
 	public static function file(string $location, array $parameters = [], string|null $disk = null): UrlObject
 	{
-		return UrlObject::from(Storage::disk($disk)->url . '/' . Str::trim($location, '/'))->withParameters($parameters);
+		return UrlObject::from(Storage::disk($disk)->url . '/' . mb_trim($location, '/'))->withParameters($parameters);
 	}
 
 	// -----------------

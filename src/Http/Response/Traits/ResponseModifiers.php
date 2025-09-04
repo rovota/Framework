@@ -27,7 +27,7 @@ trait ResponseModifiers
 	public function withHeader(string $name, string $value): static
 	{
 		$name = trim($name);
-		$value = trim($value);
+		$value = mb_trim($value);
 
 		if (Str::length($name) > 0 && Str::length($value) > 0) {
 			$this->config->set('headers.' . $name, $value);

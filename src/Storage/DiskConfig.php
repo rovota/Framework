@@ -34,9 +34,9 @@ final class DiskConfig extends Config
 	// -----------------
 
 	public string $root {
-		get => Str::trim($this->string('root'), '/');
+		get => mb_trim($this->string('root'), '/');
 		set {
-			$this->set('root', trim($value));
+			$this->set('root', mb_trim($value));
 		}
 	}
 

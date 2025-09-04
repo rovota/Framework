@@ -44,7 +44,7 @@ class UrlObjectConfig extends Config
 				return;
 			}
 
-			$value = trim($value);
+			$value = mb_trim($value);
 
 			if (mb_strlen($value) > 0) {
 				if (Str::occurrences($this->domain, '.') > 1) {
@@ -58,7 +58,7 @@ class UrlObjectConfig extends Config
 	public string $domain {
 		get => $this->string('domain', $this->getSanitizedHost());
 		set {
-			$value = Str::after(trim($value), 'www.');
+			$value = Str::after(mb_trim($value), 'www.');
 
 			if (mb_strlen($value) === 0 || $value === '-') {
 				$this->set('domain', $this->getSanitizedHost());
@@ -81,7 +81,7 @@ class UrlObjectConfig extends Config
 	public string $path {
 		get => Str::start($this->string('path'), '/');
 		set {
-			$value = trim($value, ' /');
+			$value = mb_trim($value, ' /');
 
 			if (mb_strlen($value) > 0) {
 				$this->set('path', $value);
@@ -98,7 +98,7 @@ class UrlObjectConfig extends Config
 			}
 
 			foreach ($value as $name => $data) {
-				$name = 'parameters.' . strtolower(trim($name));
+				$name = 'parameters.' . mb_strtolower(mb_trim($name));
 				if ($data === null) {
 					$this->remove($name);
 					continue;
@@ -116,7 +116,7 @@ class UrlObjectConfig extends Config
 				return;
 			}
 
-			$value = trim($value);
+			$value = mb_trim($value);
 
 			if (mb_strlen($value) > 0) {
 				$this->set('fragment', $value);

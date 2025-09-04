@@ -310,19 +310,19 @@ final class Text implements Stringable, JsonSerializable
 
 	public function trim(string|null $characters = null): Text
 	{
-		$this->string = Str::trim($this->string, $characters);
+		$this->string = mb_trim($this->string, $characters);
 		return $this;
 	}
 
 	public function trimEnd(string|null $characters = null): Text
 	{
-		$this->string = Str::trimEnd($this->string, $characters);
+		$this->string = mb_rtrim($this->string, $characters);
 		return $this;
 	}
 
 	public function trimStart(string|null $characters = null): Text
 	{
-		$this->string = Str::trimStart($this->string, $characters);
+		$this->string = mb_ltrim($this->string, $characters);
 		return $this;
 	}
 

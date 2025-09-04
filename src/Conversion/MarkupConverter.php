@@ -91,7 +91,7 @@ final class MarkupConverter
 
 	public static function toHtml(string $string, string|null $language = null): string
 	{
-		$string = trim($string);
+		$string = mb_trim($string);
 		$language = $language ?? array_key_first(self::$languages);
 
 

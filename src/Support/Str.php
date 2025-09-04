@@ -75,7 +75,7 @@ final class Str
 	 */
 	public static function isEmpty(string $string): bool
 	{
-		return self::length(trim($string)) === 0;
+		return self::length(mb_trim($string)) === 0;
 	}
 
 	/**
@@ -267,7 +267,7 @@ final class Str
 			}
 		}
 
-		return trim($string);
+		return mb_trim($string);
 	}
 
 	public static function mask(string $string, string $replacement, int|null $length = null, int $start = 0): string
@@ -318,21 +318,6 @@ final class Str
 		} else {
 			return mb_strimwidth($string, $start, $length, $marker, 'UTF-8');
 		}
-	}
-
-	public static function trim(string $string, string|null $characters = null): string
-	{
-		return $characters !== null ? trim($string, $characters) : trim($string);
-	}
-
-	public static function trimEnd(string $string, string|null $characters = null): string
-	{
-		return $characters !== null ? rtrim($string, $characters) : rtrim($string);
-	}
-
-	public static function trimStart(string $string, string|null $characters = null): string
-	{
-		return $characters !== null ? ltrim($string, $characters) : ltrim($string);
 	}
 
 	public static function remove(string $string, string|array $values, bool $ignore_case = false): string
@@ -603,8 +588,8 @@ final class Str
 		if (empty($string)) return '';
 
 		$acronym = '';
-		foreach (preg_split('/[^\p{L}]+/u', trim($string)) as $word) {
-			if (strlen($word > 0)) {
+		foreach (preg_split('/[^\p{L}]+/u', mb_trim($string)) as $word) {
+			if (mb_strlen($word > 0)) {
 				$first_letter = mb_substr($word, 0, 1);
 
 				// Only words starting with an uppercase letter should be included.

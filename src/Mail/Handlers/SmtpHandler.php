@@ -78,12 +78,12 @@ class SmtpHandler implements MailHandlerInterface
 
 	public function setSubject(string $subject): void
 	{
-		$this->mailer->Subject = trim($subject);
+		$this->mailer->Subject = mb_trim($subject);
 	}
 
 	public function setPlainText(string $content): void
 	{
-		$this->mailer->AltBody = trim($content);
+		$this->mailer->AltBody = mb_trim($content);
 	}
 
 	public function setHtml(string $content): void

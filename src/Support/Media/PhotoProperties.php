@@ -32,7 +32,7 @@ final class PhotoProperties extends Config
 	public string|null $mime_type {
 		get => $this->get('mime_type');
 		set {
-			$value = trim($value);
+			$value = mb_trim($value);
 			if (ValidationTools::mimeTypeExists($value)) {
 				$this->set('mime_type', $value);
 			}
