@@ -506,7 +506,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function explode(string $char, int $elements = PHP_INT_MAX): array
 	{
-		return explode($this->string, $char, $elements);
+		return explode($char, $this->string, $elements);
 	}
 
 	public function escape(string $encoding = 'UTF-8'): string|null
