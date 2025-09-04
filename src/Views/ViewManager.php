@@ -9,7 +9,6 @@ namespace Rovota\Framework\Views;
 
 use Rovota\Framework\Facades\Language;
 use Rovota\Framework\Facades\Registry;
-use Rovota\Framework\Facades\Request;
 use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Bucket;

@@ -261,7 +261,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function shuffle(): Text
 	{
-		$this->string = Str::shuffle($this->string);
+		$this->string = str_shuffle($this->string);
 		return $this;
 	}
 
@@ -383,7 +383,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function startsWith(string $needle): bool
 	{
-		return Str::startsWith($this->string, $needle);
+		return str_starts_with($this->string, $needle);
 	}
 
 	public function startsWithAny(array $needles): bool
@@ -398,7 +398,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function endsWith(string $needle): bool
 	{
-		return Str::endsWith($this->string, $needle);
+		return str_ends_with($this->string, $needle);
 	}
 
 	public function endsWithAny(array $needles): bool
@@ -441,7 +441,7 @@ final class Text implements Stringable, JsonSerializable
 
 	public function swap(array $map): Text
 	{
-		$this->string = Str::swap($this->string, $map);
+		$this->string = strtr($this->string, $map);
 		return $this;
 	}
 
@@ -499,14 +499,14 @@ final class Text implements Stringable, JsonSerializable
 
 	public function wordCount(): int
 	{
-		return Str::wordCount($this->string);
+		return str_word_count($this->string);
 	}
 
 	// -----------------
 
 	public function explode(string $char, int $elements = PHP_INT_MAX): array
 	{
-		return Str::explode($this->string, $char, $elements);
+		return explode($this->string, $char, $elements);
 	}
 
 	public function escape(string $encoding = 'UTF-8'): string|null

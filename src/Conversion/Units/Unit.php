@@ -31,7 +31,7 @@ abstract class Unit implements Stringable, JsonSerializable
 
 	public static function __callStatic(string $name, array $parameters = []): static|null
 	{
-		if (Str::startsWith($name, 'from')) {
+		if (str_starts_with($name, 'from')) {
 			$unit = Str::lower(Str::after($name, 'from'));
 			return self::from($parameters[0], $unit);
 		}
@@ -41,7 +41,7 @@ abstract class Unit implements Stringable, JsonSerializable
 
 	public function __call(string $name, array $parameters = []): Unit|static
 	{
-		if (Str::startsWith($name, 'to')) {
+		if (str_starts_with($name, 'to')) {
 			$unit = Str::lower(Str::after($name, 'to'));
 			return $this->to($unit);
 		}

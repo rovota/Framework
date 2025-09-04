@@ -10,7 +10,6 @@ namespace Rovota\Framework\Storage;
 use Rovota\Framework\Kernel\Framework;
 use Rovota\Framework\Storage\Enums\Driver;
 use Rovota\Framework\Support\Config;
-use Rovota\Framework\Support\Str;
 
 final class DiskConfig extends Config
 {

@@ -116,7 +116,7 @@ final class UrlObject implements Stringable, JsonSerializable
 			return $path . $parameters . $fragment;
 		}
 
-		if (Str::endsWith($path, '/')) {
+		if (str_ends_with($path, '/')) {
 			$path = mb_rtrim($path, '/');
 		}
 

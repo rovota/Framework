@@ -10,7 +10,6 @@ namespace Rovota\Framework\Support\Traits;
 use BadMethodCallException;
 use Closure;
 use ReflectionClass;
-use Rovota\Framework\Support\Str;
 
 trait MagicMethods
 {
@@ -26,7 +25,7 @@ trait MagicMethods
 		}
 
 		if (static::isQueryable()) {
-			if (Str::startsWith($name, 'where')) {
+			if (str_starts_with($name, 'where')) {
 				$builder = static::getQueryBuilderFromStaticModel();
 				return $builder->select()->{$name}(...$parameters);
 			}

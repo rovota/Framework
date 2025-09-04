@@ -244,11 +244,6 @@ final class Str
 
 	// -----------------
 
-	public static function shuffle(string $string): string
-	{
-		return str_shuffle($string);
-	}
-
 	public static function reverse(string $string): string
 	{
 		return implode(array_reverse(mb_str_split($string)));
@@ -393,11 +388,6 @@ final class Str
 		return array_all($needles, fn($needle) => str_contains($string, $needle) === false);
 	}
 
-	public static function startsWith(string $string, string $needle): bool
-	{
-		return str_starts_with($string, $needle);
-	}
-
 	public static function startsWithAny(string $string, array $needles): bool
 	{
 		return array_any($needles, fn($needle) => str_starts_with($string, $needle));
@@ -406,11 +396,6 @@ final class Str
 	public static function startsWithNone(string $string, array $needles): bool
 	{
 		return array_all($needles, fn($needle) => str_starts_with($string, $needle) === false);
-	}
-
-	public static function endsWith(string $string, string $needle): bool
-	{
-		return str_ends_with($string, $needle);
 	}
 
 	public static function endsWithAny(string $string, array $needles): bool
@@ -463,7 +448,7 @@ final class Str
 		$previous_type = null;
 		$result = '';
 
-		for ($i = 0; $i < strlen($number); $i++) {
+		for ($i = 0; $i < mb_strlen($number); $i++) {
 			$current = $number[$i];
 			$current_type = match (true) {
 				ctype_alpha($current) => 'alpha',
@@ -488,11 +473,6 @@ final class Str
 			$values = [$values];
 		}
 		return empty($values) === false ? sprintf($string, ...$values) : $string;
-	}
-
-	public static function swap(string $string, array $map): string
-	{
-		return strtr($string, $map);
 	}
 
 	// -----------------
@@ -550,17 +530,7 @@ final class Str
 		return max(count(explode((string)$needle, $string)) - 1, 0);
 	}
 
-	public static function wordCount(string $string): int
-	{
-		return str_word_count($string);
-	}
-
 	// -----------------
-
-	public static function explode(string $string, string $char, int $elements = PHP_INT_MAX): array
-	{
-		return explode($char, $string, $elements);
-	}
 
 	public static function escape(string|null $string, string $encoding = 'UTF-8'): string|null
 	{

@@ -9,7 +9,6 @@ namespace Rovota\Framework\Storage\Contents;
 
 use Rovota\Framework\Storage\Disk;
 use Rovota\Framework\Support\Config;
-use Rovota\Framework\Support\Str;
 
 final class DirectoryProperties extends Config
 {
