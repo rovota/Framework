@@ -511,9 +511,7 @@ final class RequestObject
 		foreach ($locales as $locale => $quality) {
 			$locale = mb_strlen($locale) === 2 ? $locale . '_' . strtoupper($locale) : $locale;
 			$locale = str_replace('-', '_', $locale);
-			if (!isset($locales[$locale])) {
-				$normalized[$locale] = $quality;
-			}
+			$normalized[$locale] = $quality;
 		}
 
 		return $this->acceptable_locales = $normalized;

@@ -113,7 +113,11 @@ final class LanguageManager
 		$request = RequestManager::instance()->current();
 		$locales = $this->all()->keys()->toArray();
 
-		$this->locale_active = $request->prefersLocale($locales, $this->locale_default);
+		$preferred = $request->prefersLocale($locales, $this->locale_default);
+
+		if ($preferred !== null) {
+			$this->locale_active = $preferred;
+		}
 	}
 
 }

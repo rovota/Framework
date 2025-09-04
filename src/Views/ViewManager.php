@@ -10,6 +10,7 @@ namespace Rovota\Framework\Views;
 use Rovota\Framework\Facades\Language;
 use Rovota\Framework\Facades\Registry;
 use Rovota\Framework\Facades\Request;
+use Rovota\Framework\Http\Request\RequestManager;
 use Rovota\Framework\Kernel\ServiceProvider;
 use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Views\Components\Link;
@@ -50,7 +51,7 @@ final class ViewManager extends ServiceProvider
 			'name' => 'og:type', 'content' => 'website',
 		]);
 		$this->attachMeta('og:url', [
-			'name' => 'og:url', 'content' => Request::current()->urlWithoutParameters(),
+			'name' => 'og:url', 'content' => RequestManager::instance()->current()->urlWithoutParameters(),
 		]);
 
 		$this->applyDefaultMeta();
