@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Caching;
 
+use Closure;
 use Rovota\Framework\Caching\Interfaces\CacheAdapterInterface;
 use Rovota\Framework\Caching\Traits\CacheFunctions;
 
@@ -56,6 +57,21 @@ abstract class CacheStore
 	protected function getRetentionPeriod(int|null $retention): int
 	{
 		return $retention ?? $this->config->retention;
+	}
+
+	protected function getScopedKey(string $key): string
+	{
+		if ($this->config->scope instanceof Closure) {
+			$scope = call_user_func($this->config->scope, $this);
+		} else {
+			$scope = $this->config->scope;
+		}
+
+		if ($scope === null || mb_strlen($scope) === 0) {
+			return $key;
+		}
+
+		return sprintf('%s:%s', $scope, $key);
 	}
 
 }

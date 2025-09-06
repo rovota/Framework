@@ -7,6 +7,7 @@
 
 namespace Rovota\Framework\Caching;
 
+use Closure;
 use Rovota\Framework\Caching\Enums\Driver;
 use Rovota\Framework\Support\Config;
 
@@ -35,6 +36,13 @@ final class CacheStoreConfig extends Config
 		get => $this->int('retention');
 		set {
 			$this->set('retention', abs($value));
+		}
+	}
+
+	public Closure|string|null $scope {
+		get => $this->get('scope');
+		set {
+			$this->set('scope', $value);
 		}
 	}
 

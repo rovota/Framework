@@ -85,6 +85,13 @@ final class RequestObject
 
 	// -----------------
 
+	public function clientId(): string|null
+	{
+		return hash('sha256', $this->ip() . $this->useragent());
+	}
+
+	// -----------------
+
 	public function url(): UrlObject
 	{
 		return $this->url;

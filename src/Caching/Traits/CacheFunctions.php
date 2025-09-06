@@ -24,13 +24,13 @@ trait CacheFunctions
 
 	public function has(string|array $key): bool
 	{
-		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($key) === true);
+		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($this->getScopedKey($key)) === true);
 
 	}
 
 	public function missing(string|array $key): bool
 	{
-		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($key) === false);
+		return array_all(is_array($key) ? $key : [$key], fn($key) => $this->adapter->has($this->getScopedKey($key)) === false);
 
 	}
 
@@ -41,10 +41,10 @@ trait CacheFunctions
 		if (is_array($key)) {
 			$result = [];
 			foreach ($key as $entry) {
-				$result[$entry] = $this->adapter->get($entry) ?? ($default[$entry] ?? null);
+				$result[$entry] = $this->adapter->get($this->getScopedKey($entry)) ?? ($default[$entry] ?? null);
 			}
 		} else {
-			$result = $this->adapter->get($key) ?? $default;
+			$result = $this->adapter->get($this->getScopedKey($key)) ?? $default;
 		}
 
 		return $result;
@@ -62,7 +62,7 @@ trait CacheFunctions
 				$this->remove($entry);
 			}
 		} else {
-			$result = $this->adapter->get($key) ?? $default;
+			$result = $this->adapter->get($this->getScopedKey($key)) ?? $default;
 			$this->remove($key);
 		}
 
@@ -96,7 +96,7 @@ trait CacheFunctions
 	public function set(string|int|array $key, mixed $value = null, int|null $retention = null): void
 	{
 		foreach (is_array($key) ? $key : [$key => $value] as $entry => $value) {
-			$this->adapter->set($entry, $value, $this->getRetentionPeriod($retention));
+			$this->adapter->set($this->getScopedKey($entry), $value, $this->getRetentionPeriod($retention));
 		}
 	}
 
@@ -108,7 +108,7 @@ trait CacheFunctions
 	public function remove(string|array $key): void
 	{
 		foreach (is_array($key) ? $key : [$key] as $entry) {
-			$this->adapter->remove($entry);
+			$this->adapter->remove($this->getScopedKey($entry));
 		}
 	}
 
@@ -116,12 +116,12 @@ trait CacheFunctions
 
 	public function increment(string $key, int $step = 1): void
 	{
-		$this->adapter->increment($key, $step);
+		$this->adapter->increment($this->getScopedKey($key), $step);
 	}
 
 	public function decrement(string $key, int $step = 1): void
 	{
-		$this->adapter->decrement($key, $step);
+		$this->adapter->decrement($this->getScopedKey($key), $step);
 	}
 
 	// -----------------
