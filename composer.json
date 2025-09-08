@@ -71,6 +71,7 @@
 	},
 	"replace": {
 		"symfony/polyfill-php80": "*",
+		"symfony/polyfill-php83": "*",
 		"symfony/polyfill-mbstring": "*",
 		"ralouphie/getallheaders": "*",
 		"paragonie/random_compat": "*"
