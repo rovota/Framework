@@ -22,9 +22,9 @@ use Rovota\Framework\Support\Moment;
  * @method static Disk|null diskWithDriver(Driver $driver)
  * @method static Disk create(array $config, string|null $name = null)
  *
- * @method static Sequence contents()
- * @method static Sequence files()
- * @method static Sequence directories()
+ * @method static Sequence contents(string $location = '/')
+ * @method static Sequence files(string $location = '/')
+ * @method static Sequence directories(string $location = '/')
  *
  * @method static bool exists(string $location)
  * @method static bool missing(string $location)
