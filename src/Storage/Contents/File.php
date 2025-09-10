@@ -57,7 +57,7 @@ class File implements Stringable
 
 	protected function createContentInstance(mixed $contents): FileContent|null
 	{
-		if ($contents instanceof FileContent) {
+		if ($contents instanceof FileContent || $contents === null) {
 			return $contents;
 		}
 
