@@ -10,6 +10,7 @@
 namespace Rovota\Framework\Structures\Traits;
 
 use Closure;
+use Dflydev\DotAccessData\Data;
 use Rovota\Framework\Support\Arr;
 use Rovota\Framework\Support\Internal;
 use Rovota\Framework\Support\Math;
@@ -59,7 +60,12 @@ trait ValueAccessors
 		$result = $this->first($callback);
 
 		if ($result !== null) {
-			$this->remove($this->find($result));
+			$this->items = new Data($this->filter(function (mixed $item) use ($result) {
+				if (is_object($result)) {
+					return spl_object_hash($item) !== spl_object_hash($result);
+				}
+				return $item !== $result;
+			})->toArray());
 		}
 
 		return $result ?? $default;
@@ -75,7 +81,12 @@ trait ValueAccessors
 		$result = $this->last($callback);
 
 		if ($result !== null) {
-			$this->remove($this->find($result));
+			$this->items = new Data($this->filter(function (mixed $item) use ($result) {
+				if (is_object($result)) {
+					return spl_object_hash($item) !== spl_object_hash($result);
+				}
+				return $item !== $result;
+			})->toArray());
 		}
 
 		return $result ?? $default;
