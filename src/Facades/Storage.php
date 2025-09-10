@@ -13,7 +13,7 @@ use Rovota\Framework\Storage\Contents\File;
 use Rovota\Framework\Storage\Disk;
 use Rovota\Framework\Storage\Enums\Driver;
 use Rovota\Framework\Storage\StorageManager;
-use Rovota\Framework\Structures\Sequence;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Facade;
 use Rovota\Framework\Support\Moment;
 
@@ -22,9 +22,9 @@ use Rovota\Framework\Support\Moment;
  * @method static Disk|null diskWithDriver(Driver $driver)
  * @method static Disk create(array $config, string|null $name = null)
  *
- * @method static Sequence contents(string $location = '/')
- * @method static Sequence files(string $location = '/')
- * @method static Sequence directories(string $location = '/')
+ * @method static Bucket contents(string $location = '/')
+ * @method static Bucket files(string $location = '/')
+ * @method static Bucket directories(string $location = '/')
  *
  * @method static bool exists(string $location)
  * @method static bool missing(string $location)

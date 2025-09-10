@@ -12,7 +12,7 @@ use League\Flysystem\FileAttributes;
 use Rovota\Framework\Kernel\ExceptionHandler;
 use Rovota\Framework\Storage\Contents\Directory;
 use Rovota\Framework\Storage\Contents\File;
-use Rovota\Framework\Structures\Sequence;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Moment;
 use Rovota\Framework\Validation\ValidationTools;
 use Throwable;
@@ -20,29 +20,45 @@ use Throwable;
 trait DiskFunctions
 {
 
-	public function contents(string $location = '/'): Sequence
+	public function contents(string $location = '/'): Bucket
 	{
 		try {
 			$result = $this->flysystem->listContents($location, false);
-			return new Sequence($result->toArray());
+			return new Bucket($result->toArray());
 		} catch (Throwable $throwable) {
 			ExceptionHandler::logThrowable($throwable);
 		}
 
-		return new Sequence();
+		return new Bucket();
 	}
 
-	public function files(string $location = '/'): Sequence
+	public function files(string $location = '/'): Bucket
 	{
 		return $this->contents($location)->filter(function (mixed $item) {
 			return $item instanceof FileAttributes;
+		})->transform(function(FileAttributes $item) {
+			return new File(null, [
+				'name' => basename($item->path()),
+				'path' => str_replace(basename($item->path()), '', $item->path()),
+				'extension' => pathinfo($item->path(), PATHINFO_EXTENSION),
+				'size' => $item->fileSize(),
+				'mime_type' => $item->mimeType(),
+				'last_modified' => $item->lastModified(),
+				'disk' => $this,
+			]);
 		});
 	}
 
-	public function directories(string $location = '/'): Sequence
+	public function directories(string $location = '/'): Bucket
 	{
 		return $this->contents($location)->filter(function (mixed $item) {
 			return $item instanceof DirectoryAttributes;
+		})->transform(function(DirectoryAttributes $item) {
+			return new Directory([
+				'name' => basename($item->path()),
+				'path' => str_replace(basename($item->path()), '', $item->path()),
+				'disk' => $this,
+			]);
 		});
 	}
 

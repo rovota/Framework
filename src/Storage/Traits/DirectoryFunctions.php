@@ -8,23 +8,23 @@
 namespace Rovota\Framework\Storage\Traits;
 
 use Rovota\Framework\Storage\Contents\File;
-use Rovota\Framework\Structures\Sequence;
+use Rovota\Framework\Structures\Bucket;
 use Rovota\Framework\Support\Str;
 
 trait DirectoryFunctions
 {
 
-	public function contents(): Sequence
+	public function contents(): Bucket
 	{
 		return $this->properties->disk->contents($this->location());
 	}
 
-	public function files(): Sequence
+	public function files(): Bucket
 	{
 		return $this->properties->disk->files($this->location());
 	}
 
-	public function directories(): Sequence
+	public function directories(): Bucket
 	{
 		return $this->properties->disk->directories($this->location());
 	}
