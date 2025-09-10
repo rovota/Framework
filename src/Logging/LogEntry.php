@@ -9,6 +9,7 @@ namespace Rovota\Framework\Logging;
 
 use Monolog\Level;
 use Rovota\Framework\Support\Moment;
+use Rovota\Framework\Support\Path;
 use Rovota\Framework\Support\Str;
 use Rovota\Framework\Support\Text;
 
@@ -64,7 +65,8 @@ class LogEntry
 
 	protected function extractMessage(): string
 	{
-		return Text::from($this->raw)->after(': ')->before(' {"')->before(' ["')->toString();
+		$extract = Text::from($this->raw)->after(': ')->before(' {"')->before(' ["')->toString();
+		return str_replace(Path::getProjectRoot(), '', $extract);
 	}
 
 	// -----------------

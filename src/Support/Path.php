@@ -40,7 +40,7 @@ final class Path
 	 */
 	public static function toSourceFile(string $path): string
 	{
-		return self::toProjectFile($path, self::getFrameworkRootPath());
+		return self::toProjectFile($path, self::getFrameworkRoot());
 	}
 
 	/**
@@ -48,19 +48,19 @@ final class Path
 	 */
 	public static function toProjectFile(string $path, string|null $base = null): string
 	{
-		return ($base ?? self::getProjectRootPath()) . '/' . mb_ltrim($path, '/');
+		return ($base ?? self::getProjectRoot()) . '/' . mb_ltrim($path, '/');
 	}
 
 	// -----------------
 
-	protected static function getFrameworkRootPath(): string
+	public static function getFrameworkRoot(): string
 	{
 		return str_replace(['\Support', '/Support'], ['', ''], dirname(__FILE__));
 	}
 
-	protected static function getProjectRootPath(): string
+	public static function getProjectRoot(): string
 	{
-		return defined('BASE_PATH') ? constant('BASE_PATH') : self::getFrameworkRootPath();
+		return defined('BASE_PATH') ? constant('BASE_PATH') : self::getFrameworkRoot();
 	}
 
 }
