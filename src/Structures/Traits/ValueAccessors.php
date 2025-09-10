@@ -54,9 +54,31 @@ trait ValueAccessors
 		return Arr::first($this->toArray(), $callback, $default);
 	}
 
+	public function firstAndRemove(callable|null $callback = null, mixed $default = null): mixed
+	{
+		$result = $this->first($callback);
+
+		if ($result !== null) {
+			$this->remove($this->find($result));
+		}
+
+		return $result ?? $default;
+	}
+
 	public function last(callable|null $callback = null, mixed $default = null): mixed
 	{
 		return Arr::last($this->toArray(), $callback, $default);
+	}
+
+	public function lastAndRemove(callable|null $callback = null, mixed $default = null): mixed
+	{
+		$result = $this->last($callback);
+
+		if ($result !== null) {
+			$this->remove($this->find($result));
+		}
+
+		return $result ?? $default;
 	}
 
 	public function random(int $amount = 1): static

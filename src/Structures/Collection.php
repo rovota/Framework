@@ -111,6 +111,17 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		return array_find($this->values, fn($value, $key) => $callback($value, $this->keys[$key]));
 	}
 
+	public function firstAndRemove(callable|null $callback = null): mixed
+	{
+		$result = $this->first($callback);
+
+		if ($result !== null) {
+			$this->remove($this->retrieveKeyForValue($result));
+		}
+
+		return $result;
+	}
+
 	public function last(callable|null $callback = null): mixed
 	{
 		if (empty($this->values)) {
@@ -121,6 +132,17 @@ abstract class Collection implements ArrayAccess, IteratorAggregate, Countable, 
 		}
 
 		return array_find(array_reverse($this->values, true), fn($value, $key) => $callback($value, $this->keys[$key]));
+	}
+
+	public function lastAndRemove(callable|null $callback = null): mixed
+	{
+		$result = $this->last($callback);
+
+		if ($result !== null) {
+			$this->remove($this->retrieveKeyForValue($result));
+		}
+
+		return $result;
 	}
 
 	// -----------------
